@@ -97,10 +97,10 @@ of this software, even if advised of the possibility of such damage.
                     </edition>
                 </editionStmt>
                 <publicationStmt>
-                    <p>unknown</p>
+                    <xsl:call-template name="getPubStatement"/>
                 </publicationStmt>
                 <sourceDesc>
-                    <p>Converted from a Word document </p>
+                    <xsl:call-template name="getSourceDesc"/>
                 </sourceDesc>
             </fileDesc>
 	        <encodingDesc>
@@ -134,5 +134,12 @@ of this software, even if advised of the possibility of such damage.
         </head>
     </xsl:template>
     
+    <xsl:template name="getPubStatement">
+        <p>unknown</p>
+    </xsl:template>
+    
+    <xsl:template name="getSourceDesc">
+        <p>Converted from a Word document </p>
+    </xsl:template>
     
 </xsl:stylesheet>

@@ -140,28 +140,32 @@
 
 		</desc>
 	</doc>
-	<xsl:template match="/">
-		<!-- Do an initial normalization and store everything in $pass0 -->
+<!--	<xsl:template match="/">
+		<!-\- Do an initial normalization and store everything in $pass0 -\->
 		<xsl:variable name="pass0">
 			<xsl:apply-templates mode="pass0"/>
 		</xsl:variable>
 
-		<!-- Do the main transformation and store everything in the variable pass1 -->
+		<!-\- Do the main transformation and store everything in the variable pass1 -\->
 		<xsl:variable name="pass1">
 			<xsl:for-each select="$pass0">
 				<xsl:apply-templates/>
 			</xsl:for-each>
 		</xsl:variable>
-		<!-- debug
+		<!-\- debug
 	 <xsl:result-document href="/tmp/foo.xml">
 	 <xsl:copy-of select="$pass1"/>
 	 </xsl:result-document>
-     -->
-		<!-- Do the final parse and create valid TEI -->
+     -\->
+		<!-\- Do the final parse and create valid TEI -\->
 
 		<xsl:apply-templates select="$pass1" mode="pass2"/>
 
 		<xsl:call-template name="fromDocxFinalHook"/>
+	</xsl:template>-->
+	
+	<xsl:template match="/">
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template name="fromDocxFinalHook"/>
