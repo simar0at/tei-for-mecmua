@@ -44,7 +44,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: tei-to-epub.xsl 10907 2012-10-03 21:41:29Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -246,7 +246,7 @@ height: </xsl:text>
         </xsl:if>
         <xsl:result-document href="{concat($directory,'/OPS/content.opf')}" method="xml">
 	  <xsl:variable name="A">
-	    <xsl:sequence select="tei:generateAuthor(.)"/>
+	    <xsl:call-template name="generateAuthor"/>
 	  </xsl:variable>
 	<xsl:variable name="printA">
 	  <xsl:analyze-string select="$A" regex="([^,]+), ([^,]+), (.+)">
@@ -591,10 +591,10 @@ height: </xsl:text>
 		    </xsl:attribute>
 		    <div class="titlepage">
 		      <p class="covertitle">
-			<xsl:sequence select="tei:generateTitle(.)"/>
+			<xsl:call-template name="generateTitle"/>
 		      </p>
 		      <p class="coverauthor">
-			<xsl:sequence select="tei:generateAuthor(.)"/>
+			<xsl:call-template  name="generateAuthor"/>
 		      </p>
 		    </div>
                   </div>
@@ -691,7 +691,7 @@ height: </xsl:text>
             </head>
             <docTitle>
               <text>
-                <xsl:sequence select="tei:generateSimpleTitle(.)"/>
+                <xsl:call-template name="generateSimpleTitle"/>
               </text>
             </docTitle>
             <navMap>
@@ -863,17 +863,17 @@ height: </xsl:text>
 	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	      xmlns:opf="http://www.idpf.org/2007/opf">
       <dc:title>
-	<xsl:sequence select="tei:generateSimpleTitle(.)"/>
+	<xsl:call-template name="generateSimpleTitle"/>
       </dc:title>
       <dc:language xsi:type="dcterms:RFC3066">
-      <xsl:call-template name="generateLanguage"/>
+	<xsl:call-template name="generateLanguage"/>
       </dc:language>
       <xsl:call-template name="generateSubject"/>
       <dc:identifier id="dcidid" opf:scheme="URI">
 	<xsl:call-template name="generateID"/>
       </dc:identifier>
       <dc:description>
-	<xsl:sequence select="tei:generateSimpleTitle(.)"/>
+	<xsl:call-template name="generateSimpleTitle"/>
 	<xsl:text> / </xsl:text>
 	<xsl:value-of select="$author"/>
       </dc:description>
@@ -886,7 +886,7 @@ height: </xsl:text>
 	</xsl:choose>
       </dc:creator>
       <dc:publisher>
-	<xsl:sequence select="tei:generatePublisher(.,$publisher)"/>
+	<xsl:call-template name="generatePublisher"/>
       </dc:publisher>
       <xsl:for-each select="tei:teiHeader/tei:profileDesc/tei:creation/tei:date[@notAfter]">
 	<dc:date opf:event="creation">
@@ -899,7 +899,7 @@ height: </xsl:text>
 	</dc:date>
       </xsl:for-each>
       <dc:date opf:event="epub-publication" xsi:type="dcterms:W3CDTF">
-	<xsl:sequence select="tei:generateDate(.)"/>
+	<xsl:call-template name="generateDate"/>
       </dc:date>
       <dc:rights>
 	<xsl:call-template name="generateLicence"/>
@@ -908,12 +908,6 @@ height: </xsl:text>
 	<meta name="cover" content="cover-image"/>
       </xsl:if>
     </metadata>
-  </xsl:template>
-
-  <xsl:template name="makeLang">
-    <xsl:if test="@xml:lang">
-      <xsl:attribute name="xml:lang" select="@xml:lang"/>
-    </xsl:if>
-  </xsl:template>
+</xsl:template>
 
 </xsl:stylesheet>

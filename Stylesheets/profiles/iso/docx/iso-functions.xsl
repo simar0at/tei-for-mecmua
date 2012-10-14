@@ -60,7 +60,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: iso-functions.xsl 10881 2012-10-01 16:34:00Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>

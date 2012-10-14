@@ -16,7 +16,6 @@
     version="2.0">
   <xsl:import href="teiodds.xsl"/>
   <xsl:import href="classatts.xsl"/>
-  <xsl:import href="../common2/functions.xsl"/>
   <xsl:import href="../common2/i18n.xsl"/>
   <xsl:import href="../common2/tei-param.xsl"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -55,7 +54,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: odd2relax.xsl 10707 2012-08-04 18:40:51Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
@@ -93,6 +92,9 @@ of this software, even if advised of the possibility of such damage.
     </xsl:for-each>
   </xsl:template>
   <xsl:template match="tei:schemaSpec">
+      <xsl:variable name="documentationLanguage">
+         <xsl:call-template name="generateDoc"/>
+      </xsl:variable>
       <xsl:if test="$verbose='true'">
          <xsl:message> 
 	           <xsl:text>I18N setup: Pattern prefix: </xsl:text>
@@ -100,7 +102,7 @@ of this software, even if advised of the possibility of such damage.
 	           <xsl:text>. Target  language: </xsl:text>
 	           <xsl:value-of select="$targetLanguage"/>
 	           <xsl:text>. Documentation language: </xsl:text>
-	           <xsl:value-of select="tei:generateDocumentationLang(.)"/>
+	           <xsl:value-of select="$documentationLanguage"/>
          </xsl:message>
       </xsl:if>
       <xsl:variable name="filename" select="@ident"/>
@@ -166,7 +168,6 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <xsl:template name="schemaSpecBody">
-    <xsl:variable name="original" select="."/>
       <xsl:variable name="pass1">
          <root>
 	   <xsl:if test="$verbose='true'">
@@ -179,13 +180,18 @@ of this software, even if advised of the possibility of such damage.
 	   <xsl:apply-templates mode="tangle" select="tei:elementSpec|tei:classSpec"/>
 	   <xsl:choose>
 	     <xsl:when test="@start and @start=''"/>
-	     <xsl:when test="@start">
+	     <xsl:when test="@start and contains(@start,' ')">
 	       <start xmlns="http://relaxng.org/ns/structure/1.0">
 		 <choice>
-		   <xsl:for-each select="tokenize(@start,' ')">
-		     <ref xmlns="http://relaxng.org/ns/structure/1.0" name="{.}"/>
-		   </xsl:for-each>
+		   <xsl:call-template name="startNames">
+		     <xsl:with-param name="toks" select="@start"/>
+		   </xsl:call-template>
 		 </choice>
+	       </start>
+	     </xsl:when>
+	     <xsl:when test="@start">
+	       <start xmlns="http://relaxng.org/ns/structure/1.0">
+		 <ref name="{$generalPrefix}{@start}"/>
 	       </start>
 	     </xsl:when>
 	     <xsl:when test="key('IDENTS','teiCorpus')">
@@ -220,6 +226,23 @@ of this software, even if advised of the possibility of such damage.
       </xsl:for-each>
   </xsl:template>
 
+  <xsl:template name="startNames">
+      <xsl:param name="toks"/>
+      <xsl:if test="not($toks='')">
+         <xsl:choose>
+            <xsl:when test="contains($toks,' ')">
+               <ref xmlns="http://relaxng.org/ns/structure/1.0"
+                    name="{$generalPrefix}{substring-before($toks, ' ')}"/>
+               <xsl:call-template name="startNames">
+                  <xsl:with-param name="toks" select="substring-after($toks, ' ')"/>
+               </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+               <ref xmlns="http://relaxng.org/ns/structure/1.0" name="{$generalPrefix}{$toks}"/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:if>
+  </xsl:template>
   <xsl:template match="tei:moduleSpec">
       <xsl:if test="@ident and not(@mode='change' or @mode='replace' or   @mode='delete')">
          <xsl:choose>
@@ -402,8 +425,9 @@ of this software, even if advised of the possibility of such damage.
 
 
 <!-- pass 2, clean up unused elements -->
-  <xsl:template  match="rng:anyName[parent::rng:define]"
-		 mode='pass2'>
+  <xsl:template
+      match="rng:anyName[parent::rng:define]"
+      mode='pass2'>
     <zeroOrMore xmlns="http://relaxng.org/ns/structure/1.0">
       <choice>
 	<xsl:for-each select="key('EDEF',1)">	  
@@ -429,7 +453,7 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="rng:define" mode="pass2">
       <xsl:choose>
-         <xsl:when test="key('REFED',@name) or key('REFED',substring-after(@name,$generalPrefix))">
+         <xsl:when test="key('REFED',@name)">
 	   <define xmlns="http://relaxng.org/ns/structure/1.0" >
 	     <xsl:apply-templates  select="@*"    mode="pass2"/>
 	     <xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
@@ -448,9 +472,17 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="rng:ref" mode="pass2">
       <xsl:choose>
-         <xsl:when test="parent::rng:choice/parent::rng:start">
-	   <ref xmlns="http://relaxng.org/ns/structure/1.0" name="{@name}"/>
+	<!--
+	<xsl:when test="(ancestor::rng:element[@name='egXML' or
+			 @name='constraint']         or
+			 ancestor::rng:define[contains(@name,'macro.schemaPattern')])
+			 and         starts-with(@name, 'macro.any')">
+	           <xsl:for-each select="key('DEFED', @name)">
+	              <xsl:apply-templates mode="justcopy"
+					   select="*"/>
+	           </xsl:for-each>
          </xsl:when>
+	 -->
          <xsl:when test="key('DEFED',@name)">
 	   <ref xmlns="http://relaxng.org/ns/structure/1.0" name="{@name}"/>
          </xsl:when>
@@ -482,8 +514,6 @@ of this software, even if advised of the possibility of such damage.
       </xsl:variable>
       <xsl:choose>
 	<xsl:when test="$Contents//rng:text or $Contents//rng:ref or
-			$Contents//rng:anyName or
-			$Contents//rng:attribute or
 			$Contents//rng:data or $Contents//rng:name or $Contents//rng:value">
 	  <xsl:copy-of select="$Contents"/>
 	</xsl:when>
@@ -513,7 +543,6 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="rng:optional|rng:zeroOrMore|rng:oneOrMore" mode="pass3">
       <xsl:choose>
-	<xsl:when test="not(*)"/>
 	<xsl:when test="count(*)=1 and rng:empty"/>
 	<xsl:when test="rng:zeroOrMore and count(*)=1">
 	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
@@ -545,22 +574,6 @@ of this software, even if advised of the possibility of such damage.
 	</choice>
       </xsl:when>
     </xsl:choose>
-  </xsl:template>
-
-  <xsl:template match="rng:start/rng:choice" mode="pass3">
-    <!-- look at start patterns and see if they need prepending with
-    prefix -->
-    <choice xmlns="http://relaxng.org/ns/structure/1.0">
-      <xsl:for-each select="rng:ref">
-	  <xsl:variable name="name" select="if (key('DEFED',@name))
-	    then @name
-	    else if (key('DEFED',concat($generalPrefix,@name))) then
-	    concat($generalPrefix,@name) else ''"/>
-	    <xsl:if test="not($name='')">
-	      <ref xmlns="http://relaxng.org/ns/structure/1.0" name="{$name}"/>
-	    </xsl:if>
-      </xsl:for-each>
-    </choice>
   </xsl:template>
 
   <xsl:template match="rng:define" mode="pass3">

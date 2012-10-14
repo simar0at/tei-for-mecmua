@@ -47,13 +47,10 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: linking.xsl 10899 2012-10-03 15:20:16Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
-  <xsl:param name="linkElementNamespace">http://www.w3.org/1999/xhtml</xsl:param>
-  <xsl:param name="linkAttributeNamespace"/>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process any element and work out a unique identififying string</desc>
    </doc>
@@ -88,13 +85,16 @@ of this software, even if advised of the possibility of such damage.
 	   <xsl:call-template name="addCorpusID"/>
 	 </xsl:when>
          <xsl:otherwise>
-	   <xsl:sequence select="concat($BaseFile,'-',local-name(),'-',generate-id())"/>
+	   <xsl:value-of select="$BaseFile"/>
+	   <xsl:text>-</xsl:text>
+	   <xsl:value-of select="local-name(.)"/>
+	   <xsl:text>-</xsl:text>
+	   <xsl:value-of select="generate-id()"/>
          </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process any element, trying to make the right hyperlink
-      for it</desc>
+      <desc>Process elements *</desc>
    </doc>
   <xsl:template match="*" mode="generateLink">
       <xsl:variable name="ident">
@@ -103,8 +103,10 @@ of this software, even if advised of the possibility of such damage.
       <xsl:variable name="depth">
          <xsl:apply-templates mode="depth" select="."/>
       </xsl:variable>
-      <xsl:variable name="keep" select="tei:keepDivOnPage(.,$depth)"/>
-      <xsl:variable name="LINK">
+      <xsl:variable name="Hash">
+         <xsl:text>#</xsl:text>
+      </xsl:variable>
+      <xsl:variable name="result">
       <xsl:choose>
 	<xsl:when test="$filePerPage='true'">
 	  <xsl:choose>
@@ -118,59 +120,74 @@ of this software, even if advised of the possibility of such damage.
 	  </xsl:choose>
 	  <xsl:value-of select="$standardSuffix"/>
 	</xsl:when>
-	<xsl:when test="ancestor::tei:elementSpec and not($STDOUT='true')">
-	  <xsl:sequence select="concat('ref-',ancestor::tei:elementSpec/@ident,$standardSuffix,'#',$ident)"/>
-	</xsl:when>
-	<xsl:when test="ancestor::tei:classSpec and not($STDOUT='true')">
-	  <xsl:sequence select="concat('ref-',ancestor::tei:classSpec/@ident,$standardSuffix,'#',$ident)"/>
-	</xsl:when>
-	<xsl:when test="not($keep) and $STDOUT='true' and number($depth) &lt;= number($splitLevel)">
-	  <xsl:sequence select="concat($masterFile,$standardSuffix,$urlChunkPrefix,$ident)"/>
-	</xsl:when>
-	<xsl:when test="ancestor::tei:back and not($splitBackmatter)">
-	  <xsl:value-of select="concat('#',$ident)"/>
-	</xsl:when>
-	<xsl:when test="ancestor::tei:front and not($splitFrontmatter)">
-	  <xsl:value-of select="concat('#',$ident)"/>
-	</xsl:when>
-	<xsl:when test="self::tei:text and $splitLevel=0">
-	  <xsl:value-of select="concat($ident,$standardSuffix)"/>
-	</xsl:when>
-	<xsl:when test="number($splitLevel)= -1 and
-			ancestor::tei:teiCorpus">
-	  <xsl:value-of select="$masterFile"/>
-	  <xsl:call-template name="addCorpusID"/>
-	  <xsl:value-of select="$standardSuffix"/>
-	  <xsl:value-of select="concat('#',$ident)"/>
-	</xsl:when>
-	<xsl:when test="number($splitLevel)= -1">
-	  <xsl:value-of select="concat('#',$ident)"/>
-	</xsl:when>
-	<xsl:when test="number($depth) &lt;= number($splitLevel) and not($keep)">
-	  <xsl:value-of select="concat($ident,$standardSuffix)"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:variable name="parent">
-	    <xsl:call-template name="locateParentDiv"/>
-	  </xsl:variable>
-	  <xsl:choose>
-	    <xsl:when test="$STDOUT='true'">
-	      <xsl:sequence select="concat($masterFile,$urlChunkPrefix,$parent,'#',$ident)"/>
-	    </xsl:when>
-	    <xsl:when test="$keep">
-	      <xsl:sequence select="concat($masterFile,$standardSuffix,'#',$ident)"/>
-	    </xsl:when>
-	    <xsl:otherwise>
-	      <xsl:sequence select="concat($parent,$standardSuffix,'#',$ident)"/>
-	    </xsl:otherwise>
-	  </xsl:choose>
-	</xsl:otherwise>
+         <xsl:when test="$STDOUT='true' and number($depth) &lt;= number($splitLevel)">
+            <xsl:value-of select="$masterFile"/>
+            <xsl:value-of select="$standardSuffix"/>
+            <xsl:value-of select="$urlChunkPrefix"/>
+            <xsl:value-of select="$ident"/>
+         </xsl:when>
+         <xsl:when test="ancestor::tei:elementSpec and not($STDOUT='true')">
+	           <xsl:text>ref-</xsl:text>
+	           <xsl:value-of select="ancestor::tei:elementSpec/@ident"/>
+            <xsl:value-of select="$standardSuffix"/>
+	           <xsl:value-of select="concat($Hash,$ident)"/>
+         </xsl:when>
+         <xsl:when test="ancestor::tei:classSpec and not($STDOUT='true')">
+	           <xsl:text>ref-</xsl:text>
+	           <xsl:value-of select="ancestor::tei:classSpec/@ident"/>
+            <xsl:value-of select="$standardSuffix"/>
+	           <xsl:value-of select="concat($Hash,$ident)"/>
+         </xsl:when>
+         <xsl:when test="ancestor::tei:back and not($splitBackmatter)">
+            <xsl:value-of select="concat($Hash,$ident)"/>
+         </xsl:when>
+         <xsl:when test="ancestor::tei:front and not($splitFrontmatter)">
+            <xsl:value-of select="concat($Hash,$ident)"/>
+         </xsl:when>
+	 <xsl:when test="self::tei:text and $splitLevel=0">
+	   <xsl:value-of select="$ident"/>
+	   <xsl:value-of select="$standardSuffix"/>
+	 </xsl:when>
+         <xsl:when test="number($splitLevel)= -1 and
+			 ancestor::tei:teiCorpus">
+            <xsl:value-of select="$masterFile"/>
+            <xsl:call-template name="addCorpusID"/>
+            <xsl:value-of select="$standardSuffix"/>
+            <xsl:value-of select="concat($Hash,$ident)"/>
+         </xsl:when>
+         <xsl:when test="number($splitLevel)= -1">
+            <xsl:value-of select="concat($Hash,$ident)"/>
+         </xsl:when>
+         <xsl:when test="number($depth) &lt;= number($splitLevel)">
+            <xsl:value-of select="concat($ident,$standardSuffix)"/>
+         </xsl:when>
+         <xsl:otherwise>
+            <xsl:variable name="parent">
+               <xsl:call-template name="locateParentDiv"/>
+            </xsl:variable>
+            <xsl:choose>
+               <xsl:when test="$STDOUT='true'">
+                  <xsl:value-of select="$masterFile"/>
+                  <xsl:value-of select="$urlChunkPrefix"/>
+                  <xsl:value-of select="$parent"/>
+                  <xsl:text>#</xsl:text>
+                  <xsl:value-of select="$ident"/>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:value-of select="$parent"/>
+                  <xsl:value-of select="concat($standardSuffix,'#')"/>
+                  <xsl:value-of select="$ident"/>
+               </xsl:otherwise>
+            </xsl:choose>
+         </xsl:otherwise>
       </xsl:choose>
-      </xsl:variable>
-
-      <!--      <xsl:message>GENERATELINK <xsl:sequence select="string-join((name(),$ident,$depth,string($keep),$LINK),'|')"/></xsl:message>-->
-      <xsl:value-of select="$LINK"/>
-
+</xsl:variable>
+<!--
+<xsl:message><xsl:value-of select="$ident"/>: <xsl:value-of
+select="$depth"/>: <xsl:value-of select="$splitLevel"/>: <xsl:value-of
+select="$result"/></xsl:message>
+-->
+<xsl:value-of select="$result"/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>
@@ -196,7 +213,7 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process extra elements in generateLink mode</desc>
    </doc>
-  <xsl:template match="tei:label|tei:figure|tei:table|tei:item|tei:p|tei:title|tei:bibl|tei:anchor|tei:cell|tei:lg|tei:list|tei:sp"
+  <xsl:template match="tei:label|tei:figure|tei:table|tei:item|tei:p|tei:bibl|tei:anchor|tei:cell|tei:lg|tei:list|tei:sp"
                  mode="generateLink">
       <xsl:variable name="ident">
          <xsl:apply-templates mode="ident" select="."/>
@@ -314,6 +331,210 @@ of this software, even if advised of the possibility of such damage.
          </xsl:otherwise>
       </xsl:choose>
 
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>[html] create external link<param name="ptr">ptr</param>
+         <param name="dest">dest</param>
+         <param name="class">class</param>
+      </desc>
+   </doc>
+  <xsl:template name="makeExternalLink">
+      <xsl:param name="ptr" as="xs:boolean"  select="false()"/>
+      <xsl:param name="dest"/>
+      <xsl:param name="class">link_<xsl:value-of select="local-name(.)"/>
+      </xsl:param>
+      <a>
+        <xsl:choose>
+            <xsl:when test="@rend">
+	              <xsl:attribute name="class">
+	                 <xsl:value-of select="@rend"/>
+	              </xsl:attribute>
+            </xsl:when>
+	           <xsl:when test="@rendition">
+	              <xsl:call-template name="applyRendition"/>
+	           </xsl:when>
+            <xsl:when test="parent::tei:item/parent::tei:list[@rend]">
+	              <xsl:attribute name="class">
+	                 <xsl:value-of select="parent::tei:item/parent::tei:list/@rend"/>
+	              </xsl:attribute>
+            </xsl:when>
+	           <xsl:when test="parent::tei:item[@rend]">
+	              <xsl:attribute name="class">
+	                 <xsl:value-of select="parent::tei:item/@rend"/>
+	              </xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+	              <xsl:attribute name="class">
+	                 <xsl:value-of select="$class"/>
+	              </xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
+
+         <xsl:if test="@type and not($outputTarget='epub3' or $outputTarget='html5')">
+            <xsl:attribute name="type">
+               <xsl:value-of select="@type"/>
+            </xsl:attribute>
+         </xsl:if>
+         <xsl:attribute name="href">
+            <xsl:value-of select="$dest"/>
+            <xsl:if test="contains(@from,'id (')">
+               <xsl:text>#</xsl:text>
+               <xsl:value-of select="substring(@from,5,string-length(normalize-space(@from))-1)"/>
+            </xsl:if>
+         </xsl:attribute>
+	 <xsl:choose>
+	   <xsl:when test="@n">
+	     <xsl:attribute name="title">
+	       <xsl:value-of select="@n"/>
+	     </xsl:attribute>
+	   </xsl:when>
+	 </xsl:choose>
+         <xsl:call-template name="xrefHook"/>
+         <xsl:choose>
+	   <xsl:when test="$dest=''">??</xsl:when>
+            <xsl:when test="$ptr">
+               <xsl:element name="{$urlMarkup}">
+                  <xsl:choose>
+                     <xsl:when test="starts-with($dest,'mailto:')">
+                        <xsl:value-of select="substring-after($dest,'mailto:')"/>
+                     </xsl:when>
+                     <xsl:when test="starts-with($dest,'file:')">
+                        <xsl:value-of select="substring-after($dest,'file:')"/>
+                     </xsl:when>
+                     <xsl:otherwise>
+                        <xsl:value-of select="$dest"/>
+                     </xsl:otherwise>
+                  </xsl:choose>
+               </xsl:element>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:apply-templates/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </a>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>[html] create an internal link<param name="target">target</param>
+         <param name="ptr">ptr</param>
+         <param name="dest">dest</param>
+         <param name="body">body</param>
+         <param name="class">class</param>
+      </desc>
+   </doc>
+  <xsl:template name="makeInternalLink">
+      <xsl:param name="target"/>
+      <xsl:param name="ptr" as="xs:boolean" select="false()"/>
+      <xsl:param name="dest"/>
+      <xsl:param name="body"/>
+      <xsl:param name="class">
+         <xsl:text>link_</xsl:text>
+         <xsl:value-of select="local-name(.)"/>
+      </xsl:param>
+      <xsl:variable name="W">
+         <xsl:choose>
+            <xsl:when test="$target">
+               <xsl:value-of select="$target"/>
+            </xsl:when>
+            <xsl:when test="contains($dest,'#')">
+               <xsl:value-of select="substring-after($dest,'#')"/>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:value-of select="$dest"/>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+
+      <xsl:choose>
+         <xsl:when test="$dest=''">
+            <xsl:choose>
+               <xsl:when test="not($body='')">
+                  <xsl:value-of select="$body"/>
+               </xsl:when>
+               <xsl:when test="$ptr">
+                  <xsl:apply-templates mode="xref" select="id($W)">
+                     <xsl:with-param name="minimal" select="$minimalCrossRef"/>
+                  </xsl:apply-templates>
+               </xsl:when>
+               <xsl:otherwise>
+                  <xsl:apply-templates/>
+               </xsl:otherwise>
+            </xsl:choose>
+         </xsl:when>
+         <xsl:otherwise>
+	   <xsl:variable name="eventualtarget">
+	     <xsl:choose>
+	       <xsl:when test="starts-with($dest,'#') or  contains($dest,$outputSuffix) or contains($dest,'ID=')">
+		 <xsl:value-of select="$dest"/>
+	       </xsl:when>
+	       <xsl:when test="id($W)"/>
+	       <xsl:otherwise>
+		 <xsl:apply-templates mode="generateLink" select="id($W)"/>
+	       </xsl:otherwise>
+	     </xsl:choose>
+	   </xsl:variable>
+	   <xsl:variable name="linktext">
+	     <xsl:choose>
+	       <xsl:when test="not($body='')">
+		 <xsl:value-of select="$body"/>
+	       </xsl:when>
+               <xsl:when test="$ptr and @type='footnote'">
+		 <xsl:text>[</xsl:text>
+		 <xsl:number level="any"/>
+		 <xsl:text>]</xsl:text>
+	       </xsl:when>
+	       <xsl:when test="$ptr and id($W)">
+		 <xsl:apply-templates mode="xref" select="id($W)">
+		   <xsl:with-param name="minimal" select="$minimalCrossRef"/>
+		 </xsl:apply-templates>
+	       </xsl:when>
+	       <xsl:when test="$ptr">
+		 <xsl:value-of select="$dest"/>
+	       </xsl:when>
+	       <xsl:otherwise>
+		 <xsl:apply-templates/>
+	       </xsl:otherwise>
+	     </xsl:choose>
+	   </xsl:variable>
+	   <xsl:choose>
+	     <xsl:when test="$eventualtarget=''">
+	       <xsl:copy-of select="$linktext"/>
+	     </xsl:when>
+	     <xsl:otherwise>
+	       <a href="{$eventualtarget}">
+		 <xsl:call-template name="htmlAttributes"/>
+		 <xsl:choose>
+		   <xsl:when test="@rend">
+		     <xsl:attribute name="class">
+		       <xsl:value-of select="@rend"/>
+		     </xsl:attribute>
+		   </xsl:when>
+		   <xsl:when test="@rendition">
+		     <xsl:call-template name="applyRendition"/>
+		   </xsl:when>
+		   <xsl:when test="string-length($class)=0"/>
+		   <xsl:otherwise>
+		     <xsl:attribute name="class">
+		       <xsl:value-of select="$class"/>
+		     </xsl:attribute>
+		   </xsl:otherwise>
+		 </xsl:choose>
+		 
+		 <xsl:for-each select="id($W)">
+		     <xsl:choose>
+		       <xsl:when test="starts-with(local-name(.),'div')">
+			 <xsl:attribute name="title">
+			   <xsl:value-of
+			       select="translate(normalize-space(tei:head[1]),'&gt;&lt;','')"/>
+			 </xsl:attribute>
+		       </xsl:when>
+		     </xsl:choose>
+		 </xsl:for-each>
+	       <xsl:copy-of select="$linktext"/>
+	       </a>
+	     </xsl:otherwise>
+	   </xsl:choose>
+         </xsl:otherwise>
+      </xsl:choose>
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-$Date$ $Author$
+$Date: 2012-08-14 18:09:18 +0100 (Tue, 14 Aug 2012) $ $Author: rahtz $
 
 -->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns="http://www.tei-c.org/ns/1.0" 
     xmlns:tei="http://www.tei-c.org/ns/1.0" 
-    exclude-result-prefixes="tei"
+    exclude-namespace-prefixes="tei"
     version="2.0">
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
@@ -46,7 +46,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: tcp2tei.xsl 10752 2012-08-14 17:09:18Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -70,10 +70,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:if test="$debug='true'">
 	<xsl:message>processing <xsl:value-of select="base-uri()"/></xsl:message>
     </xsl:if>
-    <xsl:variable name="pass1">
       <xsl:apply-templates/>
-    </xsl:variable>
-    <xsl:apply-templates select="$pass1" mode="pass2"/>
   </xsl:template>
 
   <!-- default identity transform -->
@@ -194,22 +191,6 @@ of this software, even if advised of the possibility of such damage.
           <xsl:value-of select="@N"/>
         </note>
       </xsl:when>
-      <xsl:when test="parent::SP">
-	<p>
-          <label type="milestone">
-            <xsl:value-of select="@UNIT"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="@N"/>
-          </label>
-	</p>
-      </xsl:when>
-      <xsl:when test="parent::LIST or parent::SPEAKER">
-          <note place="margin" type="milestone">
-            <xsl:value-of select="@UNIT"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="@N"/>
-	  </note>
-      </xsl:when>
       <xsl:otherwise>
 <!--
 	<xsl:if test="$debug='true'">
@@ -218,11 +199,13 @@ of this software, even if advised of the possibility of such damage.
 	  select="@N"/></xsl:message>
 	</xsl:if>
 -->
-          <label place="margin" type="milestone">
+        <note place="margin" type="milestone">
+          <label>
             <xsl:value-of select="@UNIT"/>
             <xsl:text> </xsl:text>
             <xsl:value-of select="@N"/>
           </label>
+        </note>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -322,75 +305,57 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="HEADNOTE[P/FIGURE and
 		       not(following-sibling::HEAD or following-sibling::OPENER)]">
-    <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="ARGUMENT[count(*)=1]/HEAD">
     <p>
-      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+      <xsl:apply-templates />
     </p>
   </xsl:template>
 
   <xsl:template match="HEADNOTE[count(*)=1]/HEAD">
     <p>
-      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+      <xsl:apply-templates />
     </p>
   </xsl:template>
 
   <xsl:template match="HEADNOTE">
     <argument>
-      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+      <xsl:apply-templates />
     </argument>
   </xsl:template>
 
   <xsl:template match="TAILNOTE[count(*)=1]/HEAD">
     <p>
-      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+      <xsl:apply-templates />
     </p>
   </xsl:template>
 
   <xsl:template match="TAILNOTE">
     <argument>
-      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+      <xsl:apply-templates />
     </argument>
   </xsl:template>
 
   <xsl:template match="FIGURE/BYLINE">
     <signed>
-      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+      <xsl:apply-templates />
     </signed>
   </xsl:template>
 
   <xsl:template match="STAGE/STAGE">
-    <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
+    <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="STAGE[following-sibling::HEAD]">
     <head type="sub">
       <stage>
-	<xsl:apply-templates  select="@*|*|processing-instruction()|comment()|text()" />
+	<xsl:apply-templates />
       </stage>
     </head>
   </xsl:template>
 
-  <xsl:template match="CLOSER">
-    <xsl:choose>
-      <xsl:when test="POSTSCRIPT">
-	<closer>
-	  <xsl:apply-templates
-	      select="@*|*[not(self::POSTSCRIPT)]|processing-instruction()|comment()|text()"
-	      />
-	</closer>
-	<xsl:apply-templates select="POSTSCRIPT"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<closer>
-	  <xsl:apply-templates
-	      select="@*|*|processing-instruction()|comment()|text()" />
-	</closer>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
   <!-- TCP non-controversial transforms -->
   <xsl:template match="ROW/PB" />
   <xsl:template match="ROW[PB]">
@@ -1560,13 +1525,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test=".='foot;' or .='foor;' or .='foot'">
         <xsl:attribute name="place">bottom</xsl:attribute>
       </xsl:when>
-      <xsl:when test=".='foot1' or .='foot2'">
-        <xsl:attribute name="place">bottom</xsl:attribute>
-        <xsl:attribute name="type" select="."/>
-      </xsl:when>
-      <xsl:when test=".='inter'">
-        <xsl:attribute name="rend" select="."/>
-      </xsl:when>
       <xsl:when test=".='‡' or .='†' or .='‖' or .='6'  or .='“' or         .='1' or .='*'">
         <xsl:attribute name="n">
           <xsl:value-of select="."/>
@@ -2342,30 +2300,4 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template name="makeID"/>
   <xsl:template name="idnoHook"/>
-
-  <xsl:template match="@*|comment()|processing-instruction()|text()"
-    mode="pass2">
-    <xsl:copy-of select="."/>
-  </xsl:template>
-  <xsl:template match="*" mode="pass2">
-    <xsl:copy>
-      <xsl:apply-templates
-	  select="*|@*|comment()|processing-instruction()|text()" mode="pass2"/>
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template match="tei:label[following-sibling::*[1][self::tei:head]]" mode="pass2"/>
-
-  <xsl:template match="tei:head[preceding-sibling::*[1][self::tei:label]]" mode="pass2">
-    <xsl:copy>
-      <xsl:apply-templates
-	  select="*|@*|comment()|processing-instruction()|text()" mode="pass2"/>
-    </xsl:copy>
-    <xsl:for-each select="preceding-sibling::*[1][self::tei:label]">
-      <note>
-	<xsl:apply-templates
-	    select="*|@*|comment()|processing-instruction()|text()" mode="pass2"/>
-      </note>
-    </xsl:for-each>
-  </xsl:template>
 </xsl:stylesheet>

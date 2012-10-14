@@ -7,7 +7,7 @@
 
   <!--
       
-      $Id$
+      $Id: odd2nuodd.xsl 9297 2011-09-07 21:37:09Z rahtz $
       Sebastian Rahtz 2011/03/26
       
       Read an ODD with <elementSpec mode="delete"> statements and rewrite it

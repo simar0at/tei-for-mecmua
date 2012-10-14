@@ -12,23 +12,21 @@
   <xsl:import href="../../common2/tei-param.xsl"/>
   <xsl:import href="../../common2/core.xsl"/>
   <xsl:import href="../../common2/figures.xsl"/>
-  <xsl:import href="../../common2/linking.xsl"/>
-  <xsl:import href="../../common2/textstructure.xsl"/>
   <xsl:import href="../../common2/msdescription.xsl"/>
   <!-- Deals with dynamic text creation such as toc -->
-  <xsl:include href="dynamic.xsl"/>
+  <xsl:include href="dynamic/dynamic.xsl"/>
   <!-- Templates transforming graphic elements -->
-  <xsl:include href="graphics.xsl"/>
+  <xsl:include href="graphics/graphics.xsl"/>
   <!-- Templates transforming elements from drama -->
-  <xsl:include href="drama.xsl"/>
+  <xsl:include href="drama/drama.xsl"/>
   <!-- Templates transforming lists -->
-  <xsl:include href="lists.xsl"/>
+  <xsl:include href="lists/lists.xsl"/>
   <!-- Templates transforming math elements -->
-  <xsl:include href="maths.xsl"/>
+  <xsl:include href="maths/maths.xsl"/>
   <!-- Templates transforming ODD-related elements -->
-  <xsl:include href="tagdocs.xsl"/>
+  <xsl:include href="odds/tagdocs.xsl"/>
   <!-- Templates transforming tei milestones into sectPr -->
-  <xsl:include href="wordsections.xsl"/>
+  <xsl:include href="wordsections/wordsections.xsl"/>
   <!-- Load stylesheets helping with the creation of special files -->
   <xsl:include href="docxfiles/application.xsl"/>
   <xsl:include href="docxfiles/content-types.xsl"/>
@@ -66,6 +64,7 @@
   <xsl:param name="debug">false</xsl:param>
   <xsl:param name="typewriterFont">DejaVu Sans Mono</xsl:param>
   <xsl:param name="defaultHeaderFooterFile">templates/default.xml</xsl:param>
+  <xsl:param name="docDoc"><xsl:value-of select="concat($wordDirectory, '/word/document.xml')"/></xsl:param>
   <xsl:param name="headInXref">false</xsl:param>
   <xsl:param name="inputDir">.</xsl:param>
   <xsl:param name="inputFile"></xsl:param>
@@ -75,13 +74,13 @@
   <xsl:param name="preQuote">‘</xsl:param>
   <xsl:param name="renderAddDel">true</xsl:param>
   <xsl:param name="shadowGraphics">false</xsl:param>
-  <xsl:param name="word-directory">..</xsl:param>
+  <xsl:param name="styleDoc"><xsl:value-of select="concat($wordDirectory, '/word/styles.xml')"/></xsl:param>
   <xsl:param name="tableWidthPercentage"></xsl:param>
-  <xsl:param name="glossListSeparator">tab</xsl:param>
+  <xsl:param name="word-directory">..</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
       <p> TEI stylesheet for making Word docx files from TEI XML </p>
-      <p>This software is dual-licensed:
+      <p><h1 xmlns="">Stylesheet documentation</h1><h2 xmlns="">template modes</h2><h3 xmlns="">get-style</h3><h1 xmlns="">License</h1>This software is dual-licensed:
 
 1. Distributed under a Creative Commons Attribution-ShareAlike 3.0
 Unported License http://creativecommons.org/licenses/by-sa/3.0/ 
@@ -114,7 +113,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: teitodocx.xsl 10820 2012-09-17 10:11:19Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -209,11 +208,6 @@ of this software, even if advised of the possibility of such damage.
   <xsl:variable name="wordDirectory">
     <xsl:value-of select="translate($word-directory,'\\','/')"/>
   </xsl:variable>
-  <xsl:variable name="styleDoc"><xsl:value-of select="concat($wordDirectory, '/word/styles.xml')"/></xsl:variable>
-  <xsl:variable name="numberDoc"><xsl:value-of select="concat($wordDirectory, '/word/numbering.xml')"/></xsl:variable>
-  <xsl:variable name="relDoc"><xsl:value-of select="concat($wordDirectory, '/word/_rels/document.xml.rels')"/></xsl:variable>
-  <xsl:variable name="coreFile"><xsl:value-of select="concat($wordDirectory, '/docProps/core.xml')"/></xsl:variable>
-  <xsl:variable name="appFile"><xsl:value-of select="concat($wordDirectory, '/docProps/app.xml')"/></xsl:variable>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
         The starting points in the conversion to docx.
@@ -223,46 +217,23 @@ of this software, even if advised of the possibility of such damage.
       <desc>
 	Before main processing starts, pre-process the document
 	elements in a separate mode ('pass0'), in order to add extra 
-	material which implements the footnoting etc. Also check that 
-	old files are there to be read.
+	material which implements the footnoting etc.
       </desc>
     </doc>
 
     <xsl:template match="/">
-      <xsl:if test="not(doc-available($styleDoc))">
-	<xsl:message terminate="yes">The file <xsl:value-of
-	select="$styleDoc"/> cannot be read</xsl:message>
-      </xsl:if>
-      <xsl:if test="not(doc-available($numberDoc))">
-	<xsl:message terminate="yes">The file <xsl:value-of
-	select="$numberDoc"/> cannot be read</xsl:message>
-      </xsl:if>
-      <xsl:if test="not(doc-available($relDoc))">
-	<xsl:message terminate="yes">The file <xsl:value-of
-	select="$relDoc"/> cannot be read</xsl:message>
-      </xsl:if>
-      <xsl:if test="not(doc-available($coreFile))">
-	<xsl:message terminate="yes">The file <xsl:value-of
-	select="$coreFile"/> cannot be read</xsl:message>
-      </xsl:if>
-      <xsl:if test="not(doc-available($appFile))">
-	<xsl:message terminate="yes">The file <xsl:value-of
-	select="$appFile"/> cannot be read</xsl:message>
-      </xsl:if>
       <xsl:if test="$debug='true'">
 	<xsl:message>Processing file <xsl:value-of
 	select="$inputFile"/></xsl:message>
       </xsl:if>
-      <xsl:for-each select="*">
-	<xsl:call-template name="write-docxfiles"/>
-      </xsl:for-each>
+      <xsl:call-template name="write-docxfiles"/>
       <xsl:variable name="pass0">
 	<xsl:apply-templates mode="pass0"/>
       </xsl:variable>
-      <xsl:variable name="pass2">
+      <xsl:variable name="cleanup">
 	<xsl:apply-templates select="$pass0/*"/>
       </xsl:variable>
-      <xsl:apply-templates select="$pass2/*" mode="pass2"/>
+      <xsl:apply-templates select="$cleanup/*" mode="cleanup"/>
     </xsl:template>
 
   <xsl:template match="/tei:TEI|/tei:teiCorpus">
@@ -411,7 +382,8 @@ of this software, even if advised of the possibility of such damage.
     <desc>
       <p>
             This template processes block elements (or better to say the children of a block element)
-            and should never be called directly (call block-element instead). The function processes all children and puts
+            and should never be called directly 
+            (call block-element instead). The function processes all children and puts
             all inline elements into one w:p. If it encounters a nested block element
             (e.g. a note inside a p) then it closes the previous w:p processes that block
             element and then again starts putting all following inline elements into another
@@ -452,6 +424,12 @@ of this software, even if advised of the possibility of such damage.
         <!-- we encountered an inline element. This means that the current group only
                      contains inline elements -->
         <xsl:otherwise>
+	  <!--
+	  <xsl:message>+@@ <xsl:value-of select="name()"/>: pPr:	  <xsl:if test="not(empty($pPr))"><xsl:copy-of
+	  select="$pPr"/></xsl:if>; style: <xsl:if
+	  test="not(empty($style))"><xsl:copy-of
+	  select="$style"/></xsl:if></xsl:message>
+	  -->
           <!-- create all text runs for each item in the current group. we will later
                          on decide whether we are grouping them together in a w:p or not. -->
           <xsl:variable name="innerRuns">
@@ -747,27 +725,6 @@ of this software, even if advised of the possibility of such damage.
 	elements in Word does matter, by the way. 
      </desc>
   </doc>
-
-
-  <xsl:template match="tei:abbr" mode="get-style">tei_abbr</xsl:template>
-  <xsl:template match="tei:cit" mode="get-style">Quote</xsl:template>
-  <xsl:template match="tei:date" mode="get-style">date</xsl:template>
-  <xsl:template match="tei:foreign" mode="get-style">tei_foreign</xsl:template>
-  <xsl:template match="tei:formula" mode="get-style">Formula</xsl:template>
-  <xsl:template match="tei:mentioned" mode="get-style">tei_mentioned</xsl:template>
-  <xsl:template match="tei:orgName" mode="get-style">tei_orgName</xsl:template>
-  <xsl:template match="tei:quote" mode="get-style">Quote</xsl:template>
-  <xsl:template match="tei:q" mode="get-style">tei_q</xsl:template>
-  <xsl:template match="tei:bibl" mode="get-style">tei_bibl</xsl:template>
-  <xsl:template match="tei:ref[@rend and not(@target)]" mode="get-style"><xsl:value-of select="@rend"/></xsl:template>
-  <xsl:template match="tei:seg[@rend]" mode="get-style"><xsl:value-of select="@rend"/></xsl:template>
-  
-  <xsl:template match="tei:p[@rend]" mode="get-style">
-    <xsl:call-template name="getStyleName">
-      <xsl:with-param name="in" select="@rend"/>
-    </xsl:call-template>
-  </xsl:template>
-  
   <xsl:template name="applyRend">
     <!-- use a custom font -->
     <xsl:choose>
@@ -847,19 +804,11 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="contains(@rend,'color(')">
         <w:color w:val="{substring-before(substring-after(@rend,'color('),')')}"/>
       </xsl:when>
-      <xsl:when test="starts-with(@rend,'color=')">
-        <w:color w:val="{substring(@rend,7)}"/>
-      </xsl:when>
     </xsl:choose>
     <!-- background color -->
-    <xsl:choose>
-      <xsl:when test="contains(@rend,'background(')">
-	<w:highlight w:val="{substring-before(substring-after(@rend,'background('),')')}"/>
-      </xsl:when>
-      <xsl:when test="starts-with(@rend,'background=')">
-	<w:highlight w:val="{substring(@rend,12)}"/>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:if test="contains(@rend,'background(')">
+      <w:highlight w:val="{substring-before(substring-after(@rend,'background('),')')}"/>
+    </xsl:if>
     <!-- underline -->
     <xsl:choose>
       <xsl:when test="contains(@rend,'underline') ">
@@ -911,49 +860,12 @@ of this software, even if advised of the possibility of such damage.
     </xsl:if>
   </xsl:template>
   <!-- 
-        plain note
+        Footnotes
     -->
-  <xsl:template name="plainNote">
-    <xsl:variable name="note">
-    <w:r>
-      <w:t>
-	<xsl:attribute name="xml:space">preserve</xsl:attribute>
-	<xsl:text> [</xsl:text>
-	<xsl:choose>
-	  <xsl:when test="@n">
-	    <xsl:value-of select="@n"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:sequence select="tei:i18n('Note')"/>
-	    <xsl:text>: </xsl:text>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </w:t>
-    </w:r>
-    <xsl:apply-templates/>
-    <w:r>
-      <w:t>
-	<xsl:attribute name="xml:space">preserve</xsl:attribute>
-	<xsl:text>] </xsl:text>
-      </w:t>
-    </w:r>
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="tei:is-inline(.)">
-	<xsl:copy-of select="$note"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<w:p>
-	<xsl:copy-of select="$note"/>
-	</w:p>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-
-  <xsl:template name="footNote">
+  <xsl:template name="create-footnote">
     <xsl:variable name="num">
-      <xsl:number count="tei:note[@place='foot' or @place='bottom']" level="any"/>
+      <xsl:number count="tei:note[@place='foot' or @place='bottom'
+			     ]" level="any"/>
     </xsl:variable>
     <xsl:variable name="id" select="number($num)+1"/>
     <w:r>
@@ -966,7 +878,7 @@ of this software, even if advised of the possibility of such damage.
       <w:t xml:space="preserve"> </w:t>
     </w:r>
   </xsl:template>
-  <xsl:template name="commentNote">
+  <xsl:template name="create-comment">
     <w:r>
       <w:rPr>
         <w:rStyle w:val="CommentReference"/>
@@ -981,7 +893,7 @@ of this software, even if advised of the possibility of such damage.
   <!-- 
         Endnotes
     -->
-  <xsl:template name="endNote">
+  <xsl:template name="create-endnote">
     <xsl:variable name="num">
       <xsl:number count="tei:note[@place='end']" level="any"/>
     </xsl:variable>
@@ -1009,8 +921,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:variable name="number">
       <xsl:number level="any"/>
     </xsl:variable>
-    <xsl:variable name="getstyle"
-		  select="tei:get-headingstyle(.,$level)"/>
+    <xsl:variable name="getstyle" select="tei:get-headingstyle(.,$level)"/>
     <xsl:call-template name="block-element">
       <!-- we want a bookmark for referencing this section -->
       <xsl:with-param name="bookmark-id">
@@ -1020,21 +931,6 @@ of this software, even if advised of the possibility of such damage.
         <xsl:choose>
           <xsl:when test="parent::tei:div/@xml:id">
             <xsl:value-of select="parent::tei:div/@xml:id"/>
-          </xsl:when>
-          <xsl:when test="parent::tei:div1/@xml:id">
-            <xsl:value-of select="parent::tei:div1/@xml:id"/>
-          </xsl:when>
-          <xsl:when test="parent::tei:div2/@xml:id">
-            <xsl:value-of select="parent::tei:div2/@xml:id"/>
-          </xsl:when>
-          <xsl:when test="parent::tei:div3/@xml:id">
-            <xsl:value-of select="parent::tei:div3/@xml:id"/>
-          </xsl:when>
-          <xsl:when test="parent::tei:div4/@xml:id">
-            <xsl:value-of select="parent::tei:div4/@xml:id"/>
-          </xsl:when>
-          <xsl:when test="parent::tei:div5/@xml:id">
-            <xsl:value-of select="parent::tei:div5/@xml:id"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>_SECTION_</xsl:text>
@@ -1071,19 +967,11 @@ of this software, even if advised of the possibility of such damage.
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
-
   <!-- quoted text; if it surrounds egXML, just pass on -->
-  <xsl:template match="tei:quote|tei:q|tei:said|tei:soCalled">
+  <xsl:template match="tei:q|tei:said|tei:soCalled">
     <xsl:choose>
-      <xsl:when test="*[not(tei:is-inline(.))] or parent::tei:div">
-        <xsl:call-template name="block-element">
-	  <xsl:with-param name="style">Quote</xsl:with-param>
-	</xsl:call-template>
-      </xsl:when>
-      <xsl:when test="not(tei:is-inline(.))">
-        <xsl:call-template name="block-element">
-	  <xsl:with-param name="style">Quote</xsl:with-param>
-	</xsl:call-template>
+      <xsl:when test="*[not(tei:is-inline(.))] or parent::tei:cit|parent::tei:div">
+        <xsl:call-template name="block-element"/>
       </xsl:when>
       <xsl:when test="tei:l">
         <xsl:apply-templates/>
@@ -1173,7 +1061,7 @@ of this software, even if advised of the possibility of such damage.
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>
-          <tei:lb rend="show"/>
+          <tei:lb/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
@@ -1353,7 +1241,7 @@ of this software, even if advised of the possibility of such damage.
         </xsl:otherwise>
       </xsl:choose>
       <xsl:choose>
-        <xsl:when test="not(text()) and count(*)=1 and not(tei:is-inline(*))">
+        <xsl:when test="count(*)=1 and tei:note">
           <xsl:apply-templates/>
         </xsl:when>
         <xsl:otherwise>
@@ -2117,12 +2005,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="parent::tei:body"/>
       <xsl:when test="parent::tei:back"/>
       <xsl:when test="parent::tei:front"/>
-      <xsl:when test="@rend='show'">
-	<w:r>
-	  <w:br/>
-	</w:r>
-      </xsl:when>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
+      <xsl:when test="tei:is-last(.)"/>
       <xsl:otherwise>
 	<w:r>
 	  <w:br/>
@@ -2137,21 +2020,24 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:choose>
 	  <xsl:when test="@type='cit'">[</xsl:when>
 	  <xsl:when test="@type='figure'">
-	    <xsl:sequence select="tei:i18n('figureWord')"/>
+	    <xsl:call-template name="i18n">
+	      <xsl:with-param name="word">figureWord</xsl:with-param>
+	    </xsl:call-template>
 	    <xsl:text> </xsl:text>
 	  </xsl:when>
 	  <xsl:when test="@type='table'">
-	    <xsl:sequence select="tei:i18n('tableWord')"/>
+	    <xsl:call-template name="i18n">
+	      <xsl:with-param name="word">tableWord</xsl:with-param>
+	    </xsl:call-template>
 	    <xsl:text> </xsl:text>
 	  </xsl:when>
 	</xsl:choose>
 	<xsl:choose>
-	  <xsl:when test="starts-with(@target,'#')  and
-			  id(substring(@target,2))">
+	  <xsl:when test="starts-with(@target,'#')  and id(substring(@target,2))">
 	    <xsl:apply-templates select="id(substring(@target,2))" mode="xref"/>
 	  </xsl:when>
 	  <xsl:otherwise>
-	    <xsl:sequence select="tei:resolveURI(.,@target)"/>
+	    <xsl:value-of select="@target"/>
 	  </xsl:otherwise>
 	</xsl:choose>
 	<xsl:choose>
@@ -2161,32 +2047,23 @@ of this software, even if advised of the possibility of such damage.
     </xsl:call-template>
   </xsl:template>
   <xsl:template match="tei:ref[@target]">
-    <xsl:variable name="rContent">
-      <xsl:choose>
-	<xsl:when test="starts-with(@target,'#') and id(substring(@target,2))">
-	  <xsl:call-template name="linkMe">
-	    <xsl:with-param name="anchor">
-	      <xsl:apply-templates/>
-	    </xsl:with-param>
-	  </xsl:call-template>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:call-template name="linkMeUsingHyperlink">
-	    <xsl:with-param name="anchor">
-	      <xsl:apply-templates/>
-	    </xsl:with-param>
-	  </xsl:call-template>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
     <xsl:choose>
-      <xsl:when test="tei:is-inline(.)">
-	  <xsl:copy-of select="$rContent"/>
+      <xsl:when test="starts-with(@target,'#') and id(substring(@target,2))">
+        <xsl:call-template name="linkMe">
+          <xsl:with-param name="anchor">
+            <xsl:apply-templates/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="starts-with(@target,'http')">
+        <xsl:call-template name="linkMeUsingHyperlink">
+          <xsl:with-param name="anchor">
+            <xsl:apply-templates/>
+          </xsl:with-param>
+        </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-	<w:p>
-	  <xsl:copy-of select="$rContent"/>
-	</w:p>
+        <xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -2212,7 +2089,7 @@ of this software, even if advised of the possibility of such damage.
             </xsl:if>
           </w:rPr>
           <w:t>
-            <xsl:value-of select="$anchor"/>
+            <xsl:copy-of select="$anchor"/>
           </w:t>
         </w:r>
         <w:r>
@@ -2223,7 +2100,7 @@ of this software, even if advised of the possibility of such damage.
         <xsl:variable name="rid">
           <xsl:text>rId</xsl:text>
           <xsl:variable name="n">
-            <xsl:number count="tei:ptr|tei:ref"  level="any"/>
+            <xsl:number level="any"/>
           </xsl:variable>
           <xsl:value-of select="$n + 3000"/>
         </xsl:variable>
@@ -2233,7 +2110,7 @@ of this software, even if advised of the possibility of such damage.
               <w:rStyle w:val="Hyperlink"/>
             </w:rPr>
             <w:t>
-              <xsl:value-of select="$anchor"/>
+              <xsl:copy-of select="$anchor"/>
             </w:t>
           </w:r>
         </w:hyperlink>
@@ -2284,7 +2161,7 @@ of this software, even if advised of the possibility of such damage.
         </xsl:when>
         <xsl:otherwise>
           <xsl:text>HYPERLINK "</xsl:text>
-          <xsl:sequence select="tei:resolveURI(.,@target)"/>
+          <xsl:value-of select="@target"/>
           <xsl:text>" \h</xsl:text>
         </xsl:otherwise>
       </xsl:choose>
@@ -2373,62 +2250,53 @@ of this software, even if advised of the possibility of such damage.
       </xsl:copy>
     </xsl:if>
   </xsl:template>
+  <xsl:template match="tei:titlePage">
+    <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="tei:docTitle/tei:titlePart[@type='main']">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Title</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:docTitle/tei:titlePart[not(@type)]">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Title</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:titlePage/tei:titlePart">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Title</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:docTitle/tei:titlePart[@type='sub']">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Subtitle</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:docTitle/tei:titlePart[2]" priority="99">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Subtitle</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:docAuthor" priority="99">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Author</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:titlePage/tei:byline" priority="99">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Author</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="tei:titlePage/tei:docDate" priority="99">
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">Docdate</xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
   <!-- place holders, used by ISO profile -->
   <xsl:template name="getStyleFonts">
     <xsl:param name="css"/>
   </xsl:template>
-
-  <!-- revisionDesc -->
-  <xsl:template match="tei:revisionDesc">
-    <w:tbl>
-      <w:tblPr>
-        <w:tblStyle w:val="revisionDesc"/>
-        <w:tblW w:w="0" w:type="auto"/>
-      </w:tblPr>
-      <w:tblGrid>
-        <w:gridCol w:w="2366"/>
-        <w:gridCol w:w="2366"/>
-        <w:gridCol w:w="2366"/>
-        <w:gridCol w:w="2366"/>
-      </w:tblGrid>
-      <xsl:for-each select="tei:change">
-	<w:tr>
-	  <w:trPr>
-	    <w:trHeight w:val="380"/>
-	  </w:trPr>
-	  <w:tc>
-	    <w:p>
-	      <w:r>
-		<w:t><xsl:value-of select="@n"/></w:t>
-	      </w:r>
-	    </w:p>
-	  </w:tc>
-	  <w:tc>
-	    <w:p>
-	      <w:r>
-		<w:t><xsl:value-of select="@when"/></w:t>
-	      </w:r>
-	    </w:p>
-	  </w:tc>
-	  <w:tc>
-	    <w:p>
-	      <w:r>
-		<w:t><xsl:value-of select="@who"/></w:t>
-	      </w:r>
-	    </w:p>
-	  </w:tc>
-	  <w:tc>
-	    <w:p>
-	      <w:r>
-		<w:t><xsl:value-of select="."/></w:t>
-	      </w:r>
-	    </w:p>
-	  </w:tc>
-	</w:tr>
-      </xsl:for-each>
-    </w:tbl>
-  </xsl:template>
-
   <!-- no handling of index terms -->
   <xsl:template match="tei:index"/>
   <xsl:template name="applyRendition"/>
@@ -2475,7 +2343,7 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <!-- List Bibl -->
   <xsl:template match="tei:listBibl">
-    <xsl:for-each select="*">
+    <xsl:for-each select="tei:bibl|tei:biblStruct">
       <xsl:choose>
         <xsl:when test="@xml:id">
           <xsl:variable name="number">
@@ -2499,7 +2367,7 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>
     </xsl:for-each>
   </xsl:template>
-  <xsl:template name="makeText">
+  <xsl:template name="tei:makeText">
     <xsl:param name="letters"/>
     <w:r>
       <w:t>
@@ -2516,26 +2384,8 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="tei:item/tei:p[not(@rend)]" mode="pass0">
     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass0"/>
     <xsl:if test="following-sibling::tei:p">
-      <tei:lb rend="show"/>
+      <tei:lb/>
     </xsl:if>
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-	remove confusing line breaks
-      </desc>
-  </doc>
-  <xsl:template match="tei:lb" mode="pass0">
-    <xsl:choose>
-      <xsl:when test="parent::tei:div"/>
-      <xsl:when test="parent::tei:body"/>
-      <xsl:when test="parent::tei:back"/>
-      <xsl:when test="parent::tei:front"/>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
-      <xsl:otherwise>
-	<xsl:copy-of select="."/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -2564,9 +2414,9 @@ of this software, even if advised of the possibility of such damage.
       <w:br w:type="page"/>
     </w:r>
   </xsl:template>
-      
+
    <xsl:template match="tei:att|tei:hi[@rend='att']">
-    <xsl:call-template name="makeInline">
+    <xsl:call-template name="processInline">
       <xsl:with-param name="before">@</xsl:with-param>
       <xsl:with-param name="style">italic</xsl:with-param>
     </xsl:call-template>
@@ -2579,7 +2429,7 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:template match="tei:signed">
     <xsl:call-template name="block-element">
-      <xsl:with-param name="style">tei_signed</xsl:with-param>
+      <xsl:with-param name="style">teisigned</xsl:with-param>
     </xsl:call-template>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -2597,7 +2447,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template name="makeExternalLink">
     <xsl:param name="ptr" as="xs:boolean" select="false()"/>
     <xsl:param name="dest"/>
-    <xsl:sequence select="$dest"/>
+    <xsl:value-of select="$dest"/>
   </xsl:template>
 
 
@@ -2607,8 +2457,16 @@ of this software, even if advised of the possibility of such damage.
 	slightly differently
       </desc>
     </doc>
+  <xsl:template match="tei:note[@place='margin'
+		       or @place='marginOuter'
+		       or @place='marginLeft'
+		       or @place='marginRight']" priority="999">
+    <xsl:if test="$debug='true'"><xsl:message>MARGINAL NOTE</xsl:message></xsl:if>
+    <xsl:call-template name="marginalNote"/>
+  </xsl:template>
+  
   <xsl:template name="marginalNote">
-    <xsl:call-template name="block-element">
+	<xsl:call-template name="block-element">
         <xsl:with-param name="style">
 	<xsl:value-of select="if (@place='margin') then 'marginOuter' else @place"/>
 	</xsl:with-param>
@@ -2634,7 +2492,7 @@ of this software, even if advised of the possibility of such damage.
         Generic template from msDescription for high-level section
     </desc>
   </doc>
-  <xsl:template name="makeSection">
+  <xsl:template name="processAsSection">
     <xsl:param name="level"/>
     <xsl:param name="implicitBlock"/>
     <xsl:param name="heading"/>
@@ -2655,23 +2513,22 @@ of this software, even if advised of the possibility of such damage.
         Generic template for inline objects
     </desc>
   </doc>
-  <xsl:template name="makeInline">
+  <xsl:template name="processInline">
     <xsl:param name="before"/>
     <xsl:param name="after"/>
     <xsl:param name="style"/>
+    <xsl:param name="stylename"/>
     <w:r>
       <w:rPr>
         <w:rStyle>
 	  <xsl:attribute name="w:val">
 	    <xsl:choose>
-	      <xsl:when test="$style='italic'"/>
-	      <xsl:when test="$style='bold'"/>
-	      <xsl:when test="$style=''">
-		<xsl:text>tei_</xsl:text>
+	      <xsl:when test="$stylename=''">
+		<xsl:text>tei</xsl:text>
 		<xsl:value-of select="local-name()"/>
 	      </xsl:when>
 	      <xsl:otherwise>
-		<xsl:value-of select="$style"/>
+		<xsl:value-of select="$stylename"/>
 	      </xsl:otherwise>
 	    </xsl:choose>
 	  </xsl:attribute>
@@ -2689,7 +2546,6 @@ of this software, even if advised of the possibility of such damage.
         </xsl:if>
       </w:rPr>
       <w:t>
-        <xsl:attribute name="xml:space">preserve</xsl:attribute>
         <xsl:value-of select="$before"/>
         <xsl:value-of select="."/>
         <xsl:value-of select="$after"/>
@@ -2698,26 +2554,23 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
-        Generic template for mid-level block
+        Generic template from msDescription for mid-level block
     </desc>
   </doc>
-  <xsl:template name="makeBlock">
+  <xsl:template name="processBlock">
     <xsl:param name="style"/>
     <xsl:call-template name="block-element">
       <xsl:with-param name="style">
-        <xsl:value-of select="if ($style='docAuthor') then 'Author'
-			      else if ($style='docTitle') then 'Title'
-			      else if ($style='titlePart') then 'Title'
-			      else $style"/>
+        <xsl:value-of select="$style"/>
       </xsl:with-param>
     </xsl:call-template>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
-        Generic template for labelled object
+        Generic template from msDescription for labelled object
     </desc>
   </doc>
-  <xsl:template name="makeWithLabel">
+  <xsl:template name="processWithLabel">
     <xsl:param name="before"/>
     <w:r>
       <w:rPr>
@@ -2731,10 +2584,25 @@ of this software, even if advised of the possibility of such damage.
     </w:r>
     <w:r>
       <w:rPr>
-        <w:rStyle w:val="tei_{local-name()}"/>
+        <w:rStyle w:val="tei{local-name()}"/>
       </w:rPr>
       <w:t>
         <xsl:value-of select="."/>
+      </w:t>
+    </w:r>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+        Generic template from msDescription for literal text
+    </desc>
+  </doc>
+  <xsl:template name="processLiteral">
+    <xsl:param name="text"/>
+    <w:r>
+      <w:rPr/>
+      <w:t>
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:value-of select="$text"/>
       </w:t>
     </w:r>
   </xsl:template>
@@ -2743,47 +2611,38 @@ of this software, even if advised of the possibility of such damage.
   <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
     <desc>Fallback template copying existing attributes etc in final stage cleanup</desc>
   </doc>
-    <xsl:template match="@*|comment()|processing-instruction()|text()" mode="pass2">
+    <xsl:template match="@*|comment()|processing-instruction()|text()" mode="cleanup">
       <xsl:copy-of select="."/>
     </xsl:template>
 
   <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
     <desc>Fallback template copying existing elements in final stage cleanup</desc>
   </doc>
-    <xsl:template match="*" mode="pass2">
+    <xsl:template match="*" mode="cleanup">
       <xsl:copy>
-	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass2"/>
+	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="cleanup"/>
     </xsl:copy>
   </xsl:template>
 
   <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-    <desc>Only the first paragraph in a footnote has the footnote marker</desc>
-  </doc>
-  <xsl:template
-      match="w:footnote/w:p[position()&gt;1]/w:r[w:footnoteRef]"
-      mode="pass2">
-  </xsl:template>
-
-
-  <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-    <desc>a run as a direct child of body or table cell is not allowed, how did it
+    <desc>a run as a direct child of body is not allowed, how did it
     creep through? Wrap up in a p.</desc>
   </doc>
 
-    <xsl:template match="w:body/w:r|w:tc/w:r" mode="pass2">
+    <xsl:template match="w:body/w:r" mode="cleanup">
       <w:p>
 	<xsl:copy>
-	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass2"/>
+	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="cleanup"/>
 	</xsl:copy>
       </w:p>
     </xsl:template>
 
   <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-    <desc>A p as a child of a p is not allowed, this should not
-    happen. If it does, group the other siblings in self-contained p elements.</desc>
+    <desc>A p as a child of a p is not allowed. Group the other
+    siblings in self-contained p elements</desc>
   </doc>
 
-    <xsl:template match="w:p[w:p]" mode="pass2">
+    <xsl:template match="w:p[w:p]" mode="cleanup">
       <xsl:variable name="props" select="w:pPr"/>
       <xsl:for-each-group select="*" group-adjacent="local-name()">
 	<xsl:choose>
@@ -2801,88 +2660,6 @@ of this software, even if advised of the possibility of such damage.
       </xsl:for-each-group>
     </xsl:template>
 
-
-  <xsl:template name="generateEndLink">
-      <xsl:param name="where"/>
-      <xsl:value-of select="$where"/>
-  </xsl:template>
-
-  <xsl:template name="displayNote">
-    <xsl:call-template name="block-element">
-        <xsl:with-param name="style">Quote</xsl:with-param>
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template match="tei:editionStmt">
-    <w:r>
-      <w:t>
-      <xsl:value-of select="tei:edition"/> Edition</w:t>
-    </w:r>
-  </xsl:template>
-
-    <!-- fake listPerson into an unordered list -->
-  <xsl:template match="tei:listPerson">
-      <xsl:variable name="mylist">
-         <tei:list type="unordered">
-	           <xsl:apply-templates/>
-         </tei:list>
-      </xsl:variable>
-      <xsl:apply-templates select="$mylist"/>
-  </xsl:template>
-
-  <xsl:template match="tei:person">
-      <tei:item>
-         <xsl:copy-of select="*|text()"/>
-      </tei:item>
-  </xsl:template>
-
-  <xsl:template match="tei:affiliation">
-      <w:r>
-        <w:br/>
-      </w:r>   
-     <xsl:apply-templates/>
-  </xsl:template>
-
-    <!-- Dates -->
-    <xsl:template match="tei:date[ancestor::tei:teiHeader]">
-        <w:r>
-            <w:rPr>
-                <w:rStyle w:val="date"/>
-            </w:rPr>
-            <w:t>
-                <xsl:value-of select="."/>
-            </w:t>
-        </w:r>
-    </xsl:template>
-
-    <!-- formulas -->
-    <xsl:template match="tei:formula">
-        <w:p>    
-            <w:pPr>
-                <w:pStyle w:val="Formula"/>
-            </w:pPr>
-            <xsl:call-template name="block-element">                   
-                <xsl:with-param name="nop">true</xsl:with-param>
-            </xsl:call-template>
-            <xsl:if test="@n">
-                <w:r>
-                    <w:tab/>
-                </w:r>
-                <w:r>
-                    <w:rPr>
-                        <w:rStyle w:val="FormulaReference"/>
-                    </w:rPr>
-                    <w:t xml:space="preserve"><xsl:value-of select="@n"/></w:t>
-                </w:r>
-            </xsl:if>
-        </w:p>
-    </xsl:template>        
-    
-
-    <!-- who created this document -->
-    <xsl:template name="created-by">
-        <xsl:text>TEI XSL</xsl:text>
-    </xsl:template>
 
 
 </xsl:stylesheet>

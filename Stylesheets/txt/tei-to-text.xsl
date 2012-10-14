@@ -120,7 +120,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: tei-to-text.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>

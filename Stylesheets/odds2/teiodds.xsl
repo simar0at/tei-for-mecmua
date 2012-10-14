@@ -15,8 +15,6 @@
     exclude-result-prefixes="a fo html i rng s sch tei teix xi xs xsl" 
   version="2.0">
   <xsl:import href="../common2/odds.xsl"/>
-
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
       <p> TEI stylesheet for processing TEI ODD markup </p>
@@ -53,7 +51,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: teiodds.xsl 10677 2012-07-23 22:11:13Z rahtz $</p>
       <p>Copyright: 2011, TEI Consortium</p>
     </desc>
   </doc>
@@ -63,10 +61,12 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="oddmode">tei</xsl:param>
   <xsl:param name="STDOUT">true</xsl:param>
   <xsl:param name="outputSuffix">.html</xsl:param>
+  <xsl:param name="selectedSchema"/>
   <xsl:param name="outputDir"/>
   <xsl:param name="splitLevel">-1</xsl:param>
   <xsl:param name="localsource"/>
   <xsl:param name="lang"/>
+  <xsl:param name="doclang"/>
   <xsl:param name="patternPrefix"/>
   <xsl:param name="TEIC">false</xsl:param>
   <xsl:param name="autoGlobal">false</xsl:param>
@@ -91,9 +91,8 @@ of this software, even if advised of the possibility of such damage.
     name="ATTREFS-CLASS" use="@name"/>
   <xsl:key match="tei:macroSpec/tei:content//rng:ref" name="MACROREFS"  use="@name"/>
 
-  <xsl:key match="tei:elementSpec|tei:classSpec" name="CLASSMEMBERS" use="tei:classes/tei:memberOf/@key"/>
-  <xsl:key match="tei:elementSpec" name="CLASSMEMBERS-ELEMENTS" use="tei:classes/tei:memberOf/@key"/>
-  <xsl:key match="tei:classSpec" name="CLASSMEMBERS-CLASSES" use="tei:classes/tei:memberOf/@key"/>
+  <xsl:key match="tei:elementSpec|tei:classSpec" name="CLASSMEMBERS"
+    use="tei:classes/tei:memberOf/@key"/>
   <xsl:key match="tei:elementSpec|tei:classSpec|tei:macroSpec" name="IDENTS" use="@ident"/>
 
   <xsl:key match="tei:macroSpec[@type='dt']" name="DATATYPES" use="1"/>
@@ -103,6 +102,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:key match="tei:classSpec//tei:attDef" name="ATTRIBUTES-CLASS" use="@ident"/>
   <xsl:key match="tei:elementSpec//tei:attDef" name="ATTRIBUTES-ELEMENT" use="@ident"/>
   <xsl:key match="tei:schemaSpec" name="SCHEMASPECS" use="1"/>
+  <xsl:key match="tei:schemaSpec" name="LISTSCHEMASPECS" use="@ident"/>
   <xsl:key match="tei:classSpec[@type='atts']" name="ATTCLASSDOCS" use="1"/>
   <xsl:key match="tei:classSpec[@type='model']" name="MODELCLASSDOCS" use="1"/>
   <xsl:key match="tei:elementSpec" name="ELEMENTDOCS" use="1"/>
@@ -123,6 +123,17 @@ of this software, even if advised of the possibility of such damage.
     <xsl:choose>
       <xsl:when test="key('SCHEMASPECS',1)">false</xsl:when>
       <xsl:otherwise>true</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="whichSchemaSpec">
+    <xsl:choose>
+      <xsl:when test="$selectedSchema">
+        <xsl:value-of select="$selectedSchema"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="key('SCHEMASPECS',1)[1]/@ident"/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
@@ -153,6 +164,21 @@ of this software, even if advised of the possibility of such damage.
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
+
+
+  <xsl:template name="generateDoc">
+    <xsl:choose>
+      <xsl:when test="string-length($doclang)&gt;0">
+        <xsl:value-of select="$doclang"/>
+      </xsl:when>
+      <xsl:when test="key('LISTSCHEMASPECS',$whichSchemaSpec)/@docLang">
+        <xsl:value-of select="key('LISTSCHEMASPECS',$whichSchemaSpec)/@docLang"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>en</xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 
   <xsl:template match="processing-instruction()">
@@ -921,7 +947,6 @@ select="$makeDecls"/></xsl:message>
 
   <xsl:template name="summarizeAttributes">
     <xsl:for-each select=".//tei:attDef">x</xsl:for-each>
-    <xsl:for-each select=".//tei:attRef">x</xsl:for-each>
     <xsl:for-each select="tei:classes/tei:memberOf">
       <xsl:for-each select="key('CLASSES',@key)">
         <xsl:if test="@type='atts'">x</xsl:if>
@@ -1517,7 +1542,7 @@ select="$makeDecls"/></xsl:message>
         </xsl:choose>
       </xsl:variable>
       <xsl:choose>
-        <xsl:when test="tei:datatype/rng:text  or  not( tei:datatype )	or  $max=1">
+        <xsl:when test="tei:datatype/rng:text  or  not( tei:datatype )  or  $max=1">
           <!-- If there is only going to be one output RELAX NG node   --> 
           <!-- in the attribute definition, then we don't need to      -->
           <!-- bother with the complex min & max code below (in the    -->
@@ -1552,44 +1577,33 @@ select="$makeDecls"/></xsl:message>
           <!-- current node, but since I didn't write 'attributeData', I've -->
           <!-- chosen this method so I don't have to muck with it. -Syd -->
           <xsl:variable name="thisNode" select="."/>
-	  <list>
+          <list>
+            <xsl:if test="$min > 0">
+              <xsl:for-each select="1 to $min">
+                <xsl:for-each select="$thisNode">
+                  <xsl:call-template name="attributeData"/>
+                </xsl:for-each>
+              </xsl:for-each>
+            </xsl:if>
             <xsl:choose>
-              <xsl:when test="$max= -1 and $min=1">
-                <oneOrMore>
+              <xsl:when test="$max= -1"><!-- i.e., unbounded -->
+                <zeroOrMore>
                   <xsl:for-each select="$thisNode">
                     <xsl:call-template name="attributeData"/>
                   </xsl:for-each>
-                </oneOrMore>
+                </zeroOrMore>
               </xsl:when>
-	      <xsl:otherwise>
-		  <xsl:if test="$min > 0">
-		    <xsl:for-each select="1 to $min">
-		      <xsl:for-each select="$thisNode">
-			<xsl:call-template name="attributeData"/>
-		      </xsl:for-each>
-		    </xsl:for-each>
-		  </xsl:if>
-		  <xsl:choose>
-		    <xsl:when test="$max= -1"><!-- i.e., unbounded -->
-		      <zeroOrMore>
-			<xsl:for-each select="$thisNode">
-			  <xsl:call-template name="attributeData"/>
-			</xsl:for-each>
-		      </zeroOrMore>
-		    </xsl:when>
-		    <xsl:otherwise>
-		      <xsl:for-each select="xs:integer( $min + 1 ) to $max">
-			<optional>
-			  <xsl:for-each select="$thisNode">
-			    <xsl:call-template name="attributeData"/>
-			  </xsl:for-each>
-			</optional>
-		      </xsl:for-each>
-		    </xsl:otherwise>
-		  </xsl:choose>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </list>
+              <xsl:otherwise>
+                <xsl:for-each select="xs:integer( $min + 1 ) to $max">
+                  <optional>
+                    <xsl:for-each select="$thisNode">
+                      <xsl:call-template name="attributeData"/>
+                    </xsl:for-each>
+                  </optional>
+                </xsl:for-each>
+              </xsl:otherwise>
+            </xsl:choose>
+          </list>
         </xsl:otherwise>
       </xsl:choose>
     </attribute>
@@ -1672,6 +1686,9 @@ select="$makeDecls"/></xsl:message>
     <xsl:param name="reftext"/>
     <xsl:param name="class">link_odd</xsl:param>
 
+    <xsl:variable name="documentationLanguage">
+      <xsl:call-template name="generateDoc"/>
+    </xsl:variable>
     <xsl:variable name="partialname">
       <xsl:choose>
         <xsl:when test="contains($name,'_')">
@@ -1947,7 +1964,7 @@ select="$makeDecls"/></xsl:message>
           </xsl:attribute>
           <rule>
             <xsl:attribute name="context">
-	      <xsl:sequence select="tei:generate-nsprefix-schematron(.)"/>
+              <xsl:text>tei:</xsl:text>
               <xsl:value-of select="ancestor::tei:elementSpec/@ident"/>
             </xsl:attribute>
             <xsl:apply-templates mode="justcopy" select="."/>
@@ -1987,7 +2004,7 @@ select="$makeDecls"/></xsl:message>
           </xsl:attribute>
           <rule>
             <xsl:attribute name="context">
-	      <xsl:sequence select="tei:generate-nsprefix-schematron(.)"/>
+              <xsl:text>tei:</xsl:text>
               <xsl:value-of select="ancestor::tei:elementSpec/@ident"/>
             </xsl:attribute>
             <xsl:apply-templates mode="justcopy" select="."/>
@@ -1998,5 +2015,26 @@ select="$makeDecls"/></xsl:message>
   </xsl:template>
 
 
+   <xsl:template match="@*|text()" mode="justcopy">
+      <xsl:copy-of select="."/>
+   </xsl:template>
+
+   <xsl:template match="processing-instruction()" mode="justcopy">
+      <xsl:copy-of select="."/>
+   </xsl:template>
+
+   <xsl:template match="*" mode="justcopy">
+     <xsl:copy>
+         <xsl:apply-templates
+	     select="*|@*|processing-instruction()|text()" mode="justcopy"/>
+     </xsl:copy>
+   </xsl:template>
+
+   <xsl:template match="a:*" mode="justcopy">
+      <xsl:element name="{name()}">
+         <xsl:apply-templates
+	     select="*|@*|processing-instruction()|text()" mode="justcopy"/>
+      </xsl:element>
+   </xsl:template>
 
 </xsl:stylesheet>

@@ -44,7 +44,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: core.xsl 10765 2012-08-15 11:18:07Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
@@ -94,10 +94,22 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element code</desc>
    </doc>
-  <xsl:template match="tei:code">
-    <xsl:text>\texttt{</xsl:text>
-    <xsl:apply-templates/>
-    <xsl:text>}</xsl:text>
+  <xsl:template match="tei:code">\texttt{<xsl:apply-templates/>}</xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process &lt;corr&gt;</desc></doc>
+  <xsl:template match="tei:corr">
+      <xsl:apply-templates/>
+      <xsl:choose>
+         <xsl:when test="@sic">
+            <xsl:text>\footnote{</xsl:text>
+                <xsl:call-template name="i18n">
+                <xsl:with-param name="word">appearsintheoriginalas</xsl:with-param>
+                </xsl:call-template>
+                <xsl:text> \emph{</xsl:text>
+                <xsl:value-of select="./@sic"/>
+            <xsl:text>}.}</xsl:text>
+         </xsl:when>
+      </xsl:choose>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process &lt;supplied&gt;</desc></doc>
@@ -110,6 +122,24 @@ of this software, even if advised of the possibility of such damage.
             <xsl:text>\footnote{</xsl:text>
             <xsl:value-of select="./@reason"/>
             <xsl:text>}</xsl:text>
+         </xsl:when>
+      </xsl:choose>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+            <desc>Process &lt;sic&gt;</desc></doc>
+
+  <xsl:template match="tei:sic">
+      <xsl:apply-templates/>
+      <xsl:text> (sic)</xsl:text>
+      <xsl:choose>
+         <xsl:when test="@corr">
+            <xsl:text>\footnote{</xsl:text>
+                <xsl:call-template name="i18n">
+                <xsl:with-param name="word">shouldbereadas</xsl:with-param>
+                </xsl:call-template>
+                <xsl:text> \emph{</xsl:text>
+                <xsl:value-of select="./@corr"/>
+            <xsl:text>}.}</xsl:text>
          </xsl:when>
       </xsl:choose>
   </xsl:template>
@@ -394,7 +424,6 @@ of this software, even if advised of the possibility of such damage.
         <xsl:text>-</xsl:text>
 	<xsl:text>{\hskip1pt}\newline </xsl:text>
       </xsl:when>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
       <xsl:otherwise>
       <xsl:text>{\hskip1pt}\newline </xsl:text>
       </xsl:otherwise>
@@ -451,11 +480,11 @@ of this software, even if advised of the possibility of such damage.
    <xsl:template match="tei:listBibl">
      <xsl:choose>
        <xsl:when test="tei:biblStruct">
-	 <xsl:text>\begin{bibitemlist}{1}</xsl:text>
+	 <xsl:text>\begin{bibitemlist}{1}&#10;</xsl:text>
 	 <xsl:for-each select="tei:biblStruct">
 	   <xsl:sort select="lower-case(string(tei:*[1]/tei:author/tei:surname or  tei:*[1]/tei:author/tei:orgName or  tei:*[1]/tei:author/tei:name or  tei:*[1]/tei:editor/tei:surname or  tei:*[1]/tei:editor/tei:name or  tei:*[1]/tei:title))"/>
 	   <xsl:sort select="tei:monogr/tei:imprint/tei:date"/>
-	   <xsl:text>&#10;\bibitem[</xsl:text>
+	   <xsl:text>\bibitem[</xsl:text>
 	   <xsl:apply-templates select="." mode="xref"/>
 	   <xsl:text>]{</xsl:text>
 	   <xsl:value-of select="@xml:id"/>
@@ -466,9 +495,6 @@ of this software, even if advised of the possibility of such damage.
 	 </xsl:for-each>
 	 <xsl:text>&#10;\end{bibitemlist}&#10;</xsl:text>
        </xsl:when>
-      <xsl:when test="tei:msDesc">
-	<xsl:apply-templates/>
-      </xsl:when>
        <xsl:otherwise>
 	 <xsl:text>\begin{bibitemlist}{1}&#10;</xsl:text>
 	 <xsl:apply-templates/> 
@@ -478,6 +504,27 @@ of this software, even if advised of the possibility of such damage.
    </xsl:template>
 
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Process element tei:bibl</desc>
+   </doc>
+   <xsl:template match="tei:bibl">
+     <xsl:choose>
+       <xsl:when test="parent::tei:div|tei:listBibl">
+	 <xsl:text>\par \bgroup\itshape&#10;</xsl:text>
+	 <xsl:apply-templates/> 
+	 <xsl:text>\egroup\vskip6pt\par&#10;</xsl:text>
+       </xsl:when>
+       <xsl:when test="parent::tei:cit">
+	 <xsl:apply-templates/>
+       </xsl:when>
+       <xsl:otherwise>
+	 <xsl:text>\bgroup\itshape </xsl:text>
+	 <xsl:apply-templates/>
+	 <xsl:text>\egroup </xsl:text>
+       </xsl:otherwise>
+     </xsl:choose>
+   </xsl:template>
+   
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element listBibl/tei:bibl</desc>
    </doc>
@@ -514,74 +561,41 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates/>
       <xsl:text>}</xsl:text>
   </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a note element which has a @place attribute
-      pointing to margin</desc>
+      <desc>Process element note</desc>
    </doc>
-  <xsl:template name="marginalNote">
-    <xsl:text>\marginnote{</xsl:text>
-    <xsl:if test="@xml:id">
-      <xsl:text>\label{</xsl:text>
-      <xsl:value-of select="@xml:id"/>
-      <xsl:text>}</xsl:text>
-    </xsl:if>
-    <xsl:apply-templates/>
-    <xsl:text>}</xsl:text>
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a note element which has a @place attribute for
-      display style note</desc>
-   </doc>
-  <xsl:template name="displayNote">
-    <xsl:text>&#10;\begin{quote}&#10;</xsl:text>
-    <xsl:apply-templates/>
-    <xsl:text>\end{quote}&#10;</xsl:text>
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a note element which has a @place attribute for endnote</desc>
-   </doc>
-  <xsl:template name="endNote">
-    <xsl:text>\endnote{</xsl:text>
-    <xsl:if test="@xml:id">
-      <xsl:text>\label{</xsl:text>
-      <xsl:value-of select="@xml:id"/>
-      <xsl:text>}</xsl:text>
-    </xsl:if>
-    <xsl:apply-templates/>
-    <xsl:text>}</xsl:text>
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a plain note element</desc>
-   </doc>
-  <xsl:template name="plainNote">
-    <xsl:text> {\small\itshape [</xsl:text>
-    <xsl:choose>
-      <xsl:when test="@n">
-	<xsl:value-of select="@n"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:sequence select="tei:i18n('Note')"/>
-	<xsl:text>: </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-    <xsl:apply-templates/>
-    <xsl:text>]} </xsl:text>
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process a note element which has a @place for footnote</desc>
-   </doc>
-  <xsl:template name="footNote">
+  <xsl:template match="tei:note">
     <xsl:if test="@xml:id">
       <xsl:text>\hypertarget{</xsl:text>
       <xsl:value-of select="@xml:id"/>
       <xsl:text>}{}</xsl:text>
     </xsl:if>
     <xsl:choose>
+	<xsl:when test="@place='inline' or ancestor::tei:bibl or ancestor::tei:biblStruct"> 
+	  <xsl:text>(</xsl:text>
+	  <xsl:apply-templates/>
+	  <xsl:text>) </xsl:text>
+	</xsl:when>
+	<xsl:when test="@place='end'">
+	  <xsl:text>\endnote{</xsl:text>
+	  <xsl:if test="@xml:id">
+	    <xsl:text>\label{</xsl:text>
+	    <xsl:value-of select="@xml:id"/>
+	    <xsl:text>}</xsl:text>
+	  </xsl:if>
+	  <xsl:apply-templates/>
+	  <xsl:text>}</xsl:text>
+	</xsl:when>
+	<xsl:when test="@place='margin'">
+	  <xsl:text>\marginnote{</xsl:text>
+	  <xsl:if test="@xml:id">
+	    <xsl:text>\label{</xsl:text>
+	    <xsl:value-of select="@xml:id"/>
+	    <xsl:text>}</xsl:text>
+	  </xsl:if>
+	  <xsl:apply-templates/>
+	  <xsl:text>}</xsl:text>
+	</xsl:when>
 	<xsl:when test="@target">
 	  <xsl:text>\footnotetext{</xsl:text>
 	  <xsl:apply-templates/>
@@ -592,7 +606,7 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:apply-templates/>
 	  <xsl:text>}</xsl:text>
 	</xsl:when>
-	<xsl:otherwise>
+      <xsl:otherwise>
 	  <xsl:text>\footnote{</xsl:text>
 	  <xsl:if test="@xml:id">
 	    <xsl:text>\label{</xsl:text>
@@ -655,7 +669,9 @@ of this software, even if advised of the possibility of such damage.
             <xsl:text>✁[</xsl:text>
             <xsl:value-of select="@unit"/>
             <xsl:text> </xsl:text>
-            <xsl:sequence select="tei:i18n('page')"/>
+            <xsl:call-template name="i18n">
+               <xsl:with-param name="word">page</xsl:with-param>
+            </xsl:call-template>
             <xsl:text> </xsl:text>
             <xsl:value-of select="@n"/>
             <xsl:text>]✁</xsl:text>
@@ -664,7 +680,9 @@ of this software, even if advised of the possibility of such damage.
         <xsl:text>[</xsl:text>
             <xsl:value-of select="@unit"/>
             <xsl:text> </xsl:text>
-            <xsl:sequence select="tei:i18n('page')"/>
+            <xsl:call-template name="i18n">
+               <xsl:with-param name="word">page</xsl:with-param>
+            </xsl:call-template>
             <xsl:text> </xsl:text>
             <xsl:value-of select="@n"/>
             <xsl:text>]</xsl:text>
@@ -680,13 +698,13 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process elementq</desc>
    </doc>
-  <xsl:template match="tei:q|tei:said">
+  <xsl:template match="tei:q">
       <xsl:choose>
-	<xsl:when test="not(tei:is-inline(.))">
-	  <xsl:text>&#10;\begin{quote}</xsl:text>
-	  <xsl:apply-templates/>
-	  <xsl:text>\end{quote}&#10;</xsl:text>
-	</xsl:when>
+         <xsl:when test="tei:p"> \begin{quote}<xsl:apply-templates/> \end{quote} </xsl:when>
+         <xsl:when test="tei:text">
+            <xsl:apply-templates/>
+         </xsl:when>
+         <xsl:when test="tei:lg"> \begin{quote}<xsl:apply-templates/> \end{quote} </xsl:when>
          <xsl:otherwise>
 	   <xsl:call-template name="makeQuote"/>
          </xsl:otherwise>
@@ -701,13 +719,20 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:when test="parent::tei:cit">
 	  <xsl:apply-templates/>
 	</xsl:when>
-	<xsl:when test="not(tei:is-inline(.))">
+	<xsl:when test="@rend='inline'">
+	  <xsl:value-of select="$preQuote"/>
+	  <xsl:apply-templates/>
+	  <xsl:value-of select="$postQuote"/>
+	</xsl:when>
+	<xsl:when test="@rend='display' or tei:p or tei:l or string-length(.)&gt;150">
 	  <xsl:text>\begin{quote}</xsl:text>
 	  <xsl:apply-templates/>
 	  <xsl:text>\end{quote}</xsl:text>
 	</xsl:when>
 	<xsl:otherwise>
-	   <xsl:call-template name="makeQuote"/>
+	  <xsl:value-of select="$preQuote"/>
+	  <xsl:apply-templates/>
+	  <xsl:value-of select="$postQuote"/>
 	</xsl:otherwise>
       </xsl:choose>
   </xsl:template>
@@ -725,6 +750,12 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element q with @rend='display'</desc>
    </doc>
+  <xsl:template match="tei:q[@rend='display']"> 
+      <xsl:text>&#10;\begin{quote}&#10;</xsl:text>
+      <xsl:apply-templates/>
+      <xsl:text>\end{quote}&#10;</xsl:text>
+  </xsl:template>
+
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element ref[@type='cite']</desc>
    </doc>
@@ -814,7 +845,7 @@ of this software, even if advised of the possibility of such damage.
                   <xsl:text>}</xsl:text> 
                </xsl:when>
                <xsl:otherwise>
-                  <xsl:text>&#10;\leftline{\makebox[3em][r]{}\quad{}</xsl:text>
+                  <xsl:text>\leftline{\makebox[3em][r]{}\quad{}</xsl:text>
                   <xsl:apply-templates/>
                   <xsl:text>}</xsl:text> 
                </xsl:otherwise>
@@ -828,7 +859,7 @@ of this software, even if advised of the possibility of such damage.
 	   <xsl:text>\hfill\\</xsl:text>
 	 </xsl:when>
 	 <xsl:otherwise>
-	   <xsl:text>&#10;\leftline{</xsl:text>
+	   <xsl:text>\leftline{</xsl:text>
 	   <xsl:apply-templates/>
 	   <xsl:text>}</xsl:text>
 	 </xsl:otherwise>

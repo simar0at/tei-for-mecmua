@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:teix="http://www.tei-c.org/ns/Examples"
                 xmlns:xi="http://www.w3.org/2001/XInclude"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:rng="http://relaxng.org/ns/structure/1.0"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
                 xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -9,8 +8,9 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:oxdoc="http://www.oxygenxml.com/ns/doc/xsl"
                 version="2.0"
-                exclude-result-prefixes="tei rng teix sch xi xs
+                exclude-result-prefixes="tei rng teix sch xi
                                          #default">
+
   <oxdoc:doc scope="stylesheet" type="stylesheet">
     <oxdoc:desc>
       <oxdoc:p> TEI stylesheet for simplifying TEI ODD markup </oxdoc:p>
@@ -47,7 +47,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </oxdoc:p>
       <oxdoc:p>Author: See AUTHORS</oxdoc:p>
-      <oxdoc:p>Id: $Id$</oxdoc:p>
+      <oxdoc:p>Id: $Id: extract-isosch.xsl 10809 2012-09-11 08:03:39Z rahtz $</oxdoc:p>
       <oxdoc:p>Copyright: 2011, TEI Consortium</oxdoc:p>
       <oxdoc:p/>
       <oxdoc:p>Modified 2012-05 by Syd Bauman: It seems that ISO Schematron does not have
@@ -58,7 +58,7 @@ of this software, even if advised of the possibility of such damage.
         getting what is intended, we’ll issue an error message as well.</oxdoc:p>
     </oxdoc:desc>
   </oxdoc:doc>
-
+  
   <xsl:output encoding="utf-8" indent="yes" method="xml"/>
   <xsl:param name="lang"></xsl:param>
 
@@ -87,30 +87,30 @@ of this software, even if advised of the possibility of such damage.
       <title>ISO Schematron rules</title>
 
       <xsl:comment>namespaces:</xsl:comment>
-      <xsl:text>&#x0A;</xsl:text>
       <xsl:for-each select="key('NSs',1)">
         <xsl:choose>
           <xsl:when test="ancestor::teix:egXML"/>
-          <xsl:when test="ancestor::tei:constraintSpec/@xml:lang
-                  and not(ancestor::tei:constraintSpec/@xml:lang = $lang)"/>
+          <xsl:when
+            test="ancestor::tei:constraintSpec/@xml:lang
+                 and not(ancestor::tei:constraintSpec/@xml:lang = $lang)"/>
           <xsl:otherwise>
             <xsl:apply-templates select="."/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
-      <xsl:if test="not( key('NSs',1)[@prefix='tei'] )">
-        <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
+      <xsl:if test="not(sch:ns[@prefix='tei'])">
+	<sch:ns prefix="tei"
+		uri="http://www.tei-c.org/ns/1.0"/>
       </xsl:if>
 
-      <xsl:if test="key('KEYs',1)">
-        <xsl:comment>keys:</xsl:comment>
-        <xsl:text>&#x0A;</xsl:text>
-      </xsl:if>
+
+      <xsl:comment>keys:</xsl:comment>
       <xsl:for-each select="key('KEYs',1)">
         <xsl:choose>
           <xsl:when test="ancestor::teix:egXML"/>
-          <xsl:when test="ancestor::tei:constraintSpec/@xml:lang
-                  and not(ancestor::tei:constraintSpec/@xml:lang = $lang)"/>
+          <xsl:when
+            test="ancestor::tei:constraintSpec/@xml:lang
+                 and not(ancestor::tei:constraintSpec/@xml:lang = $lang)"/>
           <xsl:otherwise>
             <xsl:apply-templates select="."/>
           </xsl:otherwise>
@@ -124,10 +124,7 @@ of this software, even if advised of the possibility of such damage.
           schema that does not perform the desired constraint tests properly.</xsl:message>
       </xsl:if>
 
-      <xsl:if test="key('PATTERNs',1)">
-        <xsl:comment>patterns:</xsl:comment>
-        <xsl:text>&#x0A;</xsl:text>
-      </xsl:if>
+      <xsl:comment>patterns:</xsl:comment>
       <xsl:for-each select="key('PATTERNs',1)">
         <xsl:choose>
           <xsl:when test="ancestor::teix:egXML"/>
@@ -140,10 +137,7 @@ of this software, even if advised of the possibility of such damage.
         </xsl:choose>
       </xsl:for-each>
 
-      <xsl:if test="key('CONSTRAINTs',1)">
-        <xsl:comment>constraints:</xsl:comment>
-        <xsl:text>&#x0A;</xsl:text>
-      </xsl:if>
+      <xsl:comment>constraints:</xsl:comment>
       <xsl:for-each select="key('CONSTRAINTs',1)">
         <xsl:choose>
           <xsl:when test="ancestor::teix:egXML"/>
@@ -189,7 +183,7 @@ of this software, even if advised of the possibility of such damage.
               <pattern id="{$patID}">
                 <rule>
                   <xsl:attribute name="context">
-                    <xsl:sequence select="tei:generate-nsprefix-schematron(.)"/>
+                    <xsl:text>tei:</xsl:text>
                     <xsl:choose>
                       <xsl:when test="ancestor::tei:elementSpec">
                         <xsl:value-of select="ancestor::tei:elementSpec/@ident"/>
@@ -210,7 +204,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="sch:rule[not(@context)]">
     <rule>
       <xsl:attribute name="context">
-        <xsl:sequence select="tei:generate-nsprefix-schematron(.)"/>        
+        <xsl:text>tei:</xsl:text>
         <xsl:value-of select="ancestor::tei:elementSpec/@ident"/>
       </xsl:attribute>
       <xsl:apply-templates/>
@@ -229,26 +223,4 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="sch:key"/>
 
-  <xsl:function name="tei:generate-nsprefix-schematron" as="xs:string">
-    <xsl:param name="e"/>
-    <xsl:for-each select="$e">
-      <xsl:variable name="myns" select="ancestor::tei:elementSpec/@ns"/>
-      <xsl:choose>
-        <xsl:when test="not($myns) or $myns='http://www.tei-c.org/ns/1.0'">
-          <xsl:text>tei:</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:choose>
-            <xsl:when test="ancestor::tei:schemaSpec//sch:ns[@uri=$myns]">
-              <xsl:value-of select="concat(ancestor::tei:schemaSpec//sch:ns[@uri=$myns]/@prefix,':')"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:message terminate="yes">schematron rule cannot work out prefix for <xsl:value-of select="ancestor::tei:elementSpec/@ident"/></xsl:message>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
-  </xsl:function>
-  
 </xsl:stylesheet>

@@ -67,7 +67,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: graphics.xsl 10800 2012-09-10 15:23:36Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>

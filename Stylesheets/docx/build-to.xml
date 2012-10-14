@@ -15,7 +15,7 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	
-        Id: $Id$
+        Id: $Id: build-to.xml 10793 2012-09-09 11:08:27Z rahtz $
         Copyright: 2011, TEI Consortium<
 -->
   <!--
@@ -69,7 +69,7 @@
 	  style="${profiledir}/${profile}/docx/makecoverpages.xsl" 
 	  in="${outputTempDir}/word/document.xml" 
 	  out="${outputTempDir}/tmp3.xml" 
-	 >
+	  classpath="classpath">
       <xmlcatalog>
 	<catalogpath>
 	  <pathelement location="../../../../catalog.xml"/>
@@ -97,6 +97,7 @@
       <fileset dir="${outputTempDir}">
 	<include name="docProps/custom.xml" />
 	<include name="word/webSettings.xml" />
+	<include name="word/_rels/settings.xml.rels" />
 	<include name="word/endnotes.xml" />
 	<include name="word/footnotes.xml" />
 	<include name="word/footer*" />
@@ -105,6 +106,8 @@
     </delete>
     <delete dir="${outputTempDir}/customXml" />
     <delete dir="${outputTempDir}/word/printerSettings" />
+    <delete dir="${outputTempDir}/word/theme" />
+    <delete dir="${outputTempDir}/word/glossary" />
     
     <echo level="info">fix Word .rels file</echo>
     <xslt style="tools/fixdotrels.xsl"  in="${outputTempDir}/_rels/.rels"  out="${outputTempDir}/_rels/.rels_" >
@@ -121,7 +124,7 @@
     <move file="${outputTempDir}/word/_styles.xml" tofile="${outputTempDir}/word/styles.xml" verbose="true" />
     
     <echo level="info">Get names of graphics files and write an ant task</echo>
-    <xslt force="yes" style="${listgraphics}" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/copy.xml">
+    <xslt force="yes" style="${listgraphics}" classpath="classpath" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/copy.xml">
       <xmlcatalog>
         <catalogpath>
           <pathelement location="../../../../catalog.xml"/>
@@ -141,7 +144,7 @@
       <fileset dir="${outputTempDir}/word" includes="media/*.*"/>
     </images>
     <echo level="info">Generate new files for docx </echo>
-    <xslt force="yes" style="${teitoDocx}" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/newdocument.xml">
+    <xslt force="yes" style="${teitoDocx}" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/newdocument.xml" classpath="classpath">
       <xmlcatalog>
         <catalogpath>
           <pathelement location="../../../../catalog.xml"/>
@@ -164,7 +167,6 @@
       <param name="verbose" expression="${verbose}" if="verbose"/>
     </xslt>
     <move file="${outputTempDir}/docProps/newcore.xml" tofile="${outputTempDir}/docProps/core.xml" overwrite="true"/>
-    <move file="${outputTempDir}/docProps/newapp.xml" tofile="${outputTempDir}/docProps/app.xml" overwrite="true"/>
     <move file="${outputTempDir}/docProps/newcustom.xml" tofile="${outputTempDir}/docProps/custom.xml" overwrite="true"/>
   </target>
 

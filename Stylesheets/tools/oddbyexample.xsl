@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Copyright TEI Consortium.
-    Dual-licensed under CC-by and BSD2 licences
-    See the file COPYING.txt for details
-    $Date$
-    $Id$
--->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 		xmlns:n="www.example.com"
 		xmlns:rng="http://relaxng.org/ns/structure/1.0"
@@ -46,7 +39,7 @@ theory of liability, whether in contract, strict liability, or tort
 (including negligence or otherwise) arising in any way out of the use
 of this software, even if advised of the possibility of such damage.
 
-$Id$
+$Id: oddbyexample.xsl 10842 2012-09-20 16:36:38Z rahtz $
 
 2008, TEI Consortium
 -->
@@ -81,10 +74,9 @@ valList
   <!-- the document corpus -->
   <xsl:param name="corpus">./</xsl:param>
   <!-- the source of the TEI (just needs *Spec)-->
-  <xsl:param name="defaultSource">http://www.tei-c.org/Vault/P5/current/xml/tei/odd/p5subset.xml</xsl:param>
+  <xsl:param name="tei">http://www.tei-c.org/Vault/P5/current/xml/tei/odd/p5subset.xml</xsl:param>
   <!-- should we make valList for @rend -->
   <xsl:param name="enumerateRend">false</xsl:param>
-  <!-- should we make valList for @type -->
   <xsl:param name="enumerateType">false</xsl:param>
   <!-- should we deal with non-TEI namespaces -->
   <xsl:param name="processNonTEI">false</xsl:param>
@@ -190,16 +182,6 @@ valList
 	<xsl:apply-templates select="$stage3" mode="stage3"/>
       </xsl:variable>
       <xsl:apply-templates select="$stage4" mode="stage4"/>
-
-      <!-- debug
-	   <xsl:result-document href="/tmp/stage3.xml">
-	   <xsl:copy-of select="$stage3"/>
-	   </xsl:result-document>
-	   <xsl:result-document href="/tmp/stage4.xml">
-	   <xsl:copy-of select="$stage4"/>
-	   </xsl:result-document>
-      -->
-
   </xsl:template>
 
   <xsl:template match="text()" mode="copy"/>
@@ -225,21 +207,17 @@ valList
     <xsl:variable name="stage1">
       <stage1>
         <tei>
-          <xsl:for-each select="document($defaultSource)">
+          <xsl:for-each select="document($tei)">
             <xsl:for-each select="key('CLASSES',1)">
               <classSpec>
                 <xsl:copy-of select="@ident"/>
                 <xsl:copy-of select="@module"/>
-		<xsl:copy-of select="classes/memberOf"/>
                 <xsl:for-each select=".//attDef">
                   <attDef>
                     <xsl:copy-of select="@ident"/>
                     <xsl:call-template name="checktype"/>
                   </attDef>
                 </xsl:for-each>
-		<xsl:for-each select="classes/memberOf">
-		  <classmember ident="{@key}"/>
-		</xsl:for-each>
                 <xsl:call-template name="classmembers"/>
               </classSpec>
             </xsl:for-each>
@@ -295,56 +273,31 @@ valList
         <!-- for every attribute class, see if its members should be
 	     deleted, by seeing if they are used anywhere-->
         <xsl:for-each select="$stage1/stage1/tei/classSpec">
-	  <xsl:variable name="classatts">
-	    <xsl:for-each select="attDef">
-	      <xsl:variable name="this" select="@ident"/>
-	      <xsl:variable name="used">
-		<xsl:for-each select="../member">
-		  <xsl:if
-		      test="key('UsedAtt',concat(@ident,$this))">
-		  <xsl:text>true</xsl:text></xsl:if>
-		</xsl:for-each>
-	      </xsl:variable>
-	      <xsl:choose>
-		<xsl:when test="$keepGlobals='true' and $this='n'"><keep/></xsl:when>
-		<xsl:when test="$keepGlobals='true' and $this='rendition'"><keep/></xsl:when>
-		<xsl:when test="$keepGlobals='true' and $this='xml:id'"><keep/></xsl:when>
-		<xsl:when test="$keepGlobals='true' and $this='xml:base'"><keep/></xsl:when>
-		<xsl:when test="$keepGlobals='true' and $this='xml:space'"><keep/></xsl:when>
-		<xsl:when test="$keepGlobals='true' and $this='xml:lang'"><keep/></xsl:when>
-		<xsl:when test="$keepGlobals='true' and $this='rend'"><keep/></xsl:when>
-		<xsl:when test="$used=''">
-		  <attDef ident="{$this}" mode="delete"/>
-		</xsl:when>
-		<xsl:otherwise>
-		  <keep/>
-		</xsl:otherwise>
-	      </xsl:choose>
-	    </xsl:for-each>
-	  </xsl:variable>
-	  <xsl:choose>
-	    <xsl:when test="$classatts/attDef[@mode='delete'] and not($classatts/keep)">
-	      <classSpec ident="{@ident}" module="{@module}"
-			 type="atts" mode="delete">
-		<xsl:copy-of select="classmember"/>
-		<attList>
-		  <xsl:copy-of select="$classatts/attDef"/>
-		</attList>
-	      </classSpec>
-	    </xsl:when>
-	    <xsl:when test="$classatts/attDef[@mode='delete'] and $classatts/keep">
-	      <classSpec ident="{@ident}" module="{@module}"
-			 type="atts" mode="change">
-		<attList>
-		  <xsl:copy-of select="$classatts/attDef"/>
-		</attList>
-	      </classSpec>
-	    </xsl:when>
-	    <xsl:when test="$classatts/keep">
-	      <classSpec ident="{@ident}" module="{@module}" type="atts" mode="keep"/>
-	    </xsl:when>
-	  </xsl:choose> 
-
+          <classSpec ident="{@ident}" module="{@module}" type="atts" mode="change">
+            <attList>
+              <xsl:for-each select="attDef">
+                <xsl:variable name="this" select="@ident"/>
+                <xsl:variable name="used">
+                  <xsl:for-each select="../member">
+                    <!--		 <xsl:message>check for <xsl:value-of select="concat(@ident,$this)"/></xsl:message>-->
+                    <xsl:if test="key('UsedAtt',concat(@ident,$this))">true</xsl:if>
+                  </xsl:for-each>
+                </xsl:variable>
+                <xsl:choose>
+                  <xsl:when test="$keepGlobals='true' and $this='n'"/>
+                  <xsl:when test="$keepGlobals='true' and $this='rendition'"/>
+                  <xsl:when test="$keepGlobals='true' and $this='xml:id'"/>
+                  <xsl:when test="$keepGlobals='true' and $this='xml:base'"/>
+                  <xsl:when test="$keepGlobals='true' and $this='xml:space'"/>
+                  <xsl:when test="$keepGlobals='true' and $this='xml:lang'"/>
+                  <xsl:when test="$keepGlobals='true' and $this='rend'"/>
+                  <xsl:when test="$used=''">
+                    <attDef ident="{$this}" mode="delete"/>
+                  </xsl:when>
+                </xsl:choose>
+              </xsl:for-each>
+            </attList>
+          </classSpec>
         </xsl:for-each>
         <!-- for every TEI element, say if it is actually used or is to be deleted -->
         <xsl:for-each select="$stage1/stage1/tei/elementSpec">
@@ -421,33 +374,35 @@ valList
             <p> </p>
           </publicationStmt>
           <sourceDesc>
-            <p>generated by oddbyexample.xsl, based on analyzing <xsl:value-of select="$count"/> files from <xsl:value-of select="$corpus"/> </p>
+            <p>generated by oddbyexample.xsl, based on analyzing 
+	    <xsl:value-of select="$count"/> files from
+	    <xsl:value-of select="$corpus"/>
+                  </p>
           </sourceDesc>
         </fileDesc>
       </teiHeader>
       <text>
         <body>
-
+          <!--<xsl:copy-of select="$stage1"/>-->
           <schemaSpec ident="{$schema}">
             <xsl:attribute name="start">
-              <xsl:if test="$stage2/stage2/elementSpec[@mode='keep' and @ident='TEI']">TEI</xsl:if>
+              <xsl:if test="$stage2/stage2/elementSpec[@mode='keep' and     @ident='TEI']">TEI</xsl:if>
               <xsl:text> </xsl:text>
               <xsl:if test="$stage2/stage2/elementSpec[@mode='keep' and @ident='teiCorpus']">teiCorpus</xsl:if>
             </xsl:attribute>
-            <!-- 
-		 We need to list only modules from which elements or
-		 classes have been used, but we always need tei module
-	    -->
-	    <moduleRef key="tei"/>
-            <xsl:for-each-group select="$stage2/stage2/*[@mode='keep']" group-by="@module">
+            <moduleRef key="tei"/>
+            <xsl:apply-templates select="$stage2/stage2/classSpec[@module='tei']"/>
+            <moduleRef key="core"/>
+            <!-- we need to list only modules from which elements have been used -->
+            <xsl:for-each-group select="$stage2/stage2/elementSpec[@mode='keep']" group-by="@module">
               <xsl:sort select="current-grouping-key()"/>
               <xsl:choose>
-                <xsl:when test="@module='tei'"/>
+                <xsl:when test="@module='core'"/>
                 <xsl:otherwise>
                   <moduleRef key="{@module}"/>
                 </xsl:otherwise>
               </xsl:choose>
-              <xsl:for-each select="current-group()[self::elementSpec]">
+              <xsl:for-each select="current-group()">
                 <xsl:variable name="e" select="@ident"/>
                 <!-- for every attribute, if its a class attribute, see if
 	       its already deleted. if its a local attribute, see if its used. -->
@@ -459,9 +414,8 @@ valList
                       <xsl:variable name="enumerated" select="@enumerated"/>
                       <xsl:for-each select="$stage1">
                         <xsl:choose>
-                          <xsl:when test="not($class='') and
-					  $stage2/stage2/classSpec[@ident=$class]/attList/attDef[@ident=$ident
-					  and @mode='delete']">			 
+                          <xsl:when test="not($class='')      and      $stage2/stage2/classSpec[@ident=$class]/attList/attDef[@ident=$ident]">
+			 
 		       </xsl:when>
 		       <xsl:when test="$keepGlobals='true' and $ident='xml:id'"/>
 		       <xsl:when test="$keepGlobals='true' and $ident='xml:base'"/>
@@ -469,7 +423,9 @@ valList
 		       <xsl:when test="$keepGlobals='true' and $ident='xml:lang'"/>
 		       <xsl:when test="$keepGlobals='true' and $ident='n'"/>
 		       <xsl:when test="$keepGlobals='true' and $ident='rendition'"/>
-		       <xsl:when test="$keepGlobals='true' and $ident='rend'"/>
+		       <xsl:when test="$keepGlobals='true' and
+				       $ident='rend'"/>
+		       <xsl:when test="$keepGlobals='true' and $ident='facs'"/>
 		       <xsl:when test="not(key('UsedAtt',concat($e,$ident)))">
 			 <attDef ident="{$ident}" mode="delete"/>
 		       </xsl:when>
@@ -491,10 +447,8 @@ valList
                   </xsl:if>
                 </xsl:for-each>
               </xsl:for-each>
-              <xsl:copy-of
-		  select="$stage2/stage2/elementSpec[@mode='delete' and @module=current-grouping-key()]"/>
-	      <xsl:apply-templates 
-		  select="$stage2/stage2/classSpec[@module=current-grouping-key()]"/>
+              <xsl:copy-of select="$stage2/stage2/elementSpec[@mode='delete'          and @module=current-grouping-key()]"/>
+              <xsl:apply-templates select="$stage2/stage2/classSpec[@module=current-grouping-key()]"/>
             </xsl:for-each-group>
             <xsl:for-each select="$stage2/stage2/elementSpec[@mode='add']">
               <xsl:text>
@@ -573,23 +527,10 @@ valList
       </xsl:for-each-group>
     </valList>
   </xsl:template>
-
   <xsl:template match="classSpec">
-    <xsl:choose>
-      <xsl:when test="@mode='delete'">
-	<xsl:copy>
-	  <xsl:copy-of select="@*"/>
-	  <xsl:copy-of select="classmember"/>
-	  <xsl:copy-of select="attList"/>
-	</xsl:copy>
-      </xsl:when>
-      <xsl:when test="attList/attDef">
-	<xsl:copy>
-	  <xsl:copy-of select="@*"/>
-	  <xsl:copy-of select="attList"/>
-	</xsl:copy>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:if test="attList/attDef">
+      <xsl:copy-of select="."/>
+    </xsl:if>
   </xsl:template>
 
 
@@ -620,23 +561,6 @@ valList
   
   <!-- ignore elementSpec @mode='delete' -->
   <xsl:template match="elementSpec[@mode='delete']"  mode="stage3"/>
-  <xsl:template match="classSpec[@mode='delete']"  mode="stage3">
-    <xsl:copy>
-      <xsl:copy-of select="@ident"/>
-      <xsl:copy-of select="@module"/>
-      <xsl:copy-of select="@type"/>
-      <xsl:choose>
-	<xsl:when
-	    test="../classSpec[@ident=current()/classmember/@ident]">
-	  <xsl:attribute name="mode">change</xsl:attribute>
-	  <xsl:copy-of select="attList"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:attribute name="mode">delete</xsl:attribute>
-	</xsl:otherwise>
-      </xsl:choose>
-    </xsl:copy>
-  </xsl:template>
   
   <xsl:template match="moduleRef/@include"  mode="stage3"/>
   <xsl:template match="moduleRef/@except"  mode="stage3"/>
@@ -664,7 +588,7 @@ valList
 	    </xsl:for-each>
 	  </xsl:variable>
 	  <xsl:variable name="includelist">
-	    <xsl:for-each select="document($defaultSource)">
+	    <xsl:for-each select="document($tei)">
 	      <xsl:for-each select="key('EbyM',$module)">
 		<xsl:sort select="@ident"/>
 		<xsl:variable name="e" select="@ident"/>
@@ -681,7 +605,7 @@ valList
 	</xsl:when>
 	<xsl:when test="$method='include'">
 	  <xsl:variable name="includelist">
-	    <xsl:for-each select="document($defaultSource)">
+	    <xsl:for-each select="document($tei)">
 	      <xsl:for-each select="key('EbyM',$module)">
 		<xsl:sort select="@ident"/>
 		<xsl:variable name="e" select="@ident"/>
@@ -709,7 +633,7 @@ valList
 	    </xsl:for-each>
 	  </xsl:variable>
 	  <xsl:variable name="exceptlist">
-	    <xsl:for-each select="document($defaultSource)">
+	    <xsl:for-each select="document($tei)">
 	      <xsl:for-each select="key('EbyM',$module)">
 		<xsl:sort select="@ident"/>
 		<xsl:variable name="e" select="@ident"/>
@@ -728,7 +652,7 @@ valList
 	</xsl:when>
 	<xsl:when test="$method='except'">
 	  <xsl:variable name="exceptlist">
-	    <xsl:for-each select="document($defaultSource)">
+	    <xsl:for-each select="document($tei)">
 	      <xsl:for-each select="key('EbyM',$module)">
 		<xsl:sort select="@ident"/>
 		<xsl:variable name="e" select="@ident"/>
@@ -771,6 +695,5 @@ valList
     </xsl:choose>
   </xsl:template>
 
-  <xsl:function name="tei:shallWeKeep"/>
 
 </xsl:stylesheet>

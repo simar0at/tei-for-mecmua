@@ -15,7 +15,7 @@
 	License along with this library; if not, write to the Free Software
 	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 	
-        Id: $Id$
+        Id: $Id: build-to.xml 10899 2012-10-03 15:20:16Z rahtz $
         Copyright: 2011, TEI Consortium<
 -->
   <!--
@@ -25,14 +25,13 @@
   <property name="inputFile" value=""/>
   <!-- Path where the output ePUB file will be saved. -->
   <property name="outputFile" value=""/>
-  <!-- where does oxygen keep stuff -->
-  <property name="oxygenlib" value=""/>
-  <!-- which profile directory-->
-  <property name="profiledir" value="../profiles"/>
   <!-- which profile -->
   <property name="profile" value="default"/>
+  <!-- where does oxygen keep stuff -->
+  <property name="oxygenlib" value=""/>
   <!-- Stylesheet for transformation -->
-  <property name="teitoepub3" value="${profiledir}/${profile}/epub3/to.xsl"/>
+  <property name="stylesheetFile"
+	    value="../profiles/${profile}/epub3/to.xsl"/>
   <property name="listgraphics" value="../tools/makegraphicsanttask.xsl"/>
   <dirname property="inputFileDir" file="${inputFile}"/>
   <dirname property="outputDir" file="${outputFile}"/>
@@ -51,7 +50,7 @@
     <!-- Recreate temporary output directory -->
     <!-- The transformation for EPUB output. -->
     <echo level="info">XSLT generate epub3 files</echo>
-    <xslt force="yes" style="${teitoepub3}" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/OPS/index.html">
+    <xslt force="yes" style="${stylesheetFile}" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/OPS/index.html" classpath="classpath">
       <xmlcatalog>
         <catalogpath>
           <pathelement location="../../../../catalog.xml"/>
@@ -92,7 +91,7 @@
       <param name="nocompress" expression="${nocompress}" if="nocompress"/>
     </xslt>
     <echo level="info">Get names of graphics files and write an ant task</echo>
-    <xslt force="yes" style="${listgraphics}" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/copy.xml">
+    <xslt force="yes" style="${listgraphics}" classpath="classpath" in="${outputTempDir}/tmp2.xml" out="${outputTempDir}/copy.xml">
       <xmlcatalog>
         <catalogpath>
           <pathelement location="../../../../catalog.xml"/>
