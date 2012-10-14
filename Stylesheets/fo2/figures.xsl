@@ -8,7 +8,7 @@
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
                 xmlns:teix="http://www.tei-c.org/ns/Examples"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                exclude-result-prefixes=" a fotex rng tei teix"
+                exclude-result-prefixes="m a fotex rng tei teix"
                 version="2.0">
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
       <desc>
@@ -50,7 +50,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: figures.xsl 10801 2012-09-10 15:37:16Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
@@ -212,7 +212,7 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc/>
    </doc>
-  <xsl:template match="tei:formula[@type='display']/m:math">
+  <xsl:template match="tei:formula[@rend='display']/m:math">
       <m:math display="block">
          <xsl:copy-of select="@*"/>
          <xsl:apply-templates mode="math"/>
@@ -221,7 +221,7 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc/>
    </doc>
-  <xsl:template match="tei:formula[@type='subeqn']/m:math">
+  <xsl:template match="tei:formula[@rend='subeqn']/m:math">
       <xsl:apply-templates mode="math"/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -266,7 +266,7 @@ of this software, even if advised of the possibility of such damage.
                <xsl:apply-templates select=".//tei:formula"/>
             </fotex:eqnarray>
          </xsl:when>
-         <xsl:when test=".//tei:formula[@type='subeqn'] and $foEngine='passivetex'">
+         <xsl:when test=".//tei:formula[@rend='subeqn'] and $foEngine='passivetex'">
             <fotex:eqnarray>
                <xsl:apply-templates select=".//tei:formula"/>
             </fotex:eqnarray>

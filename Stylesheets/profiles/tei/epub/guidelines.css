@@ -1,5 +1,5 @@
 /*
-$Id$
+$Id: guidelines.css 10915 2012-10-04 21:49:12Z rahtz $
 
 This software is dual-licensed:
 
@@ -149,8 +149,8 @@ span.subtochead {
     font-weight: bold;
 }
 .bannerright {
-    position: absolute;
-    right: 5px;
+    margin-right: 5px;
+    float: right;
     color: black;
     font-size: 0.8em;
     font-weight: bold;
@@ -746,3 +746,16 @@ li.tocTree ul {
 .tocHide {
     display: none;
 }
+
+/* for ePub */
+div.EpubCoverPage {
+    -webkit-hyphens:none;
+    font-family: serif; 
+    height:860;          
+    font-size:30pt; 
+    font-weight: bold;
+    padding-top: 15pt;
+    margin: 12pt;
+    border: solid red 1pt; 
+    text-align:center;
+   }

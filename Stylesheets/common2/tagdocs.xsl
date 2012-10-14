@@ -36,45 +36,52 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: tagdocs.xsl 10768 2012-08-15 12:44:31Z rahtz $</p>
       <p>Copyright: 2011, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:key name="CHILDMOD" match="Element" use="@module"/>
 
+  <xsl:param name="teiWeb">
+    <xsl:text>http://www.tei-c.org/release/doc/tei-p5-doc/</xsl:text>
+  </xsl:param>
 
   <xsl:template match="tei:ptr|tei:ref" mode="weave">
     <xsl:choose>
       <xsl:when test="ancestor::tei:remarks or ancestor::tei:listRef or ancestor::tei:valDesc">
         <xsl:choose>
-          <xsl:when test="starts-with(@target,'#') and id(substring(@target,2))">
-            <xsl:call-template name="makeInternalLink">
-              <xsl:with-param name="target" select="substring(@target,2)"/>
-              <xsl:with-param name="ptr" select="if (self::tei:ptr)
-						 then true() else false()"/>
-              <xsl:with-param name="dest">
-                <xsl:call-template name="generateEndLink">
-                  <xsl:with-param name="where">
-                    <xsl:value-of select="substring(@target,2)"/>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </xsl:with-param>
-            </xsl:call-template>
-          </xsl:when>
           <xsl:when test="starts-with(@target,'#')">
-            <xsl:variable name="Chapter">
-              <xsl:value-of select="substring(@target,2,2)"/>
+            <xsl:variable name="Ancestor">
+              <xsl:value-of select="id(substring(@target,2))/ancestor::tei:div[last()]/@xml:id"/>
             </xsl:variable>
             <xsl:choose>
-              <xsl:when test="$Chapter='AB' or        $Chapter='AI' or        $Chapter='CC' or        $Chapter='CE' or        $Chapter='CH' or        $Chapter='CO' or        $Chapter='DI' or        $Chapter='DR' or        $Chapter='DS' or        $Chapter='FS' or        $Chapter='FT' or        $Chapter='GD' or        $Chapter='HD' or        $Chapter='MS' or        $Chapter='ND' or        $Chapter='NH' or        $Chapter='PH' or        $Chapter='SA' or        $Chapter='SG' or        $Chapter='ST' or        $Chapter='TC' or        $Chapter='TD' or        $Chapter='TS' or        $Chapter='USE' or        $Chapter='VE' or        $Chapter='WD'">
+	      <xsl:when test="id(substring(@target,2))">
+		<xsl:call-template name="makeInternalLink">
+		  <xsl:with-param name="target" select="substring(@target,2)"/>
+		  <xsl:with-param name="ptr" select="if (self::tei:ptr)
+						     then true() else false()"/>
+		  <xsl:with-param name="dest">
+		    <xsl:call-template name="generateEndLink">
+		      <xsl:with-param name="where">
+			<xsl:value-of select="substring(@target,2)"/>
+		      </xsl:with-param>
+		    </xsl:call-template>
+		  </xsl:with-param>
+		</xsl:call-template>
+	      </xsl:when>
+              <xsl:when test="index-of(('AB', 'AI', 'CC', 'CE', 'CH',
+			      'CO', 'DI', 'DR', 'DS', 'FS', 'FT',
+			      'GD', 'HD', 'MS', 'ND', 'NH', 'PH',
+			      'SA', 'SG', 'ST', 'TC', 'TD', 'TS',
+			      'USE', 'VE', 'WD'),$Ancestor) &gt; 0">
                 <xsl:call-template name="makeExternalLink">
 		  <xsl:with-param name="ptr" select="if (self::tei:ptr)
 						 then true() else false()"/>
                   <xsl:with-param name="dest">
-                    <xsl:text>http://www.tei-c.org/release/doc/tei-p5-doc/</xsl:text>
-                    <xsl:value-of select="$documentationLanguage"/>
+		    <xsl:value-of select="$teiWeb"/>
+		    <xsl:value-of select="$documentationLanguage"/>
                     <xsl:text>/html/</xsl:text>
-                    <xsl:value-of select="$Chapter"/>
+                    <xsl:value-of select="$Ancestor"/>
                     <xsl:text>.html</xsl:text>
                     <xsl:value-of select="@target"/>
                   </xsl:with-param>
@@ -158,6 +165,12 @@ of this software, even if advised of the possibility of such damage.
           </xsl:if>
         </xsl:attribute>
         <xsl:value-of select="$name"/>
+<!-- Addition by Martin Holmes 2012-07-14 for ticket http://purl.org/tei/fr/3511134     -->        
+<!-- Add a pilcrow with a link.      -->
+        <xsl:call-template name="attDefHook">
+          <xsl:with-param name="attName"><xsl:value-of select="$name"/></xsl:with-param>
+        </xsl:call-template>
+        
       </xsl:element>
       <xsl:element namespace="{$outputNS}" name="{$cellName}">
         <xsl:attribute name="{$rendName}">
@@ -974,28 +987,52 @@ of this software, even if advised of the possibility of such damage.
     </xsl:choose>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>Show a selected attribute<param name="HERE">the starting node </param>
+    <desc>Show a selected attribute <param name="HERE">the starting node </param>
          <param name="TOKEN">attribute we have been asked to display</param>
       </desc>
   </doc>
   <xsl:template name="doAnAttToken">
     <xsl:param name="HERE"/>
     <xsl:param name="TOKEN"/>
-    <xsl:choose>
-      <xsl:when test="$HERE/tei:attList//tei:attDef[@ident=$TOKEN]">
-        <xsl:for-each select="$HERE/tei:attList//tei:attDef[@ident=$TOKEN]">
+    <xsl:for-each select="$HERE">
+      <xsl:choose>
+      <xsl:when test="tei:attList//tei:attDef[@ident=$TOKEN]">
+        <xsl:for-each select="tei:attList//tei:attDef[@ident=$TOKEN]">
           <xsl:call-template name="showAnAttribute"/>
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:for-each select="$HERE/tei:classes/tei:memberOf">
-          <xsl:for-each select="key('IDENTS',@key)/tei:attList//tei:attDef[@ident=$TOKEN]">
-            <xsl:call-template name="showAnAttribute"/>
-          </xsl:for-each>
-        </xsl:for-each>
+	<!--Look for $TOKEN in class hierarchy -->
+	<xsl:call-template name="checkClassesForAttribute">
+	  <xsl:with-param name="TOKEN" select="$TOKEN"/>
+	</xsl:call-template>
       </xsl:otherwise>
-    </xsl:choose>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Recursively check class membership, looking for the
+    definition of an attribute</desc>
+  </doc>
+  <xsl:template name="checkClassesForAttribute">
+    <xsl:param name="TOKEN"/>
+      <xsl:for-each select="tei:classes/tei:memberOf/key('IDENTS',@key)">
+	<xsl:choose>
+	  <xsl:when test="tei:attList//tei:attDef[@ident=$TOKEN]">
+	    <xsl:for-each select="tei:attList//tei:attDef[@ident=$TOKEN]">
+	      <xsl:call-template name="showAnAttribute"/>
+	    </xsl:for-each>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:call-template name="checkClassesForAttribute">
+	      <xsl:with-param name="TOKEN" select="$TOKEN"/>
+	    </xsl:call-template>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:for-each>
+  </xsl:template>
+
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>Display of an attribute</desc>
   </doc>

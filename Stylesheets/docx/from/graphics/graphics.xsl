@@ -67,7 +67,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: graphics.xsl 10800 2012-09-10 15:23:36Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>
@@ -144,9 +144,21 @@ of this software, even if advised of the possibility of such damage.
                         </graphic>
                     </xsl:when>
                     <xsl:otherwise>
-                        <graphic> Linked Graphic: <xsl:variable name="rid" select="@r:link"/>
-                            <xsl:value-of select="document(concat($wordDirectory,'/word/_rels/document.xml.rels'))//rel:Relationship[@Id=$rid]/@Target"/>
-                        </graphic>
+                        <figure>
+			  <desc>
+			    <xsl:choose>
+			      <xsl:when test="@r:link">
+				<xsl:text>Linked Graphic: </xsl:text>
+				<xsl:variable name="rid" select="@r:link"/>
+				<xsl:value-of
+				    select="document(concat($wordDirectory,'/word/_rels/document.xml.rels'))//rel:Relationship[@Id=$rid]/@Target"/>
+			      </xsl:when>
+			      <xsl:otherwise>
+				<xsl:text>unable to handle picture</xsl:text>
+			      </xsl:otherwise>
+			    </xsl:choose>
+			  </desc>
+			</figure>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml"
-		xmlns:mathml="http://www.w3.org/1998/Math/MathML"
-		xmlns:svg="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:tbx="http://www.lisa.org/TBX-Specification.33.0.html"
 		xmlns:iso="http://www.iso.org/ns/1.0"
@@ -54,7 +52,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: to.xsl 10798 2012-09-10 14:08:10Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>
@@ -75,11 +73,4 @@ of this software, even if advised of the possibility of such damage.
       </span>
     </xsl:template>
 
-    <xsl:template match="tei:figure[svg:svg]">
-      <xsl:copy-of select="svg:svg"/>
-    </xsl:template>
-
-    <xsl:template match="tei:formula[mathml:math]">
-      <xsl:copy-of select="mathml:math"/>
-    </xsl:template>
 </xsl:stylesheet>

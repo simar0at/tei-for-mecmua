@@ -44,10 +44,11 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: tei-to-epub.xsl 10907 2012-10-03 21:41:29Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
+  <xsl:param name="opfPackageVersion">2.0</xsl:param>
   <xsl:param name="STDOUT">false</xsl:param>
   <xsl:param name="autoHead">true</xsl:param>
   <xsl:param name="autoToc">true</xsl:param>
@@ -92,6 +93,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:variable name="stage1">
       <xsl:apply-templates mode="preflight"/>
     </xsl:variable>
+
     <xsl:for-each select="$stage1">
       <xsl:call-template name="processTEIHook"/>
       <xsl:variable name="coverImageOutside">
@@ -198,7 +200,7 @@ of this software, even if advised of the possibility of such damage.
           </xsl:if>
           <xsl:if test="$filePerPage='true'">
             <xsl:text>body { width: </xsl:text>
-            <xsl:value-of select="$viewPortWidth"/>
+            <xsl:value-of select="number($viewPortWidth)-100"/>
             <xsl:text>px;
  height: </xsl:text>
             <xsl:value-of select="$viewPortHeight"/>
@@ -259,7 +261,7 @@ height: </xsl:text>
 	  </xsl:analyze-string>
 	</xsl:variable>
 
-          <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="dcidid" version="2.0">
+          <package xmlns="http://www.idpf.org/2007/opf" unique-identifier="dcidid" version="{$opfPackageVersion}">
 	    <xsl:call-template name="opfmetadata">
 	      <xsl:with-param name="author" select="$A"/>
 	      <xsl:with-param name="printAuthor" select="$printA"/>
@@ -562,12 +564,14 @@ height: </xsl:text>
               <xsl:call-template name="metaHTML">
                 <xsl:with-param name="title">Title page</xsl:with-param>
               </xsl:call-template>
-              <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
               <meta name="calibre:cover" content="true"/>
               <title>Title page</title>
               <style type="text/css" title="override_css">
 		@page {padding: 0pt; margin:0pt}
 		body { text-align: center; padding:0pt; margin: 0pt; }
+		div.titlepage { text-align: center; padding:0pt; margin: 0pt; font-size: 225% ; font-family: Arial,Helvetica,sans-serif;}
+		p.covertitle { font-weight: bold; color: #FFFFFF ; background-color: #012148; margin: 5%; padding: 5%}
+		p.covertitle {margin: 10%}
 	      </style>
             </head>
             <body>
@@ -575,6 +579,7 @@ height: </xsl:text>
                 <xsl:when test="$coverImageInside=''">
                   <div>
                     <xsl:attribute name="style">
+		      -webkit-hyphens:none;
 		      font-family: serif; 
 		      height:860;          
 		      font-size:30pt; 
@@ -584,12 +589,19 @@ height: </xsl:text>
 		      border: solid red 1pt; 
 		      text-align:center;
 		    </xsl:attribute>
-                    <xsl:call-template name="generateTitle"/>
+		    <div class="titlepage">
+		      <p class="covertitle">
+			<xsl:call-template name="generateTitle"/>
+		      </p>
+		      <p class="coverauthor">
+			<xsl:call-template  name="generateAuthor"/>
+		      </p>
+		    </div>
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
                   <div>
-                    <img width="1200" height="1700" alt="cover picture" src="{$coverImageInside}"/>
+                    <img width="{$viewPortWidth}" height="{$viewPortHeight}" alt="cover picture" src="{$coverImageInside}"/>
                   </div>
                 </xsl:otherwise>
               </xsl:choose>
@@ -607,8 +619,7 @@ height: </xsl:text>
                 <xsl:call-template name="metaHTML">
                   <xsl:with-param name="title">Title page</xsl:with-param>
                 </xsl:call-template>
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-                <xsl:call-template name="linkCSS">
+                   <xsl:call-template name="linkCSS">
 		  <xsl:with-param
 		      name="file">stylesheet.css</xsl:with-param>
 		</xsl:call-template>
@@ -632,7 +643,6 @@ height: </xsl:text>
                 <xsl:call-template name="metaHTML">
                   <xsl:with-param name="title">title page verso</xsl:with-param>
                 </xsl:call-template>
-                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>title page verso</title>
               </head>
               <body>
@@ -650,8 +660,7 @@ height: </xsl:text>
               <xsl:call-template name="metaHTML">
                 <xsl:with-param name="title">About this book</xsl:with-param>
               </xsl:call-template>
-              <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-              <title>About this book</title>
+                  <title>About this book</title>
             </head>
             <body>
               <div style="text-align: left; font-size: larger">

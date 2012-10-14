@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
 Text Encoding Initiative Consortium XSLT stylesheet family
-$Date$, $Revision$, $Author$
+$Date: 2011-09-20 10:47:43 +0100 (Tue, 20 Sep 2011) $, $Revision: 9329 $, $Author: rahtz $
 
 XSL stylesheet to process TEI documents using ODD markup
 

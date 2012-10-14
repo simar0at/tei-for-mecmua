@@ -1,6 +1,6 @@
 /*
 
-$Id$
+$Id: guidelines-print.css 10817 2012-09-13 15:56:20Z rahtz $
 
 This software is dual-licensed:
 
@@ -54,3 +54,16 @@ li.tocTree ul {
 }
 .tocHide {
 }
+
+/* for ePub */
+div.EpubCoverPage {
+    -webkit-hyphens:none;
+    font-family: serif; 
+    height:860;          
+    font-size:30pt; 
+    font-weight: bold;
+    padding-top: 15pt;
+    margin: 12pt;
+    border: solid red 1pt; 
+    text-align:center;
+   }

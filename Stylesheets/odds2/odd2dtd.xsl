@@ -10,6 +10,7 @@
                 exclude-result-prefixes="a t tei fo rng xs"
                 version="2.0">
   <xsl:import href="teiodds.xsl"/>
+  <xsl:import href="classatts.xsl"/>
   <xsl:import href="../common2/i18n.xsl"/>
   <xsl:import href="../common2/tei-param.xsl"/>
 
@@ -49,7 +50,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: odd2dtd.xsl 10844 2012-09-20 22:03:38Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
@@ -90,6 +91,10 @@ of this software, even if advised of the possibility of such damage.
   <xsl:key name="NSELEMENTS" match="tei:elementSpec[@ns]|tei:attDef[@ns]" use="1"/>
   <xsl:key match="tei:moduleSpec[@ident]" name="FILES" use="@ident"/>
   <xsl:template match="/">
+    <xsl:variable name="resolvedClassatts">
+      <xsl:apply-templates  mode="classatts"/>
+    </xsl:variable>
+    <xsl:for-each select="$resolvedClassatts">
       <xsl:choose>
          <xsl:when test="key('SCHEMASPECS',1)">
             <xsl:apply-templates select="key('LISTSCHEMASPECS',$whichSchemaSpec)"/>
@@ -98,6 +103,7 @@ of this software, even if advised of the possibility of such damage.
             <xsl:call-template name="byModule"/>
          </xsl:otherwise>
       </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
   <xsl:template name="byModule">
       <xsl:for-each select="key('Modules',1)">
@@ -546,12 +552,15 @@ of this software, even if advised of the possibility of such damage.
       </xsl:variable>
       <xsl:choose>
          <xsl:when test="$body=''"> </xsl:when>
-         <xsl:otherwise>
+	 <xsl:when test="matches($body,'\*$')">
+            <xsl:value-of select="$body"/>
+	 </xsl:when>
+	 <xsl:otherwise>
             <xsl:call-template name="checkStart"/>
             <xsl:value-of select="$body"/>
             <xsl:text>?</xsl:text>
             <xsl:call-template name="checkEnd"/>
-         </xsl:otherwise>
+	 </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
   <xsl:template match="rng:choice">
@@ -1105,31 +1114,34 @@ of this software, even if advised of the possibility of such damage.
       </xsl:if>
       <xsl:text> </xsl:text>
       <xsl:variable name="Contents">
-         <BLAH>
-            <xsl:choose>
-	      <xsl:when test="tei:content/rng:element">
-                  <xsl:text> ANY</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="tei:content/rng:element[rng:anyName]">
-		<xsl:text> (#PCDATA)</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="tei:content/rng:ref/@name='data.name'">
-		<xsl:text> (#PCDATA)</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="tei:valList[@type='closed']">
-		<xsl:text> (#PCDATA)</xsl:text>
-	      </xsl:when>
-	      <xsl:when test="tei:content">
-		<xsl:apply-templates select="tei:content/*"/>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:text/>
-	      </xsl:otherwise>
-            </xsl:choose>
-         </BLAH>
+	<Contents>
+	<xsl:choose>
+	  <xsl:when test="tei:content/rng:element">
+	    <xsl:text> ANY</xsl:text>
+	  </xsl:when>
+	  <xsl:when test="tei:content/rng:element[rng:anyName]">
+	    <xsl:text> (#PCDATA)</xsl:text>
+	  </xsl:when>
+	  <xsl:when test="tei:content/rng:ref/@name='data.name'">
+	    <xsl:text> (#PCDATA)</xsl:text>
+	  </xsl:when>
+	  <xsl:when test="tei:valList[@type='closed']">
+	    <xsl:text> (#PCDATA)</xsl:text>
+	  </xsl:when>
+	  <xsl:when test="tei:content">
+	    <xsl:apply-templates select="tei:content/*"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:text/>
+	  </xsl:otherwise>
+	</xsl:choose>
+	</Contents>
       </xsl:variable>
       <xsl:choose>
          <xsl:when test="$Contents=''">
+            <xsl:text> EMPTY</xsl:text>
+         </xsl:when>
+         <xsl:when test="$Contents='()'">
             <xsl:text> EMPTY</xsl:text>
          </xsl:when>
          <xsl:otherwise>

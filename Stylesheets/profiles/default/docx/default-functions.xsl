@@ -59,35 +59,10 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: default-functions.xsl 10881 2012-10-01 16:34:00Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>
-    
-    <!-- returns a listtype for a given stylename (return empty string to figure it out dynamically)-->
-    <xsl:function name="tei:get-listtype" as="xs:string">
-        <xsl:param name="style"/>
-        <xsl:choose>
-            <xsl:when test="starts-with($style,'dl')">
-                <xsl:text>gloss</xsl:text>
-            </xsl:when>
-            <xsl:when test="starts-with($style,$ListBullet)">
-                <xsl:text>unordered</xsl:text>
-            </xsl:when>
-            <xsl:when test="starts-with($style,$ListContinue)">
-                <xsl:text>unordered</xsl:text>
-            </xsl:when>
-            <xsl:when test="starts-with($style,$ListNumber)">
-                <xsl:text>ordered</xsl:text>
-            </xsl:when>
-            <xsl:when test="$style=$List">
-                <xsl:text>ordered</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
     
     <xsl:function name="tei:render-bold" as="xs:boolean">
         <xsl:param name="element"/>

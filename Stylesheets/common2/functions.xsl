@@ -37,7 +37,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: functions.xsl 10797 2012-09-09 22:08:18Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -186,6 +186,7 @@ of this software, even if advised of the possibility of such damage.
         <xsl:when test="self::tei:biblScope">true</xsl:when>
         <xsl:when test="self::tei:br">true</xsl:when>
         <xsl:when test="self::tei:byline">true</xsl:when>
+        <xsl:when test="self::tei:note[tei:cit/tei:bibl]">false</xsl:when>
         <xsl:when test="self::tei:c">true</xsl:when>
         <xsl:when test="self::tei:caesura">true</xsl:when>
         <xsl:when test="self::tei:choice">true</xsl:when>
@@ -306,5 +307,29 @@ of this software, even if advised of the possibility of such damage.
     </xsl:for-each>
   </xsl:function>
 
+    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>
+		Returns the current date.</desc></doc>
+
+	  <xsl:function name="tei:whatsTheDate">
+        <xsl:value-of select="format-dateTime(current-dateTime(),'[Y]-[M02]-[D02]T[H02]:[m02]:[s02]Z')"/>
+    </xsl:function>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Whether an element has any more (useful) text in its parent</desc>
+  </doc>
+  <xsl:function name="tei:is-last" as="xs:boolean">
+    <xsl:param name="element"/>
+    <xsl:for-each select="$element">
+      <xsl:choose>
+	<xsl:when
+	    test="count(following-sibling::node())=1 and normalize-space(following-sibling::node()/text())=''">true</xsl:when>
+<!--	<xsl:when
+	    test="count(preceding-sibling::node())=1 and normalize-space(preceding-sibling::node()/text())=''">true</xsl:when>-->
+        <xsl:otherwise>false</xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:function>
 
 </xsl:stylesheet>

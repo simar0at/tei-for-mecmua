@@ -15,6 +15,7 @@
     exclude-result-prefixes="a fo html i rng s sch tei teix xi xs xsl" 
     version="2.0">
   <xsl:import href="teiodds.xsl"/>
+  <xsl:import href="classatts.xsl"/>
   <xsl:import href="../common2/i18n.xsl"/>
   <xsl:import href="../common2/tei-param.xsl"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -53,12 +54,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: odd2relax.xsl 10707 2012-08-04 18:40:51Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
   <xsl:output encoding="utf-8" indent="yes" method="xml"/>
   <xsl:key name="PATTERNS" match="rng:define[rng:element/@name]" use="'true'"/>
+  <xsl:key name="XPATTERNS" match="rng:define[rng:element/@name]" use="@name"/>
   <xsl:key name="REFED" match="rng:ref" use="@name"/>
   <xsl:key name="DEFED" match="rng:define" use="@name"/>
   <xsl:key name="EDEF" match="rng:define[rng:element]" use="1"/>
@@ -75,6 +77,10 @@ of this software, even if advised of the possibility of such damage.
   <xsl:variable name="linkColor"/>
   <xsl:template match="tei:moduleSpec[@type='decls']"/>
   <xsl:template match="/">
+    <xsl:variable name="resolvedClassatts">
+      <xsl:apply-templates  mode="classatts"/>
+    </xsl:variable>
+    <xsl:for-each select="$resolvedClassatts">
       <xsl:choose>
          <xsl:when test="key('SCHEMASPECS',1)">
             <xsl:apply-templates select="key('LISTSCHEMASPECS',$whichSchemaSpec)"/>
@@ -83,6 +89,7 @@ of this software, even if advised of the possibility of such damage.
             <xsl:apply-templates select="key('Modules',1)"/>
          </xsl:otherwise>
       </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
   <xsl:template match="tei:schemaSpec">
       <xsl:variable name="documentationLanguage">
@@ -102,6 +109,25 @@ of this software, even if advised of the possibility of such damage.
       <xsl:if test="$verbose='true'">
          <xsl:message> process schemaSpec [<xsl:value-of select="@ident"/>] </xsl:message>
       </xsl:if>
+      <xsl:variable name="rng">
+	<xsl:choose>
+	  <xsl:when test="tei:specGrpRef">
+	    <xsl:variable name="SPECS">
+	      <tei:schemaSpec>
+		<xsl:copy-of select="@*"/>
+		<xsl:apply-templates mode="expandSpecs"/>
+	      </tei:schemaSpec>
+	    </xsl:variable>
+	    <xsl:for-each select="$SPECS/tei:schemaSpec">
+	      <xsl:call-template name="schemaSpecBody"/>
+	    </xsl:for-each>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:call-template name="schemaSpecBody"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:apply-templates select="tei:constraintSpec"/>
+      </xsl:variable>
       <xsl:call-template name="generateOutput">
          <xsl:with-param name="method">xml</xsl:with-param>
          <xsl:with-param name="suffix">.rng</xsl:with-param>
@@ -131,23 +157,11 @@ of this software, even if advised of the possibility of such damage.
 	       <xsl:comment>
 		 <xsl:call-template name="copyright"/>
 	       </xsl:comment>
-               <xsl:choose>
-                  <xsl:when test="tei:specGrpRef">
-                     <xsl:variable name="SPECS">
-                        <tei:schemaSpec>
-                           <xsl:copy-of select="@*"/>
-                           <xsl:apply-templates mode="expandSpecs"/>
-                        </tei:schemaSpec>
-                     </xsl:variable>
-                     <xsl:for-each select="$SPECS/tei:schemaSpec">
-                        <xsl:call-template name="schemaSpecBody"/>
-                     </xsl:for-each>
-                  </xsl:when>
-                  <xsl:otherwise>
-                     <xsl:call-template name="schemaSpecBody"/>
-                  </xsl:otherwise>
-               </xsl:choose>
-	              <xsl:apply-templates select="tei:constraintSpec"/>
+	       <xsl:if test="not($rng//sch:ns[@prefix='tei'])">
+		 <sch:ns prefix="tei"
+			 uri="http://www.tei-c.org/ns/1.0"/>
+	       </xsl:if>
+	       <xsl:copy-of select="$rng"/>
             </grammar>
          </xsl:with-param>
       </xsl:call-template>
@@ -307,6 +321,26 @@ of this software, even if advised of the possibility of such damage.
          </xsl:choose>
       </xsl:for-each>
   </xsl:template>
+
+  <xsl:template name="copyright">
+    <xsl:for-each
+	select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability">
+      <xsl:if test="count(tei:licence)&gt;1">
+	<xsl:text>This material is dual-licensed.&#10;</xsl:text>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template match="tei:licence">
+    <xsl:if test="@target">
+      <xsl:text>[</xsl:text>
+      <xsl:value-of select="@target"/>
+      <xsl:text>] </xsl:text>
+    </xsl:if>
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <xsl:template name="NameList">
 <!-- walk over all the elementSpec elements and make list of 
        elements -->
@@ -317,6 +351,7 @@ of this software, even if advised of the possibility of such damage.
          </define>
       </xsl:for-each>
   </xsl:template>
+
   <xsl:template name="predeclare-classes">
       <xsl:comment>0. predeclared classes</xsl:comment>
       <xsl:for-each select="key('predeclaredClasses',1)">
@@ -420,7 +455,9 @@ of this software, even if advised of the possibility of such damage.
       <xsl:choose>
          <xsl:when test="key('REFED',@name)">
 	   <define xmlns="http://relaxng.org/ns/structure/1.0" >
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass2"/>
+	     <xsl:apply-templates  select="@*"    mode="pass2"/>
+	     <xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
+		   mode="pass2"/>
 	   </define>
 	 </xsl:when>
 	 <xsl:otherwise>
@@ -431,6 +468,8 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>
   </xsl:template>
   
+
+
   <xsl:template match="rng:ref" mode="pass2">
       <xsl:choose>
 	<!--
@@ -464,7 +503,62 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>
   </xsl:template>
 
-<!-- and again -->
+  <!-- and again -->
+  
+  <xsl:template match="rng:list|rng:element" mode="pass3">
+    <xsl:element name="{name()}" xmlns="http://relaxng.org/ns/structure/1.0">
+      <xsl:apply-templates  select="@*"  mode="pass3"/>
+      <xsl:variable name="Contents">
+	<xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
+			      mode="pass3"/>
+      </xsl:variable>
+      <xsl:choose>
+	<xsl:when test="$Contents//rng:text or $Contents//rng:ref or
+			$Contents//rng:data or $Contents//rng:name or $Contents//rng:value">
+	  <xsl:copy-of select="$Contents"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:copy-of select="$Contents/a:*"/>
+	  <rng:empty/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="rng:choice|rng:group" mode="pass3">
+      <xsl:choose>
+	<xsl:when test="rng:value|rng:name|.//rng:ref|.//rng:text|.//rng:data">
+	   <xsl:element name="{name()}" xmlns="http://relaxng.org/ns/structure/1.0">
+	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
+	   </xsl:element>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:if test="$verbose='true'">
+	    <xsl:message>KILLED <xsl:copy-of select="."/></xsl:message>
+	  </xsl:if>
+	  <empty xmlns="http://relaxng.org/ns/structure/1.0"/>
+	</xsl:otherwise>
+      </xsl:choose>			   
+  </xsl:template>
+
+  <xsl:template match="rng:optional|rng:zeroOrMore|rng:oneOrMore" mode="pass3">
+      <xsl:choose>
+	<xsl:when test="count(*)=1 and rng:empty"/>
+	<xsl:when test="rng:zeroOrMore and count(*)=1">
+	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
+	</xsl:when>
+	<xsl:when test="count(*)=1 and rng:group[count(*)=1 and	rng:zeroOrMore]">
+	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:element name="{name()}" xmlns="http://relaxng.org/ns/structure/1.0">
+	     <xsl:apply-templates
+		 select="*|@*|processing-instruction()|comment()|text()"
+		 mode="pass3"/>
+	  </xsl:element>
+	</xsl:otherwise>
+      </xsl:choose>			   
+  </xsl:template>
 
   <xsl:template match="processing-instruction()" mode="pass3">
     <xsl:choose>
@@ -474,6 +568,7 @@ of this software, even if advised of the possibility of such damage.
 	</xsl:if>
 	<choice xmlns="http://relaxng.org/ns/structure/1.0">
 	  <xsl:for-each select="key('PATTERNS','true')">
+	    <xsl:sort select="@name"/>
 	    <ref name="{@name}" />
 	  </xsl:for-each>
 	</choice>
@@ -481,74 +576,21 @@ of this software, even if advised of the possibility of such damage.
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="rng:choice" mode="pass3">
+  <xsl:template match="rng:define" mode="pass3">
       <xsl:choose>
-	<xsl:when test="rng:value|rng:name|.//rng:ref|.//rng:text|.//rng:data">
-	   <choice xmlns="http://relaxng.org/ns/structure/1.0">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	   </choice>
-	</xsl:when>
-	<xsl:otherwise>
-      <xsl:if test="$verbose='true'">
-        <xsl:message>KILLED <xsl:copy-of select="."/></xsl:message>
-      </xsl:if>
-	  <empty xmlns="http://relaxng.org/ns/structure/1.0"/>
-	</xsl:otherwise>
-      </xsl:choose>			   
-  </xsl:template>
-
-  <xsl:template match="rng:optional" mode="pass3">
-      <xsl:choose>
-	<xsl:when test="rng:zeroOrMore and count(*)=1">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:when test="count(*)=1 and rng:group[count(*)=1 and	rng:zeroOrMore]">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <optional xmlns="http://relaxng.org/ns/structure/1.0">
-	     <xsl:apply-templates
-		 select="*|@*|processing-instruction()|comment()|text()"
-		 mode="pass3"/>
-	  </optional>
-	</xsl:otherwise>
-      </xsl:choose>			   
-  </xsl:template>
-
-  <xsl:template match="rng:oneOrMore" mode="pass3">
-      <xsl:choose>
-	<xsl:when test="rng:zeroOrMore and count(*)=1">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:when test="count(*)=1 and rng:group[count(*)=1 and	rng:zeroOrMore]">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <oneOrMore xmlns="http://relaxng.org/ns/structure/1.0">
-	     <xsl:apply-templates
-		 select="*|@*|processing-instruction()|comment()|text()"
-		 mode="pass3"/>
-	  </oneOrMore>
-	</xsl:otherwise>
-      </xsl:choose>			   
-  </xsl:template>
-
-  <xsl:template match="rng:zeroOrMore" mode="pass3">
-      <xsl:choose>
-	<xsl:when test="rng:zeroOrMore and count(*)=1">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:when test="count(*)=1 and rng:group[count(*)=1 and	rng:zeroOrMore]">
-	     <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <zeroOrMore xmlns="http://relaxng.org/ns/structure/1.0">
-	     <xsl:apply-templates
-		 select="*|@*|processing-instruction()|comment()|text()"
-		 mode="pass3"/>
-	  </zeroOrMore>
-	</xsl:otherwise>
-      </xsl:choose>			   
+         <xsl:when test="key('REFED',@name) or key('XPATTERNS',@name)">
+	   <define xmlns="http://relaxng.org/ns/structure/1.0" >
+	     <xsl:apply-templates  select="@*"    mode="pass3"/>
+	     <xsl:apply-templates  select="*|processing-instruction()|comment()|text()"
+		   mode="pass3"/>
+	   </define>
+	 </xsl:when>
+	 <xsl:otherwise>
+	   <xsl:if test="$verbose='true'">
+	     <xsl:message>ZAP definition of unused pattern <xsl:value-of select="@name"/></xsl:message>
+	   </xsl:if>
+	 </xsl:otherwise>
+      </xsl:choose>
   </xsl:template>
 
   <xsl:template match="@*|text()|comment()" mode="pass3">
@@ -559,25 +601,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:copy>
          <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass3"/>
       </xsl:copy>
-  </xsl:template>
-
-  <xsl:template name="copyright">
-    <xsl:for-each
-	select="/tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability">
-      <xsl:if test="count(tei:licence)&gt;1">
-	<xsl:text>This material is dual-licensed.&#10;</xsl:text>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </xsl:for-each>
-  </xsl:template>
-
-  <xsl:template match="tei:licence">
-    <xsl:if test="@target">
-      <xsl:text>[</xsl:text>
-      <xsl:value-of select="@target"/>
-      <xsl:text>] </xsl:text>
-    </xsl:if>
-    <xsl:apply-templates/>
   </xsl:template>
 
 </xsl:stylesheet>

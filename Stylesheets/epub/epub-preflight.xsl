@@ -39,7 +39,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: epub-preflight.xsl 10769 2012-08-15 16:06:59Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -114,9 +114,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:for-each-group select="node()" group-starting-with="tei:pb|tei:figure">
         <xsl:choose>
           <xsl:when test="self::tei:pb">
-	      <tei:pb>
-		<xsl:copy-of select="@*"/>
-	      </tei:pb>
+	      <xsl:apply-templates select="." mode="preflight"/>
 	      <tei:hi>
 		<xsl:copy-of select="$atts"/>
 		<xsl:copy-of select="current-group() except ."/>

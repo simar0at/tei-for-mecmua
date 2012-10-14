@@ -38,7 +38,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: epub-common.xsl 10911 2012-10-04 11:08:28Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -113,7 +113,17 @@ of this software, even if advised of the possibility of such damage.
         <xsl:value-of select="$publisher"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="normalize-space(ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt)"/>
+        <xsl:for-each
+	    select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt">
+	  <xsl:for-each
+	      select="tei:authority|tei:publisher|tei:distributor|tei:p">
+	    <xsl:value-of select="normalize-space(.)"/>
+	    <xsl:if
+		test="following-sibling::tei:authority|tei:publisher|tei:distributor|tei:p">
+	      <xsl:text>, </xsl:text>
+	    </xsl:if>
+	  </xsl:for-each>
+	</xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -231,18 +241,39 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template match="tei:respStmt" mode="metadata">
     <p><i><xsl:value-of select="tei:resp"/></i>:
-      <xsl:value-of select="tei:name"/></p>
+    <xsl:for-each select="tei:name">
+      <xsl:apply-templates select="."/>
+      <xsl:choose>
+	<xsl:when test="following-sibling::tei:name">, </xsl:when>
+	<xsl:otherwise>.</xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+    </p>
   </xsl:template>
 
   <xsl:template match="tei:list" mode="metadata">
-    <ul>
-      <xsl:apply-templates mode="metadata"/>
-    </ul>
+    <xsl:choose>
+      <xsl:when test="ancestor::tei:availability">
+	<xsl:apply-templates mode="metadata"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<ul>
+	  <xsl:apply-templates mode="metadata"/>
+	</ul>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <xsl:template match="tei:item" mode="metadata">
-    <li>
-      <xsl:apply-templates mode="metadata"/>
-    </li>
+    <xsl:choose>
+      <xsl:when test="ancestor::tei:availability">
+	*  <xsl:apply-templates mode="metadata"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<li>
+	  <xsl:apply-templates mode="metadata"/>
+	</li>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <xsl:template match="tei:relatedItem[@target]" mode="metadata" priority="10">
     <a href="{@target}">
@@ -308,7 +339,7 @@ of this software, even if advised of the possibility of such damage.
     </div>
   </xsl:template>
 
-  <xsl:template match="tei:bibl/tei:title" mode="metadata" priority="99">
+  <xsl:template match="tei:title" mode="metadata" priority="99">
     <i>
       <xsl:apply-templates/>
     </i>
@@ -321,7 +352,9 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template match="tei:bibl/tei:date" mode="metadata"
 		priority="99">
-    <i>Date</i>:     <xsl:apply-templates/>
+    <xsl:text> (</xsl:text>
+    <xsl:apply-templates/>
+    <xsl:text>)</xsl:text>
   </xsl:template>
   <xsl:template match="tei:note" mode="metadata">
     <xsl:text> [</xsl:text>

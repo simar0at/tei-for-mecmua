@@ -49,7 +49,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: figures.xsl 10802 2012-09-10 15:38:49Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
@@ -372,7 +372,7 @@ of this software, even if advised of the possibility of such damage.
       </xsl:attribute>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>[html] </desc>
+      <desc>[html] display graphic file</desc>
    </doc>
   <xsl:template name="showGraphic">
       <xsl:variable name="File">
@@ -537,5 +537,36 @@ echo base64_decode($data[1]);
   <xsl:template match="svg:*">
       <xsl:copy-of select="."/>
   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>[html] figures containing SVG markup </desc>
+   </doc>
+
+    <xsl:template match="tei:figure[svg:svg]">
+      <xsl:copy-of select="svg:svg"/>
+    </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] figures containing MathML Markup </desc>
+   </doc>
+
+    <xsl:template match="tei:formula[m:math]">
+      <xsl:choose>
+	<xsl:when test="@xml:id and (@rend='display' or
+			@rend='equation' or @rend='subeqn')">
+	  <div id="{@xml:id}">
+	    <xsl:copy-of select="m:math"/>
+	  </div>
+	</xsl:when>
+	<xsl:when test="@xml:id">
+	  <span id="{@xml:id}">
+	    <xsl:copy-of select="m:math"/>
+	  </span>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:copy-of select="m:math"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
 
 </xsl:stylesheet>

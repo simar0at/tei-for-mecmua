@@ -19,6 +19,10 @@
         <xsl:param name="style"/>
         <xsl:choose>
             <xsl:when test="$style='Kommentarzeichen'"/> <!-- supress -->
+            <xsl:when test="$style='annotate reference'"/> <!-- supress -->
+            <xsl:when test="$style='footnote reference'">
+                <xsl:apply-templates/>
+            </xsl:when>
             <xsl:when test="$style='Funotenzeichen'">
                 <xsl:apply-templates/>
             </xsl:when>

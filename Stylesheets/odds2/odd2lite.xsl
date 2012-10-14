@@ -14,7 +14,8 @@
                 exclude-result-prefixes="fo a tei html s rng sch xsi teix xs"
                 version="2.0">
   <xsl:import href="../common2/verbatim.xsl"/>
-  <xsl:import href="teiodds.xsl"/>
+  <xsl:import href="teiodds.xsl"/> 
+  <xsl:import href="classatts.xsl"/>
   <xsl:import href="../common2/tei.xsl"/>
   <xsl:include href="../common2/tagdocs.xsl"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -53,7 +54,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: odd2lite.xsl 10712 2012-08-05 21:56:57Z rahtz $</p>
          <p>Copyright: 2011, TEI Consortium</p>
       </desc>
    </doc>
@@ -95,6 +96,18 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="displayMode">rnc</xsl:param>
   <xsl:param name="splitLevel">-1</xsl:param>
   <xsl:param name="idPrefix">TEI.</xsl:param>
+
+
+  <xsl:template match="/">
+    <xsl:variable name="resolvedClassatts">
+      <xsl:apply-templates  mode="classatts"/>
+    </xsl:variable>
+    <xsl:for-each select="$resolvedClassatts">
+      <xsl:apply-templates/>
+    </xsl:for-each>
+  </xsl:template>
+
+
   <xsl:template name="identifyElement">
       <xsl:param name="id"/>
       <xsl:attribute name="xml:id">
@@ -107,8 +120,22 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:key match="tei:moduleSpec[@ident]" name="FILES" use="@ident"/>
   <xsl:variable name="top" select="/"/>
+
   <xsl:template match="@*|comment()|processing-instruction()">
       <xsl:copy-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="@*|comment()|processing-instruction()" mode="egXML">
+      <xsl:copy-of select="."/>
+  </xsl:template>
+
+
+  <xsl:template match="*" mode="egXML"> 
+    <xsl:copy>
+      <xsl:apply-templates
+	  select="*|@*|processing-instruction()|comment()|text()" mode="egXML"/>
+    </xsl:copy>
+
   </xsl:template>
 
   <xsl:template match="teix:egXML">
@@ -118,7 +145,8 @@ of this software, even if advised of the possibility of such damage.
          <xsl:if test="not(@xml:lang)">
 	           <xsl:copy-of select="parent::tei:*/@xml:lang"/>
          </xsl:if>
-         <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()"/>
+         <xsl:apply-templates
+	     select="*|@*|processing-instruction()|comment()|text()"  mode="egXML"/>
       </xsl:copy>
   </xsl:template>
 

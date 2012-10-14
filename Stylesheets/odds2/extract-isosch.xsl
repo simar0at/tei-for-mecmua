@@ -47,7 +47,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </oxdoc:p>
       <oxdoc:p>Author: See AUTHORS</oxdoc:p>
-      <oxdoc:p>Id: $Id$</oxdoc:p>
+      <oxdoc:p>Id: $Id: extract-isosch.xsl 10809 2012-09-11 08:03:39Z rahtz $</oxdoc:p>
       <oxdoc:p>Copyright: 2011, TEI Consortium</oxdoc:p>
       <oxdoc:p/>
       <oxdoc:p>Modified 2012-05 by Syd Bauman: It seems that ISO Schematron does not have
@@ -98,6 +98,11 @@ of this software, even if advised of the possibility of such damage.
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
+      <xsl:if test="not(sch:ns[@prefix='tei'])">
+	<sch:ns prefix="tei"
+		uri="http://www.tei-c.org/ns/1.0"/>
+      </xsl:if>
+
 
       <xsl:comment>keys:</xsl:comment>
       <xsl:for-each select="key('KEYs',1)">

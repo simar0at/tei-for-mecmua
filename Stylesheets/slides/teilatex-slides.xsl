@@ -34,7 +34,7 @@ of this software, even if advised of the possibility of such damage.
 -->
 <!-- 
 TEI XSLT stylesheet family
-$Date$, $Revision$, $Author$
+$Date: 2011-11-07 19:17:54 +0000 (Mon, 07 Nov 2011) $, $Revision: 9669 $, $Author: rahtz $
 
 XSL LaTeX stylesheet to make slides
 

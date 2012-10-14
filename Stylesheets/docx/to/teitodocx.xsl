@@ -62,10 +62,12 @@
   <xsl:param name="bulletThree">*</xsl:param>
   <xsl:param name="bulletTwo">•</xsl:param>
   <xsl:param name="debug">false</xsl:param>
+  <xsl:param name="typewriterFont">DejaVu Sans Mono</xsl:param>
   <xsl:param name="defaultHeaderFooterFile">templates/default.xml</xsl:param>
   <xsl:param name="docDoc"><xsl:value-of select="concat($wordDirectory, '/word/document.xml')"/></xsl:param>
   <xsl:param name="headInXref">false</xsl:param>
   <xsl:param name="inputDir">.</xsl:param>
+  <xsl:param name="inputFile"></xsl:param>
   <xsl:param name="pageHeight">890</xsl:param>
   <xsl:param name="pageWidth">576</xsl:param>
   <xsl:param name="postQuote">’</xsl:param>
@@ -111,7 +113,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id$</p>
+      <p>Id: $Id: teitodocx.xsl 10820 2012-09-17 10:11:19Z rahtz $</p>
       <p>Copyright: 2008, TEI Consortium</p>
     </desc>
   </doc>
@@ -208,125 +210,6 @@ of this software, even if advised of the possibility of such damage.
   </xsl:variable>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
-        Generic template from msDescription for high-level section
-    </desc>
-  </doc>
-  <xsl:template name="processAsSection">
-    <xsl:param name="level"/>
-    <xsl:param name="implicitBlock"/>
-    <xsl:param name="heading"/>
-    <w:p>
-      <w:pPr>
-        <w:pStyle w:val="tei{local-name()}"/>
-      </w:pPr>
-      <w:r>
-        <w:t>
-          <xsl:value-of select="$heading"/>
-        </w:t>
-      </w:r>
-    </w:p>
-    <xsl:call-template name="block-element"/>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-        Generic template for inline objects
-    </desc>
-  </doc>
-  <xsl:template name="processInline">
-    <xsl:param name="before"/>
-    <xsl:param name="after"/>
-    <xsl:param name="style"/>
-    <xsl:param name="stylename"/>
-    <w:r>
-      <w:rPr>
-        <w:rStyle>
-	  <xsl:attribute name="w:val">
-	    <xsl:choose>
-	      <xsl:when test="$stylename=''">
-		<xsl:text>tei</xsl:text>
-		<xsl:value-of select="local-name()"/>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:value-of select="$stylename"/>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:attribute>
-	</w:rStyle>
-	<xsl:choose>
-	  <xsl:when test="$style='italic'">
-            <w:i/>
-          </xsl:when>
-          <xsl:when test="$style='bold'">
-            <w:b/>
-          </xsl:when>
-        </xsl:choose>
-        <xsl:if test="$renderAddDel='true' and ancestor-or-self::tei:del">
-          <w:strike/>
-        </xsl:if>
-      </w:rPr>
-      <w:t>
-        <xsl:value-of select="$before"/>
-        <xsl:value-of select="."/>
-        <xsl:value-of select="$after"/>
-      </w:t>
-    </w:r>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-        Generic template from msDescription for mid-level block
-    </desc>
-  </doc>
-  <xsl:template name="processBlock">
-    <xsl:param name="style"/>
-    <xsl:call-template name="block-element">
-      <xsl:with-param name="style">
-        <xsl:value-of select="$style"/>
-      </xsl:with-param>
-    </xsl:call-template>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-        Generic template from msDescription for labelled object
-    </desc>
-  </doc>
-  <xsl:template name="processWithLabel">
-    <xsl:param name="before"/>
-    <w:r>
-      <w:rPr>
-        <w:i/>
-      </w:rPr>
-      <w:t>
-        <xsl:attribute name="xml:space">preserve</xsl:attribute>
-        <xsl:value-of select="$before"/>
-        <xsl:text>: </xsl:text>
-      </w:t>
-    </w:r>
-    <w:r>
-      <w:rPr>
-        <w:rStyle w:val="tei{local-name()}"/>
-      </w:rPr>
-      <w:t>
-        <xsl:value-of select="."/>
-      </w:t>
-    </w:r>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-        Generic template from msDescription for literal text
-    </desc>
-  </doc>
-  <xsl:template name="processLiteral">
-    <xsl:param name="text"/>
-    <w:r>
-      <w:rPr/>
-      <w:t>
-        <xsl:attribute name="xml:space">preserve</xsl:attribute>
-        <xsl:value-of select="$text"/>
-      </w:t>
-    </w:r>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
         The starting points in the conversion to docx.
     </desc>
   </doc>
@@ -339,21 +222,24 @@ of this software, even if advised of the possibility of such damage.
     </doc>
 
     <xsl:template match="/">
+      <xsl:if test="$debug='true'">
+	<xsl:message>Processing file <xsl:value-of
+	select="$inputFile"/></xsl:message>
+      </xsl:if>
+      <xsl:call-template name="write-docxfiles"/>
       <xsl:variable name="pass0">
 	<xsl:apply-templates mode="pass0"/>
       </xsl:variable>
-      <xsl:apply-templates select="$pass0/*"/>
-      <!--
-	  <xsl:result-document href="/tmp/x.xml">
-	  <xsl:copy-of select="$pass0"/>
-	  </xsl:result-document>
-      -->
+      <xsl:variable name="cleanup">
+	<xsl:apply-templates select="$pass0/*"/>
+      </xsl:variable>
+      <xsl:apply-templates select="$cleanup/*" mode="cleanup"/>
     </xsl:template>
 
   <xsl:template match="/tei:TEI|/tei:teiCorpus">
-    <xsl:call-template name="write-docxfiles"/>
     <xsl:call-template name="create-document-dot-xml"/>
   </xsl:template>
+
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
@@ -517,7 +403,7 @@ of this software, even if advised of the possibility of such damage.
     <xsl:for-each-group select="current-group()" group-starting-with="*[not(tei:is-inline(.))]">
       <xsl:choose>
         <!-- if the current item is a block element, we process that one,
-                     and then take call this function recursively was all the other
+                     and then call this function recursively over all the other
                      elements -->
         <xsl:when test="self::*[not(tei:is-inline(.))]">
           <!-- process block element -->
@@ -538,12 +424,12 @@ of this software, even if advised of the possibility of such damage.
         <!-- we encountered an inline element. This means that the current group only
                      contains inline elements -->
         <xsl:otherwise>
-          <!--
+	  <!--
 	  <xsl:message>+@@ <xsl:value-of select="name()"/>: pPr:	  <xsl:if test="not(empty($pPr))"><xsl:copy-of
 	  select="$pPr"/></xsl:if>; style: <xsl:if
 	  test="not(empty($style))"><xsl:copy-of
 	  select="$style"/></xsl:if></xsl:message>
--->
+	  -->
           <!-- create all text runs for each item in the current group. we will later
                          on decide whether we are grouping them together in a w:p or not. -->
           <xsl:variable name="innerRuns">
@@ -865,9 +751,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="tei:render-bold(.)">
         <w:b/>
       </xsl:when>
-      <xsl:when test="self::tei:hi[not(@rend)]">
-        <w:b/>
-      </xsl:when>
       <xsl:when test="self::tbx:hi[@style='bold']">
         <w:i/>
       </xsl:when>
@@ -1136,7 +1019,12 @@ of this software, even if advised of the possibility of such damage.
     <xsl:param name="highlight"/>
     <xsl:call-template name="block-element">
       <xsl:with-param name="select">
-        <tei:p rend="Special" iso:style="font-family:DejaVu Sans Mono; font-size:18; text-align:left;">
+        <tei:p rend="Special">
+	  <xsl:attribute name="iso:style">
+	    <xsl:text>font-family:</xsl:text>
+	    <xsl:value-of select="$typewriterFont"/>
+	    <xsl:text>; font-size:18; text-align:left;</xsl:text>
+	  </xsl:attribute>
           <xsl:call-template name="create-egXML-section"/>
         </tei:p>
       </xsl:with-param>
@@ -1150,8 +1038,13 @@ of this software, even if advised of the possibility of such damage.
       <xsl:call-template name="block-element">
         <xsl:with-param name="style">Special</xsl:with-param>
         <xsl:with-param name="select">
-          <tei:p rend="Special" iso:style="font-family:DejaVu Sans Mono; font-size:18;text-align:left;">
-            <xsl:copy-of select="*|processing-instruction()|comment()|text()"/>
+          <tei:p rend="Special">
+	  <xsl:attribute name="iso:style">
+	    <xsl:text>font-family:</xsl:text>
+	    <xsl:value-of select="$typewriterFont"/>
+	    <xsl:text>; font-size:18; text-align:left;</xsl:text>
+	  </xsl:attribute>
+	  <xsl:copy-of select="*|processing-instruction()|comment()|text()"/>
           </tei:p>
         </xsl:with-param>
       </xsl:call-template>
@@ -1348,7 +1241,7 @@ of this software, even if advised of the possibility of such damage.
         </xsl:otherwise>
       </xsl:choose>
       <xsl:choose>
-        <xsl:when test="tei:note">
+        <xsl:when test="count(*)=1 and tei:note">
           <xsl:apply-templates/>
         </xsl:when>
         <xsl:otherwise>
@@ -2107,9 +2000,18 @@ of this software, even if advised of the possibility of such damage.
     </w:r>
   </xsl:template>
   <xsl:template match="tei:lb">
-    <w:r>
-      <w:br/>
-    </w:r>
+    <xsl:choose>
+      <xsl:when test="parent::tei:div"/>
+      <xsl:when test="parent::tei:body"/>
+      <xsl:when test="parent::tei:back"/>
+      <xsl:when test="parent::tei:front"/>
+      <xsl:when test="tei:is-last(.)"/>
+      <xsl:otherwise>
+	<w:r>
+	  <w:br/>
+	</w:r>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   <!-- hyperlink -->
   <xsl:template match="tei:ptr">
@@ -2148,6 +2050,13 @@ of this software, even if advised of the possibility of such damage.
     <xsl:choose>
       <xsl:when test="starts-with(@target,'#') and id(substring(@target,2))">
         <xsl:call-template name="linkMe">
+          <xsl:with-param name="anchor">
+            <xsl:apply-templates/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:when test="starts-with(@target,'http')">
+        <xsl:call-template name="linkMeUsingHyperlink">
           <xsl:with-param name="anchor">
             <xsl:apply-templates/>
           </xsl:with-param>
@@ -2369,7 +2278,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:with-param name="style">Subtitle</xsl:with-param>
     </xsl:call-template>
   </xsl:template>
-  <xsl:template match="tei:titlePage/tei:docAuthor" priority="99">
+  <xsl:template match="tei:docAuthor" priority="99">
     <xsl:call-template name="block-element">
       <xsl:with-param name="style">Author</xsl:with-param>
     </xsl:call-template>
@@ -2469,6 +2378,18 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
+	Paragraph in list
+      </desc>
+  </doc>
+  <xsl:template match="tei:item/tei:p[not(@rend)]" mode="pass0">
+    <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass0"/>
+    <xsl:if test="following-sibling::tei:p">
+      <tei:lb/>
+    </xsl:if>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
 	Page break
       </desc>
   </doc>
@@ -2547,7 +2468,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template name="marginalNote">
 	<xsl:call-template name="block-element">
         <xsl:with-param name="style">
-	<xsl:value-of select="substring-after(@place,'margin')"/>
+	<xsl:value-of select="if (@place='margin') then 'marginOuter' else @place"/>
 	</xsl:with-param>
     </xsl:call-template>
   </xsl:template>
@@ -2564,6 +2485,181 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass0"/>
     </xsl:copy>
   </xsl:template>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+        Generic template from msDescription for high-level section
+    </desc>
+  </doc>
+  <xsl:template name="processAsSection">
+    <xsl:param name="level"/>
+    <xsl:param name="implicitBlock"/>
+    <xsl:param name="heading"/>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="tei{local-name()}"/>
+      </w:pPr>
+      <w:r>
+        <w:t>
+          <xsl:value-of select="$heading"/>
+        </w:t>
+      </w:r>
+    </w:p>
+    <xsl:call-template name="block-element"/>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+        Generic template for inline objects
+    </desc>
+  </doc>
+  <xsl:template name="processInline">
+    <xsl:param name="before"/>
+    <xsl:param name="after"/>
+    <xsl:param name="style"/>
+    <xsl:param name="stylename"/>
+    <w:r>
+      <w:rPr>
+        <w:rStyle>
+	  <xsl:attribute name="w:val">
+	    <xsl:choose>
+	      <xsl:when test="$stylename=''">
+		<xsl:text>tei</xsl:text>
+		<xsl:value-of select="local-name()"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:value-of select="$stylename"/>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:attribute>
+	</w:rStyle>
+	<xsl:choose>
+	  <xsl:when test="$style='italic'">
+            <w:i/>
+          </xsl:when>
+          <xsl:when test="$style='bold'">
+            <w:b/>
+          </xsl:when>
+        </xsl:choose>
+        <xsl:if test="$renderAddDel='true' and ancestor-or-self::tei:del">
+          <w:strike/>
+        </xsl:if>
+      </w:rPr>
+      <w:t>
+        <xsl:value-of select="$before"/>
+        <xsl:value-of select="."/>
+        <xsl:value-of select="$after"/>
+      </w:t>
+    </w:r>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+        Generic template from msDescription for mid-level block
+    </desc>
+  </doc>
+  <xsl:template name="processBlock">
+    <xsl:param name="style"/>
+    <xsl:call-template name="block-element">
+      <xsl:with-param name="style">
+        <xsl:value-of select="$style"/>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+        Generic template from msDescription for labelled object
+    </desc>
+  </doc>
+  <xsl:template name="processWithLabel">
+    <xsl:param name="before"/>
+    <w:r>
+      <w:rPr>
+        <w:i/>
+      </w:rPr>
+      <w:t>
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:value-of select="$before"/>
+        <xsl:text>: </xsl:text>
+      </w:t>
+    </w:r>
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="tei{local-name()}"/>
+      </w:rPr>
+      <w:t>
+        <xsl:value-of select="."/>
+      </w:t>
+    </w:r>
+  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+        Generic template from msDescription for literal text
+    </desc>
+  </doc>
+  <xsl:template name="processLiteral">
+    <xsl:param name="text"/>
+    <w:r>
+      <w:rPr/>
+      <w:t>
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>
+        <xsl:value-of select="$text"/>
+      </w:t>
+    </w:r>
+  </xsl:template>
+
+
+  <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
+    <desc>Fallback template copying existing attributes etc in final stage cleanup</desc>
+  </doc>
+    <xsl:template match="@*|comment()|processing-instruction()|text()" mode="cleanup">
+      <xsl:copy-of select="."/>
+    </xsl:template>
+
+  <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
+    <desc>Fallback template copying existing elements in final stage cleanup</desc>
+  </doc>
+    <xsl:template match="*" mode="cleanup">
+      <xsl:copy>
+	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="cleanup"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
+    <desc>a run as a direct child of body is not allowed, how did it
+    creep through? Wrap up in a p.</desc>
+  </doc>
+
+    <xsl:template match="w:body/w:r" mode="cleanup">
+      <w:p>
+	<xsl:copy>
+	<xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="cleanup"/>
+	</xsl:copy>
+      </w:p>
+    </xsl:template>
+
+  <doc type="template" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
+    <desc>A p as a child of a p is not allowed. Group the other
+    siblings in self-contained p elements</desc>
+  </doc>
+
+    <xsl:template match="w:p[w:p]" mode="cleanup">
+      <xsl:variable name="props" select="w:pPr"/>
+      <xsl:for-each-group select="*" group-adjacent="local-name()">
+	<xsl:choose>
+	  <xsl:when test="current-grouping-key()='p'">
+	    <xsl:copy-of select="current-group()"/>
+	  </xsl:when>
+	  <xsl:when test="current-grouping-key()='pPr'"/>
+	  <xsl:otherwise>
+	    <w:p>
+	      <xsl:copy-of select="$props"/>	      
+	      <xsl:copy-of select="current-group()"/>	      
+	    </w:p>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:for-each-group>
+    </xsl:template>
+
 
 
 </xsl:stylesheet>

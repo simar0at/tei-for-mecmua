@@ -79,7 +79,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: teitoodt.xsl 10796 2012-09-09 21:47:29Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>
@@ -927,7 +927,7 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="tei:stage">
     <xsl:choose>
-      <xsl:when test="parent::tei:sp">
+      <xsl:when test="parent::tei:sp or parent::tei:div">
 	<text:p text:style-name="Stage">
 	  <xsl:apply-templates/>
 	</text:p>
@@ -942,6 +942,12 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="tei:speaker">
       <text:p text:style-name="Speaker">
+	<xsl:apply-templates/>
+      </text:p>
+  </xsl:template>
+
+  <xsl:template match="tei:ab">
+      <text:p>
 	<xsl:apply-templates/>
       </text:p>
   </xsl:template>

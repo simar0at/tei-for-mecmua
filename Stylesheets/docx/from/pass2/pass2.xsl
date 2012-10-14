@@ -68,7 +68,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: pass2.xsl 10824 2012-09-17 11:43:33Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc>
    </doc>
@@ -453,6 +453,24 @@ of this software, even if advised of the possibility of such damage.
       </sp>
     </xsl:template>
 
+    <xsl:template match="tei:figure/tei:p[tei:graphic and
+			 count(*)=1]" mode="pass2">
+      <xsl:apply-templates mode="pass2"/>      
+    </xsl:template>
+
+    <xsl:template match="tei:p[@rend='caption' or @rend='Figure title']" mode="pass2">
+      <head>
+	<xsl:apply-templates mode="pass2"/>      
+      </head>
+    </xsl:template>
+
+    <xsl:template match="tei:div[count(*)=1 and tei:head[not(text())]]" mode="pass2"/>
+
+    <xsl:template
+	match="tei:figure/tei:p[@rend='caption' or @rend='Figure title']/text()[starts-with(.,'Figure  ')]"
+	mode="pass2">
+      <xsl:value-of select="substring(.,9)"/>
+    </xsl:template>
 
 
 </xsl:stylesheet>

@@ -36,7 +36,7 @@ theory of liability, whether in contract, strict liability, or tort
 (including negligence or otherwise) arising in any way out of the use
 of this software, even if advised of the possibility of such damage.
 
-     $Id$
+     $Id: processpb.xsl 10804 2012-09-10 22:16:04Z rahtz $
 
     Take an arbitrary TEI file and move page breaks (<pb>) up in the
     hierarchy, splitting containers as needed, until <pb>s are at the
@@ -48,23 +48,24 @@ of this software, even if advised of the possibility of such damage.
     <xsl:copy-of select="."/>
   </xsl:template>
 
-  <xsl:template match="TEI|teiCorpus|group">
+  <xsl:template match="TEI|teiCorpus|group|text">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="*|processing-instruction()|comment()|text()"/>
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="text|body|back|front">
-    <xsl:copy>
-      <xsl:apply-templates select="@*"/>
+  <xsl:template match="text/body|text/back|text/front">
       <xsl:variable name="pages">
-        <xsl:apply-templates select="*|processing-instruction()|comment()|text()"/>
+	<xsl:copy>
+	  <xsl:apply-templates select="@*"/>
+	  <xsl:apply-templates
+	      select="*|processing-instruction()|comment()|text()"/>
+	</xsl:copy>
       </xsl:variable>
       <xsl:for-each select="$pages">
-        <xsl:apply-templates select="*|processing-instruction()|comment()|text()" mode="pass2"/>
+	<xsl:apply-templates  mode="pass2"/>
       </xsl:for-each>
-    </xsl:copy>
   </xsl:template>
 
 
@@ -89,20 +90,17 @@ of this software, even if advised of the possibility of such damage.
     <xsl:param name="eName"/>
     <xsl:choose>
       <xsl:when test="not(.//pb)">
-        <xsl:copy>
-          <xsl:apply-templates select="@*"/>
-          <xsl:apply-templates select="*|processing-instruction()|comment()|text()"/>
-        </xsl:copy>
+        <xsl:copy-of select="."/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="pass">
-          <xsl:call-template name="groupbypb">
-            <xsl:with-param name="Name" select="$eName"/>
-          </xsl:call-template>
+	  <xsl:call-template name="groupbypb">
+	    <xsl:with-param name="Name" select="$eName"/>
+	  </xsl:call-template>
         </xsl:variable>
-        <xsl:for-each select="$pass">
-          <xsl:apply-templates/>
-        </xsl:for-each>
+	<xsl:for-each select="$pass">
+	  <xsl:apply-templates/>
+	</xsl:for-each>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -138,7 +136,11 @@ of this software, even if advised of the possibility of such damage.
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="*[pb]" mode="pass2">
+  <xsl:template match="comment()|@*|processing-instruction()|text()" mode="pass2">
+    <xsl:copy-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="*[pb]" mode="pass2" >
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:for-each-group select="*" group-starting-with="pb">
@@ -155,10 +157,6 @@ of this software, even if advised of the possibility of such damage.
         </xsl:choose>
       </xsl:for-each-group>
     </xsl:copy>
-  </xsl:template>
-
-  <xsl:template match="comment()|@*|processing-instruction()|text()" mode="pass2">
-    <xsl:copy-of select="."/>
   </xsl:template>
 
 </xsl:stylesheet>

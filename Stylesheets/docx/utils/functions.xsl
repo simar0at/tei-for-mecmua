@@ -59,7 +59,7 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id$</p>
+         <p>Id: $Id: functions.xsl 10881 2012-10-01 16:34:00Z rahtz $</p>
          <p>Copyright: 2008, TEI Consortium</p>
       </desc></doc>
 
@@ -131,9 +131,29 @@ of this software, even if advised of the possibility of such damage.
     
         <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Returns a listtype for a given stylename (return empty string to figure it out dynamically).</desc></doc>
+
     <xsl:function name="tei:get-listtype" as="xs:string">
         <xsl:param name="style"/>
-        <xsl:text/>
+        <xsl:choose>
+            <xsl:when test="starts-with($style,'dl')">
+                <xsl:text>gloss</xsl:text>
+            </xsl:when>
+            <xsl:when test="starts-with($style,$ListBullet)">
+                <xsl:text>unordered</xsl:text>
+            </xsl:when>
+            <xsl:when test="starts-with($style,$ListContinue)">
+                <xsl:text>unordered</xsl:text>
+            </xsl:when>
+            <xsl:when test="starts-with($style,$ListNumber)">
+                <xsl:text>ordered</xsl:text>
+            </xsl:when>
+            <xsl:when test="$style=$List">
+                <xsl:text>ordered</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
         <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -162,10 +182,10 @@ of this software, even if advised of the possibility of such damage.
     <xsl:function name="tei:is-heading" as="xs:boolean">
         <xsl:param name="p"/>
 	<xsl:variable name="s" select="$p/w:pPr/w:pStyle/@w:val"/>
-      
         <xsl:choose>
-            <xsl:when test="starts-with($s,'Heading')">true</xsl:when>
-            <xsl:when test="starts-with($s,'heading')">true</xsl:when>
+            <xsl:when test="matches($s,'[Hh]eading.+')">true</xsl:when>
+            <xsl:when test="matches($s,'[Cc]aption')">true</xsl:when>
+            <xsl:when test="matches($s,'Figure[ ]?title')">true</xsl:when>
             <xsl:otherwise>false</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -176,7 +196,9 @@ of this software, even if advised of the possibility of such damage.
         <xsl:param name="p"/>        
         <xsl:choose>
             <xsl:when test="$p[contains(w:pPr/w:pStyle/@w:val,'List')]">true</xsl:when>
-            <xsl:when test="$p[w:pPr/w:pStyle/@w:val='dl']">true</xsl:when>
+            <xsl:when
+		test="$p[w:pPr/w:pStyle/@w:val='dl']">true</xsl:when>
+	    <xsl:when test="$p/w:pPr/w:numPr[not(w:ins)]">true</xsl:when>
             <xsl:otherwise>false</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -196,8 +218,10 @@ of this software, even if advised of the possibility of such damage.
     <xsl:function name="tei:is-figure" as="xs:boolean">
         <xsl:param name="p"/>        
         <xsl:choose>
-            <xsl:when test="$p[contains(w:pPr/w:pStyle/@w:val,'Figure')]">true</xsl:when>
-            <xsl:when test="$p[contains(w:pPr/w:pStyle/@w:val,'Caption')]">true</xsl:when>
+            <xsl:when test="$p[matches(w:pPr/w:pStyle/@w:val,'[Ff]igure')]">true</xsl:when>
+            <xsl:when test="$p[matches(w:pPr/w:pStyle/@w:val,'[Cc]aption')]">true</xsl:when>
+            <xsl:when test="$p[matches(w:pPr/w:pStyle/@w:val,'Figuretitle')]">true</xsl:when>
+            <xsl:when test="$p[w:r/w:drawing and not(w:r/w:t)]">true</xsl:when>
             <xsl:otherwise>false</xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -231,12 +255,5 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
 
-    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-		Returns the current date.</desc></doc>
-
-	  <xsl:function name="tei:whatsTheDate">
-        <xsl:value-of select="format-dateTime(current-dateTime(),'[Y]-[M02]-[D02]T[H02]:[m02]:[s02]Z')"/>
-    </xsl:function>
 
 </xsl:stylesheet>
