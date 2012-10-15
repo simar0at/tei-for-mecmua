@@ -172,11 +172,11 @@ of this software, even if advised of the possibility of such damage.
      </xsl:variable>
      
      <!-\- Do the main transformation and store everything in the variable pass1 -\->
-     <xsl:variable name="pass1">
+<!-\-     <xsl:variable name="pass1">-\->
        <xsl:for-each select="$pass0">
 	 <xsl:apply-templates/>
        </xsl:for-each>
-     </xsl:variable>		  
+<!-\-     </xsl:variable>	-\->	  
 
      <!-\- debug   
 	 <xsl:result-document href="/tmp/foo.xml">
@@ -185,7 +185,7 @@ of this software, even if advised of the possibility of such damage.
      -\->
      <!-\- Do the final parse and create valid TEI -\->
 
-     <xsl:apply-templates select="$pass1" mode="pass2"/>
+<!-\-     <xsl:apply-templates select="$pass1" mode="pass2"/>-\->
      
      <xsl:call-template name="fromDocxFinalHook"/>
    </xsl:template>-->
