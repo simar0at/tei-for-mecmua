@@ -130,7 +130,13 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>
     </xsl:template>
     
-    
+	<xsl:template name="paragraph-wp">
+		<xsl:param name="style"/>
+		<xsl:call-template name="paragraph-wp-base">
+			<xsl:with-param name="style" select="$style"/>
+		</xsl:call-template>
+	</xsl:template>
+	
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>
         Named template for handling w:p; we 
@@ -138,7 +144,7 @@ of this software, even if advised of the possibility of such damage.
        and check for change records.
     </desc>
    </doc>
-   <xsl:template name="paragraph-wp">
+   <xsl:template name="paragraph-wp-base">
      <xsl:param name="style"/>
      <xsl:element name="p">
        <xsl:if test="$style and not($style='Default')">

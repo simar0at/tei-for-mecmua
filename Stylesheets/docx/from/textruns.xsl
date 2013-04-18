@@ -146,9 +146,9 @@ of this software, even if advised of the possibility of such damage.
        </xsl:when>
        
        <xsl:when test="not($style='')">
-	 <hi rend="{replace($style,' ','_')}">
-	   <xsl:apply-templates/>
-	 </hi>
+         <xsl:call-template name="namedCharacterStyle">
+           <xsl:with-param name="style" select="$style"/>
+         </xsl:call-template>
        </xsl:when>
        
        <xsl:otherwise>
@@ -158,7 +158,21 @@ of this software, even if advised of the possibility of such damage.
      </xsl:choose>
         
    </xsl:template>
-    
+
+  <xsl:template name="namedCharacterStyle">
+    <xsl:param name="style"/>
+    <xsl:call-template name="namedCharacterStyle-base">
+      <xsl:with-param name="style" select="$style"/>
+    </xsl:call-template>
+  </xsl:template>
+  
+  <xsl:template name="namedCharacterStyle-base">
+    <xsl:param name="style"/>
+    <hi rend="{replace($style,' ','_')}">
+      <xsl:apply-templates/>
+    </hi>
+  </xsl:template>
+  
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>If there is no special style defined, look at the Word
       underlying basic formatting. We can ignore the run's font change if 
