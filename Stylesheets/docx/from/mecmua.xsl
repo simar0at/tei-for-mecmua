@@ -241,13 +241,14 @@
                                     select="if (exists($thisId)) then string-join($comments/w:comments/w:comment[@w:id = $thisId]//w:t, '') else ' '"/>
                                 <xsl:variable name="type" select="./w:rPr/w:rStyle/@w:val"
                                     as="xs:string?"/>
-                                <xsl:element name="place">
-                                    <xsl:attribute name="xml:id">
-                                        <xsl:value-of select="generate-id()"/>
-                                    </xsl:attribute>
+                                <xsl:variable name="generated-id" select="generate-id()"/>
                                     <xsl:analyze-string select="$annotationText"
                                         regex="{$placeRegExp}">
                                         <xsl:matching-substring>
+                                            <xsl:element name="place">
+                                            <xsl:attribute name="xml:id">
+                                                 <xsl:value-of select="$generated-id"/>
+                                            </xsl:attribute>
                                             <xsl:attribute name="type">
                                                 <xsl:value-of
                                                   select="normalize-space(regex-group(1))"/>
@@ -269,15 +270,20 @@
                                                 <xsl:value-of
                                                   select="normalize-space(regex-group(4))"/>
                                             </note>
+                                            </xsl:element>
                                         </xsl:matching-substring>
                                         <xsl:non-matching-substring>
+                                        <place>
+                                            <xsl:attribute name="xml:id">
+                                                <xsl:value-of select="$generated-id"/>
+                                            </xsl:attribute>
                                             <placeName>
                                                 <xsl:value-of select="$wordInText"/>
                                             </placeName>
                                             <note> This name is not annotated!</note>
+                                        </place>
                                         </xsl:non-matching-substring>
                                     </xsl:analyze-string>
-                                </xsl:element>
                             </xsl:for-each>
                         </listPlace>
                     </tagUsage>
