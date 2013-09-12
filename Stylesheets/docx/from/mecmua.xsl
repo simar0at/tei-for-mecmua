@@ -24,7 +24,9 @@
     <xsl:variable name="auxSubstStyle" as="xs:string">Zusatzstoffe</xsl:variable>
     <xsl:variable name="astronomyStyle" as="xs:string">Astronomie</xsl:variable>
     <xsl:variable name="textGenreStyle" as="xs:string">Textgattungen</xsl:variable>
-    <xsl:variable name="otherStyles" select="($plantStyle, $auxSubstStyle, $astronomyStyle, $textGenreStyle)"/>
+    <xsl:variable name="illnessesStyle" as="xs:string">Krankheiten</xsl:variable>
+    
+    <xsl:variable name="otherStyles" select="($plantStyle, $auxSubstStyle, $astronomyStyle, $textGenreStyle, $illnessesStyle)"/>
     
     <xsl:variable name="nameRegExp" as="xs:string">aka:(.*)profession:(.*)died:(.*)reign:(.*)-?(.*)remark:(.*)</xsl:variable>
     <xsl:variable name="placeRegExp">type:(.*)where today:(.*)today’s name:(.*)remark:(.*)</xsl:variable>
@@ -454,7 +456,7 @@
             <xsl:when test="$style=$otherStyles">
                 <xsl:element name="name">
                     <xsl:choose>
-                        <xsl:when test="$style=$placeStyle">
+                        <xsl:when test="$style=$plantStyle">
                             <xsl:attribute name="type">plant</xsl:attribute>
                         </xsl:when>
                         <xsl:when test="$style=$astronomyStyle">
@@ -465,7 +467,10 @@
                         </xsl:when>
                         <xsl:when test="$style=$textGenreStyle">
                             <xsl:attribute name="type">text_genre</xsl:attribute>
-                        </xsl:when>                    
+                        </xsl:when>
+                        <xsl:when test="$style=$illnessesStyle">
+                            <xsl:attribute name="type">illness</xsl:attribute>
+                        </xsl:when>
                     </xsl:choose>
                     <note>info missing</note>
                     <xsl:apply-templates/>
