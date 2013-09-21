@@ -16,6 +16,7 @@
         </xd:desc>
     </xd:doc>
     
+    <xsl:variable name="folioDescStyle">folio</xsl:variable>
     
     <xsl:variable name="nameStyle" as="xs:string">Name</xsl:variable>
     <xsl:variable name="placeStyle" as="xs:string">Orte</xsl:variable>
@@ -81,12 +82,8 @@
         <xsl:choose>
             <xsl:when test="$style='Kommentarzeichen'"/> <!-- supress -->
             <xsl:when test="$style='annotation reference'"/> <!-- supress -->
-            <xsl:when test="$style='footnote reference'">
-                <xsl:apply-templates/>
-            </xsl:when>
-            <xsl:when test="$style='Funotenzeichen'">
-                <xsl:apply-templates/>
-            </xsl:when>
+            <xsl:when test="$style='footnote reference'"/><!-- suppress -->
+            <xsl:when test="$style='Funotenzeichen'"/><!-- suppress -->
             <xsl:when test="$style=($nameStyle, $placeStyle, $otherStyles)">
                 <xsl:choose>
                     <xsl:when test="following-sibling::w:commentRangeEnd/@w:id">
@@ -448,33 +445,51 @@
                 </xsl:choose>
             </xsl:when>
             <xsl:when test="$style=$placeStyle">
-                <xsl:element name="placeName">
-                    <note>info missing</note>
-                    <xsl:apply-templates/>
-                </xsl:element>
+                <xsl:choose>
+                    <xsl:when test="exists(mec:getRefIdPlace($name))">
+                        <xsl:call-template name="semanticStyle">
+                            <xsl:with-param name="style" select="$style"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:element name="placeName">
+                            <note>info missing</note>
+                            <xsl:apply-templates/>
+                        </xsl:element>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:when test="$style=$otherStyles">
-                <xsl:element name="name">
-                    <xsl:choose>
-                        <xsl:when test="$style=$plantStyle">
-                            <xsl:attribute name="type">plant</xsl:attribute>
-                        </xsl:when>
-                        <xsl:when test="$style=$astronomyStyle">
-                            <xsl:attribute name="type">astronomy</xsl:attribute>
-                        </xsl:when>
-                        <xsl:when test="$style=$auxSubstStyle">
-                            <xsl:attribute name="type">aux_subst</xsl:attribute>
-                        </xsl:when>
-                        <xsl:when test="$style=$textGenreStyle">
-                            <xsl:attribute name="type">text_genre</xsl:attribute>
-                        </xsl:when>
-                        <xsl:when test="$style=$illnessesStyle">
-                            <xsl:attribute name="type">illness</xsl:attribute>
-                        </xsl:when>
-                    </xsl:choose>
-                    <note>info missing</note>
-                    <xsl:apply-templates/>
-                </xsl:element>
+                <xsl:choose>
+                    <xsl:when test="exists(mec:getRefIdOtherNames($name))">
+                        <xsl:call-template name="semanticStyle">
+                            <xsl:with-param name="style" select="$style"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:element name="name">
+                            <xsl:choose>
+                                <xsl:when test="$style=$plantStyle">
+                                    <xsl:attribute name="type">plant</xsl:attribute>
+                                </xsl:when>
+                                <xsl:when test="$style=$astronomyStyle">
+                                    <xsl:attribute name="type">astronomy</xsl:attribute>
+                                </xsl:when>
+                                <xsl:when test="$style=$auxSubstStyle">
+                                    <xsl:attribute name="type">aux_subst</xsl:attribute>
+                                </xsl:when>
+                                <xsl:when test="$style=$textGenreStyle">
+                                    <xsl:attribute name="type">text_genre</xsl:attribute>
+                                </xsl:when>
+                                <xsl:when test="$style=$illnessesStyle">
+                                    <xsl:attribute name="type">illness</xsl:attribute>
+                                </xsl:when>
+                            </xsl:choose>
+                            <note>info missing</note>
+                            <xsl:apply-templates/>
+                        </xsl:element>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when> 
         </xsl:choose>
     </xsl:template>
@@ -482,6 +497,13 @@
     <xsl:template name="paragraph-wp">
         <xsl:param name="style"/>
         <xsl:choose>
+            <xsl:when test="$style=$folioDescStyle">
+                <pb>
+                    <xsl:attribute name="n">
+                        <xsl:value-of select="substring-before(string-join(.//w:t, ''),':')"/>
+                    </xsl:attribute>
+                </pb>
+            </xsl:when>
             <xsl:when test="$style='StandardWeb' or $style='Funotentext'">
                 <p>
                         <xsl:call-template name="process-checking-for-crossrefs"/>
