@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" exclude-result-prefixes="rng tei a teix">
+<xsl:stylesheet xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+xmlns:teix="http://www.tei-c.org/ns/Examples"
+xmlns:rng="http://relaxng.org/ns/structure/1.0"
+xmlns:tei="http://www.tei-c.org/ns/1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+exclude-result-prefixes="svrl rng tei a teix">
   <xsl:include href="pointerattributes.xsl"/>
   <xsl:key name="IDENTS" match="tei:moduleSpec|tei:elementSpec|tei:classSpec|tei:macroSpec" use="@ident"/>
   <xsl:key name="EXIDS" match="teix:*[@xml:id]" use="@xml:id"/>
   <xsl:key name="IDS" match="*[@xml:id]" use="@xml:id"/>
-  <xsl:output indent="yes"/>
+  <xsl:output indent="yes" omit-xml-declaration="yes"/>
     <xsl:template match="/">
       <Messages>
 	<xsl:apply-templates/>
@@ -13,7 +19,14 @@
 	    <ERROR>id <xsl:value-of select="@xml:id"/> used more than once</ERROR>
 	  </xsl:if>
 	</xsl:for-each>
+	<xsl:apply-templates select="doc('../Schematron1.xml')//svrl:failed-assert"/>
+	<xsl:apply-templates select="doc('../Schematron2.xml')//svrl:failed-assert"/>
       </Messages>
+  </xsl:template>
+
+  <xsl:template match="svrl:failed-assert">
+    <ERROR>Schematron error: <xsl:value-of select="svrl:text"/> [Test: <xsl:value-of select="@test"/>] 
+    Location: <xsl:value-of select="replace(replace(@location,'\[namespace-uri\(\)=.http://www.tei-c.org/ns/1.0.\]',''),'/\*:','/')"/></ERROR>
   </xsl:template>
 
   <xsl:template match="text()"/>
@@ -209,6 +222,7 @@
 	  </xsl:variable>
 	  <xsl:choose>
 	    <xsl:when test="key('EXIDS',$N)"/>
+	    <xsl:when test="$N='COHQHF'"/> <!-- special exception -->
 	    <xsl:when test="id($N)">
 	      <xsl:call-template name="Remark">
 		<xsl:with-param name="value" select="$What"/>
@@ -230,6 +244,11 @@
 	    </xsl:otherwise>
 	  </xsl:choose>
 	</xsl:when>
+	<xsl:when test="starts-with($What,'example.xml')"/>
+	<xsl:when test="ends-with($What,'.png')"/>
+	<xsl:when test="ends-with($What,'.mp4')"/>
+	<xsl:when test="ends-with($What,'.wav')"/>
+	<xsl:when test="ends-with($What,'.rng')"/>
 	<xsl:when test="starts-with($What,'tei:')"/>
 	<xsl:when test="starts-with($What,'mailto:')"/>
 	<xsl:when test="starts-with($What,'http:')"/>

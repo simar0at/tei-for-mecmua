@@ -53,18 +53,6 @@ of this software, even if advised of the possibility of such damage.
 
 
 <xsl:key name="XDS" match="xd:doc" use="@class"/>
-  <xsl:param name="startAttribute"/>
-  <xsl:param name="endAttribute"/>
-  <xsl:param name="startAttributeValue"/>
-  <xsl:param name="endAttributeValue"/>
-  <xsl:param name="startComment"/>
-  <xsl:param name="endComment"/>
-  <xsl:param name="startElement"/>
-  <xsl:param name="endElement"/>
-  <xsl:param name="startElementName"/>
-  <xsl:param name="endElementName"/>
-  <xsl:param name="startNamespace"/>
-  <xsl:param name="endNamespace"/>
   <xsl:param name="spaceCharacter"><xsl:text>  </xsl:text></xsl:param>
 
 <xsl:param name="numberHeadings">false</xsl:param>
@@ -179,7 +167,7 @@ return "";
 <p>Name of output file:
  <html:input type="textbox" name="outputFile" value="myTei.xsl"/></p>
 
-   <xsl:for-each select="TEI/text/body/div[@xml:id]">
+   <xsl:for-each select="TEI/text/body/div[@type='param']">
        <p><hi><xsl:number/>: <xsl:value-of select="head"/></hi></p>
        <p><ref target="customize.html#{@xml:id}">Details of this section</ref></p>
        <table>

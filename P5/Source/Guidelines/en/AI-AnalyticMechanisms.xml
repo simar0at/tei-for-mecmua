@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="AI" n="15"><head>Simple Analytic Mechanisms</head>
 
 <p>This chapter describes a module for associating simple analyses and
@@ -242,9 +246,10 @@ in meaning to the <gi>seg</gi> element with a <att>type</att>
 attribute of <q>w</q>, <q>m</q>, or <q>c</q> respectively, and may
 occur wherever <gi>seg</gi> is permitted to occur. However, their
 content is more constrained than <gi>seg</gi>: for example,
-the <gi>w</gi> element should only contain <gi>w</gi>, <gi>m</gi>, and
-<gi>c</gi> elements, or plain text; the <gi>m</gi> element should
-contain only <gi>c</gi> elements or plain text; the <gi>c</gi> element
+the <gi>w</gi> element should only contain <gi>w</gi>, <gi>m</gi>,
+<gi>c</gi> elements or <gi>pc</gi> elements, or plain text; the <gi>m</gi> element should
+contain only <gi>c</gi> or <gi>pc</gi> elements or plain text; both
+the <gi>c</gi> and <gi>pc</gi> elements
 should contain only plain text, most often only a single character or
 a sequence of graphemes to be treated as a single
 character. Consequently, while these more specific elements can be
@@ -261,8 +266,9 @@ level</term>. Consider the problem of segmenting an occurrence of the
 The first of the following two encodings is legitimate; the second is
 not, since the <gi>mentioned</gi> element is not part of the content
 model of the <gi>w</gi> element:
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><mentioned><w>grandiloquent</w></mentioned></egXML>
-<eg><![CDATA[<w><mentioned>grandiloquent</mentioned></w>]]></eg></p>
+<egXML xmlns="http://www.tei-c.org/ns/Examples">
+<mentioned><w>grandiloquent</w></mentioned></egXML>
+<egXML xmlns="http://www.tei-c.org/ns/Examples" valid="false"><w xmlns=""><mentioned>grandiloquent</mentioned></w></egXML></p>
 <p>On the other hand, both of the following encodings <emph>are</emph>
 legitimate:
 <egXML xmlns="http://www.tei-c.org/ns/Examples"><mentioned>
@@ -275,7 +281,7 @@ The first encoding describes the citing of a phrase. The second
 describes a phrase which consists of something mentioned.
 <!-- added following brief plug for otherwise  unsung attributes -->
 </p>
-<p>The <gi>w</gi> <!-- and <gi>m</gi> elements carry --> carries additional attributes
+<p>The <gi>w</gi> element <!-- and <gi>m</gi> elements carry --> carries additional attributes
 which may be of use in many indexing or analytic applications. The 
 <att>lemma</att> attribute may be used to specify  the
 <term>lemma</term>, that is the head- or uninflected form of an
@@ -296,10 +302,10 @@ individual <g>w</g> entries can be associated using the usual TEI
 pointer mechanisms. Assuming that a
 standardized lexicon for Latin is available at the location
 <code>http://lexicon.org/latin.xml</code>, we might for example revise the above
-example as :
+example as:
 <egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="la"><s xml:lang="la">  
    <w lemmaRef="http://lexicon.org/latin.xml#timeo">timeo</w>
-   <w lemma="http://lexicon.org/latin.xml#danaii">Danaos</w>
+   <w lemmaRef="http://lexicon.org/latin.xml#danaii">Danaos</w>
 <!-- ... -->
 </s></egXML></p>
 </div>
@@ -460,13 +466,13 @@ This matter is taken up in detail in section <ptr target="#AILA"/>.
 
 
 <specGrp xml:id="DAILC" n="Linguistic Segment Categories">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/s.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/cl.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/phr.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/w.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/m.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/c.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/s.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/cl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/phr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/w.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/m.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/c.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pc.xml"/>
 </specGrp>
 </div>
 </div>
@@ -483,7 +489,7 @@ see section <ptr target="#CONO"/> or <gi>fs</gi>,
 on which see chapter <ptr target="#FS"/>.
  </p>
 <specGrp xml:id="DAIGA" n="Global attribute for analysis">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.global.analytic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.global.analytic.xml"/>
     </specGrp>
 </div>
 <div type="div2" xml:id="AISP"><head>Spans and Interpretations</head>
@@ -758,10 +764,10 @@ creation of special text elements not otherwise needed (e.g. the
 whereas the use of <gi>span</gi> elements does not.
  </p>
 <specGrp xml:id="DAISP" n="Spans">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/span.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/spanGrp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/interp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/interpGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/span.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/spanGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/interp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/interpGrp.xml"/>
 </specGrp>
 </div>
 <div type="div2" xml:id="AILA"><head>Linguistic Annotation</head>

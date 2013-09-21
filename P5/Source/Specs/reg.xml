@@ -6,6 +6,9 @@
     $Date$
     $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="reg">
   <equiv/>
   <gloss>regularization</gloss>
@@ -19,7 +22,7 @@
   <desc versionDate="2007-12-20" xml:lang="ko">어떤 면에서 정규화 또는 표준화된 해석을 포함한다.</desc>
   <desc versionDate="2007-05-02" xml:lang="zh-TW">標誌一般化或規格化處理過的文字。</desc>
   <desc versionDate="2008-04-06" xml:lang="ja"> 正規化された読みを示す． </desc>
-  <desc versionDate="2009-01-06" xml:lang="fr">contient une leçon qui a été régularisée ou normalisée
+  <desc versionDate="2009-01-06" xml:lang="fr">contient une partie qui a été régularisée ou normalisée
         de façon quelconque</desc>
   <desc versionDate="2007-05-04" xml:lang="es">contiene una lectura que ha sido regularizada o
         normalizada en algún sentido.</desc>
@@ -49,18 +52,15 @@
   <exemplum versionDate="2008-04-06" xml:lang="fr">
     <p xmlns:teix="http://www.tei-c.org/ns/Examples">Si on veut attirer l'attention sur le fait que le texte a été régularisé, <gi>reg</gi> est
         utilisé seul :</p>
-    <egXML xmlns="http://www.tei-c.org/ns/Examples">
-      <q>Prière de <reg>frapper </reg> si une <reg>réponse </reg> est <reg>exigée</reg>
-         </q>
-    </egXML>
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><l><reg>Maître</reg> Corbeau sur un arbre perché,</l>
+<l><reg>Tenait</reg> en son bec un fromage.</l>    </egXML>
   </exemplum>
   <exemplum versionDate="2008-04-06" xml:lang="fr">
     <p xmlns:teix="http://www.tei-c.org/ns/Examples">Il est également possible d'identifier l'auteur de la régularisation, et avec les éléments
           <gi>choice</gi> et<gi>orig</gi>, donner à la fois la lecture originale et la lecture
         régularisée.:</p>
-    <egXML xmlns="http://www.tei-c.org/ns/Examples">
-      <q>Prière de <choice><reg resp="#fr_LB">frapper</reg><orig>farper</orig></choice> si une <choice><reg>réponse</reg><orig>répouse</orig></choice>est<choice><reg>exigée</reg><orig>exiguée</orig></choice>
-        </q>
+<egXML xmlns="http://www.tei-c.org/ns/Examples"
+                    ><l><choice><orig>Maistre</orig><reg resp="#LB">Maître</reg></choice>Corbeau sur un arbre                perché,</l><l><choice><orig>Tenoit</orig><reg resp="#LB">Tenait</reg></choice> en son bec un            fromage.</l>
     </egXML>
   </exemplum>
   <exemplum xml:lang="zh-TW">

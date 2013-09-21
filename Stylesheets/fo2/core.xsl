@@ -48,8 +48,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
       </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: core.xsl 10365 2012-05-16 12:33:56Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -180,9 +180,9 @@ of this software, even if advised of the possibility of such damage.
             </xsl:attribute>
          </xsl:if>
          <xsl:apply-templates mode="verbatim">
-	           <xsl:with-param name="highlight">
-	              <xsl:value-of select="$highlight"/>
-	           </xsl:with-param>
+	   <xsl:with-param name="highlight">
+	     <xsl:value-of select="$highlight"/>
+	   </xsl:with-param>
          </xsl:apply-templates>
       </block>
   </xsl:template>
@@ -404,13 +404,16 @@ of this software, even if advised of the possibility of such damage.
    </doc>
   <xsl:template match="tei:lb">
       <xsl:choose>
-      <xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
+	<xsl:when test="parent::tei:body"/>
+	<xsl:when test="parent::tei:back"/>
+	<xsl:when test="parent::tei:front"/>
+	<xsl:when test="@type='hyphenInWord' and @rend='hidden'"/>
+	<xsl:when test="not(tei:is-inline(..)) and (tei:is-last(.) or tei:is-first(.))"/>
 	<xsl:when test="$activeLinebreaks='true'">
 	  <xsl:choose>
 	    <!-- this is a *visible* linebreak character 
 		 PassiveTeX implements it as a real line break
 	    -->
-	    <xsl:when test="$foEngine='passivetex'">&#8232;</xsl:when>
 	    <xsl:when test="parent::tei:list">
 	      <list-item>
 		<list-item-label>
@@ -426,6 +429,7 @@ of this software, even if advised of the possibility of such damage.
 		  white-space-treatment="preserve"
 		  white-space-collapse="false">&#xA;</inline>
 	    </xsl:when>
+	    <xsl:when test="$foEngine='passivetex'">&#8232;</xsl:when>
 	    <xsl:otherwise>
 	      <block/>
 	    </xsl:otherwise>
@@ -683,28 +687,28 @@ of this software, even if advised of the possibility of such damage.
       <xsl:choose>
          <xsl:when test="parent::tei:list"/>
          <xsl:when test="$pagebreakStyle='active'">
-	           <xsl:element name="{$e}">
-	              <xsl:attribute name="break-before">page</xsl:attribute>
-	              <xsl:if test="@xml:id">
-	                 <xsl:attribute name="id">
-	                    <xsl:value-of select="@xml:id"/>
-	                 </xsl:attribute>
-	              </xsl:if>
-	           </xsl:element>
+	   <xsl:element name="{$e}">
+	     <xsl:attribute name="break-before">page</xsl:attribute>
+	     <xsl:if test="@xml:id">
+	       <xsl:attribute name="id">
+		 <xsl:value-of select="@xml:id"/>
+	       </xsl:attribute>
+	     </xsl:if>
+	   </xsl:element>
          </xsl:when>
          <xsl:when test="$pagebreakStyle='visible'">
-	           <xsl:element name="{$e}">
-	              <xsl:if test="@xml:id">
-	                 <xsl:attribute name="id">
-	                    <xsl:value-of select="@xml:id"/>
-	                 </xsl:attribute>
-	              </xsl:if>
-	              <xsl:text>✁[</xsl:text>
-	              <xsl:value-of select="@unit"/>
-	              <xsl:text> Page </xsl:text>
-	              <xsl:value-of select="@n"/>
-	              <xsl:text>]✁</xsl:text>
-	           </xsl:element>
+	   <xsl:element name="{$e}">
+	     <xsl:if test="@xml:id">
+	       <xsl:attribute name="id">
+		 <xsl:value-of select="@xml:id"/>
+	       </xsl:attribute>
+	     </xsl:if>
+	     <xsl:text> [</xsl:text>
+	     <xsl:value-of select="@unit"/>
+	     <xsl:text> Page </xsl:text>
+	     <xsl:value-of select="@n"/>
+	     <xsl:text>] </xsl:text>
+	   </xsl:element>
          </xsl:when>
       </xsl:choose>
   </xsl:template>
@@ -786,20 +790,13 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc/>
    </doc>
+  <xsl:template match="tei:seg[@rend='decorInit']">
+    <inline background-color="yellow"              font-size="36pt">
+      <xsl:apply-templates/>
+    </inline>
+  </xsl:template>
   <xsl:template match="tei:seg">
-      <block font-family="{$typewriterFont}" background-color="yellow"
-             white-space-collapse="false"
-             wrap-option="no-wrap"
-             text-indent="0em"
-             start-indent="{$exampleMargin}"
-             text-align="start"
-             font-size="{$exampleSize}"
-             padding-before="8pt"
-             padding-after="8pt"
-             space-before.optimum="4pt"
-             space-after.optimum="4pt">
-         <xsl:apply-templates/>
-      </block>
+    <xsl:apply-templates/>
   </xsl:template>
   <xsl:template match="tei:signed">
       <block text-align="left">
@@ -906,7 +903,7 @@ simple, bullets, ordered, gloss, unordered, or bibliography
 -->
     <xsl:variable name="listdepth" select="count(ancestor::tei:list)"/>
       <list-item>
-         <xsl:if test="not(parent::tei:note[@place='foot' or @place='bottom' ])">
+         <xsl:if test="not(parent::tei:note[tei:isEndNote(.) or tei:isFootNote(.)])">
             <xsl:attribute name="space-before.optimum">
                <xsl:value-of select="$listItemsep"/>
             </xsl:attribute>
@@ -928,12 +925,12 @@ simple, bullets, ordered, gloss, unordered, or bibliography
                      <xsl:attribute name="text-align">end</xsl:attribute>
                      <xsl:apply-templates mode="xref" select="."/>
                   </xsl:when>
-                  <xsl:when test="../@type='ordered' or self::tei:bibl">
+                  <xsl:when test="tei:isOrderedList(..) or self::tei:bibl">
                      <xsl:attribute name="text-align">end</xsl:attribute>
                      <xsl:apply-templates mode="xref" select="."/>
                      <xsl:text>.</xsl:text>
                   </xsl:when>
-                  <xsl:when test="../@type='gloss'">
+                  <xsl:when test="tei:isGlossList(..)">
                      <xsl:attribute name="text-align">start</xsl:attribute>
                      <xsl:attribute name="font-weight">bold</xsl:attribute>
                      <xsl:choose>
@@ -945,18 +942,11 @@ simple, bullets, ordered, gloss, unordered, or bibliography
 		       </xsl:otherwise>
                      </xsl:choose>
                   </xsl:when>
-                  <xsl:when test="../@type='numbered' or
+                  <xsl:when test="tei:isOrderedList(..) or
 				  self::tei:biblStruct or self::tei:bibl">
-		    <!-- numbered support added rbl 26.3.2005 -->
 		    <xsl:attribute name="text-align">end</xsl:attribute>
                      <xsl:number/>
                      <xsl:text>.</xsl:text>
-                  </xsl:when>
-                  <xsl:when test="../@type='ordered'">
-		    <!-- numbered support added rbl 26.3.2005 -->
-		    <xsl:attribute name="text-align">end</xsl:attribute>
-		    <xsl:number/>
-		    <xsl:text>.</xsl:text>
                   </xsl:when>
                   <xsl:otherwise>
 		    <xsl:attribute name="text-align">end</xsl:attribute>

@@ -67,15 +67,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: graphics.xsl 10800 2012-09-10 15:23:36Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Convert Word drawing objects
-    </desc>
+      <desc>Convert Word drawing objects</desc>
    </doc>
     <xsl:template match="w:drawing">
       <xsl:param name="n" tunnel="yes"/>
@@ -171,9 +169,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Guides the identity transformation of blips
-    </desc>
+      <desc>Guides the identity transformation of blips</desc>
    </doc>
     <xsl:template match="a:blip" mode="iden">
         <a:blip>

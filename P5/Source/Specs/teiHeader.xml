@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="header" ident="teiHeader">
   <equiv/>
   <gloss>TEI header</gloss>
@@ -18,7 +21,7 @@ $Id$
   <gloss versionDate="2007-01-21" xml:lang="it">intestazione</gloss>
   <desc>supplies the descriptive and declarative information making up an electronic title page
     prefixed to every TEI-conformant text.</desc>
-  <desc versionDate="2009-01-05" xml:lang="fr"> donne des informations descriptives et déclaratives qui
+  <desc versionDate="2009-01-05" xml:lang="fr">fournit des informations descriptives et déclaratives qui
     constituent une page de titre électronique au début de tout texte conforme à la TEI.</desc>
   <desc versionDate="2007-12-20" xml:lang="ko">모든 TEI 구조의 텍스트 서두에 위치하는 전자 제목 페이지를 구성하는 기술적이고 선언적인 정보를
     제공한다.</desc>

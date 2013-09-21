@@ -13,15 +13,12 @@
       </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:t xml:space="preserve"> [Note: </w:t>
-      </w:r>
+      <w:pPr>
+        <w:pStyle w:val="Quote"/>
+      </w:pPr>
       <w:r>
         <w:rPr/>
         <w:t xml:space="preserve">A free-standing note </w:t>
-      </w:r>
-      <w:r>
-        <w:t xml:space="preserve">] </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -174,7 +171,7 @@
       </w:pPr>
       <w:r>
         <w:rPr/>
-        <w:t xml:space="preserve">Outer margin note in eightth paragraph</w:t>
+        <w:t xml:space="preserve">Outer margin note in eighth paragraph</w:t>
       </w:r>
     </w:p>
     <w:p>

@@ -42,8 +42,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: to.xsl 10784 2012-09-06 15:15:01Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:param name="typewriterFont">Courier</xsl:param>
@@ -77,10 +77,8 @@ of this software, even if advised of the possibility of such damage.
     <xsl:text>source</xsl:text>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-	Inline Templates:
-	Here we can overwrite how inline elements are rendered
-      </desc>
+    <desc>Inline Templates:
+	Here we can overwrite how inline elements are rendered</desc>
   </doc>
   <xsl:template match="tei:c[@iso:style and @n]">
     <w:r>
@@ -109,8 +107,7 @@ of this software, even if advised of the possibility of such damage.
     </w:r>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc> 
-        Handle Numbers 
+    <desc>Handle Numbers 
       </desc>
   </doc>
   <xsl:template match="tei:num">
@@ -375,11 +372,11 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="@place='comment'">
         <xsl:call-template name="commentNote"/>
       </xsl:when>
-      <xsl:when test="@place='foot'  or @place='bottom' or @place='tablefoot'">
-        <xsl:call-template name="footNote"/>
-      </xsl:when>
-      <xsl:when test="@place='end'">
+      <xsl:when test="tei:isEndNote(.)">
         <xsl:call-template name="endNote"/>
+      </xsl:when>
+      <xsl:when test="tei:isFootNote(.)">
+        <xsl:call-template name="footNote"/>
       </xsl:when>
       <xsl:when test="ancestor::tei:cell or ancestor::cals:entry">
         <xsl:call-template name="create-inlinenote"/>
@@ -570,8 +567,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:call-template>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-	Paragraphs in the front matter 
+    <desc>Paragraphs in the front matter 
       </desc>
   </doc>
   <xsl:template match="tei:front/tei:div/tei:p[@type='foreword']">
@@ -588,9 +584,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:call-template>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-	Table of contents section
-      </desc>
+    <desc>Table of contents section</desc>
   </doc>
   <xsl:template match="tei:front/tei:div[@type='toc']">
     <xsl:call-template name="block-element">
@@ -783,9 +777,7 @@ of this software, even if advised of the possibility of such damage.
     </w:p>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-        Table of Contents
-    </desc>
+    <desc>Table of Contents</desc>
   </doc>
   <xsl:template name="generate-toc">
     <w:p>
@@ -853,13 +845,13 @@ of this software, even if advised of the possibility of such damage.
       <xsl:call-template name="write-docxfile-numbering-definition"/>
       <!-- main relationships -->
       <xsl:call-template name="write-docxfile-main-relationships"/>
-      <!-- relationships -->
-      <xsl:call-template name="write-docxfile-relationships"/>
       <!-- write Content Types -->
       <xsl:call-template name="write-docxfile-content-types"/>
       <!--  settings -->
       <xsl:call-template name="write-docxfile-settings"/>
     </xsl:if>
+    <!-- relationships -->
+    <xsl:call-template name="write-docxfile-relationships"/>
     <!-- footnotes file -->
     <xsl:call-template name="write-docxfile-footnotes-file"/>
     <!-- endnotes file -->
@@ -869,7 +861,6 @@ of this software, even if advised of the possibility of such damage.
     <xsl:call-template name="write-docxfile-docprops-core"/>
     <xsl:call-template name="write-docxfile-docprops-app"/>
     <xsl:call-template name="write-docxfile-docprops-custom"/>
-
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc> Writes the main document.xml file, that contains all "real" content. </desc>

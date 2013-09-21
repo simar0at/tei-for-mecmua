@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="VE" n="9">
    <head>Verse</head>
    <p>This module is intended for use when encoding texts which are entirely or predominantly in
@@ -271,7 +275,7 @@ $Id$
             example has been formatted for clarity of exposition rather than correct display. Note
             in particular that whether an XML processor retains whitespace within the <gi>seg</gi>
             element or not (this can be configured by means of the <att>xml:space</att> attribute)
-            this example will still require additional processing, since white space should be
+            this example will still require additional processing, since whitespace should be
             retained for the lower level <gi>seg</gi> elements (those of type <val>syll</val>) but
             not for the higher level one (those of type <val>foot</val>).</note>
          <egXML xml:lang="la" xmlns="http://www.tei-c.org/ns/Examples" source="#VE-eg-02"><l>
@@ -830,7 +834,7 @@ feet? -sb 2001-11-03 --> These symbols
 
 
 
-         <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/metDecl.xml"/>
+         <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/metDecl.xml"/>
 
 
 
@@ -846,7 +850,7 @@ feet? -sb 2001-11-03 --> These symbols
 
 
 
-         <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/metSym.xml"/>
+         <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/metSym.xml"/>
 
 
 
@@ -919,7 +923,7 @@ feet? -sb 2001-11-03 --> These symbols
 
 
 
-         <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.metrical.xml"/>
+         <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.metrical.xml"/>
 
 
 
@@ -935,7 +939,7 @@ feet? -sb 2001-11-03 --> These symbols
 
 
 
-         <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.enjamb.xml"/>
+         <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.enjamb.xml"/>
 
 
 
@@ -951,7 +955,7 @@ feet? -sb 2001-11-03 --> These symbols
 
 
 
-         <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/caesura.xml"/>
+         <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/caesura.xml"/>
 
 
 
@@ -967,7 +971,7 @@ feet? -sb 2001-11-03 --> These symbols
 
 
 
-         <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/rhyme.xml"/>
+         <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/rhyme.xml"/>
 
 
 

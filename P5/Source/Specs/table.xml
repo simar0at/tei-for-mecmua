@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="figures" ident="table">
   <equiv/>
   <gloss versionDate="2007-06-12" xml:lang="fr">tableau</gloss>
@@ -71,6 +74,7 @@ $Id$
         <ref xmlns="http://relaxng.org/ns/structure/1.0" name="data.count"/>
       </datatype>
       <valDesc>If no number is supplied, an application must calculate the number of rows.</valDesc>
+      <valDesc xml:lang="fr">Si aucun nombre n'est fourni, une application doit calculer le nombre de lignes.</valDesc>
       <remarks>
         <p>Rows should be presented from top to bottom.</p>
       </remarks>
@@ -101,6 +105,7 @@ $Id$
         <ref xmlns="http://relaxng.org/ns/structure/1.0" name="data.count"/>
       </datatype>
       <valDesc>If no number is supplied, an application must calculate the number of columns.</valDesc>
+      <valDesc xml:lang="fr">Si aucun nombre n'est fourni, une application doit calculer le nombre de colonnes.</valDesc>
       <remarks>
         <p>Within each row, columns should be presented left to right.</p>
       </remarks>

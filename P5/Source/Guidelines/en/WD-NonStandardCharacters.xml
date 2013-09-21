@@ -5,9 +5,10 @@ Dual-licensed under CC-by and BSD2 licences
 See the file COPYING.txt for details.
 $Date$
 $Id$
--->
+--><?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="WD" n="25">
-    <head>Representation of Non-standard Characters and Glyphs</head>
+    <head>Non-standard Characters and Glyphs</head>
     <p>Despite the availability of Unicode, text encoders still
     sometimes find that the published repertoire of available
     characters is inadequate to their needs. This is particularly the
@@ -218,7 +219,7 @@ further <ptr target="#D25-30"/>).</p>
 <p>The Unicode Standard recommends naming conventions which should be
 followed strictly where the intention is to annotate an existing
 Unicode character, and which may also be used as a model when
-creating new names for characters or glyphs<note>It should be noted,
+creating new names for characters or glyphs<note place="bottom">It should be noted,
 however, that this naming convention cannot meaningfully be applied to
 East Asian characters; the typical Unicode descriptions for these
 characters take the form <q>CJK Unified Ideograph
@@ -577,10 +578,7 @@ abbreviation marks as well as to represent other characters or
 glyphs. For example, if we believe that the r-with-one-funny-stroke is
 being used as an abbreviation for <code>receipt</code>, this might be
 represented as follows:<eg><![CDATA[<abbr>&r1;</abbr>]]></eg></p>
-<!-- should become a choice element some time -->
-
-
-    <p>Note however that this technique employs markup objects to
+<!-- should become a choice element some time -->    <p>Note however that this technique employs markup objects to
     provide a link between a character in the document and some
     annotation on that character. Therefore, it cannot be used in
     places where such markup constructs are not allowed, notably in
@@ -794,181 +792,16 @@ The selection and combination of modules to form a TEI schema is described in
 </p>
 <specGrp>
 
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/g.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/char.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/charName.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/charProp.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/charDecl.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/glyph.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/glyphName.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/localName.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/mapping.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/unicodeName.xml"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/value.xml"/>
-
-
-
-
-
-</specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/g.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/char.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/charName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/charProp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/charDecl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/glyph.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/glyphName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/localName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/mapping.xml"/>
+  <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/unicodeName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/value.xml"/></specGrp>
 </div>
 </div>

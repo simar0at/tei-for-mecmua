@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="TS" n="11">
 <head>Transcriptions of Speech</head>
 
@@ -338,11 +342,11 @@ nested within the <gi>broadcast</gi> element.
  </p>
 
 <specGrp xml:id="D2231" n="Script statement and recording statement">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/scriptStmt.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/recordingStmt.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/recording.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/equipment.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/broadcast.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/scriptStmt.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/recordingStmt.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/recording.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/equipment.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/broadcast.xml"/>
 </specGrp>
 </div>
 
@@ -776,7 +780,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/u.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/u.xml"/>
 
 
 
@@ -792,7 +796,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pause.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pause.xml"/>
 
 
 
@@ -808,7 +812,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vocal.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vocal.xml"/>
 
 
 
@@ -824,7 +828,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/kinesic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/kinesic.xml"/>
 
 
 
@@ -839,7 +843,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/incident.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/incident.xml"/>
 
 
 
@@ -855,7 +859,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/writing.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/writing.xml"/>
 
 
 
@@ -871,7 +875,7 @@ text header (see section <ptr target="#HD5"/>).
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/shift.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/shift.xml"/>
 
 
 
@@ -1218,9 +1222,9 @@ without any need to disrupt the normal syntax of the text.</p>
 might be represented using a musical-score-like notation, in which
 points of synchronization are represented by vertical alignment of the
 text:
-<egXML xmlns="http://www.tei-c.org/ns/Examples"> Stig : This is |my&#160;&#160;|turn
-Jane :&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|Balderdash
-Lou&#160; :&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|No, |it's mine</egXML>
+<egXML xmlns="http://www.tei-c.org/ns/Examples"> Stig: This is |my&#160;&#160;|turn
+Jane:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|Balderdash
+Lou&#160;:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;|No, |it's mine</egXML>
 All three speakers are simultaneous at the words <mentioned>my</mentioned>,
 <mentioned>Balderdash</mentioned>, and <mentioned>No</mentioned>; speakers Stig and Lou are
 simultaneous at the words <mentioned>turn</mentioned> and <mentioned>it's</mentioned>.
@@ -1456,7 +1460,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.divPart.spoken.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.divPart.spoken.xml"/>
 
 
 

@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="textcrit" ident="witDetail">
   <gloss>witness detail</gloss>
   <gloss versionDate="2007-12-20" xml:lang="ko">비교 대상 텍스트 세목</gloss>
@@ -114,8 +117,7 @@ detail refers.</desc>
   <remarks>
     <p>The <gi>witDetail</gi> element should be regarded as a
     specialized type of <gi>note</gi> element; it is synonymous with
-    <tag>note type='witnessDetail'</tag>, but  differs from the
- in the omission of some attributes
+    <tag>note type='witnessDetail'</tag>, but  differs in the omission of some attributes
     seldom applicable to notes within critical apparatus, and in the
     provision of the <att>wit</att> attribute, which permits an
     application to extract all annotation concerning a particular

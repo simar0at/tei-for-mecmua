@@ -37,8 +37,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: tei-param.xsl 10659 2012-07-16 00:52:16Z martindholmes $</p>
-      <p>Copyright: 2011, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
 
@@ -67,11 +67,10 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="standardScale">1</xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="headings" type="boolean">
-    <desc>Construct a heading 
-    for &lt;div&gt; elements with no &lt;head&gt;</desc>
+    <desc>Whether to  construct a heading 
+    for &lt;div&gt; elements with no &lt;head&gt; - by default, not.</desc>
   </doc>
-  <xsl:param name="autoHead"/>
-
+  <xsl:param name="autoHead">false</xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="headings">
     <desc>[common] How to make a heading for section if there is no
@@ -92,10 +91,8 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="@n">
 	<xsl:value-of select="@n"/>
       </xsl:when>
-      <xsl:when test="@type">
-	<xsl:text>[</xsl:text>
-        <xsl:value-of select="@type"/>
-	<xsl:text>]</xsl:text>
+      <xsl:when test="tei:docDate">
+        <xsl:apply-templates select="tei:docDate" mode="plain"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:text>➤</xsl:text>
@@ -158,17 +155,7 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:param name="teiP4Compat">false</xsl:param>
 
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="misc" type="boolean">
-    <desc>Title, author and date is taken from the
-    &lt;teiHeader&gt; rather than looked for in the front matter</desc>
-  </doc>
-  <xsl:param name="useHeaderFrontMatter">false</xsl:param>
 
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="misc" type="boolean">
-    <desc>Whether to attempt to work out a current date (set to true
-    for test results which won't differ</desc>
-  </doc>
-  <xsl:param name="useFixedDate">false</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="numbering">
     <desc>[common] How to number sections in back matter</desc>
   </doc>
@@ -207,11 +194,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:number count="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6" level="multiple"/>
     </xsl:if>
   </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="numbering" type="string">
-    <desc>How to construct heading numbering in
-    main matter</desc>
-  </doc>
-  <xsl:param name="numberBodyHeadings">1.1.1.1</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="numbering" type="boolean">
     <desc>Automatically number figures</desc>
   </doc>
@@ -258,13 +240,11 @@ of this software, even if advised of the possibility of such damage.
     <desc>Use value of "n" attribute to number
     sections</desc>
   </doc>
+  <xsl:param name="prenumberedHeadings">false</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="numbering" type="boolean">
-    <desc>
-    Automatically number paragraphs.
-  </desc>
+    <desc>Automatically number paragraphs.</desc>
   </doc>
   <xsl:param name="numberParagraphs">false</xsl:param>
-  <xsl:param name="prenumberedHeadings">false</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="output" type="string">
     <desc>The complete URL when the document is
     being delivered from a web server (normally set by Apache or Cocoon)</desc>
@@ -305,29 +285,30 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:param name="tableAlign">left</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="boolean">
-    <desc>
-Whether to make simplified display of ODD
-</desc>
+      <desc>Number footnotes consecutively</desc>
+   </doc>
+  <xsl:param name="consecutiveFNs">false</xsl:param>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="boolean">
+      <desc>Make all notes into endnotes</desc>
+   </doc>
+  <xsl:param name="autoEndNotes">false</xsl:param>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="boolean">
+    <desc>Whether to make simplified display of ODD</desc>
   </doc>
   <xsl:param name="oddWeaveLite">false</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
-    <desc>
-Paragraph indentation
-</desc>
+    <desc>Paragraph indentation</desc>
   </doc>
   <xsl:param name="parIndent">1em</xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
-    <desc>
-      Style for formatted bibliography
-    </desc>
+    <desc>Style for formatted bibliography</desc>
   </doc>
   <xsl:param name="biblioStyle"></xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
-    <desc>
-Default spacing between paragraphs
-</desc>
+    <desc>Default spacing between paragraphs</desc>
   </doc>
   <xsl:param name="parSkip">0pt</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
@@ -343,4 +324,7 @@ Default spacing between paragraphs
   <xsl:template name="attDefHook">
     <xsl:param name="attName"/>
   </xsl:template>
+
+  <xsl:param name="langAttributeName">xml:lang</xsl:param>
+
 </xsl:stylesheet>

@@ -24,8 +24,8 @@
       License along with this library; if not, write to the Free Software
       Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: to.xsl 10466 2012-06-08 18:47:50Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -48,6 +48,12 @@
   <xsl:param name="feedbackURL"></xsl:param>
    <xsl:param name="homeWords">AGORA</xsl:param>
  
+
+<!-- dont wrap quotes in quotes -->
+<xsl:param name="preQuote"/>
+<xsl:param name="postQuote"/>
+
+
 <xsl:template name="copyrightStatement">
 This page is made available under the Creative Commons General Public License "Attribution, Non-Commercial, Share-Alike", version 3.0 (CCPL BY-NC-SA) 
 </xsl:template>
@@ -97,6 +103,18 @@ This page is made available under the Creative Commons General Public License "A
           <xsl:apply-templates select="tei:item"/>
 </ul></xsl:template>
 
+
+<!-- allow for @rend on head 
+<xsl:template match="tei:head[@rend]">
+
+<xsl:attribute name="class">
+<xsl:value-of select="@rend"/>
+</xsl:attribute>
+
+</xsl:template>
+-->
+
+
 <xsl:template match="tei:ref">
   <span class="ref"><xsl:apply-templates/></span>
   <span class="contextaRef"><xsl:value-of select="@cRef"/></span>
@@ -111,12 +129,13 @@ This page is made available under the Creative Commons General Public License "A
 </xsl:template>
 
   <xsl:template match="tei:div[@type='bibliography']">
-<div class="refs">
-<xsl:if test='not(tei:head)'>
-<h2><span class="head">References</span></h2>
-</xsl:if>
+    <div class="refs">
+      <xsl:if test='not(tei:head)'>
+	<h2><span class="head">References</span></h2>
+      </xsl:if>
       <xsl:apply-templates/>
-</div>  </xsl:template>
+    </div>  
+  </xsl:template>
 
 <!-- replace template for listbibl -->
 <xsl:template match="tei:listBibl">
@@ -142,12 +161,18 @@ This page is made available under the Creative Commons General Public License "A
 </xsl:template>
 
   <xsl:template match="tei:div[@type='abstract']">
-<div class="abstract">
-<xsl:if test='not(tei:head)'>
-<h2><span class="head">Abstract</span></h2>
-</xsl:if>
+    <div class="abstract">
+      <xsl:if test='not(tei:head)'>
+	<h2><span class="head">Abstract</span></h2>
+      </xsl:if>
       <xsl:apply-templates/>
-</div>  </xsl:template>
+    </div>  
+  </xsl:template>
+
+<xsl:template match="tei:byLine">
+<xsl:message>suppressing and</xsl:message>
+<xsl:apply-templates/>
+</xsl:template>
 
 
 <!-- these seem to be inherited -->

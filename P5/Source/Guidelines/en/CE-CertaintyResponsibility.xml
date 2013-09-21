@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="CE"
      n="17"><head>Certainty, Precision, and Responsibility</head>
 <p>Encoders of text often find it useful to indicate that some aspects
@@ -332,7 +336,7 @@ alternative element content, as in this example:
   <desc>a gun makes more sense in a holdup</desc></certainty></egXML>
   Since attribute values have no internal substructure, the
   <att>assertedValue</att> attribute is not generally useful for
-  specifying alternative transcriptions;it cannot for example be used
+  specifying alternative transcriptions; it cannot for example be used
   if the alternative reading contains markup of any kind.  More robust
   methods of handling uncertainties of transcription are the
   <gi>unclear</gi> element and the <gi>app</gi> and <gi>rdg</gi>
@@ -457,8 +461,8 @@ in a given situation, encoders should provide their own controlled
 vocabulary and document it in the <gi>encodingDesc</gi> or
 <gi>tagUsage</gi> elements of the TEI header.</p>-->
 <specGrp>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/precision.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/certainty.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/precision.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/certainty.xml"/>
 </specGrp>
 <specGrpRef target="#DCERESP"/></div>
 </div>
@@ -600,7 +604,7 @@ aspects of responsibility common to all text transcription and
 markup, and should not be confused with the more specific attributes on
 individual elements.</p>
 <specGrp xml:id="DCERESP" n="Responsibility for markup">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/respons.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/respons.xml"/>
 </specGrp></div>
 
 <div><head>The Certainty Module</head>

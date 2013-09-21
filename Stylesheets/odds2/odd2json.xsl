@@ -15,9 +15,10 @@
     exclude-result-prefixes="a fo html i rng s sch tei teix xi xs xsl" 
     version="2.0">
   <xsl:import href="teiodds.xsl"/>
-  <xsl:import href="../common2/i18n.xsl"/>
   <xsl:import href="../common2/tagdocs.xsl"/>
   <xsl:import href="../common2/tei-param.xsl"/>
+  <xsl:import href="../common2/functions.xsl"/>
+  <xsl:import href="../common2/i18n.xsl"/>
   <xsl:param name="cellName">cell</xsl:param>
   <xsl:param name="codeName">code</xsl:param>
   <xsl:param name="colspan"/>
@@ -39,7 +40,6 @@
   <xsl:param name="urlName"/>
   <xsl:param name="xrefName"/>
   <xsl:param name="coded">false</xsl:param>
-  <xsl:param name="showListRef">false</xsl:param>
   <xsl:key match="tei:moduleRef" name="ModuleRefs" use="1"/>
   <xsl:key match="tei:moduleRef" name="MODULEREFS" use="@key"/>
   <xsl:key match="tei:classRef" name="ClassRefs" use="1"/>
@@ -84,11 +84,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: odd2json.xsl 10857 2012-09-23 13:38:33Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
-   
+   <xsl:param name="callback">teijs</xsl:param>
+   <xsl:param name="showChildren">false</xsl:param>
+
    <xsl:template name="emphasize">
       <xsl:param name="class"/>
       <xsl:param name="content"/>
@@ -148,10 +150,14 @@ of this software, even if advised of the possibility of such damage.
   <xsl:variable name="dq">"</xsl:variable>
   <xsl:variable name="escdq">\\"</xsl:variable>
   <xsl:template match="/">
+    <xsl:if test="not($callback='')">
+      <xsl:value-of select="$callback"/>
+      <xsl:text>(</xsl:text>
+    </xsl:if>
     <xsl:text>{"title": "</xsl:text>
-    <xsl:call-template name="generateTitle"/>
+    <xsl:sequence select="tei:generateTitle(.)"/>
     <xsl:text>","edition": "</xsl:text>
-    <xsl:call-template name="generateEdition"/>
+    <xsl:sequence select="tei:generateEdition(.)"/>
     <xsl:text>","generator": "odd2json",
     "date":"</xsl:text>
     <xsl:call-template name="showDate"/>
@@ -160,6 +166,17 @@ of this software, even if advised of the possibility of such damage.
       <xsl:sort select="@ident"/>
       <xsl:text>{"ident":"</xsl:text>
       <xsl:value-of select="@ident"/>
+      <xsl:text>",</xsl:text>
+      <xsl:text>"id":"</xsl:text>
+      <xsl:choose>
+	<xsl:when test="@n">
+	  <xsl:value-of select="@n">
+	  </xsl:value-of>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="ancestor::tei:div[last()]/@xml:id"/>
+	</xsl:otherwise>
+      </xsl:choose>      
       <xsl:text>",</xsl:text>
       <xsl:call-template name="desc"/>
       <xsl:call-template name="mode"/>
@@ -183,11 +200,14 @@ of this software, even if advised of the possibility of such damage.
     </xsl:for-each>
     <xsl:text>],</xsl:text>
 
-    <xsl:text>"elements": [</xsl:text>
-    <xsl:for-each select="key('ELEMENTDOCS',1)">
+    <xsl:text>"members": [</xsl:text>
+    <xsl:for-each select="//tei:elementSpec|//tei:classSpec[@type='atts']">
       <xsl:sort select="@ident"/>
       <xsl:text>{"ident":"</xsl:text>
       <xsl:value-of select="@ident"/>
+      <xsl:text>",</xsl:text>
+      <xsl:text>"type":"</xsl:text>
+      <xsl:value-of select="local-name()"/>
       <xsl:text>",</xsl:text>
       <xsl:text>"module":"</xsl:text>
       <xsl:value-of select="@module"/>
@@ -211,13 +231,18 @@ of this software, even if advised of the possibility of such damage.
       <xsl:text>,"model":"</xsl:text>
       <xsl:call-template name="generateSummaryChildren"/>
       <xsl:text>"</xsl:text>
-      <xsl:text>,"children":[</xsl:text>
-      <xsl:call-template name="generateChildren"/>
-      <xsl:text>]</xsl:text>
-      <xsl:text>,"attributes":[</xsl:text>
+      <xsl:if test="$showChildren='true'">
+	<xsl:text>,"children":[</xsl:text>
+	<xsl:call-template name="generateChildren"/>
+	<xsl:text>]</xsl:text>
+      </xsl:if>
       <xsl:variable name="a">
 	<xsl:call-template name="atts"/>
       </xsl:variable>
+      <xsl:variable name="classa">
+	<xsl:call-template name="classatts"/>
+      </xsl:variable>
+      <xsl:text>,"attributes":[</xsl:text>
       <xsl:for-each select="$a/tei:attDef">
 	<xsl:text>{"ident":"</xsl:text>
 	<xsl:value-of select="@ident"/>
@@ -227,23 +252,19 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:if test="position()!=last()">,</xsl:if>
       </xsl:for-each>
       <xsl:text>]</xsl:text>
+      <xsl:text>,"classattributes":[</xsl:text>
+      <xsl:for-each-group select="$classa/tei:attDef"
+			  group-by="@class">
+	<xsl:text>{"class":"</xsl:text>
+	<xsl:value-of select="@class"/>
+	<xsl:text>","module":"</xsl:text>
+	<xsl:value-of select="@module"/>
+	<xsl:text>"}</xsl:text>
+	<xsl:if test="position()!=last()">,</xsl:if>
+      </xsl:for-each-group>
+      <xsl:text>]</xsl:text>
       <xsl:text>}</xsl:text>
-      <xsl:if test="not(position() = last())">,</xsl:if>
-      <xsl:text>&#10;</xsl:text>
-    </xsl:for-each>
-    <xsl:text>],</xsl:text>
-    <xsl:text>"attclasses": [</xsl:text>
-    <xsl:for-each select="key('ATTCLASSDOCS',1)">
-      <xsl:sort select="@ident"/>
-      <xsl:text>{"ident":"</xsl:text>
-      <xsl:value-of  select="@ident"/>
-      <xsl:text>",</xsl:text>
-      <xsl:text>"type":"</xsl:text>
-      <xsl:value-of  select="@type"/>
-      <xsl:text>",</xsl:text>
-      <xsl:call-template name="desc"/>
-      <xsl:text>}</xsl:text>
-      <xsl:if test="not(position() = last())">,</xsl:if>
+      <xsl:if test="position()!=last()">,</xsl:if>
       <xsl:text>&#10;</xsl:text>
     </xsl:for-each>
     <xsl:text>],</xsl:text>
@@ -268,8 +289,8 @@ of this software, even if advised of the possibility of such damage.
       <xsl:text>{"ident":"</xsl:text>
       <xsl:value-of  select="@ident"/>
       <xsl:text>",</xsl:text>
-      <xsl:text>"type":"</xsl:text>
-      <xsl:value-of  select="@type"/>
+      <xsl:text>"module":"</xsl:text>
+      <xsl:value-of  select="@module"/>
       <xsl:text>",</xsl:text>
       <xsl:call-template name="desc"/>
       <xsl:call-template name="mode"/>
@@ -299,6 +320,9 @@ of this software, even if advised of the possibility of such damage.
       <xsl:text>{"ident":"</xsl:text>
       <xsl:value-of select="@ident"/>
       <xsl:text>",</xsl:text>
+      <xsl:text>"module":"</xsl:text>
+      <xsl:value-of  select="@module"/>
+      <xsl:text>",</xsl:text>
       <xsl:text>"type":"</xsl:text>
       <xsl:value-of select="@type"/>
       <xsl:text>",</xsl:text>
@@ -324,6 +348,9 @@ of this software, even if advised of the possibility of such damage.
     </xsl:for-each>
     <xsl:text>]</xsl:text>
     <xsl:text>}</xsl:text>
+    <xsl:if test="not($callback='')">
+      <xsl:text>)</xsl:text>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template name="bitOut">
@@ -340,7 +367,9 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template name="desc">
     <xsl:variable name="d">      
-      <xsl:call-template name="makeDescription"/>
+      <xsl:call-template name="makeDescription">
+	<xsl:with-param name="showListRef">false</xsl:with-param>
+      </xsl:call-template>
     </xsl:variable>
     <xsl:text>"desc":"</xsl:text>
     <xsl:value-of select="replace(normalize-space($d),$dq,$escdq)"/>
@@ -357,7 +386,16 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <xsl:template name="atts">
-    <xsl:call-template name="listAtts"/>
+    <xsl:for-each select=".//tei:attDef">
+      <tei:attDef ident="{@ident}">
+	<desc>
+	  <xsl:call-template name="desc"/>
+	</desc>
+      </tei:attDef>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template name="classatts">
     <xsl:for-each select="tei:classes/tei:memberOf">
       <xsl:call-template name="classA">
 	<xsl:with-param name="i" select="@key"/>
@@ -366,13 +404,15 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <xsl:template name="listAtts">
-    <xsl:for-each select=".//tei:attDef">
-      <tei:attDef ident="{@ident}">
+   <xsl:for-each select=".//tei:attDef">
+      <tei:attDef ident="{@ident}"
+		  module="{ancestor::tei:classSpec/@module}" class="{ancestor::tei:classSpec/@ident}">
 	<desc>
 	  <xsl:call-template name="desc"/>
 	</desc>
       </tei:attDef>
     </xsl:for-each>
+
   </xsl:template>
 
   <xsl:template name="classA">
@@ -388,28 +428,8 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
 
-    <xsl:template name="generateEdition">
-      <xsl:value-of
-	  select="tei:TEI/tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition"/>
-    </xsl:template>
-
-    <xsl:template name="generateTitle">
-      <xsl:for-each
-	  select="tei:TEI/tei:teiHeader/tei:fileDesc/tei:titleStmt">
-	<xsl:choose>
-	  <xsl:when test="tei:title[@type='main']">
-	    <xsl:apply-templates select="tei:title"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:apply-templates select="tei:title"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:for-each>
-    </xsl:template>
-
   <xsl:template name="generateSummaryChildren">
     <xsl:variable name="name" select="@ident"/>
-    <xsl:variable name="Original" select="/"/>
     <xsl:choose>
       <xsl:when test="tei:content//rng:ref[@name='macro.anyXML']">
           <xsl:text>ANY</xsl:text>
@@ -448,7 +468,6 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template name="generateChildren">
     <xsl:variable name="name" select="@ident"/>
-    <xsl:variable name="Original" select="/"/>
     <xsl:choose>
       <xsl:when test="tei:content//rng:ref[@name='macro.anyXML']">
       </xsl:when>

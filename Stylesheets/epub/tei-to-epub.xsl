@@ -44,8 +44,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: tei-to-epub.xsl 10907 2012-10-03 21:41:29Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:param name="opfPackageVersion">2.0</xsl:param>
@@ -246,7 +246,7 @@ height: </xsl:text>
         </xsl:if>
         <xsl:result-document href="{concat($directory,'/OPS/content.opf')}" method="xml">
 	  <xsl:variable name="A">
-	    <xsl:call-template name="generateAuthor"/>
+	    <xsl:sequence select="tei:generateAuthor(.)"/>
 	  </xsl:variable>
 	<xsl:variable name="printA">
 	  <xsl:analyze-string select="$A" regex="([^,]+), ([^,]+), (.+)">
@@ -343,7 +343,9 @@ height: </xsl:text>
               </xsl:for-each>
               <item href="titlepageback.html" id="titlepageback" media-type="application/xhtml+xml"/>
               <item id="print.css" href="print.css" media-type="text/css"/>
-              <item id="apt" href="page-template.xpgt" media-type="application/adobe-page-template+xml"/>
+              <item id="apt" href="page-template.xpgt"
+		    media-type="application/adobe-page-template+xml"
+		    fallback-style="css"/>
               <item id="start" href="index.html" media-type="application/xhtml+xml"/>
               <xsl:choose>
                 <xsl:when test="$filePerPage='true'">
@@ -522,11 +524,10 @@ height: </xsl:text>
               <reference type="text" href="titlepage.html" title="Cover"/>
               <reference type="text" title="Start" href="index.html"/>
               <xsl:choose>
-                <xsl:when test="$filePerPage='true'">
-		</xsl:when>
+                <xsl:when test="$filePerPage='true'"></xsl:when>
                 <xsl:otherwise>
                   <xsl:for-each select="$TOC/html:TOC/html:ul/html:li">
-                    <xsl:if test="html:a">
+                    <xsl:if test="html:a and not (starts-with(html:a[1]/@href,'#'))">
                       <reference type="text" href="{html:a[1]/@href}">
                         <xsl:attribute name="title">
                           <xsl:value-of select="normalize-space(html:a[1])"/>
@@ -591,10 +592,10 @@ height: </xsl:text>
 		    </xsl:attribute>
 		    <div class="titlepage">
 		      <p class="covertitle">
-			<xsl:call-template name="generateTitle"/>
+			<xsl:sequence select="tei:generateTitle(.)"/>
 		      </p>
 		      <p class="coverauthor">
-			<xsl:call-template  name="generateAuthor"/>
+			<xsl:sequence select="tei:generateAuthor(.)"/>
 		      </p>
 		    </div>
                   </div>
@@ -691,7 +692,7 @@ height: </xsl:text>
             </head>
             <docTitle>
               <text>
-                <xsl:call-template name="generateSimpleTitle"/>
+                <xsl:sequence select="tei:generateSimpleTitle(.)"/>
               </text>
             </docTitle>
             <navMap>
@@ -863,17 +864,17 @@ height: </xsl:text>
 	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	      xmlns:opf="http://www.idpf.org/2007/opf">
       <dc:title>
-	<xsl:call-template name="generateSimpleTitle"/>
+	<xsl:sequence select="tei:generateSimpleTitle(.)"/>
       </dc:title>
       <dc:language xsi:type="dcterms:RFC3066">
-	<xsl:call-template name="generateLanguage"/>
+      <xsl:call-template name="generateLanguage"/>
       </dc:language>
       <xsl:call-template name="generateSubject"/>
       <dc:identifier id="dcidid" opf:scheme="URI">
 	<xsl:call-template name="generateID"/>
       </dc:identifier>
       <dc:description>
-	<xsl:call-template name="generateSimpleTitle"/>
+	<xsl:sequence select="tei:generateSimpleTitle(.)"/>
 	<xsl:text> / </xsl:text>
 	<xsl:value-of select="$author"/>
       </dc:description>
@@ -886,7 +887,7 @@ height: </xsl:text>
 	</xsl:choose>
       </dc:creator>
       <dc:publisher>
-	<xsl:call-template name="generatePublisher"/>
+	<xsl:sequence select="tei:generatePublisher(.,$publisher)"/>
       </dc:publisher>
       <xsl:for-each select="tei:teiHeader/tei:profileDesc/tei:creation/tei:date[@notAfter]">
 	<dc:date opf:event="creation">
@@ -899,7 +900,7 @@ height: </xsl:text>
 	</dc:date>
       </xsl:for-each>
       <dc:date opf:event="epub-publication" xsi:type="dcterms:W3CDTF">
-	<xsl:call-template name="generateDate"/>
+	<xsl:sequence select="tei:generateDate(.)"/>
       </dc:date>
       <dc:rights>
 	<xsl:call-template name="generateLicence"/>
@@ -908,6 +909,12 @@ height: </xsl:text>
 	<meta name="cover" content="cover-image"/>
       </xsl:if>
     </metadata>
-</xsl:template>
+  </xsl:template>
+
+  <xsl:template name="makeLang">
+    <xsl:if test="@xml:lang">
+      <xsl:attribute name="xml:lang" select="@xml:lang"/>
+    </xsl:if>
+  </xsl:template>
 
 </xsl:stylesheet>

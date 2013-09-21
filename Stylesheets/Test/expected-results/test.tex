@@ -1,19 +1,15 @@
 \documentclass[11pt,twoside]{article}\makeatletter
-
 \IfFileExists{xcolor.sty}%
   {\RequirePackage{xcolor}}%
   {\RequirePackage{color}}
 \usepackage{colortbl}
-      
+
 \IfFileExists{utf8x.def}%
  {\usepackage[utf8x]{inputenc}
     \PrerenderUnicode{–}
   }%
  {\usepackage[utf8]{inputenc}}
-
-
 \usepackage[english]{babel}
-
 \usepackage[T1]{fontenc}
 \usepackage{float}
 \usepackage[]{ucs}
@@ -40,16 +36,18 @@
 \def\textoverbar#1{\ensuremath{\overline{#1}}}
 \def\textgothic#1{{\fontspec{Lucida Blackletter}#1}}
 \def\textcal#1{{\fontspec{Lucida Calligraphy}#1}}
-\def\docImprint#1{\vskip 6pt#1\ifvmode\par\fi }
-\def\docDate#1{#1\ifvmode\par\fi }
-\def\docAuthor#1{{\ifvmode\vskip 4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape #1}\ifvmode\par\fi }
-\def\docTitle#1{\vskip 6pt{\bfseries\fontsize{18pt}{22pt}\selectfont#1}\par }
-\def\titlePart#1{#1\par }
-\def\byline#1{\vskip6pt{\itshape\fontsize{16pt}{18pt}\selectfont#1}\par }
-\def\citbibl#1{#1\ifvmode\par\fi }
-\def\biblfree#1{#1\ifvmode\par\fi }
-\def\bibl#1{#1}
-\def\rubric#1{#1}
+\newenvironment{biblfree}{}{\ifvmode\par\fi }
+\newenvironment{docImprint}{\vskip 6pt}{\ifvmode\par\fi }
+\newenvironment{docDate}{}{\ifvmode\par\fi }
+\newenvironment{docAuthor}{\ifvmode\vskip4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape}{\ifvmode\par\fi }
+\newenvironment{docTitle}{\vskip6pt\bfseries\fontsize{18pt}{22pt}\selectfont}{\par }
+\newenvironment{titlePart}{}{\par }
+\newenvironment{byline}{\vskip6pt\itshape\fontsize{16pt}{18pt}\selectfont}{\par }
+\newenvironment{citbibl}{}{\ifvmode\par\fi }
+\newenvironment{bibl}{}{}
+\newenvironment{rubric}{}{}
+\newenvironment{msItem}{\vskip 6pt}{\par}
+\newenvironment{msHead}{\vskip 6pt}{\par}
 \def\titlem#1{\emph{#1}}
 \def\corr#1{#1}
 \def\sic#1{#1}
@@ -58,7 +56,6 @@
 \def\gap{}
 \def\abbr#1{#1}
 \def\expan#1{#1}
-\def\msItem#1{\vskip 6pt#1\par }
 \RequirePackage{array}
 \def\@testpach{\@chclass
  \ifnum \@lastchclass=6 \@ne \@chnum \@ne \else
@@ -100,7 +97,6 @@
 \def\unusedattribute#1{\sout{\textcolor{label}{#1}}}
 \DeclareRobustCommand*{\xref}{\hyper@normalise\xref@}
 \def\xref@#1#2{\hyper@linkurl{#2}{#1}}
-\def\Div[#1]#2{\section*{#2}}
 \begingroup
 \catcode`\_=\active
 \gdef_#1{\ensuremath{\sb{\mathrm{#1}}}}
@@ -188,7 +184,7 @@
 \def\frontmatter{%
   \pagenumbering{roman}
   \def\thechapter{\@roman\c@chapter}
-  \def\theHchapter{\alph{chapter}}
+  \def\theHchapter{\roman{chapter}}
   \def\@chapapp{}%
 }
 \def\mainmatter{%
@@ -205,7 +201,7 @@
   \cleardoublepage
   \setcounter{chapter}{0}
   \setcounter{section}{0}
-  \setcounter{secnumdepth}{0}
+  \setcounter{secnumdepth}{2}
   \def\@chapapp{\appendixname}%
   \def\thechapter{\@Alph\c@chapter}
   \def\theHchapter{\Alph{chapter}}
@@ -266,36 +262,11 @@
   \pdfbookmark[2]{#2}{#1}%
   \hspace{-0.75in}{\bfseries\fontsize{16pt}{18pt}\selectfont#2}%
   }{}
-      
-\@ifundefined{chapter}{%
-    \def\DivI{\section}
-    \def\DivII{\subsection}
-    \def\DivIII{\subsubsection}
-    \def\DivIV{\paragraph}
-    \def\DivV{\subparagraph}
-    \def\DivIStar[#1]#2{\section*{#2}}
-    \def\DivIIStar[#1]#2{\subsection*{#2}}
-    \def\DivIIIStar[#1]#2{\subsubsection*{#2}}
-    \def\DivIVStar[#1]#2{\paragraph*{#2}}
-    \def\DivVStar[#1]#2{\subparagraph*{#2}}
-}{%
-    \def\DivI{\chapter}
-    \def\DivII{\section}
-    \def\DivIII{\subsection}
-    \def\DivIV{\subsubsection}
-    \def\DivV{\paragraph}
-    \def\DivIStar[#1]#2{\chapter*{#2}}
-    \def\DivIIStar[#1]#2{\section*{#2}}
-    \def\DivIIIStar[#1]#2{\subsection*{#2}}
-    \def\DivIVStar[#1]#2{\subsubsection*{#2}}
-    \def\DivVStar[#1]#2{\paragraph*{#2}}
-}
-\def\TheFullDate{1970-01-01}
+      \def\TheFullDate{1970-01-01}
 \def\TheID{\makeatother }
 \def\TheDate{1970-01-01}
 \title{A Christmas Carol}
-\author{Dickens, Charles, 1812-1870}\let\tabcellsep&
-      \catcode`\&=12\relax \makeatletter 
+\author{Dickens, Charles, 1812-1870}\makeatletter 
 \makeatletter
 \thispagestyle{empty}
 \markright{\@title}\markboth{\@title}{\@author}
@@ -323,25 +294,20 @@
 \hypersetup{linkbordercolor=0.75 0.75 0.75,urlbordercolor=0.75 0.75 0.75,bookmarksnumbered=true}
 \fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrulewidth}{0pt}}\makeatother 
 \begin{document}
-
-\catcode`\$=12\relax
-\catcode`\^=12\relax
-\catcode`\#=12\relax
-\catcode`\%=12\relax
- \frontmatter 
-\DivIStar[(half title note)]{(half title note)}\par
+\let\tabcellsep& \frontmatter 
+\section*{(half title note)}\par
 The Original Edition of A CHRISTMAS CAROL has been out of print for many years, and this Edition is a reprint from the stereotype plates of that Edition.
   \begin{titlepage}
-  \docTitle{ \titlePart{A Christmas carol. in prose. }\titlePart{being \textit{A Ghost Story of Christmas}}}\byline{by \docAuthor{Charles Dickens.}}\byline{With illustrations by John Leech}\docImprint{London: Chapman and Hall, Ltd. 1893.}
+  \begin{docTitle} \begin{titlePart}A Christmas carol. in prose. \end{titlePart} \begin{titlePart}being \textit{A Ghost Story of Christmas}\end{titlePart} \end{docTitle} \begin{byline}by \docAuthor{Charles Dickens.}\end{byline} \begin{byline}With illustrations by John Leech\end{byline} \begin{docImprint}London: Chapman and Hall, Ltd. 1893.\end{docImprint}
   \end{titlepage}
   \cleardoublepage
 
-\DivIStar[PREFACE]{PREFACE }\par
+\section*{PREFACE }\par
 I have endeavoured in this Ghostly little book, to raise the Ghost of an Idea, which shall not put my readers out of humour with themselves, with each other, with the season, or with me. May it haunt their houses pleasantly, and no one wish to lay it. 
 \begin{quote}
 Their faithful Friend and Servant, C.D. December, 1843.\end{quote}
 
-\DivIStar[Contents.]{Contents.}\begin{description}
+\section*{Contents.}\begin{description}
 
 \item[Stave I]Marley's ghost \hyperlink{S1}{1}
 \item[Stave II]The first of the three spirits 
@@ -349,30 +315,32 @@ Their faithful Friend and Servant, C.D. December, 1843.\end{quote}
 \item[Stave IV ]The last of the spirits 
 \item[Stave V]The end of it 
 \end{description} \mainmatter 
-\DivI[(Bits of) A CHRISTMAS CAROL, and other things]{(Bits of) A CHRISTMAS CAROL, and other things}
-\DivI[Simple rendition tests]{Simple rendition tests}\par
+\section*{(Bits of) A CHRISTMAS CAROL, and other things}
+\section[Simple rendition tests]{Simple rendition tests}\par
 ‘Who-e debel you?’ — he at last said — ‘you no speak-e, damme, I kill-e.’ And so saying, the lighted tomahawk began flourishing about me in the dark.\par
 ‘Who-e debel you?’ — he at last said — ‘you no speak-e, damme, I kill-e.’ And so saying, the lighted tomahawk began flourishing about me in the dark. \par 
-\begin{longtable}{P{0.1951187335092348\textwidth}P{0.6548812664907652\textwidth}}
+\begin{longtable}{P{0.20534262485482\textwidth}P{0.64465737514518\textwidth}}
 \hline \rowcolor{label}Effect\tabcellsep Example\\\hline 
+hi\tabcellsep This is hi rend="special" tag\\
 emph\tabcellsep This is \textit{emph} tag\\
 hi\tabcellsep This is \textit{hi} tag\\
 typewriter\tabcellsep This is \texttt{typewriter} effect\\
 bold\tabcellsep This is \textbf{bold} effect\\
-normalweight\tabcellsep This is {normalweight} effect\\
+normalweight\tabcellsep This is normalweight effect\\
 smallcaps\tabcellsep This is \textsc{smallcaps} effect\\
 capsall\tabcellsep This is \uppercase{capsall} effect\\
 strikethrough\tabcellsep This is \sout{strikethrough} effect\\
-strikedoublethrough\tabcellsep This is {strikedoublethrough} effect\\
+strikedoublethrough\tabcellsep This is strikedoublethrough effect\\
 color(red)\tabcellsep This is \textcolor{red}{color(red)} effect\\
 underline\tabcellsep This is \uline{underline} effect\\
 underwavyline\tabcellsep This is \uwave{underwavyline} effect\\
 underdoubleline\tabcellsep This is \uuline{underdoubleline} effect\\
 subscript\tabcellsep This is \textsubscript{subscript} effect\\
 superscript\tabcellsep This is \textsuperscript{superscript} effect\\
-bold italic smallcaps\tabcellsep {rend test 1} \footnote{Cairns 2003: 11. My work is Muellner 1996.}\end{longtable} \par
+bold italic red, done separately\tabcellsep \textbf{\textit{\textcolor{red}{rend test 1}}}\\
+bold italic smallcaps\tabcellsep rend test 1 \footnote{Cairns 2003: 11. My work is Muellner 1996.}\end{longtable} \par
  
-\DivI[Quotations]{Quotations}\par
+\section[Quotations]{Quotations}\par
 A paragraph with a footnote containing a block-level object\footnote{We start with a quotation:
 \leftline{This is the way the world ends}
 \leftline{This is the way the world ends}
@@ -381,12 +349,12 @@ A paragraph with a footnote containing a block-level object\footnote{We start wi
 Consider quotations: ‘This is a quote which is run on within the text and will have quote marks of some kind around it.’\par
 Another quotation: \begin{quote}This is a block quote set off as such from the rest of the text\end{quote}\par
 Here, by contrast is an ‘inline quotation’. Another strange thing about quotes is this: \begin{quote}You can put line breaks{\hskip1pt}\newline to determine where the line breaks{\hskip1pt}\newline Inside a block!\end{quote}
-\DivI[Use of xml:lang]{Use of xml:lang}\par
+\section[Use of xml:lang]{Use of xml:lang}\par
 He used a French \textit{radiateur}.\par
 Languages: \textit{Deutsch}; \textit{Italiano}; \textit{Español}; \textit{Français}; \textit{Portugues}; \textit{Russian}; \textit{Svenska}; \textit{日本語}; \textit{中文}.
-\DivI[del, gap, add, unclear etc]{del, gap, add, unclear etc}\par
-[...]\gap{}. The \textsuperscript{interest} & — affor [...]\gap{} the amount \textbf{over}{\hskip1pt}\newline  so small the interest afforded compared with cash, [...]\gap{} by the Annuity{\hskip1pt}\newline  note paper to those who \textbf{tutor} \textbf{think} it, or keep it, with a view {\hskip1pt}\newline  to circulation, will, when compared with cash be it ever so small be {\hskip1pt}\newline  so much \uline{profit}: compared with a the preceding higher {\hskip1pt}\newline  rate of interest, the reduced rate afforded by the Annuity {\hskip1pt}\newline  note paper, to those who, \textbf{tutor} if they \textbf{tutor} it, {\hskip1pt}\newline  will, have to depend upon to the extent of their {\hskip1pt}\newline  respective capitals so invested, have nothing else {\hskip1pt}\newline  to depend upon for their respective incomes, will, [...]\gap{} by the {\hskip1pt}\newline  amount of the difference, \textbf{foremost} itself as so {\hskip1pt}\newline  much less.
-\DivI[Drama]{Drama} \begin{description} \item[Roderigo] 
+\section[del, gap, add, unclear etc]{del, gap, add, unclear etc}\par
+[...]\gap{}. The \textsuperscript{interest} \& — affor [...]\gap{} the amount \textbf{over}{\hskip1pt}\newline  so small the interest afforded compared with cash, [...]\gap{} by the Annuity{\hskip1pt}\newline  note paper to those who \textbf{tutor} \textbf{think} it, or keep it, with a view {\hskip1pt}\newline  to circulation, will, when compared with cash be it ever so small be {\hskip1pt}\newline  so much \uline{profit}: compared with a the preceding higher {\hskip1pt}\newline  rate of interest, the reduced rate afforded by the Annuity {\hskip1pt}\newline  note paper, to those who, \textbf{tutor} if they \textbf{tutor} it, {\hskip1pt}\newline  will, have to depend upon to the extent of their {\hskip1pt}\newline  respective capitals so invested, have nothing else {\hskip1pt}\newline  to depend upon for their respective incomes, will, [...]\gap{} by the {\hskip1pt}\newline  amount of the difference, \textbf{foremost} itself as so {\hskip1pt}\newline  much less.
+\section[Drama]{Drama} \begin{description} \item[Roderigo] 
 
 Where shall we meet i' the morning?\end{description}
  \begin{description} \item[Iago] 
@@ -408,15 +376,15 @@ No more of drowning, do you hear?\end{description}
 
 I am changed: I'll go sell all my land.\end{description}
 
-\DivI[Footnotes]{Footnotes}
-\DivII[1 Zur Entstehung der Philosophischen UntersuchungenZu Textauszeichnungen und Siglen siehe die Legende.]{1 Zur Entstehung der {Philosophischen Untersuchungen}\footnote{Zu Textauszeichnungen und Siglen siehe die Legende.}}\par
+\section[Footnotes]{Footnotes}
+\subsection[1 Zur Entstehung der Philosophischen  	UntersuchungenZu Textauszeichnungen und  	Siglen siehe die Legende.]{1 Zur Entstehung der Philosophischen Untersuchungen\footnote{Zu Textauszeichnungen und Siglen siehe die Legende.}}\par
 Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod \footnote{Zu Textauszeichnungen und Siglen siehe die Legende.} Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
-\DivI[emph and links]{emph and links}\par
+\section[emph and links]{emph and links}\par
 The \texttt{<emph>} element is used for linguistic emph\textit{asis}. ‘highlighting’ (\texttt{<soCalled>}) nor with \emph{shouting} (\texttt{<mentioned>}), \emph{transmogrification}, (a technical \texttt{<term>}), for which the \texttt{<gloss>} tag might be used to supply  \textit{a technical definition}).\par
 Now for some links! We will start by cross-referring to a later section.\par
 Here is a simple \texttt{<ptr>} to it: \textit{\hyperref[P1]{9. Lists}}. Here is a simple \texttt{<ref>}, a \hyperlink{P1}{reference to it}.\par
 An \xref{http://www.bbc.co.uk}{external link} as ref and as ptr: \url{http://www.bbc.co.uk}.
-\DivI[Tables]{Tables}\par
+\section[Tables]{Tables}\par
 Tables may have cells that span multiple columns and rows. \par 
 \begin{longtable}{P{0.5250764525993884\textwidth}P{0.23394495412844038\textwidth}P{0.09097859327217125\textwidth}}
  \hline\endfoot\hline\endlastfoot \endfirsthead \multicolumn{3}{c}{Pictures from Fagaras mountains(cont.)}\\\hline \endhead \caption{Pictures from Fagaras mountains}\\ \hline \rowcolor{label}Image\tabcellsep Description\tabcellsep Camera direction\\\hline 
@@ -438,7 +406,7 @@ g\tabcellsep g\\
 i\tabcellsep j\tabcellsep \multicolumn{2}{l}{Spans \textbf{Horizontally}}\\
 k\tabcellsep l\tabcellsep m\tabcellsep n\tabcellsep o\end{longtable} \par
  
-\DivI[Lists]{Lists}\label{P1}\par
+\section[Lists]{Lists}\label{P1}\par
 Various sorts of list are legal within paragraphs... \begin{enumerate}
 
 \item Dogs
@@ -463,8 +431,8 @@ The preceding lists was between paragraphs.\par
 \end{description} 
 \item third item 
 \end{itemize} 
-\DivI[Pictures]{Pictures} \par 
-\begin{longtable}{P{0.19558457711442787\textwidth}P{0.6544154228855721\textwidth}}
+\section[Pictures]{Pictures} \par 
+\begin{longtable}{P{0.1980173482032218\textwidth}P{0.6519826517967782\textwidth}}
 \tabcellsep \noindent\includegraphics[]{portrait.jpg}\\
 width="2.5in" \tabcellsep \noindent\includegraphics[width=2.5in,]{portrait.jpg}\\
 width=".5in" \tabcellsep \noindent\includegraphics[width=0.5in,]{portrait.jpg}\\
@@ -474,13 +442,14 @@ width="1in" style="border:solid green 2pt"\tabcellsep \noindent\includegraphics[
 height="1in"\tabcellsep \noindent\includegraphics[height=1in,]{portrait.jpg}\\
 height="1in" width="2in"\tabcellsep \noindent\includegraphics[width=2in,height=1in,]{portrait.jpg}\\
 height="2in" width="1in"\tabcellsep \noindent\includegraphics[width=1in,height=2in,]{portrait.jpg}\\
-width="10%"\tabcellsep \noindent\includegraphics[width=0.1\textwidth,]{portrait.jpg}\\
-height="10%" width="10%"\tabcellsep \noindent\includegraphics[width=0.1\textwidth,height=0.1\textheight,]{portrait.jpg}\end{longtable} \par
+width="10\%"\tabcellsep \noindent\includegraphics[width=0.1\textwidth,]{portrait.jpg}\\
+height="10\%" width="10\%"\tabcellsep \noindent\includegraphics[width=0.1\textwidth,height=0.1\textheight,]{portrait.jpg}\end{longtable} \par
  
-\DivI[MS catalogue]{MS catalogue}
+\section[MS catalogue]{MS catalogue}
 \section{Identification}
 where is it, repository name, identifier
-\DivI[Extended prose: MARLEY'S GHOST]{Extended prose: MARLEY'S GHOST}\label{S1}\par
+\section[Extended prose: MARLEY'S GHOST]{Extended prose: MARLEY'S GHOST}\label{S1}% image:bar.jpg
+\par
 Marley was dead: to begin with. There is no doubt whatever about that. The register of his burial was signed by the clergyman, the clerk, the undertaker, and the chief mourner. Scrooge signed it. And Scrooge's name was good upon 'Change, for anything he chose to put his hand to. Old Marley was as dead as a door-nail. \par
 Mind! I don't mean to say that I know, of my own knowledge, what there is particularly dead about a door-nail. I might have been inclined, myself, to regard a coffin-nail as the deadest piece of ironmongery in the trade. But the wisdom of our ancestors is in the simile; and my unhallowed  hands shall not disturb it, or the Country's done for. You will therefore permit me to repeat, emphatically, that Marley was as dead as a door-nail.\par
 Scrooge knew he was dead? Of course he did. How could it be otherwise? Scrooge and he were partners for I don't know how many years. Scrooge was his sole executor, his sole administrator, his sole assign, his sole residuary legatee, his sole friend, and sole mourner. And even Scrooge was not so dreadfully cut up by the sad event, but that he was an excellent man of business on the very day of the funeral, and solemnised it with an undoubted bargain. \par
@@ -551,13 +520,13 @@ Foggier yet, and colder! Piercing, searching, biting cold. If the good Saint Dun
 \leftline{God bless you, merry gentleman! }
 \leftline{May nothing you dismay! }\end{quote}
  Scrooge seized the ruler with such energy of action that the singer fled in terror, leaving the keyhole to the fog and even more congenial frost.
-\DivI[Linking]{Linking}\par
+\section[Linking]{Linking}\par
 \url{http://www.bbc.co.uk}\par
 \url{https://staff.oucs.ox.ac.uk}\par
 foo\par
-\xref{http://www.example.com/personography.html#fred}{Fred}\par
+\xref{http://www.example.com/personography.html\#fred}{Fred}\par
 \xref{http://www.example.com/getBibl.xql?name=Jones&year=76}{Jones 76}
-\DivI[Testing preservation of ID]{Testing preservation of ID}\par
+\section[Testing preservation of ID]{Testing preservation of ID}\par
 Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet. With references to \begin{itemize}
 
 \item \hyperlink{thisQuotation}{Quotation}
@@ -571,10 +540,24 @@ I wonder what are the xml-ids preserved in a transformation to XHTML, in particu
 \begin{quote}
 \par
 Something longer. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.\par
-\biblfree{In \titlem{Somewhere}.}
+\begin{biblfree}In \titlem{Somewhere}.\end{biblfree}
 \end{quote}
 
-\DivI[Choice, sic, corr, reg, orig]{Choice, sic, corr, reg, orig}\par
+\section[Choice, sic, corr, reg, orig]{Choice, sic, corr, reg, orig}\par
 voro þav sammędd syskin in heilagri {\hskip1pt}\newline  olafr konvngr ok fyrnefnd [\corr{gvnnhilldr}].\par
 Lastly, That, upon his solemn oath to observe all the above articles, the said man-mountain shall have a daily allowance of meat and drink sufficient for the support of [\corr{1728}] of our subjects, with free access to our royal person, and other marks of our \reg{favor}.
+\section[Verbatim]{Verbatim}\par
+an egXML in a list: \begin{itemize}
+
+\item \par\bgroup\ttfamily\small\selectfont \begin{shaded}\noindent\mbox{}{<\textbf{div}\hspace*{6pt}{xml:id}="{test99}"\hspace*{6pt}{rend}="{whatever}">}\mbox{}\newline 
+\hspace*{6pt}{<\textbf{head}>}Choice, sic, corr, reg, orig{</\textbf{head}>}\mbox{}\newline 
+\hspace*{6pt}{<\textbf{p}>}v{<\textbf{ex}>}oro{</\textbf{ex}>} þav sam{<\textbf{ex}>}m{</\textbf{ex}>}ędd syskin in\mbox{}\newline 
+\hspace*{6pt}\hspace*{6pt} hei{<\textbf{ex}>}lagr{</\textbf{ex}>}i {<\textbf{lb}/>} ol{<\textbf{ex}>}afr{</\textbf{ex}>} k{<\textbf{ex}>}onvng{</\textbf{ex}>}r\mbox{}\newline 
+\hspace*{6pt}{<\textbf{ex}>}ok{</\textbf{ex}>} fyrnefnd\mbox{}\newline 
+\hspace*{6pt}{<\textbf{choice}>}\mbox{}\newline 
+\hspace*{6pt}\hspace*{6pt}\hspace*{6pt}{<\textbf{sic}>}gvn{<\textbf{ex}>}n{</\textbf{ex}>}hillde{</\textbf{sic}>}\mbox{}\newline 
+\hspace*{6pt}\hspace*{6pt}\hspace*{6pt}{<\textbf{corr}>}gvn{<\textbf{ex}>}n{</\textbf{ex}>}hilldr{</\textbf{corr}>}\mbox{}\newline 
+\hspace*{6pt}\hspace*{6pt}{</\textbf{choice}>}.{</\textbf{p}>}\mbox{}\newline 
+{</\textbf{div}>}\end{shaded}\egroup\par 
+\end{itemize} 
 \end{document}

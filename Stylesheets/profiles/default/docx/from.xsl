@@ -20,7 +20,7 @@
 		xmlns:its="http://www.w3.org/2005/11/its"
                 xmlns:tbx="http://www.lisa.org/TBX-Specification.33.0.html"
                 version="2.0"
-                exclude-result-prefixes="ve o r m v wp html its w10 w wne mml tbx iso">
+                exclude-result-prefixes="#all">
     <!-- import base conversion style -->
 
     <xsl:import href="../../../docx/from/docxtotei.xsl"/>
@@ -61,12 +61,11 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: from.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
     
-    <xsl:output indent="yes"/>
 
     <xsl:template match="@rend[.='Body Text']" mode="pass2"/>
     <xsl:template match="@rend[.='Body Text 2']" mode="pass2"/>

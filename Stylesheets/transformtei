@@ -37,6 +37,7 @@ echo "  --oxygenlib=$oxygenlib    # where is oxygenlib"
 case $format in
       teitorelaxng) ;;
       teitornc) ;;
+      teitodtd) ;;
       teitoxsd) ;;
     *) 
 	echo "  --odd                # perform processing of ODD (if appropriate)"
@@ -94,6 +95,7 @@ viewportheight=
 medioverlay=
 nocompress=
 # ---
+version=`cat $APPHOME/VERSION`
 SAXONJAR=/usr/share/saxon/saxon9he.jar
 from=`echo $script | sed 's/to.*//'`
 to=`echo $script | sed 's/.*to//'`
@@ -166,7 +168,6 @@ else
   localsource=" -DdefaultSource=$REALSOURCE "
 fi
 
-version=`cat $APPHOME/VERSION`
 in=${1:?"no input file supplied; for usage syntax $0 --help"}
 infile=`basename "$in"`
 D=`dirname "$in"`
@@ -207,6 +208,7 @@ ant $antflag -f $APPHOME/$format/build-$direction.xml \
 	-lib ${SAXONJAR} $debug \
     $fileperpage $cssFile $splitLevel $viewportwidth $viewportheight $summaryDoc $mediaoverlay $nocompress $localsource \
         -Dodd=$odd \
+        -Dsaxon.jar=${SAXONJAR} \
         -Dverbose=$verbose \
 	-DinputFile="$indir/$infile" \
 	-DoutputFile="$outdir/$outfile" \

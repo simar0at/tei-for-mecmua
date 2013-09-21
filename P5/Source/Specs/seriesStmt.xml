@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="header" ident="seriesStmt">
   <equiv/>
   <gloss>series statement</gloss>
@@ -63,7 +66,7 @@ $Id$
           <resp>ed. by</resp>
           <name>Jan Gonda</name>
         </respStmt>
-        <biblScope unit="vol">1.2</biblScope>
+        <biblScope unit="volume">1.2</biblScope>
         <idno type="ISSN">0 345 6789</idno>
       </seriesStmt>
     </egXML>
@@ -93,7 +96,7 @@ $Id$
           <name>珍．崗妲</name>
         </respStmt>
         <idno type="ISSN">0 345 6789</idno>
-        <biblScope unit="vol">1.2</biblScope>
+        <biblScope unit="volume">1.2</biblScope>
       </seriesStmt>
     </egXML>
   </exemplum>

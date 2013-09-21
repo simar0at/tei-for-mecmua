@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="header" ident="quotation">
   <equiv/>
   <gloss versionDate="2007-06-12" xml:lang="fr">citation</gloss>
@@ -93,7 +96,7 @@ On <name/>, either the @marks attribute should be used, or a paragraph of descri
         </valItem>
       </valList>
     </attDef>
-    <attDef ident="form" usage="opt" status="deprecated">
+    <attDef ident="form" usage="opt" validUntil="2014-04-28">
       <equiv/>
       <desc>specifies how quotation marks are indicated within the text.</desc>
       <desc versionDate="2009-01-05" xml:lang="fr">précise comment les guillemets sont indiqués dans le
@@ -107,6 +110,9 @@ On <name/>, either the @marks attribute should be used, or a paragraph of descri
         interno del texto.</desc>
       <desc versionDate="2007-01-21" xml:lang="it">specifica in che modo le virgolette sono indicate
         ell'interno del testo</desc>
+      <datatype>
+        <rng:ref xmlns:rng="http://relaxng.org/ns/structure/1.0" name="data.enumerated"/>
+      </datatype>
       <defaultVal>unknown</defaultVal>
       <remarks>
         <p>The <att>form</att> attribute is deprecated. Although retained for compatibility, this

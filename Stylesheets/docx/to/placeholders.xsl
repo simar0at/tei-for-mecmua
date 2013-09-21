@@ -68,24 +68,21 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: placeholders.xsl 10696 2012-08-01 22:23:53Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
 
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        A callback for any titlepages that belong to the front matter.
-    </desc>
+      <desc>A callback for any titlepages that belong to the front matter.</desc>
    </doc>
     <xsl:template name="titlepages">
     </xsl:template>
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-	Title of document        
+      <desc>Title of document        
     </desc>
    </doc>
     <xsl:template name="document-title">

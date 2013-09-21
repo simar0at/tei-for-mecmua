@@ -2,8 +2,9 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:tei="http://www.tei-c.org/ns/1.0" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns="http://www.tei-c.org/ns/1.0"
-    version="2.0">
+    version="2.0" exclude-result-prefixes="xs">
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
       <desc>
 
@@ -40,8 +41,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: from.xsl 10620 2012-06-27 17:58:07Z louburnard $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -51,7 +52,7 @@ of this software, even if advised of the possibility of such damage.
        
        Sebastian Rahtz <sebastian.rahtz@oucs.ox.ac.uk>
        
-       $Date: 2012-06-27 18:58:07 +0100 (Wed, 27 Jun 2012) $  $Id: from.xsl 10620 2012-06-27 17:58:07Z louburnard $
+       $Date$  $Id$
        
   -->
   <xsl:output method="xml" encoding="utf-8"
@@ -160,12 +161,6 @@ of this software, even if advised of the possibility of such damage.
       </graphic>
       <xsl:apply-templates/>
     </figure>
-  </xsl:template>
-  
-  <xsl:template match="event">
-    <incident>
-      <xsl:apply-templates select="@*|*|text()|comment()|processing-instruction()"/>
-    </incident>
   </xsl:template>
   
   <xsl:template match="state">
@@ -278,54 +273,27 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <xsl:template match="@ana|@active|@adj|@adjFrom|@adjTo|@children|@class|@code|@copyOf|@corresp|@decls|@domains|@end|@exclude|@fVal|@feats|@follow|@hand|@inst|@langKey|@location|@mergedin|@new|@next|@old|@origin|@otherLangs|@parent|@passive|@perf|@prev|@render|@resp|@sameAs|@scheme|@script|@select|@since|@start|@synch|@target|@targetEnd|@value|@value|@who|@wit">
-    <xsl:attribute name="{name(.)}">
-      <xsl:call-template name="splitter">
-	<xsl:with-param name="val">
-	  <xsl:value-of select="."/>
-	</xsl:with-param>
-      </xsl:call-template>
-    </xsl:attribute>
-  </xsl:template>
-  
-  
-  <xsl:template name="splitter">
-    <xsl:param name="val"/>
-    <xsl:choose>
-      <xsl:when test="contains($val,' ')">
-        <xsl:choose>
-          <xsl:when test="starts-with($val,'http') or starts-with($val,'ftp') or starts-with($val,'mailto')">
-            <xsl:value-of select="$val"/>
+    <xsl:variable name="vals">
+      <xsl:for-each select="tokenize(.,' ')">
+        <a>
+	  <xsl:choose>
+          <xsl:when test="starts-with(.,'http') or starts-with(.,'ftp') or starts-with(.,'mailto')">
+            <xsl:sequence select="."/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>#</xsl:text>
-	    <xsl:value-of select="substring-before($val,' ')"/>
+	    <xsl:sequence select="."/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text> </xsl:text>
-        <xsl:call-template name="splitter">
-          <xsl:with-param name="val">
-            <xsl:value-of select="substring-after($val,' ')"/>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="starts-with($val,'http') or starts-with($val,'ftp') or starts-with($val,'mailto')">
-            <xsl:value-of select="$val"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:text>#</xsl:text>
-            <xsl:value-of select="$val"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
+	</a>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:attribute name="{name(.)}" select="string-join($vals/tei:a,' ')"/>
   </xsl:template>
  
   
-  <!-- fool around with selected elements -->
+ <!-- fool around with selected elements -->
   
-
  <!-- imprint is no longer allowed inside bibl -->
  <xsl:template match="bibl/imprint">
     <xsl:apply-templates/>
@@ -440,7 +408,7 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   
   <xsl:template match="gap/@desc"/>
-
+  
   <xsl:template match="gap">
     <gap>
       <xsl:apply-templates select="@*"/>
@@ -451,7 +419,7 @@ of this software, even if advised of the possibility of such damage.
       </xsl:if>
     </gap>
   </xsl:template>
-
+    
   <xsl:template match="sic[@corr]">
     <choice>
       <sic>
@@ -819,6 +787,49 @@ of this software, even if advised of the possibility of such damage.
 </index></xsl:if>
 </index>
 </xsl:template>
+
+
+<!-- JC Additions 2013-06 -->
+
+<!-- foreName wasn't getting lower-cased. -->
+  <xsl:template match="foreName"><forename><xsl:apply-templates 
+    select="@*|*|processing-instruction()|comment()|text()"/>
+  </forename></xsl:template>
+
+<!-- events can have @desc -->
+  <xsl:template match="event/@desc"/>
+  <xsl:template match="event">
+    <incident>
+      <xsl:apply-templates select="@*"/>
+      <xsl:if test="@desc">
+        <desc>
+          <xsl:value-of select="@desc"/>
+        </desc>
+      </xsl:if>
+    </incident>
+  </xsl:template>
+  
+<!-- and vocal can have desc as well -->
+  <xsl:template match="vocal/@desc"/>
+  <xsl:template match="vocal">
+    <vocal>
+      <xsl:apply-templates select="@*"/>
+      <xsl:if test="@desc">
+        <desc>
+          <xsl:value-of select="@desc"/>
+        </desc>
+      </xsl:if>
+    </vocal>
+  </xsl:template>
+  
+  <!-- birth/@date wasn't being handled; because @date wasn't enforced as a date datatype
+    I check if @date is indeed a date and if it is make it a @when and if not make it an @n
+  -->
+  <xsl:template match="birth/@date"><xsl:choose>
+    <xsl:when test="string(.) castable as xs:date"><xsl:attribute name="when"><xsl:value-of select="."/></xsl:attribute></xsl:when>
+    <xsl:otherwise><xsl:attribute name="n"><xsl:value-of select="."/></xsl:attribute></xsl:otherwise>
+  </xsl:choose></xsl:template>
+
 
 
 </xsl:stylesheet>

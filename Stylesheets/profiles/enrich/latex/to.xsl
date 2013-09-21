@@ -52,23 +52,22 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: to.xsl 10867 2012-09-23 22:13:14Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
   
    <xsl:param name="reencode">false</xsl:param>
-   <xsl:param name="numberBackHeadings">true</xsl:param>
-   <xsl:param name="numberFrontHeadings">true</xsl:param>
+   <xsl:param name="numberBackHeadings">A.1</xsl:param>
+   <xsl:param name="numberFrontHeadings">i</xsl:param>
    <xsl:param name="spaceCharacter">\hspace*{1em}</xsl:param>
    <xsl:param name="classParameters">11pt,twoside</xsl:param>
-   <xsl:param name="startNamespace"/>
    <xsl:param name="tocNumberSuffix">.\ </xsl:param>
    <xsl:param name="numberSpacer">\ </xsl:param>
    <xsl:param name="parSkip">3pt</xsl:param>
    <xsl:param name="parIndent">3pt</xsl:param>
-   <xsl:variable name="docClass">article</xsl:variable>
+   <xsl:variable name="documentclass">article</xsl:variable>
    <xsl:template name="latexPreambleHook">
 \usepackage{makeidx}
 \makeindex

@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="DI" n="12">
 <head>Dictionaries</head>
 
@@ -86,7 +90,7 @@ existing print dictionaries; in each case, the original source is
 identified. In presenting such examples, we have tried to retain the
 original typographic appearance of the example as well as presenting a
 suggested encoding for it. Where this has not been possible (for
-example in the display of pronounciation) we have adopted the
+example in the display of pronunciation) we have adopted the
 transliteration found in the electronic edition of the <title>Oxford
 Advanced Learner's Dictionary</title>. Also, the middle dot in quoted
 entries is rendered with a full stop, while within the sample
@@ -227,7 +231,7 @@ entries.<egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples">
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.entryLike.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.entryLike.xml"/>
 
 
 
@@ -238,7 +242,7 @@ entries.<egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples">
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.entryLike.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.entryLike.xml"/>
 
 
 
@@ -263,7 +267,7 @@ entries.<egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples">
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.lexicographic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.lexicographic.xml"/>
 
 
 
@@ -387,7 +391,7 @@ within entries, homographs, or senses).<specGrp xml:id="DDIEN" n="Dictionary ent
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/superEntry.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/superEntry.xml"/>
 
 
 
@@ -403,7 +407,7 @@ within entries, homographs, or senses).<specGrp xml:id="DDIEN" n="Dictionary ent
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/entry.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/entry.xml"/>
 
 
 
@@ -415,7 +419,7 @@ within entries, homographs, or senses).<specGrp xml:id="DDIEN" n="Dictionary ent
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/entryFree.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/entryFree.xml"/>
 
 
 
@@ -427,7 +431,7 @@ within entries, homographs, or senses).<specGrp xml:id="DDIEN" n="Dictionary ent
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/hom.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/hom.xml"/>
 
 
 
@@ -439,7 +443,7 @@ within entries, homographs, or senses).<specGrp xml:id="DDIEN" n="Dictionary ent
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sense.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sense.xml"/>
 
 
 
@@ -451,7 +455,7 @@ within entries, homographs, or senses).<specGrp xml:id="DDIEN" n="Dictionary ent
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/dictScrap.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/dictScrap.xml"/>
 
 
 
@@ -952,98 +956,98 @@ relations:<q rend="display">
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/form.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/form.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/orth.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/orth.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pron.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pron.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/hyph.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/hyph.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/syll.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/syll.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/stress.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/stress.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gram.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gram.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gen.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gen.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/number.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/number.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/case.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/case.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/per.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/per.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/tns.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/tns.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/mood.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/mood.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/iType.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/iType.xml"/>
 
 
 
@@ -1052,21 +1056,21 @@ relations:<q rend="display">
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.morphLike.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.morphLike.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.gramPart.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.gramPart.xml"/>
 
 
 
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.formPart.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.formPart.xml"/>
 
 
 
@@ -1193,7 +1197,7 @@ reason and act, esp. quickly … <ref target="#DIC-CED">CED</ref> </q>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gramGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gramGrp.xml"/>
 
 
 
@@ -1205,7 +1209,7 @@ reason and act, esp. quickly … <ref target="#DIC-CED">CED</ref> </q>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pos.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pos.xml"/>
 
 
 
@@ -1217,7 +1221,7 @@ reason and act, esp. quickly … <ref target="#DIC-CED">CED</ref> </q>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/subc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/subc.xml"/>
 
 
 
@@ -1229,7 +1233,7 @@ reason and act, esp. quickly … <ref target="#DIC-CED">CED</ref> </q>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/colloc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/colloc.xml"/>
 
 
 
@@ -1323,7 +1327,7 @@ distinguished from the translation information within which it appears.<q rend="
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/def.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/def.xml"/>
 
 
 
@@ -1555,8 +1559,8 @@ the notation of Gregorian chant … [WNC]</q>
 </egXML>
 </p>
 <specGrp xml:id="DDITPET" n="Etymologies">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/etym.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lang.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/etym.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lang.xml"/>
  </specGrp>
 
 </div>
@@ -1689,9 +1693,9 @@ to mark up such  labels:<specList>
 <specDesc key="usg"/>
 <specDesc key="lbl"/>
 </specList> As indicated in the following section (<ptr target="#DITPXR"/>), the
-<gi>lbl</gi> element may be used for any kind of signicative phrase
+<gi>lbl</gi> element may be used for any kind of significative phrase
 or label within the text. The <gi>usg</gi> element is a specialization
-of this to mark usage labels in particuar. Usage labels typically
+of this to mark usage labels in particular. Usage labels typically
 indicate <list type="simple">
 <item>temporal use (archaic, obsolete, etc.)</item>
 <item>register (slang, formal, taboo, ironic, facetious, etc.)</item>
@@ -1874,8 +1878,8 @@ synonyms associated with different senses:<q rend="display">
 </egXML>
 </p>
 <specGrp xml:id="DDITPUS" n="Usage information">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/usg.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lbl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/usg.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lbl.xml"/>
  </specGrp>
 
 </div>
@@ -1899,7 +1903,7 @@ information relating to a cross-reference.
 <p>As in other types of text, the actual pointing element (e.g. <gi>ref</gi> or
 <gi>ptr</gi>) is used to tag the cross-reference target proper (in
 dictionaries, usually the headword, possibly accompanied by a homograph number,
-a sense number, or other further restriction specifiying what portion of the
+a sense number, or other further restriction specifying what portion of the
 target entry is being referred to).
 The <gi>xr</gi> element
 is used to group the target with any accompanying phrases or symbols used to
@@ -1941,7 +1945,7 @@ will not be necessary. </p>
 element may be used to indicate what kind of cross-reference is being made,
 using any convenient typology. Since different dictionaries may label the same
 kind of cross-reference in different ways, it may be useful to give normalized
-indications in the<att>type</att> attribute, enabling the encoder to distinguish
+indications in the <att>type</att> attribute, enabling the encoder to distinguish
 irregular forms of cross-reference more reliably:<q rend="display">
 <hi rend="bold">rose</hi>2 … vb. the past tense of <hi rend="bold">rise</hi>. <ref target="#DIC-CED">CED</ref> </q>
 <egXML xmlns="http://www.tei-c.org/ns/Examples">
@@ -2057,7 +2061,7 @@ convenable au moyen de blancs (2, sens 1, 3). <ref target="#DIC-DNT">DNT</ref> <
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/xr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/xr.xml"/>
 
 
 
@@ -2177,7 +2181,7 @@ buvee, drinking] —'bevvied adj. <ref target="#DIC-CED">CED</ref> </q>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/re.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/re.xml"/>
 
 
 
@@ -2447,7 +2451,7 @@ her <oVar prev="#ov1" xml:id="ov2">up</oVar> with her sister</quote>
 </p>
 <p>In addition, some dictionaries make reference to the pronunciation of the headword in the
 pronunciation of related entries, variants, or examples. The <gi>pRef</gi>
-and<gi>pVar</gi> elements should be used for such references.<q rend="display">
+and <gi>pVar</gi> elements should be used for such references.<q rend="display">
 <hi rend="bold">hors d'oeuvre</hi>
 <code lang="ipa">/,aw'duhv </code> (Fr O:r dœvr)/ n, pl hors d'oeuvres also hors
 d'oeuvre <code lang="ipa">/'duhv(z) </code> (Fr ~)/ <ref target="#DIC-NPEG">NPEG</ref> </q>
@@ -2487,7 +2491,7 @@ etc.) the exact method used should be documented in the header. </p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.ptrLike.form.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.ptrLike.form.xml"/>
 
 
 
@@ -2512,7 +2516,7 @@ etc.) the exact method used should be documented in the header. </p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/oRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/oRef.xml"/>
 
 
 
@@ -2524,7 +2528,7 @@ etc.) the exact method used should be documented in the header. </p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/oVar.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/oVar.xml"/>
 
 
 
@@ -2536,7 +2540,7 @@ etc.) the exact method used should be documented in the header. </p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pRef.xml"/>
 
 
 
@@ -2548,7 +2552,7 @@ etc.) the exact method used should be documented in the header. </p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pVar.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pVar.xml"/>
 
 
 
@@ -2868,7 +2872,7 @@ with the ISOcat reference, which is a Web implementation of <ref
 target="#ISO-12620">ISO 12620</ref>.<note place="bottom">See also <ref
 target="http://www.isocat.org/files/12620.html">http://www.isocat.org/files/12620.html</ref>.</note></p>
 <p>In the example below, a fragment of the entry for <foreign>isotope</foreign> cited
-in section <ptr target="#DITPGR"/> is adorned by references to ISOcat defitions for "part
+in section <ptr target="#DITPGR"/> is adorned by references to ISOcat definitions for "part
 of speech" (<att>dcr:datcat</att>) and "adjective" (<att>dcr:valueDatcat</att>). Depending
 on the status and extent of the dictionary, various strategies may be used to reduce the
 redundancy of the repeated ISOcat references.<egXML

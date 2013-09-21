@@ -50,8 +50,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: figures.xsl 10801 2012-09-10 15:37:16Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -225,7 +225,7 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>handling graphics</desc>
    </doc>
-  <xsl:template match="tei:graphic">
+  <xsl:template match="tei:graphic|tei:media">
       <xsl:call-template name="makePic"/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">

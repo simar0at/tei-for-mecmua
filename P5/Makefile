@@ -1,30 +1,25 @@
-# Main makefile for TEI P5
+#rend="none"/> Main makefile for TEI P5
 # $Id$
 ALLLANGUAGES=en
 LANGUAGE=en
 INPUTLANGUAGE=en
 DOCUMENTATIONLANGUAGE=en
 LATEX=pdflatex
-XELATEXFLAGS=--output-driver="xdvipdfmx -V 5" --interaction=batchmode
 XELATEX=xelatex 
 VERBOSE=
 PREFIX=/usr
 SOURCETREE=Source
 DRIVER=${SOURCETREE}/guidelines-${INPUTLANGUAGE}.xml
 XSL=/usr/share/xml/tei/stylesheet
-XSLP4=/usr/share/xml/teip4/stylesheet
 # If you have not installed the Debian packages, uncomment one
 # of the next two lines:
 #XSL=../Stylesheets/release/tei-xsl/p5
 #XSL=http://www.tei-c.org/stylesheet/release/xml/tei
 JING=jing
 TRANG=trang
-SAXON=java -Xmx752m -jar Utilities/lib/saxon-9.1.0.8.jar -ext:on
 VERSION=`cat VERSION`
 UPVERSION=`cat ../VERSION`
-ODD2DTD=odds2/odd2dtd.xsl
-ODD2RELAX=odds2/odd2relax.xsl
-ODD2LITE=odds2/odd2lite.xsl
+SAXONJAR=Saxon-HE-9.4.0.6.jar
 
 .PHONY: convert schemas html-web validate valid test clean dist exemplars
 
@@ -50,20 +45,15 @@ check.stamp:
 	@command -v  ${JING} || exit 1
 	touch check.stamp
 
-p5.xml: ${DRIVER} Source/Specs/*.xml Source/Guidelines/en/*.xml
-	xmllint --xinclude --noxincludenode --dropdtd --noent ${DRIVER} > p5.xml
-
-schemas: schemas.stamp
-
-schemas.stamp: check.stamp p5.xml 
-	rm -rf DTD Schema
-	mkdir DTD Schema
+p5.xml: ${DRIVER} Source/Specs/*.xml Source/Guidelines/en/*.xml p5odds.odd check.stamp
 	@echo BUILD: Generate modular DTDs, Schemas, Schematron and miscellaneous outputs
-	ant -lib /usr/share/java/jing.jar:/usr/share/saxon/saxon9he.jar -f antbuildschemas.xml -DXSL=${XSL} subset outputs
+	ant -lib /usr/share/java/jing.jar:Utilities/lib/${SAXONJAR} -f antbuilder.xml -DXSL=${XSL} -DDRIVER=${DRIVER} base subset outputs
 	@echo "BUILD: Generate modular RELAX NG (compact) schemas using trang"
 	(cd Schema; for i in *rng; do ${TRANG} $$i `basename $$i .rng`.rnc;done)
-	${TRANG} p5odds.rng p5odds.rnc
 	touch schemas.stamp
+
+schemas: schemas.stamp
+schemas.stamp: p5.xml
 
 html-web: check.stamp p5.xml  html-web.stamp
 
@@ -84,16 +74,9 @@ html-web.stamp:  check.stamp p5.xml  Utilities/guidelines.xsl.model
 		echo "<buildweb lang=\"$$i\"/>" >> buildweb.xml; \
 	done
 	echo '</target></project>' >> buildweb.xml
-	ant -lib /usr/share/java/jing.jar:/usr/share/saxon/saxon9he.jar -f buildweb.xml -DgoogleAnalytics=${GOOGLEANALYTICS}
+	ant -lib /usr/share/java/jing.jar:Utilities/lib/${SAXONJAR} -f buildweb.xml -DgoogleAnalytics=${GOOGLEANALYTICS}
 	rm -f buildweb.xml Utilities/teic-index.xml
 	touch html-web.stamp
-
-validate-html:
-	@echo BUILD: Validate HTML version of Guidelines
-	@ echo SUSPENDED FOR NOW
-
-old-validate-html:
-	cd Guidelines-web/${LANGUAGE}/html;for i in *.html; do xmllint --noent --dropdtd $$i > z_$$i; done;ant  -lib /usr/share/java/jing.jar:/usr/share/saxon/saxon9he.jar -f ../../../validatehtml.xml;rm z_*
 
 teiwebsiteguidelines:
 	@echo BUILD: make HTML version of Guidelines just for TEI web site
@@ -104,6 +87,24 @@ teiwebsiteguidelines:
 
 pdf: Guidelines.pdf pdf-complete
 
+epub: Guidelines.epub
+
+Guidelines.epub: check.stamp p5.xml 
+	@echo BUILD: Make epub version of Guidelines
+	ant -q -f ${XSL}/epub3/build-to.xml -lib Utilities/lib/${SAXONJAR} -Dprofiledir=${XSL}/profiles -Dprofile=tei -DinputFile=`pwd`/p5.xml -DoutputFile=`pwd`/Guidelines.epub -Dcoverimage=`pwd`/Utilities/cover.jpg
+	java -jar Utilities/epubcheck3.jar Guidelines.epub
+	touch Guidelines.epub
+
+epub3: check.stamp p5.xml 
+	ant -q -f ${XSL}/epub3/build-to.xml -lib Utilities/lib/${SAXONJAR} -Dprofiledir=${XSL}/profiles -Dprofile=tei -DinputFile=`pwd`/p5.xml -DoutputFile=`pwd`/Guidelines.epub -Dcoverimage=`pwd`/Utilities/cover.jpg
+	java -jar Utilities/epubcheck3.jar Guidelines.epub
+
+mobi:  Guidelines.mobi
+
+Guidelines.mobi: check.stamp p5.xml 
+	ant -q -f ${XSL}/epub/build-to.xml -lib Utilities/lib/${SAXONJAR} -Dprofiledir=${XSL}/profiles -Dprofile=teikindle -DinputFile=`pwd`/p5.xml -DoutputFile=`pwd`/Guidelines-kindle.epub -Dcoverimage=`pwd`/Utilities/cover.jpg
+	-command -v  kindlegen && kindlegen Guidelines-kindle.epub -o Guidelines.mobi
+	rm Guidelines-kindle.epub
 
 fonttest:
 	-xelatex --interaction=batchmode Utilities/fonttest 
@@ -118,18 +119,20 @@ fonttest:
 Guidelines.pdf: check.stamp p5.xml Utilities/guidelines-latex.xsl
 	@echo check if XeLaTeX exist
 	@command -v  xelatex || exit 1
-	@echo BUILD: build Lite version of Guidelines
-	${SAXON} ${SAXON_ARGS}  -o:Guidelines.xml -s:p5.xml -xsl:${XSL}/${ODD2LITE} displayMode=rnc lang=${LANGUAGE} \
-	        doclang=${DOCUMENTATIONLANGUAGE} \
-	        documentationLanguage=${DOCUMENTATIONLANGUAGE}	${VERBOSE}
-	@echo BUILD: build LaTeX version of Guidelines from Lite
 	perl -p -e \
 		"s+http://www.tei-c.org/release/xml/tei/stylesheet+${XSL}+; \
 		 s+/usr/share/xml/tei/stylesheet+${XSL}+;" \
 		Utilities/guidelines-latex.xsl > Utilities/guidelines.xsl
-	@echo BUILD: check XeLaTeX system works locally
-	${SAXON} ${SAXON_ARGS}  Guidelines.xml Utilities/guidelines.xsl > Guidelines.tex
-	rm -f Utilities/guidelines.xsl
+	@echo BUILD: build Lite version of Guidelines, then LaTeX version of Guidelines from Lite, then run to PDF using XeLaTeX
+	@echo Make sure you have Junicode, Arphic and Mincho fonts installed 
+	ant -lib Utilities/lib/${SAXONJAR} -f antbuilder.xml -DXSL=${XSL} -DXELATEX=${XELATEX} pdfonce
+
+pdf-complete:
+	ant -lib Utilities/lib/${SAXONJAR} -f antbuilder.xml -DXSL=${XSL} -DXELATEX=${XELATEX} pdfrest 2> pdfbuild.log 1> pdfbuild.log
+	grep -v "Failed to convert input string to UTF16" pdfbuild.log
+	for i in Guidelines*aux; do perl -p -i -e 's/.*zf@fam.*//' $$i; done
+
+rewraprnc:
 	for i in Guidelines-REF*tex; \
 	  do \
 	     perl Utilities/rewrapRNC-in-TeX.pl <$$i>$$i.new; \
@@ -137,21 +140,6 @@ Guidelines.pdf: check.stamp p5.xml Utilities/guidelines-latex.xsl
 		diff $$i.new $$i; \
 		mv $$i.new $$i; \
 	done
-	@echo BUILD: build PDF version of Guidelines from LaTeX using XeLaTeX
-	@echo Make sure you have Junicode, Arphic and Mincho fonts installed 
-	echo '*' | ${XELATEX}  Guidelines
-
-pdf-complete:
-	(echo '*' | ${XELATEX} ${XELATEXFLAGS} Guidelines) 2> pdfbuild.log 1> pdfbuild.log
-	grep -v "Failed to convert input string to UTF16" pdfbuild.log
-	makeindex -s p5.ist Guidelines 
-	(echo '*' | ${XELATEX} ${XELATEXFLAGS} Guidelines) 2> pdfbuild.log 1> pdfbuild.log
-	grep -v "Failed to convert input string to UTF16" pdfbuild.log
-	(echo '*' | ${XELATEX} ${XELATEXFLAGS} Guidelines) 2> pdfbuild.log 1> pdfbuild.log
-	grep -v "Failed to convert input string to UTF16" pdfbuild.log
-	rm pdfbuild.log
-	rm Guidelines.xml
-	for i in Guidelines*aux; do perl -p -i -e 's/.*zf@fam.*//' $$i; done
 
 chapterpdfs: check
 	for i in `grep "\\include{" Guidelines.tex | sed 's/.*{\(.*\)}.*/\\1/'`; \
@@ -164,50 +152,19 @@ chapterpdfs: check
 
 validate: schemas.stamp valid 
 
-#The following line commented out in 10605 by MDH. Restored 2012-10-26 to see if it was the source of 2.2.0 release problems.
 valid: jing_version=$(wordlist 1,3,$(shell jing))
 valid: check.stamp p5.xml 
-#	@echo BUILD: Check validity with jing
-#	@echo ${jing_version}
-#	We have discovered that jing reports 3-letter language codes
-#	from ISO 639-2 as illegal values of xml:lang= even though
-#	they are perfectly valid per RFC 3066. We have submitted a
-#	bug report, and for now just throw away those error messages
-#	with grep -v. Note that we discard *all* such messages, even
-#	though fewer than 500 of the 17,576 possible combinations
-#	(i.e. < 3%) are valid codes.
-#	$(JING) -t p5odds.rng p5.xml 
-#
-	@echo BUILD: Check validity with nvdl/jing, including all examples with feasible validity
-	./run-onvdl p5.nvdl p5.xml 
 	@echo BUILD: Check validity with rnv if we have it
 	-command -v  rnv && rnv -v p5odds.rnc p5.xml
-	@echo BUILD: Check full validity of relevant examples with nvdl
-	${SAXON} -s:p5.xml -xsl:Utilities/extractegXML.xsl > v.body
-	echo "<!DOCTYPE p [" > v.header
-	(cd valid; ls | perl -p -e  "s+(.*)+<\!ENTITY \1 SYSTEM \"valid/\1\">+") >> v.header
-	echo "]>" >> v.header
-	cat v.header v.body > v.xml
-	./run-onvdl  p5valid.nvdl  v.xml
-	rm v.body v.header
-	@echo BUILD: Check validity with Schematron
-	${SAXON} ${SAXON_ARGS}  -s:p5.isosch -xsl:Utilities/iso_schematron_message_xslt2.xsl > p5.isosch.xsl
-	${SAXON} ${SAXON_ARGS}  -s:p5.xml -xsl:p5.isosch.xsl
-	@echo BUILD: Check validity with local XSLT script
-	${SAXON} ${SAXON_ARGS}  -s:p5.xml -xsl:Utilities/prevalidator.xsl > Utilities/pointerattributes.xsl
-	${SAXON} ${SAXON_ARGS}  -o:ValidatorLog.xml -s:p5.xml -xsl:Utilities/validator.xsl 
-	(grep -q "<ERROR>" ValidatorLog.xml;if [ $$? -eq 1 ] ; then echo No problems ; else echo "Oh dear me. ERROR found"; grep "<ERROR>" ValidatorLog.xml;false; fi)
-	diff ValidatorLog.xml expected-results/ValidatorLog.xml
+	ant -lib Utilities/lib/${SAXONJAR} -f antbuilder.xml -DXSL=${XSL} validators		
 	cat ValidatorLog.xml
-	rm ValidatorLog.xml Utilities/pointerattributes.xsl 
-	#@echo BUILD: Check validity with xmllint
-	#xmllint  --relaxng p5odds.rng --noent --xinclude --noout p5.xml
-	@echo BUILD: Check for places with no examples
-	${SAXON} -s:p5.xml -xsl:Utilities/listspecwithnoexample.xsl 
-	@echo BUILD: do graphics files exist
-	${SAXON} -s:p5.xml -xsl:Utilities/listgraphics.xsl | sh
+	(grep -q "<ERROR>" ValidatorLog.xml;if [ $$? -ne 1 ] ; then echo "Oh dear me. ERROR found";false; fi)
+	diff ValidatorLog.xml expected-results/ValidatorLog.xml
+	sh graphics.sh
+	@echo BUILD: Check validity with nvdl, first examples with feasible validity, and then the valid ones
+	./run-onvdl p5.nvdl p5.xml 
+	./run-onvdl p5valid.nvdl v.xml
 
-#test: debversion
 test: schemas.stamp
 	@echo BUILD Run test cases for P5
 	(cd Test; make XSL=${XSL})
@@ -232,13 +189,18 @@ dist-source.stamp: check.stamp p5.xml  schemas.stamp
 	Utilities   \
 	VERSION  \
 	Exemplars/Makefile  \
-	Exemplars/relax*  \
-	Exemplars/math*  \
-	Exemplars/svg*  \
-	fasc-head.xml \
-	fasc-tail.xml \
+	Exemplars/mathml2-main.rng \
+	Exemplars/mathml2-qname-1.mod \
+	Exemplars/mathml2-qname-1.mod.rng \
+	Exemplars/mathml2.rng \
+	Exemplars/relaxng.rng \
+	Exemplars/svg-main.rng \
+	Exemplars/svg.rng \
+	Exemplars/svg11.rng \
 	p5.nvdl \
+	p5valid.nvdl \
 	p5odds.odd \
+	p5odds.isosch \
 	p5odds.rng \
 	p5odds.rnc \
 	p5odds-examples.odd \
@@ -397,24 +359,6 @@ install-database: dist-database
 
 install: clean install-schema install-doc install-test install-exemplars install-source install-database
 
-epub: Guidelines.epub
-
-Guidelines.epub: check.stamp p5.xml 
-	@echo BUILD: Make epub version of Guidelines
-	teitoepub --profiledir=${XSL}/profiles --coverimage=Utilities/cover.jpg --profile=tei p5.xml Guidelines.epub
-	java -jar Utilities/epubcheck-1.2.jar Guidelines.epub
-	touch Guidelines.epub
-
-epub3: check.stamp p5.xml 
-	teitoepub3 --profiledir=${XSL}/profiles --coverimage=Utilities/cover.jpg --profile=tei p5.xml Guidelines.epub
-	java -jar Utilities/epubcheck3.jar Guidelines.epub
-
-mobi:  Guidelines.mobi
-
-Guidelines.mobi: check.stamp p5.xml 
-	teitoepub --profiledir=${XSL}/profiles --coverimage=Utilities/cover.jpg --profile=teikindle p5.xml Guidelines-kindle.epub
-	-command -v  kindlegen && kindlegen Guidelines-kindle.epub -o Guidelines.mobi
-	rm Guidelines-kindle.epub
 
 changelog:
 	(LastDate=`head -1 ReleaseNotes/ChangeLog | awk '{print $$1}'`; \
@@ -445,34 +389,29 @@ dependencies:
 	@echo	zip 
 
 clean:
+	(cd Exemplars; make clean)
+	(cd Test; make clean)
 	rm -rf release Guidelines Guidelines-web Schema DTD dtd Split 
 	rm -rf Guidelines.??? Guidelines-* 
-	rm -f Guidelines.epub
-	rm -f Guidelines.mobi
-	rm -f p5odds-examples.rng  p5odds-examples.rnc 
-	rm -f p5odds.rng p5odds.rnc 
-	rm -f *.xsd 
-	rm -f anything buildweb.xml
-	rm -f p5.sch p5.isosch 
 	rm -f *.isosch.xsl 
-	rm -f tei-*.zip 
+	rm -f *.stamp
+	rm -f *.xsd 
+	rm -f Exemplars/stdout
 	rm -f Test/*.isosch 
-	rm -f p5subset.xml p5subset.json p5subset.js p5.xml 
-	rm -f Utilities/guidelines.xsl Utilities-1/guidelines.xsl
-	find . -name "semantic.cache" | xargs rm -f
-	(cd Test; make clean)
-	(cd Exemplars; make clean)
+	rm -f Test/detest.dtd Test/detest.rnc Test/detest.rng Test/detest.xsl
+	rm -f Test/stdout
+	rm -f Utilities/guidelines.xsl
+	rm -f anything buildweb.xml
+	rm -f p5.sch p5.isosch p5.xml p5subset.xml p5subset.json p5subset.js
+	rm -f p5attlist.txt
+	rm -f p5odds-examples.rng p5odds-examples.rnc p5odds.rng p5odds.rnc p5odds.isosch
+	rm -f pdfbuild.log
+	rm -f stripspace.xsl.model
+	rm -f tei-*.zip 
+	rm -f tei-p5-*_*build
+	rm -f tei-p5-*_*changes
+	rm -f tei-p5-*_*deb
+	rm -f teiwebsiteguidelines.zip
 	rm -rf FASC-*
 	rm -rf catalogue.* modList
-	rm -f       p5.xml
-	rm -f       Test/detest.rnc
-	rm -f       Test/detest.rng
-	rm -f       Test/detest.dtd
-	rm -rf valid v.xml
-	rm -f v.body v.header missfont.log 
-	rm -f *.stamp
-	rm -f tei-p5-*_*deb
-	rm -f tei-p5-*_*changes
-	rm -f tei-p5-*_*build
-	rm -f teiwebsiteguidelines.zip
-	rm -rf bin
+	rm -rf valid v.xml ValidatorLog.xml Utilities/pointerattributes.xsl graphics.sh missfont.log v.body v.header Schematron1.xml Schematron2.xml

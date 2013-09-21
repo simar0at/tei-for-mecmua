@@ -6,6 +6,9 @@
     $Date$
     $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="ref">
   <gloss>reference</gloss>
   <gloss versionDate="2007-12-20" xml:lang="ko">참조</gloss>
@@ -17,8 +20,7 @@
   <desc versionDate="2007-12-20" xml:lang="ko">부가적인 텍스트 또는 해설로 수정될 수 있는, 다른 위치로 참조를 정의한다.</desc>
   <desc versionDate="2007-05-02" xml:lang="zh-TW">標明與其他位置互相參照的符號，或許包含附加的文字或註解。</desc>
   <desc versionDate="2008-04-05" xml:lang="ja"> 他の場所への参照を定義する．多くは，追加テキストまたはコメントを含む． </desc>
-  <desc versionDate="2009-01-06" xml:lang="fr">définit une référence vers un autre emplacement  que
-   l' ajout d'un texte ou d'un commentaire modifie éventuellement. </desc>
+  <desc versionDate="2009-01-06" xml:lang="fr">définit une référence vers un autre emplacement, la référence étant éventuellement modifiée ou complétée par un texte ou un commentaire. </desc>
   <desc versionDate="2007-05-04" xml:lang="es">define una referencia a otra localización, posiblemente
     modificada por un texto o comentario adicional.</desc>
   <desc versionDate="2007-01-21" xml:lang="it">definisce un riferimento ad un'altra posizione, può
@@ -43,20 +45,19 @@
   </constraintSpec>
 
   <exemplum xml:lang="en">
-    <egXML xmlns="http://www.tei-c.org/ns/Examples"><ref target="http://www.natcorp.ox.ac.uk/Texts/A02.xml#s2"> See especially the second
-      sentence</ref> See also <ref>s.v. <term>locution</term>
-         </ref>.</egXML>
-  </exemplum>
-  <exemplum xml:lang="en">
-    <egXML xmlns="http://www.tei-c.org/ns/Examples"><ref target="http://www.natcorp.ox.ac.uk/Texts/A02.xml#s2"> See especially the second
+    <egXML xmlns="http://www.tei-c.org/ns/Examples">See especially <ref target="http://www.natcorp.ox.ac.uk/Texts/A02.xml#s2">the second
       sentence</ref> </egXML></exemplum>
   <exemplum xml:lang="en">
-    <egXML xmlns="http://www.tei-c.org/ns/Examples">See also <ref>s.v. <term>locution</term>
+    <egXML xmlns="http://www.tei-c.org/ns/Examples">See also <ref target="#locution">s.v. <term>locution</term>
          </ref>.</egXML>
   </exemplum>
+<exemplum xml:lang="fr"><egXML
+              xmlns="http://www.tei-c.org/ns/Examples">Cf. tout particulièrement <ref
+                target="#SEC12">la section 12, page 34</ref>.</egXML>
+</exemplum>
   <exemplum versionDate="2008-04-06" xml:lang="fr">
-    <egXML xmlns="http://www.tei-c.org/ns/Examples">As discussed in
-    <ref cRef="B1/234 a">Verse 234a of Book 1</ref>
+    <egXML xmlns="http://www.tei-c.org/ns/Examples">Cf. tout particulièrement 
+    <ref cRef="B1/234">le vers 234 du Livre I</ref>
       </egXML>
   </exemplum>
   <exemplum xml:lang="zh-TW">

@@ -371,6 +371,45 @@
             </w:pPr>
             <w:r>
               <w:rPr/>
+              <w:t xml:space="preserve">hi</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr/>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="Tabletext9"/>
+              <w:jc w:val="left"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr/>
+              <w:t xml:space="preserve">This is </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr/>
+              <w:t xml:space="preserve">hi rend="special"</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr/>
+              <w:t xml:space="preserve"> tag</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tblPrEx>
+          <w:tblLayout w:type="autofit"/>
+        </w:tblPrEx>
+        <w:tc>
+          <w:tcPr/>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="Tabletext9"/>
+              <w:jc w:val="left"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr/>
               <w:t xml:space="preserve">emph</w:t>
             </w:r>
           </w:p>
@@ -921,6 +960,7 @@
             </w:r>
             <w:r>
               <w:rPr>
+                <w:smallCaps/>
                 <w:vertAlign w:val="subscript"/>
               </w:rPr>
               <w:t xml:space="preserve">subscript</w:t>
@@ -962,6 +1002,7 @@
             </w:r>
             <w:r>
               <w:rPr>
+                <w:smallCaps/>
                 <w:vertAlign w:val="superscript"/>
               </w:rPr>
               <w:t xml:space="preserve">superscript</w:t>
@@ -969,6 +1010,49 @@
             <w:r>
               <w:rPr/>
               <w:t xml:space="preserve"> effect</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+      </w:tr>
+      <w:tr>
+        <w:tblPrEx>
+          <w:tblLayout w:type="autofit"/>
+        </w:tblPrEx>
+        <w:tc>
+          <w:tcPr/>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="Tabletext9"/>
+              <w:jc w:val="left"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr/>
+              <w:t xml:space="preserve">bold italic red, done separately</w:t>
+            </w:r>
+          </w:p>
+        </w:tc>
+        <w:tc>
+          <w:tcPr/>
+          <w:p>
+            <w:pPr>
+              <w:pStyle w:val="Tabletext9"/>
+              <w:jc w:val="left"/>
+            </w:pPr>
+            <w:r>
+              <w:rPr/>
+              <w:t xml:space="preserve">  </w:t>
+            </w:r>
+            <w:r>
+              <w:rPr>
+                <w:b/>
+                <w:i/>
+                <w:color w:val="red"/>
+              </w:rPr>
+              <w:t xml:space="preserve">rend test 1</w:t>
+            </w:r>
+            <w:r>
+              <w:rPr/>
+              <w:t xml:space="preserve">  </w:t>
             </w:r>
           </w:p>
         </w:tc>
@@ -1055,10 +1139,6 @@
       </w:r>
       <w:r>
         <w:t xml:space="preserve"> </w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -1295,6 +1375,7 @@
       </w:r>
       <w:r>
         <w:rPr>
+          <w:smallCaps/>
           <w:strike/>
           <w:vertAlign w:val="superscript"/>
         </w:rPr>
@@ -1370,10 +1451,6 @@
         <w:t xml:space="preserve">tutor[?]</w:t>
       </w:r>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:rPr>
           <w:rStyle w:val="tei_unclear"/>
         </w:rPr>
@@ -1407,10 +1484,6 @@
         <w:t xml:space="preserve">when compared with cash</w:t>
       </w:r>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:rPr>
           <w:color w:val="red"/>
         </w:rPr>
@@ -1442,10 +1515,6 @@
           <w:strike/>
         </w:rPr>
         <w:t xml:space="preserve">a</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
       <w:r>
         <w:rPr>
@@ -1548,10 +1617,6 @@
           <w:strike/>
         </w:rPr>
         <w:t xml:space="preserve">[...]</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
       <w:r>
         <w:rPr>
@@ -2940,12 +3005,6 @@
       </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
       <w:pPr>
         <w:pStyle w:val="dl"/>
         <w:ind w:left="567" w:hanging="567"/>
@@ -3011,12 +3070,6 @@
     <w:p>
       <w:r>
         <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
-        <w:rPr/>
         <w:t xml:space="preserve">This untyped list has a heading and a nested glosslist </w:t>
       </w:r>
     </w:p>
@@ -3031,19 +3084,6 @@
       <w:r>
         <w:rPr/>
         <w:t xml:space="preserve">first item </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:pPr>
-        <w:pStyle w:val="ListContinue"/>
-        <w:numPr>
-          <w:ilvl w:val="0"/>
-          <w:numId w:val="2"/>
-        </w:numPr>
-      </w:pPr>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -3113,26 +3153,7 @@
       </w:pPr>
       <w:r>
         <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:pPr>
-        <w:pStyle w:val="ListContinue"/>
-        <w:numPr>
-          <w:ilvl w:val="0"/>
-          <w:numId w:val="2"/>
-        </w:numPr>
-      </w:pPr>
-      <w:r>
-        <w:rPr/>
         <w:t xml:space="preserve">third item </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4115,10 +4136,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4194,12 +4211,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -4222,10 +4233,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4259,10 +4266,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4289,10 +4292,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4318,10 +4317,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4352,10 +4347,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4442,10 +4433,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4488,10 +4475,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4518,10 +4501,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4547,10 +4526,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4612,10 +4587,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4685,16 +4656,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -4703,10 +4664,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4740,10 +4697,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4763,10 +4716,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -4775,10 +4724,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -4806,16 +4751,8 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:r>
         <w:t>‘</w:t>
       </w:r>
@@ -4826,10 +4763,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4848,10 +4781,6 @@
       </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:r>
         <w:t>‘</w:t>
       </w:r>
@@ -4862,10 +4791,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4884,10 +4809,6 @@
       </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:r>
         <w:t>‘</w:t>
       </w:r>
@@ -4913,10 +4834,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -4936,10 +4853,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -4948,10 +4861,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5001,10 +4910,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5052,10 +4957,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5081,10 +4982,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5148,10 +5045,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5196,12 +5089,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -5224,10 +5111,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5255,10 +5138,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5278,10 +5157,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -5290,10 +5165,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5321,10 +5192,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5351,10 +5218,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5374,10 +5237,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:t>‘</w:t>
       </w:r>
       <w:r>
@@ -5386,10 +5245,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5432,16 +5287,8 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:r>
         <w:t>‘</w:t>
       </w:r>
@@ -5451,10 +5298,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5481,10 +5324,6 @@
       </w:r>
       <w:r>
         <w:t>’</w:t>
-      </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5528,10 +5367,6 @@
       <w:r>
         <w:t>’</w:t>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:r>
@@ -5546,12 +5381,6 @@
       <w:r>
         <w:rPr/>
         <w:t xml:space="preserve">p. 15</w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">   </w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -5626,10 +5455,6 @@
     </w:p>
     <w:p>
       <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-      <w:r>
         <w:fldChar w:fldCharType="begin"/>
       </w:r>
       <w:r>
@@ -5645,16 +5470,8 @@
       <w:r>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
       </w:r>
@@ -5671,16 +5488,8 @@
       <w:r>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:r>
         <w:fldChar w:fldCharType="begin"/>
       </w:r>
@@ -5697,16 +5506,8 @@
       <w:r>
         <w:fldChar w:fldCharType="end"/>
       </w:r>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:hyperlink xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId3009">
         <w:r>
           <w:rPr>
@@ -5715,16 +5516,8 @@
           <w:t>Fred</w:t>
         </w:r>
       </w:hyperlink>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
       <w:hyperlink xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId3010">
         <w:r>
           <w:rPr>
@@ -5733,10 +5526,6 @@
           <w:t>Jones 76</w:t>
         </w:r>
       </w:hyperlink>
-      <w:r>
-        <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
     </w:p>
     <w:p>
       <w:pPr>
@@ -5908,12 +5697,6 @@
     <w:p>
       <w:r>
         <w:rPr/>
-        <w:t xml:space="preserve">  </w:t>
-      </w:r>
-    </w:p>
-    <w:p>
-      <w:r>
-        <w:rPr/>
         <w:t xml:space="preserve">I wonder what are the xml-ids preserved in a transformation to XHTML, in particular in the case of quotations. So, let’s try :</w:t>
       </w:r>
     </w:p>
@@ -6075,6 +5858,405 @@
       <w:r>
         <w:rPr/>
         <w:t xml:space="preserve">.</w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+      </w:pPr>
+      <w:bookmarkStart w:id="1024" w:name="_SECTION_1024"/>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">Verbatim</w:t>
+      </w:r>
+      <w:bookmarkEnd w:id="1024"/>
+    </w:p>
+    <w:p>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">an egXML in a list: </w:t>
+      </w:r>
+    </w:p>
+    <w:p>
+      <w:pPr>
+        <w:pStyle w:val="Special"/>
+      </w:pPr>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">div</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve"> </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">xml:id</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">="test99" </w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">rend</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">="whatever"&gt;</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve"> &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">head</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;Choice, sic, corr, reg, orig&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">head</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve"> &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">p</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;v&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;oro&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt; þav sam&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;m&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;ędd syskin in</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">   hei&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;lagr&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;i &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">lb</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">/&gt; ol&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;afr&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt; k&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;onvng&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;r</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve"> &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;ok&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt; fyrnefnd</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve"> &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">choice</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">   &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">sic</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;gvn&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;n&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;hillde&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">sic</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">   &lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">corr</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;gvn&lt;</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;n&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">ex</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;hilldr&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">corr</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">  &lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">choice</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;.&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">p</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;</w:t>
+      </w:r>
+      <w:r>
+        <w:br/>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&lt;/</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr>
+          <w:b/>
+        </w:rPr>
+        <w:t xml:space="preserve">div</w:t>
+      </w:r>
+      <w:r>
+        <w:rPr/>
+        <w:t xml:space="preserve">&gt;</w:t>
       </w:r>
     </w:p>
     <w:sectPr>

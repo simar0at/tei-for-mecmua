@@ -1,26 +1,24 @@
 LANGUAGE=en
-ROMA=roma2
 INPUTLANGUAGE=en
 DOCUMENTATIONLANGUAGE=en
 DRIVER=guidelines-${INPUTLANGUAGE}.xml
 XSL=/usr/share/xml/tei/stylesheet/
-SAXON=java -Xmx752m -jar ../Utilities/lib/saxon-9.1.0.8.jar -ext:on
-ROMAOPTS=--isoschematron --doclang=${DOCUMENTATIONLANGUAGE} --localsource=`pwd`/../p5subset.xml
-ANT=ANT_OPTS="-Xss2m -Xmx752m" ant -lib /usr/share/java/jing.jar:/usr/share/saxon/saxon9he.jar -Dtrang=/usr/share/trang/trang.jar  -DdefaultSource=`pwd`/../p5subset.xml -DXSL=${XSL} 
+SAXON=java -Xmx752m -jar ../Utilities/lib/Saxon-HE-9.4.0.6.jar -ext:on
+ANT=ANT_OPTS="-Xss2m -Xmx752m" ant -lib ../Utilities/lib/Saxon-HE-9.4.0.6.jar:/usr/share/java/jing.jar -Dtrang=/usr/share/trang/trang.jar  -DdefaultSource=`pwd`/../p5subset.xml -DXSL=${XSL} 
 
 NORMALFILES= \
 	testbare.dtd \
 	testbasic.xsd \
+	testall.xsd \
 	testplus.special 
 
 EXTENDEDFILES = \
-	testall.examples \
 	testjustfs.xsd \
 	testp4compat.xsd \
 	testplace-kml.special 
 #testi18n.xsd \
 
-default: normal detest special testmeta2010 test-extns test-frag 
+default: normal special testmeta2010 test-extns test-frag detest
 
 normal: $(NORMALFILES)
 special: $(EXTENDEDFILES)

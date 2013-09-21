@@ -60,8 +60,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: from.xsl 10332 2012-05-08 15:22:00Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
     
@@ -96,8 +96,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
 
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Returns a listtype for a given stylename (return empty string to
+      <desc>Returns a listtype for a given stylename (return empty string to
 	figure it out dynamically)
       </desc>
     </doc>
@@ -115,8 +114,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
 
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Defines whether or not a word paragraph is a first level heading 
+      <desc>Defines whether or not a word paragraph is a first level heading 
       </desc>
     </doc>
     
@@ -135,8 +133,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Defines whether or not a word paragraph is a  heading 
+      <desc>Defines whether or not a word paragraph is a  heading 
       </desc>
     </doc>
     
@@ -193,8 +190,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Is given a header style and returns the style for the next level
+      <desc>Is given a header style and returns the style for the next level
 	header 
       </desc>
     </doc>

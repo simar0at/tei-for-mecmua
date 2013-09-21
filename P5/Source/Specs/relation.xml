@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="namesdates" ident="relation">
   <equiv/>
   <gloss>relationship</gloss>
@@ -15,7 +18,7 @@ $Id$
   <gloss versionDate="2007-05-04" xml:lang="es">relación</gloss>
   <gloss versionDate="2007-01-21" xml:lang="it">relazione</gloss>
   <desc>describes any kind of relationship or linkage amongst a
-  specified group of objects, places, events or people.</desc>
+  specified group of places, events, persons, objects or other items.</desc>
   <desc versionDate="2007-12-20" xml:lang="ko">명시된 참여자군 사이에 관련성 또는 연결 종류를 기술한다.</desc>
   <desc versionDate="2007-05-02" xml:lang="zh-TW">描述在特定團體中，參與者彼此之間的關係或關聯。</desc>
   <desc versionDate="2008-04-05" xml:lang="ja"> 指定された参加者グループ間の関連性の種類を示す． </desc>
@@ -192,6 +195,19 @@ $Id$
     <p>This indicates that there is a relation, defined by CIDOC CRM,
     between two resources identified by URLs.</p>
   </exemplum>
+  <!--<exemplum xml:lang="en">
+    <egXML xmlns="http://www.tei-c.org/ns/Examples" source="#SAWS">
+      <relation
+        resp="http://viaf.org/viaf/44335536/"
+        ref="http://purl.org/saws/ontology#isVariantOf" name="variant"
+        active="http://www.ancientwisdoms.ac.uk/cts/urn:cts:greekLit:tlg3017.Syno298.sawsGrc01:divedition.divsection1.o14.a107"
+        passive="http://data.perseus.org/citations/urn:cts:greekLit:tlg0031.tlg002.perseus-grc1:9.35"/>
+    </egXML>
+    <p>This example records a relationship, defined by the SAWS ontology, between a passage of text
+    identified by a CTS URN, and a variant passage of text in the Perseus Digital Library, and assigns
+    the identification of the relationship to a particular editor (all using resolvable URIs).</p>
+  </exemplum>
+  COMMENTED OUT UNTIL URI ABOVE IS RESOLVED BY SAWS PROJECT -->
 
   <remarks>
     <p>Only one of the attributes <att>active</att> and <att>mutual</att> may be supplied; the attribute <att>passive</att> may be supplied only

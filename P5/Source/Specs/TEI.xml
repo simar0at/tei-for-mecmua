@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="textstructure" ident="TEI">
   <equiv/>
   <gloss>TEI document</gloss>
@@ -25,7 +28,7 @@ comprising a TEI header and a text, either in isolation or as part of a
   TEIに準拠する文書
   </desc>
   <desc versionDate="2007-06-12" xml:lang="fr">contient un seul document conforme à la TEI, qui
-            comprend un en-tête TEI et un texte, soit de façon isolée soit comme  partie d’un
+            comprend un en-tête TEI et un texte, soit de façon isolée, soit comme  partie d’un
             élément <gi>teiCorpus</gi>.</desc>
   <desc versionDate="2006-10-18" xml:lang="de"> 
 enthält ein einzelnes TEI-konformes Dokument, das aus TEI-Header (Dateikopf) und Text besteht, entweder als eigenständige Datei oder als  Teil eines Elements <gi>teiCorpus</gi>.

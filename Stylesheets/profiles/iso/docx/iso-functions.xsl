@@ -60,22 +60,20 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: iso-functions.xsl 10881 2012-10-01 16:34:00Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
 
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Returns a listtype for a given stylename (return empty string to
+      <desc>Returns a listtype for a given stylename (return empty string to
 	figure it out dynamically)
       </desc>
     </doc>
     
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Returns the correct heading style (return empty string to figure it
+      <desc>Returns the correct heading style (return empty string to figure it
 	out dynamically)
       </desc>
     </doc>
@@ -111,8 +109,7 @@ of this software, even if advised of the possibility of such damage.
     
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Defines whether or not a word paragraph is a first level heading 
+      <desc>Defines whether or not a word paragraph is a first level heading 
       </desc>
     </doc>
     
@@ -131,8 +128,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Defines whether or not a word paragraph is a  heading 
+      <desc>Defines whether or not a word paragraph is a  heading 
       </desc>
     </doc>
     
@@ -201,8 +197,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Is given a header style and returns the style for the next level
+      <desc>Is given a header style and returns the style for the next level
 	header 
       </desc>
     </doc>
@@ -220,8 +215,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Define special rendering 
+      <desc>Define special rendering 
       </desc>
     </doc>
     
@@ -241,8 +235,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:function>
     
     <doc type="function" xmlns="http://www.oxygenxml.com/ns/doc/xsl"  >
-      <desc>
-	Whether to render an element in italic 
+      <desc>Whether to render an element in italic 
       </desc>
     </doc>
     
@@ -319,9 +312,8 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:when
 	      test="self::tei:note[@type='remark']">true</xsl:when>
 	  <xsl:when test="self::tei:note[@type='emphasize']">true</xsl:when>
-	  <xsl:when test="self::tei:note[@place='foot']">true</xsl:when>
-	  <xsl:when test="self::tei:note[@place='bottom']">true</xsl:when>
-	  <xsl:when test="self::tei:note[@place='end']">true</xsl:when>
+	  <xsl:when test="self::tei:note[tei:isEndNote(.)]">true</xsl:when>
+	  <xsl:when test="self::tei:note[tei:isFootNote(.)]">true</xsl:when>
 	  <xsl:when test="self::tei:note[@place='comment']">true</xsl:when>
 	  <xsl:when test="self::tei:note[@place='inline' and parent::tei:q]">true</xsl:when>
 	  <xsl:when test="self::tei:note[@place='inline' and not(parent::tei:div or

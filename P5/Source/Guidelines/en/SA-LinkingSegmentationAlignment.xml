@@ -5,6 +5,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="SA" n="14">
   <head>Linking, Segmentation, and Alignment</head>
   
@@ -38,7 +42,7 @@ provides for the following common requirements:
     align them with specific points in time (section <ptr target="#SASYMP"/>);</item>
     <item>to specify that one text element is identical
     to or a copy of another (section <ptr target="#SAIE"/>);</item>
-    <item>to aggregate possibly noncontinguous elements
+    <item>to aggregate possibly noncontiguous elements
     (section <ptr target="#SAAG"/>);</item>
     <item>to specify that different elements are
     alternatives to one another and to express
@@ -412,7 +416,7 @@ the preceding example thus:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/link.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/link.xml"/>
 
 
 
@@ -431,7 +435,7 @@ the preceding example thus:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/linkGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/linkGrp.xml"/>
 
 
 
@@ -523,19 +527,22 @@ identified by the URI. --></p>
     mechanisms is readily available elsewhere.<!-- where? --></p>
     <div type="div3" xml:id="SAUR">
 <head>Pointing Elsewhere</head>
-<p>Like the ubiquitous if misnamed XHTML pointing attribute <att scheme="XHTML">href</att>, the TEI pointing attributes can point
-to a document that is not the current document (the one that
-contains the pointing element) whether it is in the same local
-filesystem as the current document, or on a different system
-entirely. In either case, the pointing can be accomplished
-absolutely (using the entire address of the target document) or
-relatively (using an address relative to the current base URI in
-force). The <soCalled>current base URI</soCalled> is defined
-according to <ref target="#XMLBASE">Marsh 2001</ref>. In
-general the current base URI in force is the value of the
-<att>xml:base</att> attribute of the closest ancestor that has one. If
-there is none, the base URI is that of the current document.
-</p>
+<p>Like the ubiquitous if misnamed XHTML pointing attribute <att
+scheme="XHTML">href</att>, the TEI pointing attributes can point to a
+document that is not the current document (the one that contains the
+pointing element) whether it is in the same local filesystem as the
+current document, or on a different system entirely. In either case,
+the pointing can be accomplished absolutely (using the entire address
+of the target document) or relatively (using an address relative to
+the current base URI in force). The <soCalled>current base
+URI</soCalled> is defined according to <ref target="#XMLBASE">Marsh
+2001</ref>. If there is none, the base URI is that of the current
+document.  In common practice the current base URI in force is likely
+to be the value of the <att>xml:base</att> attribute of the closest
+ancestor that has one. However this may not be the case, since
+<att>xml:base</att> attributes are accumulated through the hierarchy
+by concatenation of path segments, beginning at the top of the
+hierarchy and proceeding down to the context node.</p>
 <p>The following example demonstrates an absolute URI reference
 that points to a remote document: 
 <egXML xmlns="http://www.tei-c.org/ns/Examples">The current base URI in force is as defined in the
@@ -802,7 +809,7 @@ identifier <val>sha-ham301</val> is the identifier for the
 <gi>div</gi> element containing Act III, Scene I of Hamlet. The
 second child of the 22nd child of this <gi>div</gi> element
 contains the desired <gi>l</gi> element. This is equivalent to
-the XPath specfication
+the XPath specification
 <code>id(sha-ham301)/*[22]/*[2]</code>.</p>
 <p>As noted above, we could also point directly to this line if it had an
 identifier of its own. In another digital edition of Shakespeare,
@@ -1067,7 +1074,7 @@ target="Usdin01/EML2002Usdin01.xml#right(element(/1/1/3/3/6))"/></p></egXML></p>
     values themselves, and are resolved according to the rules
     specified in the definition of the pointer scheme they use.<note
     place="bottom">Bare names (<att>xml:id</att> values), like other
-    Xpointer schemes, are permitted as <name
+    XPointer schemes, are permitted as <name
     type="xpscheme">range()</name> parameters.</note> Most pointer
     schemes return nodes or ranges rather than points; the
     possibilities for <name type="xpscheme">range()</name> pointer
@@ -1148,7 +1155,7 @@ target="Usdin01/EML2002Usdin01.xml#right(element(/1/1/3/3/6))"/></p></egXML></p>
     to the <rs>offset</rs> and <rs>length</rs>. If the offset is negative, or
     <rs>length</rs> is sufficiently large, a string-range can
     designate characters outside the string-value of the
-    intitial pointer. In this case, characters are located using
+    initial pointer. In this case, characters are located using
     the string-value of the entire document. It is also legal
     for <rs>length</rs> plus the origin to exceed the length of
     the string-value of the document by one, in order to
@@ -1225,29 +1232,32 @@ part of a biblical reference.</p>
 </refsDecl></egXML>
 </p>
 <p>When an application encounters a canonical reference as the
-value of <att>cRef</att> attribute, it  follows a sequence of
-specific steps to transform it into a URI reference.
+value of <att>cRef</att> attribute, it might follow this sequence of
+specific steps to transform it into a URI reference:
 <list type="ordered">
   <item>Ascertain the correct <gi>refsDecl</gi>
   following the rules summarized in section <ptr target="#CCAS3"/>.</item>
   <item>For each <gi>cRefPattern</gi> element encountered in
   the appropriate <gi>refsDecl</gi>, in the order encountered:
   <list type="ordered">
-    <item>match the value of <att>cRef</att> to the regular
+    <item>match the value of the <att>cRef</att> attribute to the regular
     expression found as the value of the <att>matchPattern</att>
     attribute</item>
-    <item>if the <att>cRef</att> value matches, take the value
-    of the <att>replacementPattern</att> attribute and substitute the back
-    references ($1, $2, etc.) with the corresponding matched
-    substrings</item>
-    <item>the result is taken as if it were a relative or
-    absolute URI reference specified on the <att>target</att>
-    attribute; i.e., it should be used as is or combined with
-    the current <att>xml:base</att> value as usual</item>
-    <item>no further processing of this <att>cRef</att> against
-    the <gi>refsDecl</gi> should take place</item>
-    <item>if, however, the <att>cRef</att> value does not match
-    the regular expression specified on <att>matchPattern</att> attribute,
+    <item>if the value of the <att>cRef</att> attribute matches:
+      <list type="ordered">
+        <item>take the value of the <att>replacementPattern</att> 
+          attribute and substitute the back references ($1, $2, 
+          etc.) with the corresponding matched substrings</item>
+        <item>the result is taken as if it were a relative or 
+          absolute URI reference specified on the <att>target</att> 
+          attribute; i.e., it should be used as is or combined with
+          the current <att>xml:base</att> attribute value as usual</item>
+        <item>no further processing of this value of the <att>cRef</att> 
+          attribute against the <gi>refsDecl</gi> should take place</item>
+      </list>
+    </item>
+    <item>if, however, the value of the <att>cRef</att> attribute does not match
+    the regular expression specified in the value of the <att>matchPattern</att> attribute,
     proceed to the next <gi>cRefPattern</gi></item>
   </list>
   </item>
@@ -1265,7 +1275,7 @@ be warned that while in Perl the pattern <code>tei</code>
 matches any string that contains <mentioned>tei</mentioned>, in
 the W3C language it only matches the string <q>tei</q>.</note>
 The value of the <att>replacementPattern</att> attribute is simply a string,
-except that occurences of <q>$1</q> through <q>$9</q> are
+except that occurrences of <q>$1</q> through <q>$9</q> are
 replaced by the corresponding substring match. Note that since a
 maximum of nine substring matches are permitted, the string
 <q>$18</q> means <q>the value of the first matched substring
@@ -1344,16 +1354,11 @@ corresponds to <q>Matt 5:7</q>.</p>
     <code>(.+)</code>, producing the matched substring <q>Matt</q>,
     and the URI Reference
     <code>http://www.example.org/resources/books/Bible.xml#xpath1(//div[@n='Matt'])</code>.</p>
-  <p>It is an error to reference more matched substrings than
-    are produced by the regular expression. For example:
+  <p>a <gi>cRefPattern</gi> should not reference more matched substrings. For example:
     <egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples"><cRefPattern matchPattern="(.+) (.+):(.+)" replacementPattern="//div[@n='$1']/div[$2]/div[$3]/p[$4]"/></egXML>
-    would produce an error, since only three matched
+    is faulty, since only three matched
     substrings would have been produced, but a fourth (<code>$4</code>) was
     referenced.</p>
-    <p>It is quite reasonable to believe that encoders would
-    actually prefer much more precise regular expressions than
-    those used as examples above. E.g.,
-    <code>^\s*([1-9]?[A-Z][a-z]+)\s+([1-9][0-9]?[0-9]?):([1-9][0-9]?)\s*$</code>.</p>
 </div>
 <div type="div4" xml:id="SACRex">
   <head>Complete and Partial URI Examples</head>
@@ -1383,7 +1388,7 @@ corresponds to <q>Matt 5:7</q>.</p>
 </cRefPattern>
     </refsDecl>
     <!-- ... -->
-    <p>The example in section <ptr target="#SABN"/> is taken
+    <p>The example in section 10 is taken
     from <ref cRef="17 USC Ch 1">Subject Matter and Scope of
     Copyright</ref>.</p>
   </egXML>
@@ -1564,7 +1569,7 @@ mark both features within s-units and segments composed of
 s-units, as in the following example:<note place="bottom">See
 section <ptr target="#AISP"/>, where the text from which this
 fragment is taken is analyzed.</note>
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><seg xml:id="s1s3" type="narrative_unit">
+<egXML xmlns="http://www.tei-c.org/ns/Examples" source="#AI-eg-01"><seg xml:id="s1s3" type="narrative_unit">
   <s xml:id="s1">Sigmund, the <seg type="patronymic">son of Volsung</seg>,
  was a king in Frankish country.</s>
   <s xml:id="s2">Sinfiotli was the eldest of his sons.</s>
@@ -1711,7 +1716,7 @@ See further <ptr target="#CODR"/> and <ptr target="#DRPAL"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/ab.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/ab.xml"/>
 
 
 
@@ -1727,7 +1732,7 @@ See further <ptr target="#CODR"/> and <ptr target="#DRPAL"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/anchor.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/anchor.xml"/>
 
 
 
@@ -1743,7 +1748,7 @@ See further <ptr target="#CODR"/> and <ptr target="#DRPAL"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/seg.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/seg.xml"/>
 
 
 
@@ -2131,7 +2136,7 @@ be defined, either within the text itself or externally by using stand
 off techniques. Encoding these word pairs as <gi>term</gi>
 and <gi>gloss</gi>, although intuitively obvious, requires a
 non-trivial decision as to whether the Latin text is glossing the
-English, or vice-versa. Tagging all the marked words as <gi>term</gi>
+English, or vice versa. Tagging all the marked words as <gi>term</gi>
 avoids the difficult decision, but might be thought by some encoders
 to convey the wrong information about the words in question. Simply
 tagging them as additional embedded <gi>seg</gi> elements with
@@ -2385,7 +2390,7 @@ transcribed speech, refer to chapter <ptr target="#TS"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/when.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/when.xml"/>
 
 
 
@@ -2401,7 +2406,7 @@ transcribed speech, refer to chapter <ptr target="#TS"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/timeline.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/timeline.xml"/>
 
 
 
@@ -2571,20 +2576,6 @@ unlike the <gi>link</gi> element, the position of a <gi>join</gi>
 element within a text is significant: it must be supplied at a position
 where the element indicated by its <att>result</att> attribute would be
 contextually legal.
-<!-- and removed following -->
-  <!--   We now define the following equivalence:<eg>     -->
-  <!-- <![CDATA[-->
-  <!-- <link type='join'> = <join>  -->
-  <!-- ]]>-->
-  <!-- </eg>    -->
-  <!--    -->
-  <!-- 
-<p>By using the <gi>join</gi> tag for representing -->
-  <!-- element aggregation, another attribute is made     -->
-  <!-- available to indicate the nature of the-->
-  <!-- <term>result</term> of the joining operation.-->
-  <!-- Moreover, we specify the default value for the     -->
-  <!-- <att>targOrder</att> attribute to be <term>Y</term>.     -->
 <specList><specDesc key="join" atts="result "/><specDesc key="joinGrp" atts="result"/></specList>
 To conclude the above example, we now use a <gi>join</gi> element to
 represent the virtual sentence formed by the aggregation of <val>s1</val> and <val>s2</val>:
@@ -2750,8 +2741,8 @@ or <ptr target="#SATS"/>. The <att>xml:id</att> attributes of
 element of the current document.</q></p>
 
 <specGrp xml:id="DSAAG" n="Aggregation">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/join.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/joinGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/join.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/joinGrp.xml"/>
 </specGrp></div>
 <div type="div2" xml:id="SAAT">
 <head>Alternation</head>
@@ -2925,7 +2916,8 @@ it a member of the class <ident type="class">att.pointing</ident>, and
 assigning it a <att>mode</att> attribute, which can have either of the
 values <val>excl</val> (for exclusive) or <val>incl</val> (for
 inclusive). Then the following equivalence holds:
-<eg><![CDATA[<alt mode="excl"/> = <link type="exclusive alternation"/>]]></eg></p>
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><alt  target="#a #b" mode="excl"/></egXML> = 
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><link target="#a #b" type="exclusive_alternation"/></egXML></p>
 <p>The preceding <gi>link</gi> element may therefore be recoded as the
   following <gi>alt</gi> element. <egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples"><alt target="#we.had.fun #we.had.sun" mode="excl"/></egXML></p>
 <p>Another attribute that is defined specifically for the <gi>alt</gi>
@@ -3093,8 +3085,8 @@ combination of exclusive and inclusive <gi>alt</gi> elements, as follows.
     <alt target="#bb #db" weights="0.45 0.90"/>
   </altGrp></egXML></p>
 <specGrp xml:id="DSAAT" n="Alternation">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/alt.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/altGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/alt.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/altGrp.xml"/>
 </specGrp></div>
 
 <div type="div2" xml:id="SASO">
@@ -3252,7 +3244,7 @@ new source may be a plain text document</item>
      defined by the W3C <emph>is</emph> internalization of one or more
      source documents' content into a stand-off document. TEI use of
      XInclude for stand-off markup enables use of XInclude-conformant
-     sofware to perform this useful operation. However,
+     software to perform this useful operation. However,
      internalization is not clearly defined for all stand-off files,
      because the structure of the internal and external markup trees
      may overlap. In particular, when an external markup document
@@ -3517,9 +3509,9 @@ components:
 The selection and combination of modules to form a TEI schema is described in
 <ptr target="#STIN"/>.
   <specGrp>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.global.linking.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.global.linking.xml"/>
 <!-- &att.pointing;  -->
-<!-- <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.pointing.group.xml"/> -->
+<!-- <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.pointing.group.xml"/> -->
 <!-- att.pointing and att.pointing.group now defined in ST -->
 
 

@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="GD" n="21"><head>Graphs, Networks, and Trees</head>
 		<p>Graphical representations are widely used for displaying relations
 among informational units because they help readers to visualize those
@@ -287,7 +291,7 @@ elements, as in the following example.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/graph.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/graph.xml"/>
 
 
 
@@ -303,7 +307,7 @@ elements, as in the following example.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/node.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/node.xml"/>
 
 
 
@@ -319,7 +323,7 @@ elements, as in the following example.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/arc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/arc.xml"/>
 
 
 
@@ -887,7 +891,7 @@ VB to PT crosses the arc from VP to PN.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/tree.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/tree.xml"/>
 
 
 
@@ -903,7 +907,7 @@ VB to PT crosses the arc from VP to PN.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/root.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/root.xml"/>
 
 
 
@@ -919,7 +923,7 @@ VB to PT crosses the arc from VP to PN.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/iNode.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/iNode.xml"/>
 
 
 
@@ -935,7 +939,7 @@ VB to PT crosses the arc from VP to PN.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/leaf.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/leaf.xml"/>
 
 
 
@@ -965,7 +969,7 @@ element, which can be thought of as an underspecified
 <gi>eTree</gi>, i.e. an <gi>eTree</gi> in which certain information
 has been left out.  In addition, we provide a <gi>forest</gi> element,
 which consists of one or more <gi>tree</gi>, <gi>eTree</gi>, or
-<gi>triangle</gi> elements, and a <gi>listGrp</gi> element, which
+<gi>triangle</gi> elements, and a <gi>listForest</gi> element, which
 consists of one or more <gi>forest</gi> elements.  The elements used for
 the encoding of embedding trees and the units containing them have the
 following descriptions and attributes.
@@ -1276,7 +1280,7 @@ articulated, the grouping element <gi>listForest</gi> may be used.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/eTree.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/eTree.xml"/>
 
 
 
@@ -1292,7 +1296,7 @@ articulated, the grouping element <gi>listForest</gi> may be used.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/triangle.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/triangle.xml"/>
 
 
 
@@ -1308,7 +1312,7 @@ articulated, the grouping element <gi>listForest</gi> may be used.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/eLeaf.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/eLeaf.xml"/>
 
 
 
@@ -1324,7 +1328,7 @@ articulated, the grouping element <gi>listForest</gi> may be used.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/forest.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/forest.xml"/>
 
 
 
@@ -1340,7 +1344,7 @@ articulated, the grouping element <gi>listForest</gi> may be used.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listForest.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listForest.xml"/>
 </specGrp></div>
 
 <div xml:id="GDstem"><head>Representing Textual Transmission</head>

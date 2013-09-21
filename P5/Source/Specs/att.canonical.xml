@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
     Copyright TEI Consortium.
     Dual-licensed under CC-by and BSD2 licences
@@ -6,13 +6,14 @@
     $Date$
     $Id$
 -->
-<classSpec xmlns="http://www.tei-c.org/ns/1.0" module="tei" type="atts" ident="att.canonical">
-  <desc>provides attributes which can be used to associate a representation such as a name or title
-    with canonical information about the object being named or referenced.</desc>
-  <desc versionDate="2009-05-25" xml:lang="fr">fournit des attributs qui peuvent être utilisés pour
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5odds.rnc" type="application/relax-ng-compact-syntax"?>
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5odds.isosch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<classSpec xmlns="http://www.tei-c.org/ns/1.0" module="tei" type="atts" ident="att.canonical"><desc>provides attributes which can be used to associate a representation such as a name or title
+    with canonical information about the object being named or referenced.</desc><desc versionDate="2009-05-25" xml:lang="fr">fournit des attributs qui peuvent être utilisés pour
     associer une représentation telle qu'un nom ou un titre à l'information canonique concernant
-    l'objet nommé ou auquel il est fait référence.</desc>
-  <attList>
+    l'objet nommé ou auquel il est fait référence.</desc><attList>
     <attDef ident="key" usage="opt">
       <equiv/>
       <desc>provides an externally-defined means of identifying the entity (or entities) being
@@ -30,9 +31,24 @@
 	  </author>
         </egXML>
       </exemplum>
+      <exemplum xml:lang="en">
+        <egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="fr">
+	  <author>
+	    <name key="Hugo, Victor (1802-1885)"
+		  ref="http://www.idref.fr/026927608">Victor Hugo</name>
+	  </author>
+        </egXML>
+      </exemplum>
       <remarks>
         <p>The value may be a unique identifier from a database, or any other externally-defined
           string identifying the referent. </p>
+        <p>No particular syntax is proposed for the values of the <att>key</att> attribute, since 
+          its form will depend entirely on practice within a given project. For the same reason, this 
+          attribute is not recommended in data interchange, since there is no way of ensuring 
+          that the values used by one project are distinct from those used by another. In such
+          a situation, a preferable approach for magic tokens which follows standard practice 
+          on the Web is to use a <att>ref</att> attribute whose value is a tag URI as defined in 
+          <ref target="#RFC4151">RFC 4151</ref>.</p>
       </remarks>
       <remarks versionDate="2009-05-25" xml:lang="fr">
         <p>La valeur peut être un identifiant unique dans une base de données, ou toute autre chaîne
@@ -58,5 +74,4 @@
         <remarks versionDate="2009-05-25" xml:lang="fr"><p>La valeur doit pointer directement vers un ou plusieurs éléments XML au moyen d'un ou plusieurs URIs, séparés par un espace. Si plus d'un URI est fourni, cela implique que le nom identifie plusieurs entités distinctes.</p>
       </remarks>
     </attDef>
-  </attList>
-</classSpec>
+  </attList></classSpec>

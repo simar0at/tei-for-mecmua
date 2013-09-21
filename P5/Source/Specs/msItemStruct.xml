@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="msdescription" xml:id="MSITEMSTRUCT" ident="msItemStruct">
   <gloss>structured manuscript item</gloss>
   <gloss versionDate="2007-12-20" xml:lang="ko">구조화된 원고 항목</gloss>
@@ -97,8 +100,8 @@ $Id$
     <attDef ident="class">
       <equiv/>
       <gloss versionDate="2007-06-12" xml:lang="fr">classe</gloss>
-      <desc>identifies the text types or classifications applicable to this
-item</desc>
+      <desc>identifies the text types or classifications applicable to
+      this item</desc>
       <desc versionDate="2007-12-20" xml:lang="ko">이 항목에 적용 가능한 텍스트 유형 또는 분류를 표시한다.</desc>
       <desc versionDate="2007-05-02" xml:lang="zh-TW">標明適合的文字類型或分類。</desc>
       <desc versionDate="2008-04-05" xml:lang="ja">
@@ -119,7 +122,7 @@ element.</valDesc>
   </attList>
   <exemplum xml:lang="mul">
     <egXML xmlns="http://www.tei-c.org/ns/Examples">
-      <msItemStruct n="2" defective="false" class="biblComm">
+      <msItemStruct n="2" defective="false" class="#biblComm">
         <locus from="24v" to="97v">24v-97v</locus>
         <author>Apringius de Beja</author>
         <title type="uniform" xml:lang="la">Tractatus in Apocalypsin</title>
@@ -136,7 +139,7 @@ DEO GR<ex>ACI</ex>AS AGO. FI<lb/>NITO LABORE ISTO.</finalRubric>
   </exemplum>
   <exemplum versionDate="2008-04-06" xml:lang="fr">
     <egXML xmlns="http://www.tei-c.org/ns/Examples">
-      <msItemStruct n="2" defective="false" class="biblComm">
+      <msItemStruct n="2" defective="false" class="#biblComm">
         <locus from="24v" to="97v">24v-97v</locus>
         <author>Apringius de Beja</author>
         <title type="uniform" xml:lang="la">Tractatus in Apocalypsin</title>

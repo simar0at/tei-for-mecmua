@@ -1,7 +1,7 @@
 /* 
 ** Copyright 2011 TEI Consortium
 
-$Id: tei.css 10908 2012-10-03 22:06:17Z rahtz $
+$Id$
 
 This software is dual-licensed:
 
@@ -252,15 +252,18 @@ ul.breadcrumb
    font-size: 1.1em;
 }
 
+li.breadcrumb:before { 
+    content: "▶";
+    }
+li.breadcrumb-first:before {
+    content: "▶";
+    }
 li.breadcrumb
 {
    padding-left: 12px;
    padding-right: 5px;
    display: inline;
    color: #000000;
-   background: url(/images/rightarrow.gif);
-   background-repeat: no-repeat;
-   background-position: left;
 }
 li.breadcrumb-first
 {
@@ -268,9 +271,6 @@ li.breadcrumb-first
    padding-right: 5px;
    display: inline;
    color: #000000;
-   background: url(/images/rightarrow.gif);
-   background-repeat: no-repeat;
-   background-position: left;
 }
 
 div.breadcrumb {
@@ -293,12 +293,6 @@ div.breadcrumb {
 
 .hide{
    display : none;
-}
-
-.framestdlink {
-   color: red;
-   font-size: smaller;
-   font-weight: bold;
 }
 
 a:hover
@@ -324,34 +318,6 @@ a.navbar:hover {
 }
 
 
-/* for use when making pages using a table */
-td.hdr2 {
-   color: #000000;
-   background-color : #99CCFF;
-}
-td.hdr3 {
-   background-color : #AD06BC;
-   border: 1pt solid #000000;
-}
-
-td.sidetext {
-   border-right: 1pt solid #000000;
-}
-td.maintext p {
-   font-family: Arial,Helvetica,sans-serif;
-}
-
-td.maintext {
-   background-color: #FFFFFF;
-   font-family: Arial,Helvetica,sans-serif;
-   color: #000000;
-   padding-left: 6pt;
-   padding-right: 6pt;
-}
-
-table.wovenodd td,p.wovenodd {
-   background-color: #FFFFFF;
-}
 
 /* an inner <text>, eg inside a <q> */
 div.innertext {
@@ -490,19 +456,21 @@ div.noteBody {
 }
 
 div.note {
-   margin-left: 1em; 
-   margin-bottom: 4pt; 
+   margin-left: 2em; 
+   margin-right: 2em; 
+   margin-bottom: 3pt; 
+   margin-top: 3pt; 
    text-indent: -1em;
 }
 
 span.noteLabel {
     font-style: italic;
 }
-span.noteNumber:before {
-    content: "[";
+span.note:before {
+    content: " [";
 }
-span.noteNumber:after {
-    content: "]. ";
+span.note:after {
+    content: "] ";
 }
 
 span.note {
@@ -512,12 +480,6 @@ span.note {
 img.display {
    margin-top: 10pt;
    margin-bottom: 10pt;
-   display: block;
-}
-.caption {
-   font-style: italic;
-}
-span.caption {
    display: block;
 }
 
@@ -544,30 +506,47 @@ div.titlePage,div.titlepage {
    font-size: larger;
    text-align: center;
 }
-.docImprint {
+div.docImprint {
+    margin-top: 6pt;
     display: block;
+    font-style: italic;    
+}
+div.docDate {
    font-style: italic;    
 }
-.docDate {
-   font-style: italic;    
-}
-.docTitle {
+div.docTitle {
     display: block;
     margin-top: 6pt;
     font-weight: bold;
     margin-bottom: 18pt;
 }
-.docAuthor {
+div.docAuthor {
     font-style: italic;
 }
 
-.byline {
+div.byline {
     display: block;
 }   
 
 div.dateline{
    text-align: right;
 }
+
+/* paragraphs */
+p, div.p {
+ margin-top: 0.3em;
+}
+div.p blockquote p {
+ margin-top: 0.0em;
+-webkit-margin-before: 0em;
+-webkit-margin-after: 0em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: p0px;
+}
+p.box {
+   border: 1pt solid #000000;
+}
+
 /* verse */
 div.lg {
    margin-left: 10px;
@@ -611,39 +590,6 @@ div.indent6 {
    margin-left: 6em;
 }
 
-/* general purpose block aligns */
-.centerbold {
-    text-align:center;
-    font-weight: bold;
-}
-.center {
-    text-align:center;
-}
-.right {
-    text-align:right;
-}
-.left {
-    text-align:left;
-}
-
-/* misc inline*/
-
-span.foreign {
-    font-style: italic;
-}
-
-.plain {
-   text-decoration: none;
-}
-
-p.box {
-   border: 1pt solid #000000;
-}
-
-.small {
-   font-size: small;
-}
-
 td.label {
    font-weight: bold;
    background-color: #AAAAAA;
@@ -678,13 +624,15 @@ div.listBibl {
 	     margin-top: 6pt;
 	     margin-bottom: 6pt;
 }
+span.bibl {
+    font-style: italic;
+}
 div.bibl {
    margin-left: 0.5em; 
    text-indent: -0.5em;
 }
 div.biblfree {
    font-size: smaller; 
-   font-style:italic;
    margin-left: 0.5em; 
    text-indent: -0.5em;
    margin-bottom: 6pt;
@@ -703,7 +651,7 @@ div.citbibl:after {
     content: ")";
 }
 div.citbibl {
-   text-align:right;
+   font-style: italic;
    font-size: smaller;
 }
 /* a <quote> inside a <cit> */
@@ -716,13 +664,36 @@ div.citquote {
 dt {
    font-weight: bold;
 }
-div.blockquote {
+/* quotation */
+div.blockquote 
+ {
+   margin-top: 10pt;
+   margin-bottom: 10pt;
+   margin-left: 40px;
+   margin-right: 40px;
+}
+/* opener */
+div.opener
+ {
    margin: 10pt;
 }
-
-/* generic <hi> */
-span.hi {
-   font-weight: bold;
+div.q {
+   margin: 10pt;
+}
+/* figures */
+.figure { 
+    display: block;
+    border-top: solid 1pt blue;
+    border-bottom: solid 1pt blue;
+}
+.caption {
+    margin-top: 6pt;
+    margin-bottom: 12pt;
+    display: block;
+    font-style: italic;
+}
+/* inline quote */
+span.q {
 }
 
 /* from drama */
@@ -750,9 +721,6 @@ span.actor {
 span.camera {
  font-style: italic;
 }
-span.caption {
- font-style: italic;
-}
 span.role {
  font-style: italic;
 }
@@ -771,9 +739,6 @@ span.tech {
 span.view {
  font-style: italic;
 }
-span.mentioned {
-   font-style: italic;
-}
 span.nextLink {
    font-style: italic;
 }
@@ -782,9 +747,6 @@ span.previousLink {
 }
 span.upLink {
    font-style: italic;
-}
-p, div.p {
- margin-top: 0.3em;
 }
 /* bibl */
 span.titlem {
@@ -798,16 +760,28 @@ span.titleu {
 span.titles {
 }
 
-span.margnote,div.margnote {
+span.notemargin,
+span.notemarginOuter,
+span.notemarginLeft,
+span.notemarginRight,
+span.notemargin,div.notemargin {
              display: block;
 	     font-size: smaller;
 	     clear: right;
 	     padding: 4pt;
 	     font-style: italic;
 	     width: 10%;
-	     float:right; 
 	     border: solid green 1pt; 
 	     margin: 6pt;
+}
+span.notemargin,
+span.notemarginOuter,
+span.notemarginRight,
+span.notemargin,div.notemargin {
+    float:right; 
+}
+span.notemarginLeft {
+    float:left; 
 }
 
 div.floatingText_back {
@@ -841,9 +815,6 @@ span.wordtypeVVD,span.wordtypeVVN,span.wordtypeVVN,span.wordtypeVVZ,span.wordtyp
 
 li.headless {
     display: none;
-}
-span.hi {
-    font-weight: bold;
 }
 
 div.footer {
@@ -1052,6 +1023,7 @@ span.attribute {
     color: #222288;
 }
 span.attributevalue {
+    font-weight: normal;
     color: black;
 }
 span.comment {
@@ -1258,11 +1230,39 @@ span.emptySlash:after {
 .status_unstable {
     border: solid orange 1pt;
 }
+/* for ePub */
+div.EpubCoverPage {
+    -webkit-hyphens:none;
+    font-family: serif; 
+    height:860;          
+    font-size:30pt; 
+    font-weight: bold;
+    padding-top: 15pt;
+    margin: 12pt;
+    border: solid red 1pt; 
+    text-align:center;
+   }
+/* general purpose block aligns */
+.centerbold {
+    text-align:center;
+    font-weight: bold;
+}
+.center {
+    text-align:center;
+}
+.right {
+    text-align:right;
+}
+.left {
+    text-align:left;
+}
+
 /* <hi> rend values */
 span.typewriter{
     font-family: monospace;
 }
 span.normalweight{
+    font-weight: normal;
 }
 span.smallcaps{
     font-variant: small-caps;
@@ -1293,12 +1293,12 @@ span.underdoubleline{
     text-decoration: underline;
 }
 span.superscript {
-    vertical-align: top;
-    font-size: 70%;
+    vertical-align: super;
+    font-size: smaller;
 }
 span.subscript {
     vertical-align: bottom;
-    font-size: 70%;
+    font-size: smaller;
 }
 span.numberParagraph:before {
     content:"[";
@@ -1311,15 +1311,32 @@ span.numberParagraph {
     color: grey;
 }
 
-/* for ePub */
-div.EpubCoverPage {
-    -webkit-hyphens:none;
-    font-family: serif; 
-    height:860;          
-    font-size:30pt; 
+/* misc inline*/
+
+span.foreign {
+    font-style: italic;
+}
+
+/* generic rendition */
+.plain {
+   text-decoration: none;
+}
+
+.small {
+   font-size: small;
+}
+.term {
+    font-style: italic;
+    }
+.hi {
+    font-style: italic;
+    }
+.emph {
     font-weight: bold;
-    padding-top: 15pt;
-    margin: 12pt;
-    border: solid red 1pt; 
-    text-align:center;
-   }
+    }
+.label {
+    font-weight: bold;
+}
+.mentioned {
+   font-style: italic;
+}

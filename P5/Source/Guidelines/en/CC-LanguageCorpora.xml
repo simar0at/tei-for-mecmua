@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="CC" n="23"><head>Language Corpora</head>
 
 <p>The term <term>language corpus</term> is used to mean a number of
@@ -55,7 +59,7 @@ encoding of individual texts present identical sets of problems.  Any
 of the encoding techniques and elements presented in other chapters of
 these Guidelines may therefore prove relevant to some aspect of corpus
 encoding and may be used in corpora.  Therefore, we do not repeat here
-the discusssion of such fundamental matters as the representation of
+the discussion of such fundamental matters as the representation of
 multiple character sets (see chapter <ptr target="#CH"/>); nor do we
 attempt to summarize the variety of elements provided for encoding
 basic structural features such as quoted or highlighted phrases, 
@@ -68,7 +72,7 @@ drama (chapter <ptr target="#DR"/>), transcriptions of spoken text
 (chapter <ptr target="#TS"/>), etc.  Chapter <ptr target="#ST"/>
 should be reviewed for details of how these and other components of
 the Guidelines should be tailored to create a document type definition
-appropriate to a given application.  In sum, it should not be asssumed
+appropriate to a given application.  In sum, it should not be assumed 
 that only the matters specifically addressed in this chapter are of
 importance for corpus creators.
  </p>
@@ -178,7 +182,7 @@ and those for associating declarations with corpus components described
 in section <ptr target="#CCAS"/>.  These methods also allow several
 different methods of text grouping to co-exist, each to be used as
 needed at different times.  This helps minimize the danger of
-cross-classification and mis-classification of samples, and helps
+cross-classification and misclassification of samples, and helps
 improve the flexibility with which parts of a corpus may be
 characterized for different applications.
  </p>
@@ -284,7 +288,7 @@ remainder of the chapter.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/textDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/textDesc.xml"/>
 
 
 
@@ -297,7 +301,7 @@ remainder of the chapter.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/particDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/particDesc.xml"/>
 
 
 
@@ -310,7 +314,7 @@ remainder of the chapter.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/settingDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/settingDesc.xml"/>
 
 
 
@@ -445,7 +449,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/channel.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/channel.xml"/>
 
 
 
@@ -461,7 +465,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/constitution.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/constitution.xml"/>
 
 
 
@@ -477,7 +481,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/derivation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/derivation.xml"/>
 
 
 
@@ -493,7 +497,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/domain.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/domain.xml"/>
 
 
 
@@ -509,7 +513,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/factuality.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/factuality.xml"/>
 
 
 
@@ -525,7 +529,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/interaction.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/interaction.xml"/>
 
 
 
@@ -541,7 +545,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/preparedness.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/preparedness.xml"/>
 
 
 
@@ -557,7 +561,7 @@ parameters might be used to characterize a novel:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/purpose.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/purpose.xml"/>
 
 
 
@@ -669,8 +673,8 @@ person within a specific setting.</p>
 <p>The <gi>setting</gi> element may contain either a prose description
 or a selection of elements from the classes <ident type="class">model.nameLike.agent</ident>, <ident type="class">model.dateLike</ident>, or
 <ident type="class">model.settingPart</ident>. By default, when the
-module definded by this chapter is included in a schema, these classes thus
-provide the following elements : 
+module defined by this chapter is included in a schema, these classes thus
+provide the following elements: 
 <specList>
 <specDesc key="name" />
 <specDesc key="date"/>
@@ -728,7 +732,7 @@ available.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/setting.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/setting.xml"/>
 
 
 
@@ -741,7 +745,7 @@ available.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/locale.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/locale.xml"/>
 
 
 
@@ -754,7 +758,7 @@ available.
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/activity.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/activity.xml"/>
 
 
 
@@ -866,7 +870,7 @@ association between declarations in the header and a corpus or corpus
 text. The only header elements which may be associated in this way are
 those which would not otherwise be meaningfully repeatable.  </p>
 <p>Declarable elements are all members of the class <ident type="class">att.declarable</ident>; the corresponding declaring
-elements are all members of the  the class <ident type="class">att.declaring</ident>.
+elements are all members of the class <ident type="class">att.declaring</ident>.
 <specList>
 <specDesc key="att.declarable" atts="default"/>
 <specDesc key="att.declaring" atts="decls"/>
@@ -1000,7 +1004,7 @@ editorial declaration, namely <val>C2A N2B</val>, resulting in a list
 that identifies two correction elements (C1A and C2A).
  </p></div>
 <div type="div3" xml:id="CCAS3"><head>Summary</head>
-<p>The rules determing which of the declarable elements are applicable
+<p>The rules determining which of the declarable elements are applicable
 at any point may be summarized as follows:
 <list type="ordered">
 <item>If there is a single occurrence of a given declarable

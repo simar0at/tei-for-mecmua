@@ -42,16 +42,18 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: makegraphicsanttask.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
    <xsl:key name="G" match="tei:graphic[not(ancestor::teix:egXML)]"  use="1"/>
+   <xsl:key name="G" match="tei:media[not(ancestor::teix:egXML)]"  use="1"/>
    <xsl:key name="PB" match="tei:pb[@facs and not(@rend='none')]" use="1"/>
    <xsl:key name="Timeline" match="tei:timeline" use="1"/>
    <xsl:param name="mediaoverlay">false</xsl:param>
    <xsl:param name="filePerPage">false</xsl:param>
    <xsl:param name="inputDir">.</xsl:param>
+   <xsl:param name="outputDir">${outputTempDir}</xsl:param>
    <xsl:param name="mediaDir">word/media</xsl:param>
    <xsl:template match="/">
      <project xmlns="" basedir="." default="dist" name="imagecopy">
@@ -59,7 +61,8 @@ of this software, even if advised of the possibility of such damage.
 	 <xsl:if test="key('PB',1) or key('G',1)">
 	   <mkdir>
 	     <xsl:attribute name="dir">
-	       <xsl:text>${outputTempDir}/</xsl:text>
+	       <xsl:value-of select="$outputDir"/>
+	       <xsl:text>/</xsl:text>
 	       <xsl:value-of select="$mediaDir"/>
 	     </xsl:attribute>
 	   </mkdir>
@@ -67,7 +70,8 @@ of this software, even if advised of the possibility of such damage.
 	 <xsl:if test="$mediaoverlay='true' and key('Timeline',1)">
 	   <xsl:for-each select="key('Timeline',1)">
 	     <xsl:variable name="target">
-	       <xsl:text>${outputTempDir}/</xsl:text>
+	       <xsl:value-of select="$outputDir"/>
+	       <xsl:text>/</xsl:text>
 	       <xsl:value-of select="$mediaDir"/>
 	       <xsl:text>/audio</xsl:text>
 	       <xsl:number level="any"/>
@@ -86,12 +90,13 @@ of this software, even if advised of the possibility of such damage.
 		 </xsl:for-each>
 	       </xsl:when>
 	       <xsl:otherwise>
-		 <xsl:value-of select="@facs"/>
+		 <xsl:value-of select="tei:resolveURI(.,@facs)"/>
 	       </xsl:otherwise>
 	     </xsl:choose>
 	   </xsl:variable>
 	   <xsl:variable name="target">
-	     <xsl:text>${outputTempDir}/</xsl:text>
+	     <xsl:value-of select="$outputDir"/>
+	     <xsl:text>/</xsl:text>
 	     <xsl:value-of select="$mediaDir"/>
 	     <xsl:text>/pageimage</xsl:text>
 	     <xsl:number level="any"/>
@@ -116,7 +121,8 @@ of this software, even if advised of the possibility of such damage.
 	     <xsl:value-of select="@url"/>
 	   </xsl:variable>
 	   <xsl:variable name="target">
-	     <xsl:text>${outputTempDir}/</xsl:text>
+	     <xsl:value-of select="$outputDir"/>
+	     <xsl:text>/</xsl:text>
 	     <xsl:value-of select="$mediaDir"/>
 	     <xsl:text>/resource</xsl:text>
 	     <xsl:number level="any"/>

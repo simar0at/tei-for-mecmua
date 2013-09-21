@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="TC" n="19">
   <head>Critical Apparatus</head>
   <p>Scholarly editions of texts, especially texts of great antiquity or importance, often record
@@ -102,7 +106,7 @@ To speke of wo that is in mariage; ...</q>-->
           Auctoritee</q>, to indicate a preference for one reading, etc. The following sections on
         readings, subvariation, and witness information describe some of the more important
         complications which can arise.</p>
-      <specGrp xml:id="DTCAPEN" n="Apparatus entry"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/app.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listApp.xml"/></specGrp>
+      <specGrp xml:id="DTCAPEN" n="Apparatus entry"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/app.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listApp.xml"/></specGrp>
     </div>
     <div type="div3" xml:id="TCAPLR">
       <head>Readings</head>
@@ -252,7 +256,7 @@ disen sumer gân.</l>
         responsibility through various scholars for particular aspects of a particular reading may
         require the more complex mechanisms for assigning responsibility described in chapter <ptr
           target="#CE"/>.</p>
-      <specGrp xml:id="DTCAPLR" n="Readings"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lem.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/rdg.xml"/> </specGrp>
+      <specGrp xml:id="DTCAPLR" n="Readings"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lem.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/rdg.xml"/> </specGrp>
     </div>
     <div type="div3" xml:id="TCAPSU">
       <head>Indicating Subvariation in Apparatus Entries</head>
@@ -309,7 +313,7 @@ disen sumer gân.</l>
         <rdg wit="#La">Ex<g ref="#per"/>iment</rdg>
     </rdgGrp>
     <rdgGrp type="subvariants">
-        <lem>Eriment<wit>[unattested]</wit></lem>
+      <lem resp="#ed2013">Eriment</lem>
         <rdg wit="#Ra2">Eryment</rdg>
      </rdgGrp>
 </app></egXML>
@@ -341,7 +345,7 @@ disen sumer gân.</l>
    </rdg>
    <rdg wit="#Ra2">        
       <app n="a4" type="orthographic">
-         <lem>Eriment<wit>[unattested]</wit></lem>
+        <lem resp="#ed2013">Eriment</lem>
          <rdg wit="#Ra2">Eryment</rdg>
       </app>
    </rdg>
@@ -369,12 +373,12 @@ disen sumer gân.</l>
             <rdg wit="#La">Ex<g ref="#per"/>iment</rdg>
         </rdgGrp>
         <rdgGrp varSeq="2" cause="abbreviation_loss">
-            <lem>Eriment<wit>[unattested]</wit></lem>
+          <lem resp="#ed2013">Eriment</lem>
             <rdg wit="#Ra2">Eryment</rdg>
         </rdgGrp>
     </rdgGrp>
 </app></egXML></p>
-      <specGrp xml:id="DTCAPSU" n="Reading Groups"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/rdgGrp.xml"/> </specGrp>
+      <specGrp xml:id="DTCAPSU" n="Reading Groups"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/rdgGrp.xml"/> </specGrp>
     </div>
     <div type="div3" xml:id="TCAPLW">
       <head>Witness Information</head>
@@ -437,7 +441,7 @@ disen sumer gân.</l>
           structures containing information about the text in a witness (whether retroversion,
           regularization, or other) can also be linked to specific <gi>lem</gi> and <gi>rdg</gi>
           instances. See chapter <ptr target="#FS"/>.</p>
-        <specGrp xml:id="DTCAPWD" n="Witness Details"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/witDetail.xml"/> </specGrp>
+        <specGrp xml:id="DTCAPWD" n="Witness Details"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/witDetail.xml"/> </specGrp>
       </div>
       <div type="div4" xml:id="TCSCWL">
         <head>Witness Information in the Source</head>
@@ -497,7 +501,7 @@ not.--> For this reason, it
           well differ from that used to indicated the same witness in the <att>wit</att> attribute,
           as shown particularly in the apparatus for the second line of the poem (Diet.1.2).</p>
 
-        <specGrp xml:id="DTCSCWL" n="Sourcetext Witness Lists in Apparatus"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/wit.xml"/> </specGrp>
+        <specGrp xml:id="DTCSCWL" n="Sourcetext Witness Lists in Apparatus"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/wit.xml"/> </specGrp>
       </div>
       <div type="div4" xml:id="TCAPWL">
         <head>The Witness List</head>
@@ -506,7 +510,7 @@ not.--> For this reason, it
           a simple bibliographic list, using the <gi>listBibl</gi> element described in <ptr
             target="#COBI"/>, or as a <gi>listWit</gi> element, which contains a series of
             <gi>witness</gi> elements. Each <gi>witness</gi> element may contain a brief
-          characterisation of the witness, given as one or more prose paragraphs. If more detailed
+          characterization of the witness, given as one or more prose paragraphs. If more detailed
           information about a manuscript witness is available, it should be represented using the
             <gi>msDesc</gi> element provided by the <ident type="module">msdescription</ident>
           module; a <gi>msDesc</gi> may appear within a <gi>listBibl</gi>. </p>
@@ -552,7 +556,7 @@ not.--> For this reason, it
           As the last example shows, the witness description here may be complemented by a reference
           to a full description of the manuscript supplied elsewhere, typically as the content of a
             <gi>msDesc</gi> or <gi>bibl</gi> element. Alternatively, it may contain a whole
-          paragraph of commentary for each witness : <egXML xml:lang="de" xmlns="http://www.tei-c.org/ns/Examples" source="#COBICOR-eg-251"><listWit>
+          paragraph of commentary for each witness: <egXML xml:lang="de" xmlns="http://www.tei-c.org/ns/Examples" source="#COBICOR-eg-251"><listWit>
    <witness xml:id="A">die sog. <soCalled>Kleine (oder alte)
       Heidelberger Liederhandschrift</soCalled>.
       <bibl>Universitätsbibliothek Heidelberg col. pal.
@@ -653,7 +657,7 @@ Group C</soCalled> are themselves first allocated sigla in individual
           overlapping lemma) and thence calculate all the manuscripts agreeing with the base text.
           In practice, encoders may find it less error-prone to list all witnesses explicitly in
           each apparatus entry.</p>
-        <specGrp xml:id="DTCAPLW" n="Witness Lists in Front Matter"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listWit.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/witness.xml"/> </specGrp>
+        <specGrp xml:id="DTCAPLW" n="Witness Lists in Front Matter"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listWit.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/witness.xml"/> </specGrp>
       </div>
     </div>
     <div type="div3" xml:id="TCAPMI">
@@ -694,8 +698,8 @@ Group C</soCalled> are themselves first allocated sigla in individual
    <rdg wit="#La #Ra2">auctorite</rdg>
    <rdg wit="#X"><witStart/>auctorite</rdg>
 </app></egXML></p>
-      <specGrp xml:id="DTCFW" n="Fragmentary witnesses"> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/witStart.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/witEnd.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lacunaStart.xml"/>
-        <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lacunaEnd.xml"/> </specGrp>
+      <specGrp xml:id="DTCFW" n="Fragmentary witnesses"> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/witStart.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/witEnd.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lacunaStart.xml"/>
+        <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lacunaEnd.xml"/> </specGrp>
     </div>
   </div>
   <div type="div2" xml:id="TCAPLK">
@@ -1004,7 +1008,7 @@ Group C</soCalled> are themselves first allocated sigla in individual
     
     <!-- In another file -->
     
-    <app from="wbp.xml#WBP-so.1.1">
+    <app from="example.xml#WBP-so.1.1">
       <rdg wit="#La">Experiment</rdg>
       <rdg wit="#Ra2">Eryment</rdg>
     </app>
@@ -1015,7 +1019,7 @@ Group C</soCalled> are themselves first allocated sigla in individual
     
     <!-- In another file -->
     
-    <app from="http://www.example.com/wbp.xml#WBP-so.1.1a">
+    <app from="http://www.example.com/example.xml#WBP-so.1.1a">
       <lem>Experience</lem>
       <rdg wit="#La">Experiment</rdg>
       <rdg wit="#Ra2">Eryment</rdg>
@@ -1034,7 +1038,7 @@ Group C</soCalled> are themselves first allocated sigla in individual
         
         <!-- In another file -->
         
-        <app from="wbp.xml#string-range(WBP.1a, 0, 10)">
+        <app from="example.xml#string-range(WBP.1a, 0, 10)">
           <lem>Experience</lem>
           <rdg wit="#La">Experiment</rdg>
           <rdg wit="#Ra2">Eryment</rdg>
@@ -1152,7 +1156,7 @@ not for those for elements nested within.--></p>
         <desc xml:lang="ja">校勘モジュール</desc>
       </moduleSpec> The selection and combination of modules to form a TEI schema is described in
         <ptr target="#STIN"/>. </p>
-    <specGrp> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/variantEncoding.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.rdgPart.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.rdgPart.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.witnessed.xml"/> <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.textCritical.xml"/>
+    <specGrp> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/variantEncoding.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.rdgPart.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.rdgPart.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.witnessed.xml"/> <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.textCritical.xml"/>
         <specGrpRef target="#DTCAPEN"/>
       <specGrpRef target="#DTCAPLR"/>
       <specGrpRef target="#DTCAPSU"/>

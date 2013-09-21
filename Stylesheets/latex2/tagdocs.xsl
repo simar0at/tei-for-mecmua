@@ -45,8 +45,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: tagdocs.xsl 10666 2012-07-17 16:59:26Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -99,7 +99,7 @@ of this software, even if advised of the possibility of such damage.
 	           <xsl:text>\leavevmode\bgroup</xsl:text>
 	           <xsl:call-template name="egXMLStartHook"/>
 	           <xsl:call-template name="exampleFontSet"/>
-	           <xsl:text>\begin{shaded}</xsl:text>
+	           <xsl:text>\begin{shaded}\noindent\mbox{}</xsl:text>
 	           <xsl:apply-templates mode="verbatim">
 	              <xsl:with-param name="highlight">
 	                 <xsl:value-of select="$highlight"/>

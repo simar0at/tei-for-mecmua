@@ -38,8 +38,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: to.xsl 10466 2012-06-08 18:47:50Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:param name="shadowGraphics">true</xsl:param>
@@ -64,6 +64,7 @@ of this software, even if advised of the possibility of such damage.
         <xsl:for-each select="row">
           <xsl:variable name="r" select="."/>
           <xsl:for-each select="tokenize(normalize-space(replace(cell[1],'[, ]',' ')),' ')">
+	    <xsl:if test="not(.='External')">
             <session>
               <weekday>
                 <xsl:choose>
@@ -88,6 +89,7 @@ of this software, even if advised of the possibility of such damage.
                 <xsl:value-of select="$r/cell[6]"/>
               </person>
             </session>
+	    </xsl:if>
           </xsl:for-each>
         </xsl:for-each>
       </sessions>
@@ -133,6 +135,7 @@ of this software, even if advised of the possibility of such damage.
         <xsl:for-each select="row">
           <xsl:variable name="r" select="."/>
           <xsl:for-each select="tokenize(normalize-space(replace(cell[1],' ',' ')),' ')">
+	    <xsl:if test="not(.='External')">
             <session>
               <weekday>
                 <xsl:choose>
@@ -160,6 +163,7 @@ of this software, even if advised of the possibility of such damage.
                 <xsl:value-of select="$r/cell[7]"/>
               </demons>
             </session>
+	    </xsl:if>
           </xsl:for-each>
         </xsl:for-each>
       </sessions>

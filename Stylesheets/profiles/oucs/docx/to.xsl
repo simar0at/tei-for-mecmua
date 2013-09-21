@@ -63,15 +63,14 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: to.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
     <xsl:param name="shadowGraphics">true</xsl:param>
-    <xsl:param name="useNSPrefixes">false</xsl:param>    
     <xsl:param name="glossListSeparator">break</xsl:param>
-
+    <xsl:param name="pagebreakStyle">active</xsl:param>
     <xsl:template match="teix:egXML|tei:p[@rend='eg']">
         <xsl:param name="simple">false</xsl:param>
         <xsl:param name="highlight"/>

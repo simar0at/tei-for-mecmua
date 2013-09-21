@@ -59,8 +59,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: to.xsl 9703 2011-11-09 11:16:42Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -86,7 +86,7 @@ of this software, even if advised of the possibility of such damage.
    <xsl:param name="wrapLength">65</xsl:param>
    <xsl:param name="attLength">60</xsl:param>
    <xsl:param name="forceWrap">true</xsl:param>
-   <xsl:param name="numberBackHeadings">true</xsl:param>
+   <xsl:param name="numberBackHeadings">A.1</xsl:param>
    <xsl:template match="/">
      <xsl:variable name="All">
        <xsl:apply-templates mode="checkSchematron"/>

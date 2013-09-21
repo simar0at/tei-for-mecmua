@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-$Date: 2012-08-14 18:09:18 +0100 (Tue, 14 Aug 2012) $ $Author: rahtz $
+$Date$ $Author$
 
 -->
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     xmlns="http://www.tei-c.org/ns/1.0" 
     xmlns:tei="http://www.tei-c.org/ns/1.0" 
-    exclude-namespace-prefixes="tei"
+    exclude-result-prefixes="tei"
     version="2.0">
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
@@ -46,8 +46,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: tcp2tei.xsl 10752 2012-08-14 17:09:18Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:output cdata-section-elements="eg" indent="yes" method="xml" encoding="utf-8" omit-xml-declaration="yes"/>
@@ -56,7 +56,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:key name="ROLES" match="ITEM/@ROLE" use="1"/>
   <xsl:param name="intype"> ',)</xsl:param>
   <xsl:param name="debug">false</xsl:param>
-  <xsl:param name="headerDirectory">headers/</xsl:param>
+  <xsl:param name="headerDirectory">./</xsl:param>
   <xsl:variable name="HERE" select="/"/>
   <xsl:variable name="Rendition">
     <tagsDecl>
@@ -67,10 +67,13 @@ of this software, even if advised of the possibility of such damage.
   </xsl:variable>
 
   <xsl:template match="/">
-    <xsl:if test="$debug='true'">
+
 	<xsl:message>processing <xsl:value-of select="base-uri()"/></xsl:message>
-    </xsl:if>
+
+    <xsl:variable name="pass1">
       <xsl:apply-templates/>
+    </xsl:variable>
+    <xsl:apply-templates select="$pass1" mode="pass2"/>
   </xsl:template>
 
   <!-- default identity transform -->
@@ -102,10 +105,17 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   
   <xsl:template match="text()">
+    <xsl:variable name="parent" select="local-name(parent::*)"/>
     <xsl:analyze-string regex="([^∣]*)∣" select="translate(.,'¦','∣')">
       <xsl:matching-substring>
 	<xsl:value-of select="regex-group(1)"/>
-	<lb rend="hidden" type="hyphenInWord"/>
+	<xsl:if test="$parent='CELL'">-</xsl:if>
+	<lb>
+	  <xsl:if test="not($parent='CELL')">
+	    <xsl:attribute name="rend">hidden</xsl:attribute>
+	    <xsl:attribute name="type">hyphenInWord</xsl:attribute>
+	  </xsl:if>
+	</lb>
       </xsl:matching-substring>
       <xsl:non-matching-substring>
 	<xsl:value-of select="."/>
@@ -118,7 +128,9 @@ of this software, even if advised of the possibility of such damage.
     <xsl:apply-templates />
   </xsl:template>
 
-  <!-- TCP controversial changes -->
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>TCP controversial changes</desc>
+  </doc>
   <xsl:template match="PB/@MS" />
   <xsl:template match="LABEL/@ROLE" />
   <xsl:template match="TITLE/@TYPE" />
@@ -191,6 +203,22 @@ of this software, even if advised of the possibility of such damage.
           <xsl:value-of select="@N"/>
         </note>
       </xsl:when>
+      <xsl:when test="parent::SP">
+	<p>
+          <label type="milestone">
+            <xsl:value-of select="@UNIT"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="@N"/>
+          </label>
+	</p>
+      </xsl:when>
+      <xsl:when test="parent::LIST or parent::SPEAKER">
+          <note place="margin" type="milestone">
+            <xsl:value-of select="@UNIT"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="@N"/>
+	  </note>
+      </xsl:when>
       <xsl:otherwise>
 <!--
 	<xsl:if test="$debug='true'">
@@ -199,13 +227,11 @@ of this software, even if advised of the possibility of such damage.
 	  select="@N"/></xsl:message>
 	</xsl:if>
 -->
-        <note place="margin" type="milestone">
-          <label>
+          <label place="margin" type="milestone">
             <xsl:value-of select="@UNIT"/>
             <xsl:text> </xsl:text>
             <xsl:value-of select="@N"/>
           </label>
-        </note>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -214,7 +240,7 @@ of this software, even if advised of the possibility of such damage.
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
       <p>A HEAD/@TYPE='sub' can lose itself if it consists of
-      Q with L inside, though if thats all there is, looks like
+      Q with L inside; though if thats all there is, looks like
       an epigraph
       </p>
     </desc>
@@ -247,51 +273,10 @@ of this software, even if advised of the possibility of such damage.
     </xsl:choose>
   </xsl:template>
 
+
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-      <p>
-	A paragraph with some types of child only can lose itself
-      </p>
-    </desc>
+    <desc>Strip $ from end of title</desc>
   </doc>
-  <xsl:template match="P[not(parent::SP or parent::HEADNOTE or
-		       parent::POSTSCRIPT or parent::ARGUMENT) and count(*)=1 and
-		       not(text()) and 
-		       (LETTER or LIST or TABLE)]" 
-		>
-    <xsl:apply-templates select="*|text()|processing-instruction()|comment()" />
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-      <p>
-	A paragraph inside ADD is lost, just a line-break added
-      </p>
-    </desc>
-  </doc>
-  <xsl:template match="ADD/P">
-    <lb/>
-    <xsl:apply-templates select="*|text()|processing-instruction()|comment()" />
-  </xsl:template>
-
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>
-      <p>Remove gratuitous p layer inside cell</p>
-    </desc>
-</doc>
-  <xsl:template match="CELL[count(*)=1 and not(text()) and P]">
-    <cell>
-      <xsl:apply-templates select="@*" />
-      <xsl:for-each select="P">
-        <xsl:apply-templates select="*|processing-instruction()|comment()|text()" />
-      </xsl:for-each>
-    </cell>
-  </xsl:template>
-
-  <xsl:template match="NOTE[count(*)=1 and not(text())]/Q">
-    <xsl:apply-templates select="*|processing-instruction()|comment()|text()" />
-  </xsl:template>
-
   <xsl:template match="TITLESTMT/TITLE/text()[last()]">
     <xsl:choose>
       <xsl:when test="matches(.,':$')">
@@ -303,59 +288,101 @@ of this software, even if advised of the possibility of such damage.
     </xsl:choose>
   </xsl:template>
 
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>the HEADNOTE element can be bypassed if it just has a figure
+    in, and no following head or opener</desc>
+  </doc>
+
   <xsl:template match="HEADNOTE[P/FIGURE and
 		       not(following-sibling::HEAD or following-sibling::OPENER)]">
-    <xsl:apply-templates />
+    <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
   </xsl:template>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Just a HEAD inside an ARGUMENT can be a paragraph</desc>
+  </doc>
 
   <xsl:template match="ARGUMENT[count(*)=1]/HEAD">
     <p>
-      <xsl:apply-templates />
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
     </p>
   </xsl:template>
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Just a HEAD inside an HEADNOTE can be a paragraph</desc>
+  </doc>
   <xsl:template match="HEADNOTE[count(*)=1]/HEAD">
     <p>
-      <xsl:apply-templates />
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
     </p>
   </xsl:template>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>A HEADNOTE is an ARGUMENT </desc>
+  </doc>
 
   <xsl:template match="HEADNOTE">
     <argument>
-      <xsl:apply-templates />
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
     </argument>
   </xsl:template>
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Just a HEAD inside an TAILNOTE can be a paragraph</desc>
+  </doc>
   <xsl:template match="TAILNOTE[count(*)=1]/HEAD">
     <p>
-      <xsl:apply-templates />
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
     </p>
   </xsl:template>
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>A TAILNOTE is an ARGUMENT </desc>
+  </doc>
+
   <xsl:template match="TAILNOTE">
     <argument>
-      <xsl:apply-templates />
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
     </argument>
   </xsl:template>
 
-  <xsl:template match="FIGURE/BYLINE">
-    <signed>
-      <xsl:apply-templates />
-    </signed>
-  </xsl:template>
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Nested STAGE can be bypassed</desc>
+  </doc>
 
   <xsl:template match="STAGE/STAGE">
-    <xsl:apply-templates />
+    <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" />
   </xsl:template>
 
   <xsl:template match="STAGE[following-sibling::HEAD]">
     <head type="sub">
       <stage>
-	<xsl:apply-templates />
+	<xsl:apply-templates  select="@*|*|processing-instruction()|comment()|text()" />
       </stage>
     </head>
   </xsl:template>
 
+  <xsl:template match="CLOSER">
+    <xsl:choose>
+      <xsl:when test="POSTSCRIPT">
+	<closer>
+	  <xsl:apply-templates
+	      select="@*|*[not(self::POSTSCRIPT)]|processing-instruction()|comment()|text()"
+	      />
+	</closer>
+	<xsl:apply-templates select="POSTSCRIPT"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<closer>
+	  <xsl:apply-templates
+	      select="@*|*|processing-instruction()|comment()|text()" />
+	</closer>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
   <!-- TCP non-controversial transforms -->
   <xsl:template match="ROW/PB" />
   <xsl:template match="ROW[PB]">
@@ -416,11 +443,18 @@ of this software, even if advised of the possibility of such damage.
               <xsl:value-of select="BIBNO"/>
             </idno>
             <xsl:for-each select="VID">
-              <xsl:if test="@SET">
+	      <xsl:choose>
+              <xsl:when test="@SET">
                 <idno type="{@SET}">
                   <xsl:value-of select="."/>
                 </idno>
-              </xsl:if>
+	      </xsl:when>
+	      <xsl:otherwise>
+                <idno type="VID">
+                  <xsl:value-of select="translate(normalize-space(.),' ','')"/>
+                </idno>
+	      </xsl:otherwise>
+	      </xsl:choose>
             </xsl:for-each>
           </xsl:for-each>
         </xsl:for-each>
@@ -428,7 +462,8 @@ of this software, even if advised of the possibility of such damage.
       </xsl:if>
     </publicationStmt>
   </xsl:template>
-  <xsl:template match="PUBLICATIONSTMT/IDNO" />
+
+  <xsl:template match="PUBLICATIONSTMT/IDNO"/>
   <xsl:template match="FILEDESC/EXTENT" />
   <xsl:template match="EEBO/GROUP">
     <text>
@@ -464,10 +499,8 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="LANGUSAGE/@ID" />
   <xsl:template match="PB/@REF">
     <xsl:attribute name="facs">
-      <xsl:value-of select="."/>
-    </xsl:attribute>
-    <xsl:attribute name="rend">
-      <xsl:text>none</xsl:text>
+      <xsl:value-of
+	  select="('eebopage',translate(normalize-space(/ETS/EEBO/IDG/VID),' ',''),.)" separator=":"/>
     </xsl:attribute>
   </xsl:template>
 
@@ -646,12 +679,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates />
     </dataDesc>
   </xsl:template>
-  <xsl:template match="DATERANGE">
-    <dateRange>
-      <xsl:apply-templates  select="@*"/>
-      <xsl:apply-templates />
-    </dateRange>
-  </xsl:template>
   <xsl:template match="DATESTRUCT">
     <dateStruct>
       <xsl:apply-templates  select="@*"/>
@@ -734,6 +761,13 @@ of this software, even if advised of the possibility of such damage.
     <encodingDesc>
       <xsl:apply-templates  select="@*"/>
       <xsl:apply-templates />
+      <listPrefixDef>
+	<prefixDef
+	    ident="eebopage"
+	    matchPattern="([0-9]+):([0-9]+)"
+	    replacementPattern="http://eebo.chadwyck.com/downloadtiff?vid=$1&amp;page=$2">
+	</prefixDef>
+      </listPrefixDef>
     </encodingDesc>
   </xsl:template>
   <xsl:template match="ENTDOC">
@@ -1198,18 +1232,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates />
     </tagUsage>
   </xsl:template>
-  <xsl:template match="TAGSDECL">
-    <tagsDecl>
-      <xsl:apply-templates  select="@*"/>
-      <xsl:apply-templates />
-    </tagsDecl>
-  </xsl:template>
-  <xsl:template match="TEICORPUS.2">
-    <teiCorpus.2>
-      <xsl:apply-templates  select="@*"/>
-      <xsl:apply-templates />
-    </teiCorpus.2>
-  </xsl:template>
   <xsl:template match="TEIFSD2">
     <teiFsd2>
       <xsl:apply-templates  select="@*"/>
@@ -1317,12 +1339,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates  select="@*"/>
       <xsl:apply-templates />
     </witEnd>
-  </xsl:template>
-  <xsl:template match="WITLIST">
-    <witList>
-      <xsl:apply-templates  select="@*"/>
-      <xsl:apply-templates />
-    </witList>
   </xsl:template>
   <xsl:template match="WITSTART">
     <witStart>
@@ -1524,6 +1540,13 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test=". = 'unspecified'"/>
       <xsl:when test=".='foot;' or .='foor;' or .='foot'">
         <xsl:attribute name="place">bottom</xsl:attribute>
+      </xsl:when>
+      <xsl:when test=".='foot1' or .='foot2'">
+        <xsl:attribute name="place">bottom</xsl:attribute>
+        <xsl:attribute name="type" select="."/>
+      </xsl:when>
+      <xsl:when test=".='inter'">
+        <xsl:attribute name="rend" select="."/>
       </xsl:when>
       <xsl:when test=".='‡' or .='†' or .='‖' or .='6'  or .='“' or         .='1' or .='*'">
         <xsl:attribute name="n">
@@ -1757,11 +1780,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()"/>
     </listWit>
   </xsl:template>
-  <xsl:template match="TEI.2">
-    <TEI>
-      <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()"/>
-    </TEI>
-  </xsl:template>
   <xsl:template match="XREF">
     <ref>
       <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()"/>
@@ -1890,12 +1908,6 @@ of this software, even if advised of the possibility of such damage.
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="@FACS">
-    <xsl:attribute name="facs">
-      <xsl:value-of select="translate(.,' :[]','_')"/>
-    </xsl:attribute>
-  </xsl:template>
-
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>
       <p>
@@ -1908,47 +1920,24 @@ of this software, even if advised of the possibility of such damage.
     <xsl:copy-of select="."/>
   </xsl:template>
 
-  <xsl:template match="@ANA|@ACTIVE|@ADJ|@ADJFROM|@ADJTO|@CHILDREN|@CLASS|@CODE|@COPYOF|@CORRESP|@DECLS|@DOMAINS|@END|@EXCLUDE|@FVAL|@FEATS|@FOLLOW|@HAND|@INST|@LANGKEY|@LOCATION|@MERGEDIN|@NEW|@NEXT|@OLD|@ORIGIN|@OTHERLANGS|@PARENT|@PASSIVE|@PERF|@PREV|@RENDER|@RESP|@SAMEAS|@SCHEME|@SCRIPT|@SELECT|@SINCE|@START|@SYNCH|@TARGET|@TARGETEND|@VALUE|@VALUE|@WHO|@WIT">
-    <xsl:attribute name="{lower-case(name(.))}">
-      <xsl:call-template name="splitter">
-        <xsl:with-param name="val">
-          <xsl:value-of select="."/>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:attribute>
-  </xsl:template>
-  <xsl:template name="splitter">
-    <xsl:param name="val"/>
-    <xsl:choose>
-      <xsl:when test="contains($val,' ')">
-        <xsl:choose>
-          <xsl:when test="starts-with($val,'http') or starts-with($val,'ftp') or starts-with($val,'mailto')">
-            <xsl:value-of select="$val"/>
+  <xsl:template
+      match="@ANA|@ACTIVE|@ADJ|@ADJFROM|@ADJTO|@CHILDREN|@CLASS|@CODE|@COPYOF|@CORRESP|@DECLS|@DOMAINS|@END|@EXCLUDE|@FVAL|@FEATS|@FOLLOW|@HAND|@INST|@LANGKEY|@LOCATION|@MERGEDIN|@NEW|@NEXT|@OLD|@ORIGIN|@OTHERLANGS|@PARENT|@PASSIVE|@PERF|@PREV|@RENDER|@RESP|@SAMEAS|@SCHEME|@SCRIPT|@SELECT|@SINCE|@START|@SYNCH|@TARGET|@TARGETEND|@VALUE|@VALUE|@WHO|@WIT">
+    <xsl:variable name="vals">
+      <xsl:for-each select="tokenize(.,' ')">
+        <a>
+	  <xsl:choose>
+          <xsl:when test="starts-with(.,'http') or starts-with(.,'ftp') or starts-with(.,'mailto')">
+            <xsl:sequence select="."/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:text>#</xsl:text>
-	    <xsl:value-of select="substring-before($val,' ')"/>
+	    <xsl:sequence select="."/>
           </xsl:otherwise>
         </xsl:choose>
-        <xsl:text> </xsl:text>
-        <xsl:call-template name="splitter">
-          <xsl:with-param name="val">
-            <xsl:value-of select="substring-after($val,' ')"/>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="starts-with($val,'http') or starts-with($val,'ftp') or starts-with($val,'mailto')">
-            <xsl:value-of select="$val"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:text>#</xsl:text>
-            <xsl:value-of select="$val"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
+	</a>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:attribute name="{lower-case(name(.))}" select="string-join($vals/tei:a,' ')"/>
   </xsl:template>
   <!-- fool around with selected elements -->
   <!-- imprint is no longer allowed inside bibl -->
@@ -2002,11 +1991,10 @@ of this software, even if advised of the possibility of such damage.
       <xsl:value-of select="."/>
     </xsl:attribute>
   </xsl:template>
-  <xsl:template match="REVISIONDESC">
-    <xsl:call-template name="Decls"/>
-    <revisionDesc>
-      <xsl:apply-templates select="@*|*|comment()|processing-instruction()"/>
-    </revisionDesc>
+  <xsl:template match="CELL/@ROLE">
+    <xsl:attribute name="role">
+      <xsl:value-of select="."/>
+    </xsl:attribute>
   </xsl:template>
   <!-- space does not have @EXTENT any more -->
   <xsl:template match="SPACE/@EXTENT">
@@ -2300,4 +2288,210 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template name="makeID"/>
   <xsl:template name="idnoHook"/>
+
+
+  <!-- second pass to clean up -->
+  <xsl:template match="@*|comment()|processing-instruction()|text()"
+    mode="pass2">
+    <xsl:copy-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="*" mode="pass2">
+    <xsl:copy>
+      <xsl:apply-templates
+	  select="*|@*|comment()|processing-instruction()|text()" mode="pass2"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	The facs attribute should not have spaces or square brackets in
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="@facs" mode="pass2">
+    <xsl:attribute name="facs">
+      <xsl:value-of select="translate(.,' []','_()')"/>
+    </xsl:attribute>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	A p with list, floatingText or table as singletons can lose itself
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="tei:p[not(parent::tei:sp or parent::tei:headnote or
+		       parent::tei:postscript or parent::tei:argument) and count(*)=1 and
+		       not(text()) and   (tei:list or tei:table)]" >
+    <xsl:apply-templates select="*|text()|processing-instruction()|comment()"  mode="pass2"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	A singleton p inside a note is bypassed
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="tei:note[count(*)=1 and not(text())]/tei:p">
+    <xsl:apply-templates select="*|processing-instruction()|comment()|text()"  mode="pass2"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	A singleton p inside a cell is bypassed
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="tei:cell[count(*)=1 and not(text()) and tei:p]" mode="pass2">
+    <cell>
+      <xsl:apply-templates select="@*" />
+      <xsl:for-each select="tei:p">
+        <xsl:apply-templates select="*|processing-instruction()|comment()|text()" mode="pass2"/>
+      </xsl:for-each>
+    </cell>
+  </xsl:template>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	p inside add means we must make an addSpan
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="tei:add[tei:p]" mode="pass2">
+    <xsl:choose>
+      <xsl:when test="count(tei:p)=1">
+	<add>
+	  <xsl:for-each select="tei:p">
+	    <xsl:apply-templates
+		select="*|text()|processing-instruction()|comment()"
+		mode="pass2"/>
+	  </xsl:for-each>
+	</add>
+      </xsl:when>
+      <xsl:otherwise>
+	<addSpan>
+	  <xsl:attribute name="spanTo">
+	    <xsl:text>#addSpan</xsl:text>
+	    <xsl:number level="any"/>
+	  </xsl:attribute>
+	</addSpan>
+	<xsl:apply-templates
+	    select="*|text()|processing-instruction()|comment()"
+	    mode="pass2"/>
+	<anchor>
+	  <xsl:attribute name="xml:id">
+	    <xsl:text>addSpan</xsl:text>
+	    <xsl:number level="any"/>
+	  </xsl:attribute>
+	</anchor>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+    <desc>
+      <p>
+	a paragraph containing add and nothing else, where those adds
+	themselves contains paragraphs, can be bypassed
+      </p>
+    </desc>
+  <xsl:template match="tei:p[tei:add/tei:p and not(text())]" mode="pass2">
+	  <xsl:apply-templates
+	      select="*|text()|processing-instruction()|comment()"
+	      mode="pass2"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	a list inside a label in a gloss list will have to turn into a table
+      </p>
+    </desc>
+  </doc>
+
+  <xsl:template match="tei:list[tei:label/tei:list]" mode="pass2">
+    <table rend="braced">
+      <xsl:for-each select="tei:label">
+	<row>
+	  <cell>
+	    <xsl:apply-templates
+		select="*|text()|processing-instruction()|comment()"
+		mode="pass2"/>
+	  </cell>
+	  <cell>
+	    <xsl:for-each select="following-sibling::tei:item[1]">
+	      <xsl:apply-templates
+		  select="*|text()|processing-instruction()|comment()"
+		  mode="pass2"/>
+	    </xsl:for-each>
+	  </cell>
+	</row>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	a list inside a label in a gloss list (alternate way of doing
+	gloss lists will have to turn into a table
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="tei:list[tei:item/tei:label/tei:list]" mode="pass2">
+    <table rend="braced">
+      <xsl:for-each select="tei:item">
+	<row>
+	  <cell>
+	    <xsl:for-each select="tei:label">
+	      <xsl:apply-templates
+		  select="*|text()|processing-instruction()|comment()"
+		  mode="pass2"/>
+	    </xsl:for-each>
+	  </cell>
+	  <cell>
+	    <xsl:apply-templates
+		select="*[not(self::tei:label)]|text()|processing-instruction()|comment()"
+		mode="pass2"/>
+	  </cell>
+	</row>
+      </xsl:for-each>
+    </table>
+  </xsl:template>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>
+      <p>
+	a singleton label inside a paragraph, containing a list, can
+	be ignored.
+      </p>
+    </desc>
+  </doc>
+  <xsl:template match="tei:label[tei:list and parent::tei:p]" mode="pass2">
+    <xsl:apply-templates
+	select="*|text()|processing-instruction()|comment()"
+	mode="pass2"/>
+  </xsl:template>
+
+  <xsl:template match="tei:label[following-sibling::*[1][self::tei:head]]" mode="pass2"/>
+
+  <xsl:template match="tei:head[preceding-sibling::*[1][self::tei:label]]" mode="pass2">
+    <xsl:copy>
+      <xsl:apply-templates
+	  select="*|@*|comment()|processing-instruction()|text()" mode="pass2"/>
+    </xsl:copy>
+    <xsl:for-each select="preceding-sibling::*[1][self::tei:label]">
+      <note>
+	<xsl:apply-templates
+	    select="*|@*|comment()|processing-instruction()|text()" mode="pass2"/>
+      </note>
+    </xsl:for-each>
+  </xsl:template>
 </xsl:stylesheet>

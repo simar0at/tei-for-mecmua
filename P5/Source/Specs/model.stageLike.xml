@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <classSpec xmlns="http://www.tei-c.org/ns/1.0" module="tei" xml:id="STAGEDIR" type="model"
   ident="model.stageLike">
   <desc>groups elements containing stage directions or similar things defined by the module for
@@ -28,8 +31,8 @@ $Id$
       within component-level elements.</p>
   </remarks>
   <remarks xml:lang="fr">
-    <p>Les indications scéniques appartiennent à la classe <term>inter</term>: cela signifie
-      qu'elles peuvent apparaître entre ou à l'intérieur d'éléments de niveau composant .</p>
+    <p>Les indications scéniques appartiennent à la classe <term>inter</term> : cela signifie
+      qu'elles peuvent apparaître  à l'intérieur d'éléments de niveau composant  ou bien entre ces éléments.</p>
   </remarks>
   <remarks xml:lang="es">
     <p>Las direcciones de etapa son miembros de la clase <term>inter</term>: es decir, pueden

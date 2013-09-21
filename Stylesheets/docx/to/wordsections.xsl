@@ -29,7 +29,7 @@
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 version="2.0"
-                exclude-result-prefixes="cp ve o r m v wp w10 w wne mml tbx iso      tei a xs pic fn xsi dc dcterms dcmitype     contypes teidocx teix html cals">
+                exclude-result-prefixes="#all">
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -68,16 +68,14 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: wordsections.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Dealing with sections
-    </desc>
+      <desc>Dealing with sections</desc>
    </doc>
     <xsl:template match="tei:milestone">
         <xsl:param name="final-section">false</xsl:param>

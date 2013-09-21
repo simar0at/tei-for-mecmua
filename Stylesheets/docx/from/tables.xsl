@@ -29,7 +29,7 @@
                 
                 xmlns="http://www.tei-c.org/ns/1.0"
                 version="2.0"
-                exclude-result-prefixes="a cp dc dcterms dcmitype prop     iso m mml mo mv o pic r rel     tbx tei teidocx v xs ve w10 w wne wp">
+                exclude-result-prefixes="#all">
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -68,8 +68,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: tables.xsl 9719 2011-11-09 18:18:03Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -541,9 +541,7 @@ of this software, even if advised of the possibility of such damage.
 	  </xsl:template>
 
 	  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-	    getting the basic table structure
-    </desc>
+      <desc>getting the basic table structure</desc>
    </doc>
 	  <xsl:template match="w:gridCol|w:tblBorders|w:tblCellMar|w:tblGrid|w:tblLayout|w:tblLook|w:tblPr|w:tblW|w:tc|w:tcBorders|w:tcPr|w:tcW|w:tr|w:trPr|w:vAlign|w:top|w:left|w:bottom|w:right|w:insideH|w:insideV">
 

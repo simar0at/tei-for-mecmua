@@ -52,8 +52,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: oddprocessing.xsl 10030 2012-01-12 17:06:23Z rahtz $</p>
-      <p>Copyright: 2011, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:param name="oddmode">html</xsl:param>
@@ -184,11 +184,6 @@ of this software, even if advised of the possibility of such damage.
             <body id="TOP">
               <xsl:call-template name="bodyMicroData"/>
               <xsl:call-template name="bodyHook"/>
-              <xsl:call-template name="guidelinesTop">
-                <xsl:with-param name="name">
-                  <xsl:value-of select="$name"/>
-                </xsl:with-param>
-              </xsl:call-template>
               <div class="main-content">
                 <xsl:call-template name="startDivHook"/>
                 <xsl:apply-templates mode="weavebody" select="."/>
@@ -634,7 +629,7 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template name="verbatim-lineBreak">
     <xsl:param name="id"/>
-    <xsl:text disable-output-escaping="yes">&lt;br/&gt;</xsl:text>
+    <br/>
   </xsl:template>
   <xsl:template match="rng:ref/@name" mode="attributetext">
     <xsl:variable name="me">

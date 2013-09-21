@@ -6,6 +6,7 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="CH" n="4"> 
 <head>Languages and Character Sets</head>
 <p>The documents which users of these Guidelines may wish to encode
@@ -69,7 +70,7 @@ available for extending beyond it, which are more fully discussed in
   
 <p>Identification of the language a document or part thereof is
  written in is a crucial requirement for many envisioned usages of
- an electronic document. The TEI therefore accomodates this need in the
+ an electronic document. The TEI therefore accommodates this need in the
 following way:<list>
  <item>A global attribute <att>xml:lang</att> is defined for all TEI
  elements. Its value identifies the language and writing system used.</item>
@@ -91,10 +92,8 @@ recommended (this parallels the modelling of <att>xml:lang</att>):
  to be used to identify the corresponding <gi>language</gi> element in
  the TEI header, if one is present.</item>
 </list></p>
- <p>The first part of BCP 47 is called <title>Tags for Identifying
- Languages</title><note><bibl><editor>Phillips, Addison</editor> and 
- <editor>Davis, Mark</editor>, <title>Tags for Identifying
- Languages</title> <date>2006-09</date>:  <ptr target="http://tools.ietf.org/html/bcp47"/> </bibl></note>, and
+ <p>The first part of BCP 47 is called <ref target="#CH-BIBL-4"><title>Tags for Identifying
+ Languages</title></ref>, and
  proposes the following mechanism for constructing an identifier (tag)
  for languages as administered by the Internet Assigned Numbers
  Authority (IANA). The tag is assembled from a sequence of subtags
@@ -176,7 +175,7 @@ mechanism for doing so has been defined.</p>
    Anglo-centric outlook of  most hardware designers and software
    engineers hampered initiatives to devise a more generous and
    flexible model for text representation. The wish to retain
-   compatability with <soCalled>legacy</soCalled> data was an additional disincentive.
+   compatibility with <soCalled>legacy</soCalled> data was an additional disincentive.
    Eventually, tension in East Asia between commitment to
    technological progress and the inability of existing computers
    to cope with local writing systems led to decisive developments.
@@ -319,7 +318,7 @@ mechanism for doing so has been defined.</p>
    a well-defined way to a set of numbers or <term>code points</term> 
    by which the device represents
    those abstract characters internally. It can therefore be
-   referred to as a<term> coded character set</term>,
+   referred to as a <term>coded character set</term>,
    meaning a set of abstract characters each of which has been
    assigned a numerical code point (or in some instances a sequence
    of code points) which unambiguously identifies the character
@@ -502,14 +501,14 @@ mechanism for doing so has been defined.</p>
    sophisticated mapping from a code point to the glyph selected,
    which might take into account surrounding characters (to create
    ligatures where necessary) and the language or even area this character is
-   printed for to accomodate different typesetting traditions and
+   printed for to accommodate different typesetting traditions and
    differences in the usage of glyphs.  </p>
    <p>A TEI document might provide some of the information that is
    required for this process for example by identifying the
    linguistic context with the <att>xml:lang</att> attribute. The
    selection of fonts and sizes is usually done in a stylesheet,
    while the actual layout of a page is determined by the
-   typesetting system used. Similarily, if a document is rendered
+   typesetting system used. Similarly, if a document is rendered
    for publication on the Web, information of this kind can be
    shipped with the document in a stylesheet<note place="bottom">The World Wide
    Web Consortium provides recommendations for two standard
@@ -964,7 +963,7 @@ mechanism for doing so has been defined.</p>
     <emph rend="italic">single</emph> byte code point where the
     highest bit is set (that is, they  have a decimal numeric
     representation between 129 and 255) are encoded in ISO-8859-n
-    as a <emph rend="italic">single</emph>byte with the same value
+    as a <emph rend="italic">single</emph> byte with the same value
     as the code point. But in UTF-8 code-point values inside that
     range are expressed as a <emph rend="italic">two</emph> byte
     sequence. That is to say, the abstract character in question is

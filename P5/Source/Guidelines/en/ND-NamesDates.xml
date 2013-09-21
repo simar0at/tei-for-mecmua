@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="ND" n="20">
 
 <head>Names, Dates, People, and Places</head>
@@ -521,6 +525,25 @@ names is highly complex or where name components are
 particularly ambiguous, feature structures are recommended as
 the most appropriate mechanism to mark and analyze them, as further discussed in chapter <ptr target="#FS"/>.
 </p>
+  
+  <p>White space is allowed and therefore significant between elements within <gi>name</gi>, <gi>persName</gi>, <gi>orgName</gi>, and <gi>placeName</gi>. Therefore
+    
+    <eg><![CDATA[<persName>
+      <forename>Mary</forename>
+      <forename>Ann</forename>
+      <nameLink>De</nameLink><surname>Mint</surname>
+    </persName>]]></eg>
+    
+    encodes <q>Mary Ann DeMint</q> and
+    
+    <eg><![CDATA[<persName>
+      <forename>Mary</forename><forename>Ann</forename>
+        <nameLink>De</nameLink>
+        <surname>Mint</surname>
+    </persName>]]></eg>
+    
+    encodes <q>MaryAnn De Mint</q>. See <ptr target="#STGAxs"/> for more information 
+  on whitespace in XML.</p>
 </div>
 
 <div type="div2" xml:id="NDORG"><head>Organizational Names</head>
@@ -629,14 +652,14 @@ example:
 
 <p>
 <specGrp xml:id="DNDPER" n="Personal and organizational names">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/orgName.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/persName.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/surname.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/forename.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/genName.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/nameLink.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/addName.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/roleName.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/orgName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/persName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/surname.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/forename.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/genName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/nameLink.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/addName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/roleName.xml"/></specGrp>
 </p></div>
 
 <div type="div2" xml:id="NDPLAC"><head>Place Names</head>
@@ -818,15 +841,15 @@ name studies for example, the elements discussed in <ptr target="#NDNYM"/> may a
 structure itself may be represented using feature structures (<ptr target="#FS"/>).</p>
 <p>
 <specGrp xml:id="DNDPLAC" n="Names for places">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/placeName.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/bloc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/country.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/region.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/district.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/settlement.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/offset.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/geogName.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/geogFeat.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/placeName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/bloc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/country.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/region.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/district.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/settlement.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/offset.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/geogName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/geogFeat.xml"/>
 </specGrp>
 </p>
 </div>
@@ -838,28 +861,28 @@ structure itself may be represented using feature structures (<ptr target="#FS"/
 <head>Biographical and Prosopographical Data</head>
 <p>This module defines a number of special purpose elements which can
 be used to markup biographical, historical, and prosopographical
-data. We envisage three basic types of users and uses for these
-elements.  The first is the person interested in creating or
-converting an existing set of biographical records, for example of the
-type found in a Dictionary of National Biography.  The second is the
-person hoping to create or convert a database-like collection of
-information about a group of people, possibly but not necessarily the
-people referenced in a marked-up collection of documents or a
-text-corpus.  The third type would be those interested in the creation
-or conversion of biographical or CV-like structured texts for use
-in such applications as Human Resource management.</p>
+data. We envisage a number of users and uses for these elements.  For
+example, an encoder may be interested in creating or converting a set
+of biographical records, for example of the type found in a Dictionary
+of National Biography.  Another use is the creation or conversion of a
+database-like collection of information about a group of people, such
+as the people referenced in a marked-up collection of documents, or
+persons who have served as informants in the creation of spoken
+corpora.  It is also appropriate to use these elements to register
+information relating to those who have taken part in the creation of a
+TEI document.</p>
 
 <p>To cater for this diversity, these Guidelines propose a flexible
-approach, in which encoders may choose for themselves the degree of
-prescription appropriate to their needs.  If one were interested, for
-example, in converting existing DNB-type records, and wanted to
- preserve the text as is, the <gi>person</gi> element (see <ptr target="#NDPERSE"/>) could simply
-contain the text of an article, placed within <gi>p</gi> elements,
-possibly using elements such as <gi>name</gi> or <gi>date</gi> to mark
-up features of that text.  For a more structured entry, however, one
-would extract the data and place information contained by the text,
-and encode it directly using the more specific elements described in
-this section.</p>
+strategy, in which encoders may choose for themselves the approach
+appropriate to their needs.  If one were interested, for example, in
+converting existing DNB-type records, and wanted to preserve the text
+as is, the <gi>person</gi> element (see <ptr target="#NDPERSE"/>)
+could simply contain the text of an article, placed within <gi>p</gi>
+elements, possibly using elements such as <gi>name</gi> or
+<gi>date</gi> to mark up features of that text.  For a more structured
+entry, however, one would extract the data and place information
+contained in the text, and encode it directly using the more specific
+elements described in this section.</p>
 <div type="div3" xml:id="NDPERSbp">
 <head>Basic Principles</head>
 <p>Information about people, places, and organizations, of whatever type, essentially comprises a
@@ -882,9 +905,8 @@ physical trait, gender should rather be regarded as culturally
 determined, and the division of mankind into different
 <soCalled>races</soCalled>, proposed by early (white European)
 anthropologists on the basis of physical characteristics such as skin
-colour, hair type and skull measurements, is by many modern cultural
-anthropologists now considered to be more a social or mental construct
-than an objective biological fact.  Furthermore, while some
+colour, hair type and skull measurements, is now considered to be 
+more a social or mental construct.  Furthermore, while some
 characteristics will obviously change over time, hair colour for
 example, none, in principle—not even sex—is immutable.</p>
 
@@ -975,7 +997,7 @@ recorded for that person itself, such as its reliability or source: <specList>
 </specList>
 In addition, a small number of very commonly used personal properties
 may be recorded using attributes specific to <gi>person</gi> and
-<gi>personGrp</gi> :  <specList><specDesc key="person"
+<gi>personGrp</gi>:  <specList><specDesc key="person"
 atts="role sex age"/>
 <specDesc key="personGrp"/>
 </specList></p>
@@ -985,7 +1007,7 @@ data is to be encoded in a more or less normalized form, possibly for
 many person elements, for example when encoding basic facts about
 respondents to a questionnaire. When however a more detailed encoding
 is required for all kinds of information about a person, for
-example in a historical gazeteer, then it will be more appropriate to
+example in a historical gazetteer, then it will be more appropriate to
 use the elements <gi>age</gi>, <gi>sex</gi> and others described
 elsewhere in this chapter.</p>
 
@@ -1110,19 +1132,24 @@ or
 </langKnowledge>
 </egXML>
 </p>
- <p>The <gi>sex</gi> element carries a <att>value</att> attribute to
- give the ISO 5218:2004 values (<val>1</val> for male,
- <val>2</val> for female, <val>9</val> for non-applicable, and
- <val>0</val> for unknown).
-<egXML xmlns="http://www.tei-c.org/ns/Examples">
-<sex value="2">female</sex>
-</egXML>
+ <p>The <gi>sex</gi> element carries a <att>value</att> attribute to give values from a
+   project-internal taxonomy, or an external standard, such as vCard's sex property
+   <ptr target="http://microformats.org/wiki/gender-formats"/>
+   (in which <val>M</val> indicates male, <val>F</val> indicates female, <val>O</val> indicates other,
+   <val>N</val> indicates none or not applicable, <val>U</val> indicates unknown) or 
+   the often used ISO 5218:2004 <title>Representation of Human Sexes</title>
+   <ptr target="http://standards.iso.org/ittf/PubliclyAvailableStandards/c036266_ISO_IEC_5218_2004(E_F).zip"/> (in which <val>0</val>
+   indicates unknown; <val>1</val> indicates male; <val>2</val> indicates female;
+   and <val>9</val> indicates not applicable, although the ISO standard is widely considered inadequate).
+   <egXML xmlns="http://www.tei-c.org/ns/Examples">
+     <sex value="F">female</sex>
+   </egXML>
 As elsewhere, these coded values may be used as an alternative to or
- normalization of the actual descriptive text contained by the
+ normalization of the actual descriptive text contained in the
  element. The previous example might equally well be given as 
-<egXML xmlns="http://www.tei-c.org/ns/Examples">
-<sex value="2"/>
-</egXML>
+   <egXML xmlns="http://www.tei-c.org/ns/Examples">
+     <sex value="F"/>
+   </egXML>
 </p>
 <p>The generic <gi>trait</gi> and <gi>state</gi> elements are also a member of this class,
 <specList>
@@ -1167,13 +1194,13 @@ types of trait:
 </egXML>
 </p>
 
-  <p>If none of the more specialised elements listed above is
+  <p>If none of the more specialized elements listed above is
   appropriate, then a choice must be made between the two generic
   elements <gi>trait</gi> and <gi>state</gi>. If you wish to
   distinguish between characteristics that are generally perceived to
   be transient and those which are generally considered unchanging,
   use <gi>state</gi> for the former, and <gi>trait</gi> for the
-  latter. It may also be helpful to note that that traits are
+  latter. It may also be helpful to note that traits are
   typically, but not necessarily, independent of the volition or
   action of the holder. If the distinction between state and trait is
   not considered relevant or useful, use <gi>state</gi>.</p>
@@ -1194,11 +1221,11 @@ matter, however, and people are often reluctant to accept as
 <soCalled>neutral</soCalled> an overtly foreign form of the name of
 their local saint or hero. Within the <gi>person</gi> element any
 number of variant forms of a name can be given, with no
-prioritisation, and hence less likelihood of offence. The Icelandic
+prioritization, and hence less likelihood of offence. The Icelandic
 scholar and manuscript collector Árni Magnússon, to give his
 name in standard modern Icelandic spelling, is known in Danish as Arne
 Magnusson, the form which he himself, as a long term resident of
-Denmark, generally used; there is also a Latinised form, Arnas
+Denmark, generally used; there is also a Latinized form, Arnas
 Magnæus, which he used in his scholarly writings. All three forms
 can be given, and in any order:
   <egXML xml:lang="mul" xmlns="http://www.tei-c.org/ns/Examples">
@@ -1428,9 +1455,9 @@ similarly <q>works for</q> inverts the active and passive roles of
 This example defines the relationships amongst a number of people not
 further described here; we assume however that each person has been
 allocated an identifier such as <val>P1</val>, <val>P2</val>,
-etc. which can be linked to using references such as <val>#P1</val>, <val>#P2</val> etc. Then
+etc. which can be linked to using references such as <val>#P1</val>, <val>#P2</val>, etc. Then
 the above set of <gi>relation</gi> elements describe the following
-three relationships amongst the seven people referenced:
+three relationships amongst the people referenced:
 <list type="simple">
 <item>P1 and P2 are parents of P3 and P4.</item>
 <item>P1 and P2 are linked in a mutual relationship called <q>spouse</q>—that is, 
@@ -1438,7 +1465,7 @@ three relationships amongst the seven people referenced:
 <item>P1 has the social relationship <q>employer</q> with respect to P3
 and P4.</item></list></p>
 <p>Relationships within places and organizations are further
-discussed in the relevant section below. Relationships between for
+discussed in the relevant sections below. Relationships between for
 example organizations and places, or places and persons, may be
 handled in exactly the same way. 
 <!-- examples plz! -->
@@ -1473,7 +1500,7 @@ in the existence of a name (for example <q>The Scythians</q>), but is
 likely to consist in the combination of that name with a number of
 events, traits, or states which are considered to apply to the
 organization itself, rather than any of its members. For example, a
-sports team might be defined in terms of its membership (a
+sports team might be described in terms of its membership (a
 <gi>listPerson</gi>), its fixtures (a <gi>listPlace</gi>), its
 geographical affiliation (a <gi>placeName</gi>), or any combination of
 these. It will also have properties which may be used to categorize it
@@ -1616,7 +1643,7 @@ of ways: as a set of coordinates defining a point or an area on the
 surface of the earth, or by providing a description of how the place
 may be found, usually in terms of other place names. For example, we
 can identify the location of the Canadian city of London, either by
-specifying its latitute and longitude, or by specifying that we mean
+specifying its latitude and longitude, or by specifying that we mean
 the city called London located in the province called Ontario within
 the country called Canada. </p>
 <p>In addition we may wish to supply a brief characterization of the
@@ -2227,75 +2254,75 @@ occupation and residence.</p>
 </div3>
 -->
 <specGrp xml:id="DCCAHPA" n="Historical data">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/affiliation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/affiliation.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/age.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/age.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/birth.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/birth.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/climate.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/climate.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/death.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/death.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/education.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/education.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/event.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/event.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/faith.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/faith.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/floruit.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/floruit.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/geo.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/geo.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/langKnowledge.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/langKnowledge.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/langKnown.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/langKnown.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listOrg.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listEvent.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listOrg.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listEvent.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listPerson.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listPerson.xml"/>
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listPlace.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listPlace.xml"/>
 
 <!-- PB, 19-04-2012
     &listState;-->
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/location.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/location.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/nationality.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/nationality.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/occupation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/occupation.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/org.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listRelation.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/relationGrp.xml"/> <!-- we keep it here for backward compatibility -->
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/person.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/org.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listRelation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/relationGrp.xml"/> <!-- we keep it here for backward compatibility -->
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/person.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/personGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/personGrp.xml"/>
 
 
     
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/place.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/place.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/population.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/population.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/relation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/relation.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/residence.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/residence.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sex.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sex.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/socecStatus.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/socecStatus.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/state.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/state.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/terrain.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/terrain.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/trait.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/trait.xml"/>
 </specGrp>
 </div>
 </div>
@@ -2412,7 +2439,7 @@ right:
 Within running text, a name can specify all the nyms associated with
 it:
   <egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples">
-...<name nymRef="#B1 #M1">Bogomul</name>...
+...<name nymRef="#B1 #M1">Bogomil</name>...
 </egXML>
 Similarly, within a nym, the attribute <att>parts</att> is used to
 indicate its constituent parts, where these have been identified as
@@ -2467,9 +2494,9 @@ or organizational names as well. For example:
 
 <p>
 <specGrp xml:id="DNDNYM" n="Canonical names">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/nym.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/nym.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listNym.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listNym.xml"/>
 </specGrp>
 As noted above, use of these elements implies that both the <ident type="module">dictionaries</ident> and the <ident type="module">namesdates</ident>  modules are included in a
 schema.</p>
@@ -2669,7 +2696,7 @@ These attributes may be used in preference to their W3C equivalent
 when it is necessary to provide a normalized value in some form not
 supported by the W3C attributes. For example,
 a century date in the W3C format must be expressed as a range, using
-the <att>from</att> together with either the <att>to</att> attribute or the
+the <att>from</att> attribute together with either the <att>to</att> attribute or the
 <att>dur</att> (duration) attribute:
 
 <egXML xmlns="http://www.tei-c.org/ns/Examples"><date from="1301" to="1400">fourteenth century</date>
@@ -2686,12 +2713,12 @@ express the same normalized value in any of the following ways:
  </p>
 
 <specGrp>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.orgStateLike.xml"/>    
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.personal.xml"/>    
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/model.placeLike.xml"/>    
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.datable.iso.xml"/> 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/data.temporal.iso.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/data.duration.iso.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.orgStateLike.xml"/>    
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.personal.xml"/>    
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/model.placeLike.xml"/>    
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.datable.iso.xml"/> 
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/data.temporal.iso.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/data.duration.iso.xml"/>
     <specGrpRef target="#DNDPER"/>
     <specGrpRef target="#DNDPLAC"/>
     <specGrpRef target="#DCCAHPA"/>

@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="USE">
 	<head>Using the TEI</head>
 	
@@ -833,7 +837,7 @@ are provided  as part of the standard release.  They include the following:
 	  handful of elements. </item>
 	  <label>tei_all</label>
           <item>The schema generated from this customization combines
-	  all available TEI modules, providing over 500
+	  all available TEI modules, providing <?insert totalElements?>
 	  elements.</item>
 	  <label>tei_allPlus</label>
           <item>The schema generated from this customization combines
@@ -1698,7 +1702,7 @@ stage during processing of ODD sources.</p>
 </egXML>
 and <gi>figDesc</gi> has been deleted,<note place="bottom">Note that
 deletion of required elements will cause the schema specification to
-acccept as valid documents which cannot be TEI Conformant, since they
+accept as valid documents which cannot be TEI Conformant, since they
 no longer conform to the TEI Abstract Model; conformance topics are
 addressed in more detail in <ptr target="#CF"/>.</note> it will be
 necessary to remove that reference, or the resulting schema will be
@@ -1835,7 +1839,7 @@ references to such classes have been expanded to reference their
 constituent attributes.</p>
 <p>
 The equivalent
-parameterized version might look this this:
+parameterized version might look like this:
 <eg xml:space="preserve"><![CDATA[
 performance =
   element performance { performance.content, performance.attributes }
@@ -2017,7 +2021,7 @@ suffixed by <code>.attributes</code>
 (e.g. <code>att.editLike.attributes</code>);
 </item>
 <item>when a pattern for an attribute  is created,
-it is named after the attribute class identifer (as above)
+it is named after the attribute class identifier (as above)
 suffixed by <code>.attribute.</code> and then the identifier
 of the attribute (e.g. <code>att.editLike.attribute.resp</code>);</item>
 

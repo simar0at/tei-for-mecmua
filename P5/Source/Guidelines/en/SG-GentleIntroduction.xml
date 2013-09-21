@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="SG">
 
 <head>A Gentle Introduction to XML</head>
@@ -311,11 +315,11 @@ nothing between the start and the end-tag; in this case the two may
 optionally be merged together into a single composite tag with the
 solidus at the end, like this: <tag>quote/</tag>. </p></div>
 
-<div type="div3" xml:id="SG132"><head>Content models:  an example</head>
+<div type="div3" xml:id="SG132"><head>Content models: an example</head>
 
 <p>An element may be <term>empty</term>, that is, it may have no
 content at all, or it may contain just a sequence of characters with
-no other elements.  Often, however, elements of one type will
+no other elements. Often, however, elements of one type will
 be <term>embedded</term> (contained entirely) within elements of a
 different type.</p>
 
@@ -328,11 +332,9 @@ composed. In XML terms, our <term>document type</term> is the
 <term>heading</term>, and several occurrences of another, a
 <term>stanza</term>, each stanza having embedded within it a number of
 <term>line</term> elements. Fully marked up, a text conforming to
-this model might appear as follows:<note place="bottom">The example is
-taken from William Blake's <title>Songs of innocence and
-experience</title> (1794).</note>
+this model might appear as follows:
 <egXML xml:lang="en" xmlns="http://www.tei-c.org/ns/Examples"
-       valid="false">
+       valid="false" source="#SG132-neg-1">
 <anthology xmlns="">
   <poem>
     <heading>The SICK ROSE</heading>
@@ -1378,7 +1380,7 @@ given. Thus, wherever in the document instance the string
 <code>&amp;legalese;</code> appears, it will be replaced by the
 formulation above. This makes life a little easier for those
 keyboarding our anthology.<note place="bottom">And, indeed, for those
-responsible for deciding the licencing conditions if they change their
+responsible for deciding the licensing conditions if they change their
 minds later.</note> The word <code>anthology</code> following the string
 DOCTYPE in this example is, of course, the name of the root element of
 the document to which this declaration is prefixed; however, only an XML

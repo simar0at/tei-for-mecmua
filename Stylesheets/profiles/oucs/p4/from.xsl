@@ -40,8 +40,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: from.xsl 10010 2012-01-03 19:35:49Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -51,7 +51,7 @@ of this software, even if advised of the possibility of such damage.
        
        Sebastian Rahtz <sebastian.rahtz@oucs.ox.ac.uk>
        
-       $Date: 2012-01-03 19:35:49 +0000 (Tue, 03 Jan 2012) $  $Id: from.xsl 10010 2012-01-03 19:35:49Z rahtz $
+       $Date$  $Id$
        
   -->
   <xsl:output method="xml" encoding="utf-8"

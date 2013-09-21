@@ -63,12 +63,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: odds.xsl 10466 2012-06-08 18:47:50Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
 
   <xsl:key match="tei:schemaSpec" name="LISTSCHEMASPECS" use="@ident"/>
+  <xsl:key match="tei:schemaSpec" name="SCHEMASPECS" use="1"/>
   <xsl:param name="defaultSource"></xsl:param>
   <xsl:param name="defaultTEIVersion">current</xsl:param>
   <xsl:param name="defaultTEIServer">http://www.tei-c.org/Vault/P5/</xsl:param>

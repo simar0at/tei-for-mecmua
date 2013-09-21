@@ -44,8 +44,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: linking.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -76,12 +76,12 @@ of this software, even if advised of the possibility of such damage.
       <xsl:choose>
          <xsl:when test="$ptr">
             <xsl:text>\url{</xsl:text>
-	    <xsl:sequence select="$dest"/>
+	    <xsl:sequence select="tei:escapeChars($dest,.)"/>
             <xsl:text>}</xsl:text>
          </xsl:when>
          <xsl:otherwise>
             <xsl:text>\xref{</xsl:text>
-            <xsl:value-of select="$dest"/>
+            <xsl:value-of select="tei:escapeCharsPartial($dest)"/>
             <xsl:text>}{</xsl:text>
             <xsl:apply-templates/>
             <xsl:text>}</xsl:text>

@@ -6,6 +6,9 @@
     $Date$
     $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="monogr">
   <equiv/>
   <gloss>monographic level</gloss>
@@ -57,6 +60,7 @@
             </rng:oneOrMore>
             <rng:zeroOrMore>
               <rng:choice>
+                <rng:ref name="model.ptrLike"/>
                 <rng:ref name="idno"/>
                 <rng:ref name="textLang"/>
                 <rng:ref name="editor"/>
@@ -65,16 +69,19 @@
             </rng:zeroOrMore>
           </rng:group>
           <rng:group>
+
             <rng:oneOrMore>
-              <rng:choice>
+<rng:choice>
                 <rng:ref name="title"/>
-                <rng:ref name="ref"/>
-              </rng:choice>
+                <rng:ref name="model.ptrLike"/>
+                <rng:ref name="idno"/>
+</rng:choice>
             </rng:oneOrMore>
+
             <rng:zeroOrMore>
               <rng:choice>
-                <rng:ref name="idno"/>
                 <rng:ref name="textLang"/>
+
                 <rng:ref name="author"/>
                 <rng:ref name="editor"/>
                 <rng:ref name="meeting"/>
@@ -83,6 +90,7 @@
             </rng:zeroOrMore>
           </rng:group>
           <rng:group>
+<!-- specific to patents -->
             <rng:ref name="authority"/>
             <rng:ref name="idno"/>
           </rng:group>
@@ -96,6 +104,7 @@
         <rng:zeroOrMore>
           <rng:choice>
             <rng:ref name="idno"/>
+            <rng:ref name="model.ptrLike"/>
             <rng:ref name="editor"/>
             <rng:ref name="sponsor"/>
             <rng:ref name="funder"/>
@@ -126,7 +135,7 @@
             <date when="1991-12">(December, 1991):</date>
           </imprint>
             <biblScope>25.6</biblScope>
-            <biblScope unit="pp" from="377" to="380">377–380</biblScope>
+            <biblScope unit="page" from="377" to="380">377–380</biblScope>
         </monogr>
       </biblStruct>
     </egXML>
@@ -151,7 +160,7 @@
         <series>
           <title type="main" level="s">Columbia University Contributions to
                               Anthropology</title>
-          <biblScope unit="vol">4</biblScope>
+          <biblScope unit="volume">4</biblScope>
         </series>
       </biblStruct>
     </egXML>

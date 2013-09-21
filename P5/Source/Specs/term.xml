@@ -6,6 +6,9 @@
     $Date$
     $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="term">
   <equiv/>
   <gloss versionDate="2009-01-06" xml:lang="fr">terme</gloss>
@@ -14,8 +17,8 @@
   <desc versionDate="2007-12-20" xml:lang="ko">전문용어로 간주되는 단일어, 복합어, 기호적 명칭을 포함한다.</desc>
   <desc versionDate="2007-05-02" xml:lang="zh-TW">包含作為專有名詞的一個單字、詞彙、或是表示符號。</desc>
   <desc versionDate="2008-04-05" xml:lang="ja"> 技術用語とされる単一語，複数語，記号表示を示す． </desc>
-  <desc versionDate="2009-01-06" xml:lang="fr">contient un mot simple, un mot composé ou un symbole
-    considérés comme des termes techniques.</desc>
+  <desc versionDate="2009-01-06" xml:lang="fr">contient un mot simple, un mot composé ou un symbole, qui est
+    considéré comme un terme technique.</desc>
   <desc versionDate="2007-05-04" xml:lang="es">contiene una palabra simple, multipalabra o designación
     simbólica que se considera como un término técnico.</desc>
   <desc versionDate="2007-01-21" xml:lang="it">contiene una parola singola, un'unità formata da più
@@ -51,9 +54,7 @@
     <egXML xmlns="http://www.tei-c.org/ns/Examples" source="#fr-ex-Greimas_Courtes"> D'après la
         théorie d'Austin, les<term> verbes performatifs</term> seraient ceux qui non seulement
         décrivent l'action de celui qui les utilise, mais aussi, et en même temps, qui
-        impliqueraient cette action elle-même. Ainsi, les formules « Je te conseille de... », « Je
-        jure que... », « Je t'ordonne de... », réaliseraient l'action qu'elles expriment au moment
-        même de l'énonciation. </egXML>
+        impliqueraient cette action elle-même. </egXML>
   </exemplum>
   <exemplum xml:lang="zh-TW">
     <egXML xmlns="http://www.tei-c.org/ns/Examples"> 蜀漢後主<index indexName="NAMES"><term sortKey="LIU_CHAN">劉禪</term></index> ，初名斗，字升之，後改名禪，字<index indexName="NAMES"><term sortKey="LIU_CHAN">公嗣</term></index>，蜀漢昭烈帝劉備之子，蜀漢末代皇帝，也是漢朝末代皇帝。</egXML>

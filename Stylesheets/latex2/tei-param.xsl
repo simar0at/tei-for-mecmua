@@ -45,8 +45,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: tei-param.xsl 10765 2012-08-15 11:18:07Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -73,46 +73,39 @@ the beginning of the document</desc>
    <xsl:template name="latexPreambleHook"/>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
-      <desc>
-Optional parameters for documentclass
-</desc>
+      <desc>Optional parameters for documentclass</desc>
    </doc>
    <xsl:param name="classParameters">11pt,twoside</xsl:param>
 
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="output" type="string">
+      <desc>location of original XML file, for looking up relative pointers</desc>
+   </doc>
+   <xsl:param name="ORIGDIR"/>
+    
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
-      <desc>
-Logo graphics file
-</desc>
+      <desc>Logo graphics file</desc>
    </doc>
    <xsl:param name="latexLogo"/>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="output" type="string">
-      <desc>
-URL root where referenced documents are located
-</desc>
+      <desc>URL root where referenced documents are located</desc>
    </doc>
    <xsl:param name="baseURL"/>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="output" type="boolean">
-      <desc>
-Whether or not to load LaTeX packages which attempt to
+      <desc>Whether or not to load LaTeX packages which attempt to
 process the UTF-8 characters. Set to "false" if you are
-using XeTeX or similar.
-</desc>
+using XeTeX or similar.</desc>
    </doc>
    <xsl:param name="reencode">true</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="userpackage" type="string">
-      <desc>
-The name of a LaTeX style package which should be loaded
-</desc>
+      <desc>The name of a LaTeX style package which should be loaded</desc>
    </doc>
    <xsl:param name="userpackage"/>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="output" type="boolean">
-      <desc>
-Use real name of graphics files rather than pointers
-</desc>
+      <desc>Use real name of graphics files rather than pointers</desc>
    </doc>
    <xsl:param name="realFigures">true</xsl:param>
 
@@ -182,56 +175,42 @@ Use real name of graphics files rather than pointers
    </xsl:template>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="float">
-      <desc>
-When processing a "pb" element, decide what to generate: "active"
+      <desc>When processing a "pb" element, decide what to generate: "active"
 generates a page break; "visible" generates a bracketed number (with
 scissors), and "bracketsonly" generates a bracketed number (without
-scissors).
-</desc>
+scissors).</desc>
    </doc>
    <xsl:param name="pagebreakStyle"/>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="float">
-      <desc>
-When making a table, what width must be constrained to fit,
-as a proportion of the page width.
-</desc>
+      <desc>When making a table, what width must be constrained to fit,
+as a proportion of the page width.</desc>
    </doc>
    <xsl:param name="tableMaxWidth">0.85</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="boolean">
-      <desc>
-Whether to number lines of poetry
-</desc>
+      <desc>Whether to number lines of poetry</desc>
    </doc>
    <xsl:param name="verseNumbering">false</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="integer">
-      <desc>
-When numbering poetry, how often to put in a line number
-</desc>
+      <desc>When numbering poetry, how often to put in a line number</desc>
    </doc>
    <xsl:param name="everyHowManyLines">5</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout" type="string">
-      <desc>
-When numbering poetry, when to restart the sequence;
-this must be the name of a TEI element
-</desc>
+      <desc>When numbering poetry, when to restart the sequence;
+this must be the name of a TEI element</desc>
    </doc>
    <xsl:param name="resetVerseLineNumbering">div1</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="userpackage" type="string">
-      <desc>
-Options to pass to the geometry package to set margins etc
-</desc>
+      <desc>Options to pass to the geometry package to set margins etc</desc>
    </doc>
    <xsl:param name="latexGeometryOptions">twoside,lmargin=1in,rmargin=1in,tmargin=1in,bmargin=1in</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="userpackage" type="string">
-      <desc>
-Depth of nesting of reference documentation when processing ODD
-</desc>
+      <desc>Depth of nesting of reference documentation when processing ODD</desc>
    </doc>
    <xsl:param name="specLinkDepth">2</xsl:param>
 
@@ -251,10 +230,11 @@ capable of dealing with UTF-8 directly.
    </doc>
    <xsl:template name="latexSetup">
    <xsl:call-template name="latexSetupHook"/>
-\IfFileExists{xcolor.sty}%
+<xsl:text>\IfFileExists{xcolor.sty}%
   {\RequirePackage{xcolor}}%
   {\RequirePackage{color}}
 \usepackage{colortbl}
+</xsl:text>
       <xsl:choose>
          <xsl:when test="$reencode='true'">
 \IfFileExists{utf8x.def}%
@@ -262,7 +242,6 @@ capable of dealing with UTF-8 directly.
     \PrerenderUnicode{–}
   }%
  {\usepackage[utf8]{inputenc}}
-
 <xsl:call-template name="latexBabel"/>
 \usepackage[T1]{fontenc}
 \usepackage{float}
@@ -308,16 +287,18 @@ capable of dealing with UTF-8 directly.
 \def\textoverbar#1{\ensuremath{\overline{#1}}}
 \def\textgothic#1{{\fontspec{<xsl:value-of select="$gothicFont"/>}#1}}
 \def\textcal#1{{\fontspec{<xsl:value-of select="$calligraphicFont"/>}#1}}
-\def\docImprint#1{\vskip 6pt#1\ifvmode\par\fi }
-\def\docDate#1{#1\ifvmode\par\fi }
-\def\docAuthor#1{{\ifvmode\vskip 4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape #1}\ifvmode\par\fi }
-\def\docTitle#1{\vskip 6pt{\bfseries\fontsize{18pt}{22pt}\selectfont#1}\par }
-\def\titlePart#1{#1\par }
-\def\byline#1{\vskip6pt{\itshape\fontsize{16pt}{18pt}\selectfont#1}\par }
-\def\citbibl#1{#1\ifvmode\par\fi }
-\def\biblfree#1{#1\ifvmode\par\fi }
-\def\bibl#1{#1}
-\def\rubric#1{#1}
+\newenvironment{biblfree}{}{\ifvmode\par\fi }
+\newenvironment{docImprint}{\vskip 6pt}{\ifvmode\par\fi }
+\newenvironment{docDate}{}{\ifvmode\par\fi }
+\newenvironment{docAuthor}{\ifvmode\vskip4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape}{\ifvmode\par\fi }
+\newenvironment{docTitle}{\vskip6pt\bfseries\fontsize{18pt}{22pt}\selectfont}{\par }
+\newenvironment{titlePart}{}{\par }
+\newenvironment{byline}{\vskip6pt\itshape\fontsize{16pt}{18pt}\selectfont}{\par }
+\newenvironment{citbibl}{}{\ifvmode\par\fi }
+\newenvironment{bibl}{}{}
+\newenvironment{rubric}{}{}
+\newenvironment{msItem}{\vskip 6pt}{\par}
+\newenvironment{msHead}{\vskip 6pt}{\par}
 \def\titlem#1{\emph{#1}}
 \def\corr#1{#1}
 \def\sic#1{#1}
@@ -326,7 +307,6 @@ capable of dealing with UTF-8 directly.
 \def\gap{}
 \def\abbr#1{#1}
 \def\expan#1{#1}
-\def\msItem#1{\vskip 6pt#1\par }
 \RequirePackage{array}
 \def\@testpach{\@chclass
  \ifnum \@lastchclass=6 \@ne \@chnum \@ne \else
@@ -368,7 +348,6 @@ capable of dealing with UTF-8 directly.
 \def\unusedattribute#1{\sout{\textcolor{label}{#1}}}
 \DeclareRobustCommand*{\xref}{\hyper@normalise\xref@}
 \def\xref@#1#2{\hyper@linkurl{#2}{#1}}
-\def\Div[#1]#2{\section*{#2}}
 \begingroup
 \catcode`\_=\active
 \gdef_#1{\ensuremath{\sb{\mathrm{#1}}}}
@@ -398,12 +377,11 @@ capable of dealing with UTF-8 directly.
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
       <desc>
-         <p>LaTeX babel setup</p>
          <p>LaTeX loading of babel with options</p>
       </desc>
    </doc>
    <xsl:template name="latexBabel">
-\usepackage[english]{babel}
+<xsl:text>\usepackage[english]{babel}</xsl:text>
 </xsl:template>
 
 
@@ -425,6 +403,7 @@ capable of dealing with UTF-8 directly.
 <xsl:param name="gothicFont">Lucida Blackletter</xsl:param>
 <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="style" type="string"><desc>Font for calligraphic</desc>   </doc>
 <xsl:param name="calligraphicFont">Lucida Calligraphy</xsl:param>
+  <xsl:param name="longtables">true</xsl:param>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
       <desc>
@@ -465,7 +444,7 @@ capable of dealing with UTF-8 directly.
 \tolerance=2000
 \vbadness=4000
 \widowpenalty=10000
-<xsl:if test="not($docClass='letter')">
+<xsl:if test="not($documentclass='letter')">
 \renewcommand\section{\@startsection {section}{1}{\z@}%
      {-1.75ex \@plus -0.5ex \@minus -.2ex}%
      {0.5ex \@plus .2ex}%
@@ -506,7 +485,7 @@ capable of dealing with UTF-8 directly.
 \def\frontmatter{%
   \pagenumbering{roman}
   \def\thechapter{\@roman\c@chapter}
-  \def\theHchapter{\alph{chapter}}
+  \def\theHchapter{\roman{chapter}}
   \def\@chapapp{}%
 }
 \def\mainmatter{%
@@ -523,7 +502,7 @@ capable of dealing with UTF-8 directly.
   \cleardoublepage
   \setcounter{chapter}{0}
   \setcounter{section}{0}
-  \setcounter{secnumdepth}{0}
+  \setcounter{secnumdepth}{2}
   \def\@chapapp{\appendixname}%
   \def\thechapter{\@Alph\c@chapter}
   \def\theHchapter{\Alph{chapter}}
@@ -596,11 +575,13 @@ capable of dealing with UTF-8 directly.
       </desc>
    </doc>
 <xsl:template name="ledmacOptions">
+<xsl:text>
 \renewcommand{\notenumfont}{\bfseries}
 \lineation{page}
 \linenummargin{inner}
 \footthreecol{A}
 \foottwocol{B}
+</xsl:text>
 </xsl:template>
 
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="layout">
@@ -662,6 +643,78 @@ capable of dealing with UTF-8 directly.
 \makeatother
 </xsl:template>
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML element in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Element">
+    <xsl:param name="content"/>
+    <xsl:text>{</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML element name in a verbatim context</desc>
+  </doc>
+  <xsl:template name="ElementName">
+    <xsl:param name="content"/>
+    <xsl:text>\textbf{</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML element name highlighted in a verbatim context</desc>
+  </doc>
+ <xsl:template name="HighlightElementName">
+    <xsl:param name="content"/>
+    <xsl:text>\textcolor{red}{</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML attribute value in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="AttributeValue">
+    <xsl:param name="content"/>
+    <xsl:text>{</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML attribute in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Attribute">
+    <xsl:param name="content"/>
+    <xsl:text>{</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML namespace in a verbatim context</desc>
+  </doc>
+  <xsl:template name="Namespace">
+    <xsl:param name="content"/>
+    <xsl:text>\color{red}</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text></xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML comment in a verbatim context</desc>
+  </doc>
+  <xsl:template name="Comment">
+    <xsl:param name="content"/>
+    <xsl:text>\textit{</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
   
 
 </xsl:stylesheet>

@@ -56,8 +56,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: tei.xsl 10357 2012-05-15 11:57:00Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
  <xsl:strip-space elements="tei:additional tei:address tei:adminInfo
@@ -87,7 +87,7 @@ of this software, even if advised of the possibility of such damage.
 			    tei:floatingText tei:forest tei:front
 			    tei:fs tei:fsConstraints tei:fsDecl
 			    tei:fsdDecl tei:fvLib tei:gap tei:glyph
-			    tei:graph tei:graphic tei:group
+			    tei:graph tei:graphic tei:medua tei:group
 			    tei:handDesc tei:handNotes tei:history
 			    tei:hom tei:hyphenation tei:iNode tei:if
 			    tei:imprint tei:incident tei:index

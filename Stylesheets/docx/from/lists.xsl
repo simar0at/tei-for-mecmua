@@ -67,8 +67,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: lists.xsl 10881 2012-10-01 16:34:00Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
@@ -144,7 +144,7 @@ of this software, even if advised of the possibility of such damage.
                             </xsl:when>
                             <xsl:otherwise>
                                 <!-- we might want to follow the basedOn reference, but not at the moment -->
-                                <xsl:value-of select="document($styleFile)//w:style[w:name/@w:val=$style]/w:pPr/w:numPr/w:numId/@w:val"/>
+                                <xsl:value-of select="document($styleDoc)//w:style[w:name/@w:val=$style]/w:pPr/w:numPr/w:numId/@w:val"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
@@ -157,7 +157,7 @@ of this software, even if advised of the possibility of such damage.
                             </xsl:when>
                             <xsl:otherwise>
                                 <!-- we might want to follow the basedOn reference, but not at the moment -->
-                                <xsl:value-of select="document($styleFile)//w:style[w:name/@w:val=$style]/w:pPr/w:numPr/w:ilvl/@w:val"/>
+                                <xsl:value-of select="document($styleDoc)//w:style[w:name/@w:val=$style]/w:pPr/w:numPr/w:ilvl/@w:val"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>

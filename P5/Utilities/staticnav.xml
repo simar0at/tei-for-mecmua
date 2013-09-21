@@ -12,7 +12,7 @@
       </li>
       <li>
         
-        <a href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/index-toc.html"> – Table of Contents</a>
+        <a href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/index.html"> – Table of Contents</a>
       </li>
       <li>
         <a
@@ -129,8 +129,8 @@
         <a href="/Support/Learn/"
           >Learn the TEI</a>
       </li>
-      <li><a href="http://sourceforge.net/tracker/?group_id=106328&amp;atid=644065">Feature Requests</a></li>
-      <li><a href="http://sourceforge.net/tracker/?group_id=106328&amp;atid=644062">Bug Reports</a></li>
+      <li><a href="http://sourceforge.net/p/tei/feature-requests/">Feature Requests</a></li>
+      <li><a href="http://sourceforge.net/p/tei/bugs/">Bug Reports</a></li>
       
       <!--
             <li>

@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" xml:id="PREFS"><head>Prefatory Notes</head>
 <p>This Appendix contains (in reverse chronological
 order) the <soCalled>Introductory Notes</soCalled> prefixed to each 
@@ -382,7 +386,7 @@ to make them XML-conformant.</item></list>
 </list>
 <p>Our next priority however will be the production of a fully XML-compliant version
   of the TEI DTD, work on which is already well advanced.</p>
-<signed>C.M. Sperberg McQueen and Lou Burnard, May 1999</signed>
+<signed>C.M. Sperberg-McQueen and Lou Burnard, May 1999</signed>
 </div>
 </div>
 <div xml:id="PF"><head>Preface (April 1994)</head>
@@ -478,7 +482,7 @@ work; we hope that they will feel the wait has not been in vain.  For
 any errors and inconsistencies remaining, we must accept responsibility;
 any virtue in what is here presented, we gladly ascribe to the energies
 of the keen intellects listed below.</p>
-<p>C. M. Sperberg McQueen and Lou Burnard</p>
+<p>C. M. Sperberg-McQueen and Lou Burnard</p>
 <div xml:id="WGWC"><head>TEI Working Committees (1990-1993)</head><note place="inline">Not all members listed were able to serve throughout the development
 of the Guidelines.</note>
 <list type="gloss"><label>Committee on Text Documentation:</label>
@@ -626,7 +630,7 @@ Sue Ellen Wright (Kent State University).</item></list></p></div>
 <p>Members of the TEI Advisory Board during the lifetime of the
 project are listed below, grouped under the name of the organization
 represented.
-<list rend="compact" type="gloss"><label>American Anthropological Association:</label>
+<list type="gloss"><label>American Anthropological Association:</label>
 <item>Chad McDaniel (University of Maryland).</item><label>American Historical Association:</label>
 <item>Elizabeth A. R. Brown (Brooklyn College, CUNY).</item><label>American Philological Association:</label>
 <item>Jocelyn Penny Small (Rutgers University).</item><label>American Philosophical Association:</label>

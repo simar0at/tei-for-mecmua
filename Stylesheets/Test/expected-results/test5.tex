@@ -1,19 +1,15 @@
 \documentclass[11pt,twoside]{article}\makeatletter
-
 \IfFileExists{xcolor.sty}%
   {\RequirePackage{xcolor}}%
   {\RequirePackage{color}}
 \usepackage{colortbl}
-      
+
 \IfFileExists{utf8x.def}%
  {\usepackage[utf8x]{inputenc}
     \PrerenderUnicode{–}
   }%
  {\usepackage[utf8]{inputenc}}
-
-
 \usepackage[english]{babel}
-
 \usepackage[T1]{fontenc}
 \usepackage{float}
 \usepackage[]{ucs}
@@ -40,16 +36,18 @@
 \def\textoverbar#1{\ensuremath{\overline{#1}}}
 \def\textgothic#1{{\fontspec{Lucida Blackletter}#1}}
 \def\textcal#1{{\fontspec{Lucida Calligraphy}#1}}
-\def\docImprint#1{\vskip 6pt#1\ifvmode\par\fi }
-\def\docDate#1{#1\ifvmode\par\fi }
-\def\docAuthor#1{{\ifvmode\vskip 4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape #1}\ifvmode\par\fi }
-\def\docTitle#1{\vskip 6pt{\bfseries\fontsize{18pt}{22pt}\selectfont#1}\par }
-\def\titlePart#1{#1\par }
-\def\byline#1{\vskip6pt{\itshape\fontsize{16pt}{18pt}\selectfont#1}\par }
-\def\citbibl#1{#1\ifvmode\par\fi }
-\def\biblfree#1{#1\ifvmode\par\fi }
-\def\bibl#1{#1}
-\def\rubric#1{#1}
+\newenvironment{biblfree}{}{\ifvmode\par\fi }
+\newenvironment{docImprint}{\vskip 6pt}{\ifvmode\par\fi }
+\newenvironment{docDate}{}{\ifvmode\par\fi }
+\newenvironment{docAuthor}{\ifvmode\vskip4pt\fontsize{16pt}{18pt}\selectfont\fi\itshape}{\ifvmode\par\fi }
+\newenvironment{docTitle}{\vskip6pt\bfseries\fontsize{18pt}{22pt}\selectfont}{\par }
+\newenvironment{titlePart}{}{\par }
+\newenvironment{byline}{\vskip6pt\itshape\fontsize{16pt}{18pt}\selectfont}{\par }
+\newenvironment{citbibl}{}{\ifvmode\par\fi }
+\newenvironment{bibl}{}{}
+\newenvironment{rubric}{}{}
+\newenvironment{msItem}{\vskip 6pt}{\par}
+\newenvironment{msHead}{\vskip 6pt}{\par}
 \def\titlem#1{\emph{#1}}
 \def\corr#1{#1}
 \def\sic#1{#1}
@@ -58,7 +56,6 @@
 \def\gap{}
 \def\abbr#1{#1}
 \def\expan#1{#1}
-\def\msItem#1{\vskip 6pt#1\par }
 \RequirePackage{array}
 \def\@testpach{\@chclass
  \ifnum \@lastchclass=6 \@ne \@chnum \@ne \else
@@ -100,7 +97,6 @@
 \def\unusedattribute#1{\sout{\textcolor{label}{#1}}}
 \DeclareRobustCommand*{\xref}{\hyper@normalise\xref@}
 \def\xref@#1#2{\hyper@linkurl{#2}{#1}}
-\def\Div[#1]#2{\section*{#2}}
 \begingroup
 \catcode`\_=\active
 \gdef_#1{\ensuremath{\sb{\mathrm{#1}}}}
@@ -188,7 +184,7 @@
 \def\frontmatter{%
   \pagenumbering{roman}
   \def\thechapter{\@roman\c@chapter}
-  \def\theHchapter{\alph{chapter}}
+  \def\theHchapter{\roman{chapter}}
   \def\@chapapp{}%
 }
 \def\mainmatter{%
@@ -205,7 +201,7 @@
   \cleardoublepage
   \setcounter{chapter}{0}
   \setcounter{section}{0}
-  \setcounter{secnumdepth}{0}
+  \setcounter{secnumdepth}{2}
   \def\@chapapp{\appendixname}%
   \def\thechapter{\@Alph\c@chapter}
   \def\theHchapter{\Alph{chapter}}
@@ -266,36 +262,11 @@
   \pdfbookmark[2]{#2}{#1}%
   \hspace{-0.75in}{\bfseries\fontsize{16pt}{18pt}\selectfont#2}%
   }{}
-      
-\@ifundefined{chapter}{%
-    \def\DivI{\section}
-    \def\DivII{\subsection}
-    \def\DivIII{\subsubsection}
-    \def\DivIV{\paragraph}
-    \def\DivV{\subparagraph}
-    \def\DivIStar[#1]#2{\section*{#2}}
-    \def\DivIIStar[#1]#2{\subsection*{#2}}
-    \def\DivIIIStar[#1]#2{\subsubsection*{#2}}
-    \def\DivIVStar[#1]#2{\paragraph*{#2}}
-    \def\DivVStar[#1]#2{\subparagraph*{#2}}
-}{%
-    \def\DivI{\chapter}
-    \def\DivII{\section}
-    \def\DivIII{\subsection}
-    \def\DivIV{\subsubsection}
-    \def\DivV{\paragraph}
-    \def\DivIStar[#1]#2{\chapter*{#2}}
-    \def\DivIIStar[#1]#2{\section*{#2}}
-    \def\DivIIIStar[#1]#2{\subsection*{#2}}
-    \def\DivIVStar[#1]#2{\subsubsection*{#2}}
-    \def\DivVStar[#1]#2{\paragraph*{#2}}
-}
-\def\TheFullDate{1970-01-01}
+      \def\TheFullDate{1970-01-01}
 \def\TheID{\makeatother }
 \def\TheDate{1970-01-01}
 \title{Test5}
-\author{Sebastian Rahtz}\let\tabcellsep&
-      \catcode`\&=12\relax \makeatletter 
+\author{Sebastian Rahtz}\makeatletter 
 \makeatletter
 \thispagestyle{empty}
 \markright{\@title}\markboth{\@title}{\@author}
@@ -323,22 +294,17 @@
 \hypersetup{linkbordercolor=0.75 0.75 0.75,urlbordercolor=0.75 0.75 0.75,bookmarksnumbered=true}
 \fancypagestyle{plain}{\fancyhead{}\renewcommand{\headrulewidth}{0pt}}\makeatother 
 \begin{document}
-
-\catcode`\$=12\relax
-\catcode`\^=12\relax
-\catcode`\#=12\relax
-\catcode`\%=12\relax
- \frontmatter 
+\let\tabcellsep& \frontmatter 
   \begin{titlepage}
-  \docTitle{ \titlePart{Ridván 2009 Botschaft des Universalen Hauses der Gerechtigkeitan die Bahá’í der Welt}}\byline{durch \docAuthor{Das Universale Haus der Gerechtigkeit}}\docImprint{Copyright © \docDate{Ridván 2009}, alle Rechte vorbehalten, \reg{Bahá’í}Weltzentrum, Haifa, Israel. }
+  \begin{docTitle} \begin{titlePart}Ridván 2009 Botschaft des Universalen Hauses der Gerechtigkeitan die Bahá’í der Welt\end{titlePart} \end{docTitle} \begin{byline}durch \docAuthor{Das Universale Haus der Gerechtigkeit}\end{byline} \begin{docImprint}Copyright © \docDate{Ridván 2009}, alle Rechte vorbehalten, \reg{Bahá’í}Weltzentrum, Haifa, Israel. \end{docImprint}
   \end{titlepage}
   \cleardoublepage
 
-\DivIStar[The front part]{The front part}\label{part0}\par
+\section*{The front part}\label{part0}\par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
 Suscipit lobortis nisl ut \mainmatter 
-\DivI[cit and quote]{cit and quote}\par
+\section[cit and quote]{cit and quote}\par
 Quote 1, with \texttt{<p>}: \begin{quote}\par
 Ils ne produisent qu’en collaborant d’une manière déterminée et en échangeant entre eux leurs activités. Pour produire, ils entrent en relations et en rapports déterminés les uns avec les autres, et ce n’est que dans les limites de ces relations et de ces rapports sociaux que s’établit leur action sur la nature, la production.\end{quote}\par
 Quote 2, with @rend=display \begin{quote}Ils ne produisent qu’en collaborant d’une manière déterminée et en échangeant entre eux leurs activités. Pour produire, ils entrent en relations et en rapports déterminés les uns avec les autres, et ce n’est que dans les limites de ces relations et de ces rapports sociaux que s’établit leur action sur la nature, la production. \end{quote}\par
@@ -351,10 +317,10 @@ Ils ne produisent qu’en collaborant d’une manière déterminée et en échan
 \citbibl{Karl Marx, \titlem{Travail salarié et capital, suivi de Salaire, prix et profit}, p. 31, Éditions sociales, Paris, 1952.}
 \end{quote}
 
-\DivI[Welcome: 1st section]{Welcome: 1st section}\label{part1}\par
+\section[Welcome: 1st section]{Welcome: 1st section}\label{part1}\par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
-\DivII[Welcome 1st subsection]{Welcome 1st subsection}\par
+\subsection[Welcome 1st subsection]{Welcome 1st subsection}\par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \par
@@ -362,22 +328,22 @@ Duis autem vel eum \par
 Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \par
 Ut wisi enim ad minim veniam\par
 Quis nostrud exerci tation ullamcorper 
-\DivII[Welcome 2nd subsection]{Welcome 2nd subsection}\par
+\subsection[Welcome 2nd subsection]{Welcome 2nd subsection}\par
 Suscipit lobortis nisl ut \par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
-\DivIII[Going into 3rd level]{Going into 3rd level}\par
+\subsubsection[Going into 3rd level]{Going into 3rd level}\par
 Duis autem vel eum \par
 Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \par
 Ut wisi enim ad minim veniam\par
 Quis nostrud exerci tation ullamcorper \par
 Suscipit lobortis nisl ut \par
 Lorem ipsum dolor sit amet
-\DivIII[Going into 3rd level (bis)]{Going into 3rd level (bis)}\par
+\subsubsection[Going into 3rd level (bis)]{Going into 3rd level (bis)}\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. 
-\DivI[Section level 2 again]{Section level 2 again}\par
+\section[Section level 2 again]{Section level 2 again}\par
 Duis autem vel eum \par
 Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \par
 Ut wisi enim ad minim veniam\par
@@ -453,7 +419,7 @@ Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum 
 Ut wisi enim ad minim veniam\par
 Quis nostrud exerci tation ullamcorper \par
 Suscipit lobortis nisl ut 
-\DivI[Goodbye: 2nd section]{Goodbye: 2nd section}\label{part2}\par
+\section[Goodbye: 2nd section]{Goodbye: 2nd section}\label{part2}\par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \par
@@ -462,7 +428,7 @@ Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum 
 Ut wisi enim ad minim veniam\par
 Quis nostrud exerci tation ullamcorper \par
 Suscipit lobortis nisl ut 
-\DivII[The insider story]{The insider story}\label{part2.1}\par
+\subsection[The insider story]{The insider story}\label{part2.1}\par
 Lorem ipsum dolor sit amet\par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
@@ -663,7 +629,7 @@ Iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum 
 Ut wisi enim ad minim veniam\par
 Quis nostrud exerci tation ullamcorper \par
 Suscipit lobortis nisl ut 
-\DivI[Farewell: 3rd section]{Farewell: 3rd section}\label{part3}\par
+\section[Farewell: 3rd section]{Farewell: 3rd section}\label{part3}\par
 Lorem ipsum dolor sit amet\par
 Consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.\par
 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. \par

@@ -42,15 +42,14 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: tei-param.xsl 10057 2012-01-21 16:57:14Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <xsl:key name="INDEX" use="1" match="tei:index"/>
   <xsl:key name="PB" match="tei:pb" use="1"/>
   <xsl:key name="NOTES" use="1"
-	   match="tei:note[@place='foot' or @place='bottom' or @place='end'
-		  and not(parent::tei:bibl or ancestor::tei:teiHeader)]"/>
+	   match="tei:note[tei:isFootNote(.) or tei:isEndNote(.)]"/>
   <xsl:key name="ALLNOTES" use="1"
 	   match="tei:note[not(@place='margin' or @place='inline' or @place='display')
 		  and not(parent::tei:bibl or  ancestor::tei:teiHeader)]"/>
@@ -99,14 +98,12 @@ of this software, even if advised of the possibility of such damage.
    </doc>
   <xsl:param name="cssFile" as="xs:string">http://www.tei-c.org/release/xml/tei/stylesheet/tei.css</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="CSS" type="anyURI">
-      <desc>CSS style file for print; this will be given a media=print attribute.
-    </desc>
+      <desc>CSS style file for print; this will be given a media=print attribute.</desc>
    </doc>
   <xsl:param name="cssPrintFile" as="xs:string">http://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css</xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="CSS" type="anyURI">
       <desc>Secondary CSS style file; this will be given a media=screen attribute,
-so that it does not affect printing. It should be used for screen layout.
-  </desc>
+so that it does not affect printing. It should be used for screen layout.</desc>
    </doc>
     <xsl:param name="cssSecondaryFile"  as="xs:string" select="''"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="CSS" type="anyURI">
@@ -439,12 +436,12 @@ of &lt;item&gt; elements, each containing an &lt;xref&gt; link.</p>
 	  </div>
 	</xsl:when>
 	<xsl:otherwise>
-         <xsl:element name="h{$level}">
-	   <xsl:attribute name="class">
-	     <xsl:value-of select="$class"/>
-	   </xsl:attribute>
-	   <xsl:copy-of select="$text"/>
-         </xsl:element>
+	  <xsl:call-template name="splitHTMLBlocks">
+	    <xsl:with-param name="element" select="concat('h',$level)"/>
+	    <xsl:with-param name="content" select="$text"/>
+	    <xsl:with-param name="class">maintitle</xsl:with-param>
+	    <xsl:with-param name="copyid">false</xsl:with-param>
+	  </xsl:call-template>
 	</xsl:otherwise>
 	</xsl:choose>
       </xsl:if>
@@ -511,15 +508,6 @@ of &lt;item&gt; elements, each containing an &lt;xref&gt; link.</p>
 
    </doc>
   <xsl:param name="generateParagraphIDs">false</xsl:param>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="misc" type="string">
-      <desc>     <p>Character separating values in a rend attribute.</p>
-         <p>Some projects use multiple values in <tt
-         xmlns="http://www.w3.org/1999/xhtml">rend</tt>
-         attributes. These are handled, but the separator character(s)
-         must be specified.</p>
-      </desc>
-   </doc>
-  <xsl:param name="rendSeparator">; </xsl:param>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="misc" type="boolean">
       <desc>Show a title and author at start of document</desc>
 
@@ -715,14 +703,12 @@ correspond to the ID attribute of the &gt;div&lt;. Alternatively, you
 
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="toc" type="string">
-      <desc>Text to link back to from foot of ODD reference pages
-  </desc>
+      <desc>Text to link back to from foot of ODD reference pages</desc>
    </doc>
    <xsl:param name="refDocFooterText">TEI Guidelines</xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="toc" type="anyURI">
-      <desc>URL to link back to from foot of ODD reference pages
-  </desc>
+      <desc>URL to link back to from foot of ODD reference pages</desc>
    </doc>
    <xsl:param name="refDocFooterURL">index.html</xsl:param>
 
@@ -734,8 +720,7 @@ correspond to the ID attribute of the &gt;div&lt;. Alternatively, you
    <xsl:param name="generateDivFromP">false</xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="toc" type="anyURI">
-      <desc>Gap between elements in navigation list
-  </desc></doc>
+      <desc>Gap between elements in navigation list</desc></doc>
    <xsl:template name="navInterSep">
       <xsl:text>: </xsl:text>
    </xsl:template>
@@ -766,4 +751,131 @@ correspond to the ID attribute of the &gt;div&lt;. Alternatively, you
 
   <xsl:param name="mediaoverlay">false</xsl:param>
 
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] break up a block content (h1, p etc) so that it
+    breaks around nested  HTML blocks</desc>
+  </doc>
+  <xsl:template  name="splitHTMLBlocks">
+    <xsl:param name="copyid">true</xsl:param>
+    <xsl:param name="element"/>
+    <xsl:param name="content"/>
+    <xsl:param name="class">false</xsl:param>
+    <xsl:variable name="CLASS">
+	<freddy>
+	  <xsl:call-template name="makeRendition">
+	    <xsl:with-param name="default" select="$class"/>
+	  </xsl:call-template>
+	</freddy>
+    </xsl:variable>
+    <xsl:variable name="ID">
+      <freddy>
+	<xsl:choose>
+	  <xsl:when test="not($copyid='true')"/>
+	  <xsl:when test="@xml:id or ($generateParagraphIDs='true' and $element='p')">
+	    <xsl:call-template name="makeAnchor"/>
+	  </xsl:when>
+	</xsl:choose>
+      </freddy>
+    </xsl:variable>
+    <xsl:for-each-group select="$content/node()" 		
+			group-adjacent="if (self::html:ol or
+					self::html:ul or
+					self::html:dl or
+					self::html:pre or
+					self::html:figure or
+					self::html:blockquote or
+					self::html:div) then 1
+					else 2">
+      <xsl:choose>
+	<xsl:when test="current-grouping-key()=1">
+	  <xsl:copy-of select="current-group()"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:element name="{$element}">
+	    <xsl:copy-of select="$CLASS/html:freddy/@*"/>
+	    <xsl:if test="position()=1">
+	      <xsl:copy-of select="$ID/html:freddy/@*"/>
+	    </xsl:if>
+	    <xsl:copy-of select="current-group()"/>
+	  </xsl:element>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each-group>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML element in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Element">
+    <xsl:param name="content"/>
+    <span class="element">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML element name in a verbatim context</desc>
+  </doc>
+  <xsl:template name="ElementName">
+    <xsl:param name="content"/>
+    <span class="elementname">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML element name highlighted in a verbatim context</desc>
+  </doc>
+ <xsl:template name="HighlightElementName">
+    <xsl:param name="content"/>
+    <span class="highlightelementname">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML attribute value in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="AttributeValue">
+    <xsl:param name="content"/>
+    <span class="attributevalue">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML attribute in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Attribute">
+    <xsl:param name="content"/>
+    <span class="attribute">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML namespace in a verbatim context</desc>
+  </doc>
+  <xsl:template name="Namespace">
+    <xsl:param name="content"/>
+    <span class="namespace">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] show an XML comment in a verbatim context</desc>
+  </doc>
+  <xsl:template name="Comment">
+    <xsl:param name="content"/>
+    <span class="comment">
+      <xsl:copy-of select="$content"/>
+    </span>
+  </xsl:template>
+   
 </xsl:stylesheet>

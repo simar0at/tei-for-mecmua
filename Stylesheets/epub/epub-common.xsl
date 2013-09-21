@@ -38,18 +38,20 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: epub-common.xsl 10911 2012-10-04 11:08:28Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:key match="tei:graphic[not(ancestor::teix:egXML)]" use="1" name="G"/>
-  <xsl:key name="GRAPHICS" use="1" match="tei:graphic"/>
+  <xsl:key match="tei:media[not(ancestor::teix:egXML)]" use="1" name="G"/>
+  <xsl:key name="GRAPHICS" use="1" match="tei:graphic|tei:media"/>
   <xsl:key name="PBGRAPHICS" use="1" match="tei:pb[@facs and not(@rend='none')]"/>
   <xsl:key name="Timeline" match="tei:timeline" use="1"/>
   <xsl:key name="Object" match="tei:when" use="substring(@corresp,2)"/>
   <xsl:key name="objectOnPage" match="tei:*[@xml:id]" use="generate-id(preceding::tei:pb[1])"/>
 
   <xsl:param name="javascriptFiles"/>
+  <xsl:param name="pagebreakStyle">simple</xsl:param>
   <xsl:param name="epubMimetype">application/epub+zip</xsl:param>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -105,31 +107,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template name="generateSubjectHook"/>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>[epub] Set name of publisher</desc>
-  </doc>
-  <xsl:template name="generatePublisher">
-    <xsl:choose>
-      <xsl:when test="not($publisher='')">
-        <xsl:value-of select="$publisher"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:for-each
-	    select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt">
-	  <xsl:for-each
-	      select="tei:authority|tei:publisher|tei:distributor|tei:p">
-	    <xsl:value-of select="normalize-space(.)"/>
-	    <xsl:if
-		test="following-sibling::tei:authority|tei:publisher|tei:distributor|tei:p">
-	      <xsl:text>, </xsl:text>
-	    </xsl:if>
-	  </xsl:for-each>
-	</xsl:for-each>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>[epub] Set unique identifier for output
-      </desc>
+    <desc>[epub] Set unique identifier for output</desc>
   </doc>
   <xsl:template name="generateID">
     <xsl:choose>
@@ -148,16 +126,14 @@ of this software, even if advised of the possibility of such damage.
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[epub] Add specific linebreak in verbatim output, as
-      readers do not seem to grok the CSS
-      </desc>
+      readers do not seem to grok the CSS</desc>
   </doc>
   <xsl:template name="verbatim-lineBreak">
     <xsl:param name="id"/>
     <br/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-    <desc>[epub] Remove unwanted things from CSS
-      </desc>
+    <desc>[epub] Remove unwanted things from CSS</desc>
   </doc>
   <xsl:template name="purgeCSS">
     <xsl:choose>
@@ -222,6 +198,14 @@ of this software, even if advised of the possibility of such damage.
     <h3>Source</h3>
     <xsl:apply-templates mode="metadata"/>
   </xsl:template>
+
+  <xsl:template match="tei:encodingDesc" mode="metadata">
+    <h3>Encoding</h3>
+    <xsl:apply-templates mode="metadata"/>
+  </xsl:template>
+
+  <xsl:template match="tei:listPrefixDef" mode="metadata"/>
+  <xsl:template match="tei:tagsDecl" mode="metadata"/>
 
   <xsl:template match="tei:projectDesc" mode="metadata">
     <h3>Creation</h3>
@@ -445,12 +429,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:when test="@n">
         <xsl:value-of select="@n"/>
       </xsl:when>
-      <xsl:when test="@type">
-	<xsl:text>[</xsl:text>
-        <xsl:value-of select="@type"/>
-	<xsl:text>]</xsl:text>
-      </xsl:when>
-      <xsl:otherwise>&#160;</xsl:otherwise>
+      <xsl:otherwise>§</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -534,5 +513,7 @@ of this software, even if advised of the possibility of such damage.
       </xsl:if>
     </link>
   </xsl:template>
+
+  <xsl:template name="hdr3"/>
 
 </xsl:stylesheet>

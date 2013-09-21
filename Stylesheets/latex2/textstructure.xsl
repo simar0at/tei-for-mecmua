@@ -5,7 +5,7 @@
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
                 xmlns:teix="http://www.tei-c.org/ns/Examples"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                exclude-result-prefixes="a rng tei teix"
+                exclude-result-prefixes="#all"
                 version="2.0">
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
       <desc>
@@ -46,8 +46,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: textstructure.xsl 10462 2012-06-08 18:18:09Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -94,6 +94,9 @@ of this software, even if advised of the possibility of such damage.
 	       <xsl:when test="tei:graphic">
 		 <xsl:sequence select="tei:resolveURI(tei:graphic,tei:graphic/@url)"/>
 	       </xsl:when>
+	       <xsl:when test="tei:media">
+		 <xsl:sequence select="tei:resolveURI(tei:media,tei:media/@url)"/>
+	       </xsl:when>
 	     </xsl:choose>
 	   </xsl:variable>
 	   <xsl:choose>
@@ -113,36 +116,30 @@ of this software, even if advised of the possibility of such damage.
       <xsl:text>\documentclass[</xsl:text>
       <xsl:value-of select="$classParameters"/>
       <xsl:text>]{</xsl:text>
-      <xsl:value-of select="$docClass"/>
+      <xsl:value-of select="$documentclass"/>
       <xsl:text>}</xsl:text>
       <xsl:text>\makeatletter&#10;</xsl:text>
       <xsl:call-template name="latexSetup"/>
       <xsl:call-template name="latexPackages"/>
       <xsl:call-template name="latexLayout"/>
-      <xsl:text>&#10;\@ifundefined{chapter}{%
-    \def\DivI{\section}
-    \def\DivII{\subsection}
-    \def\DivIII{\subsubsection}
-    \def\DivIV{\paragraph}
-    \def\DivV{\subparagraph}
-    \def\DivIStar[#1]#2{\section*{#2}}
-    \def\DivIIStar[#1]#2{\subsection*{#2}}
-    \def\DivIIIStar[#1]#2{\subsubsection*{#2}}
-    \def\DivIVStar[#1]#2{\paragraph*{#2}}
-    \def\DivVStar[#1]#2{\subparagraph*{#2}}
-}{%
-    \def\DivI{\chapter}
-    \def\DivII{\section}
-    \def\DivIII{\subsection}
-    \def\DivIV{\subsubsection}
-    \def\DivV{\paragraph}
-    \def\DivIStar[#1]#2{\chapter*{#2}}
-    \def\DivIIStar[#1]#2{\section*{#2}}
-    \def\DivIIIStar[#1]#2{\subsection*{#2}}
-    \def\DivIVStar[#1]#2{\subsubsection*{#2}}
-    \def\DivVStar[#1]#2{\paragraph*{#2}}
-}
-\def\TheFullDate{</xsl:text>
+      <xsl:call-template name="latexOther"/>
+      <xsl:text>&#10;\begin{document}&#10;</xsl:text>
+      <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
+         <xsl:call-template name="printTitleAndLogo"/>
+      </xsl:if>
+      <xsl:call-template name="beginDocumentHook"/>
+      <!-- certainly don't touch this line -->
+      <xsl:text disable-output-escaping="yes">\let\tabcellsep&amp;</xsl:text>
+      <xsl:apply-templates/>
+      <xsl:call-template name="latexEnd"/>
+      <xsl:if test="key('ENDNOTES',1)">
+	<xsl:text>&#10;\theendnotes</xsl:text>
+      </xsl:if>
+      <xsl:text>&#10;\end{document}&#10;</xsl:text>
+   </xsl:template>
+
+   <xsl:template name="latexOther">
+      <xsl:text>\def\TheFullDate{</xsl:text>
       <xsl:sequence select="tei:generateDate(.)"/>
       <xsl:if test="not($useFixedDate='true')">
       <xsl:variable name="revdate">
@@ -170,32 +167,14 @@ of this software, even if advised of the possibility of such damage.
       <xsl:text>}&#10;\def\TheDate{</xsl:text>
       <xsl:sequence select="tei:generateDate(/*)"/>
       <xsl:text>}&#10;\title{</xsl:text>
-      <xsl:sequence select="tei:generateTitle(/*)"/>
+      <xsl:sequence select="tei:generateSimpleTitle(/*)"/>
       <xsl:text>}&#10;\author{</xsl:text>
       <xsl:sequence select="tei:generateAuthor(/*)"/>
       <xsl:text>}</xsl:text>
-      <xsl:text disable-output-escaping="yes">\let\tabcellsep&amp;
-      \catcode`\&amp;=12\relax </xsl:text>
       <xsl:text>\makeatletter </xsl:text>
       <xsl:call-template name="latexBegin"/>
       <xsl:text>\makeatother </xsl:text>
-      <xsl:text>&#10;\begin{document}&#10;</xsl:text>
-      <xsl:if test="not(tei:text/tei:front/tei:titlePage)">
-         <xsl:call-template name="printTitleAndLogo"/>
-      </xsl:if>
-      <xsl:call-template name="beginDocumentHook"/>
-      <!-- certainly don't touch the next few lines -->
-      <xsl:text>&#10;\catcode`\$=12\relax&#10;</xsl:text>
-      <xsl:text>\catcode`\^=12\relax&#10;</xsl:text>
-      <xsl:text>\catcode`\#=12\relax&#10;</xsl:text>
-      <xsl:text>\catcode`\%=12\relax&#10;</xsl:text>
-      <xsl:apply-templates/>
-      <xsl:call-template name="latexEnd"/>
-      <xsl:if test="key('ENDNOTES',1)">
-	<xsl:text>&#10;\theendnotes</xsl:text>
-      </xsl:if>
-      <xsl:text>&#10;\end{document}&#10;</xsl:text>
-   </xsl:template>
+    </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Processing teiHeader elements</desc>

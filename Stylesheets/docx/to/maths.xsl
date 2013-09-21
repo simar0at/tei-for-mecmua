@@ -70,8 +70,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: maths.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -87,9 +87,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Process Word objects
-    </desc>
+      <desc>Process Word objects</desc>
    </doc>
    <xsl:template match="w:object">
      <xsl:variable name="renderingProperties">
@@ -110,8 +108,7 @@ of this software, even if advised of the possibility of such damage.
    </xsl:template>
 
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Image data 
+      <desc>Image data 
     </desc>
    </doc>
     <xsl:template match="v:imagedata" mode="iden">
@@ -119,27 +116,18 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:copy>
 	    <!-- override r:id -->
             <xsl:attribute name="r:id">
-	      <xsl:choose>
-		<xsl:when test="$isofreestanding='true'">
-		  <xsl:variable name="me" select="generate-id()"/>
-		  <xsl:for-each select="key('IMAGEDATA',1)">
-		    <xsl:if test="generate-id()=$me">
-		      <xsl:value-of select="concat('rId', string(1000 + position()))"/>
-		    </xsl:if>
-		  </xsl:for-each>
-		</xsl:when>
-		<xsl:otherwise>
-		  <xsl:value-of select="document($relDoc)//rel:Relationship[@Target=$current]/@Id"/>
-		</xsl:otherwise>
-	      </xsl:choose>
+	      <xsl:variable name="me" select="generate-id()"/>
+	      <xsl:for-each select="key('IMAGEDATA',1)">
+		<xsl:if test="generate-id()=$me">
+		  <xsl:value-of select="concat('rId', string(1000 + position()))"/>
+		</xsl:if>
+	      </xsl:for-each>
             </xsl:attribute>
 	</xsl:copy>
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        OLE objects
-    </desc>
+      <desc>OLE objects</desc>
    </doc>
     <xsl:template match="o:OLEObject" mode="iden">
         <xsl:variable name="current" select="@r:id"/>
@@ -148,19 +136,12 @@ of this software, even if advised of the possibility of such damage.
             <xsl:copy-of select="@*"/>
             <!-- set rId -->
             <xsl:attribute name="r:id">
-	      <xsl:choose>
-		<xsl:when test="$isofreestanding='true'">
-		  <xsl:variable name="me" select="generate-id()"/>
-		  <xsl:for-each select="key('OLEOBJECTS',1)">
-		    <xsl:if test="generate-id()=$me">
-		      <xsl:value-of select="concat('rId', string(2000 + position()))"/>
-		    </xsl:if>
-		  </xsl:for-each>
-		</xsl:when>
-		<xsl:otherwise>
-		  <xsl:value-of select="document($relDoc)//rel:Relationship[@Target=$current]/@Id"/>
-		</xsl:otherwise>
-	      </xsl:choose>
+	      <xsl:variable name="me" select="generate-id()"/>
+	      <xsl:for-each select="key('OLEOBJECTS',1)">
+		<xsl:if test="generate-id()=$me">
+		  <xsl:value-of select="concat('rId', string(2000 + position()))"/>
+		</xsl:if>
+	      </xsl:for-each>
             </xsl:attribute>
 	</xsl:copy>
     </xsl:template>

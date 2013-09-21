@@ -74,15 +74,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: lists.xsl 10727 2012-08-07 10:57:16Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Handle value lists
-    </desc>
+      <desc>Handle value lists</desc>
    </doc>
     <xsl:template match="tei:label[following-sibling::tei:*[1]/self::tei:item]">
         <xsl:param name="nop"/>
@@ -128,15 +126,13 @@ of this software, even if advised of the possibility of such damage.
     <xsl:template match="comment()"/>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc> 
-        Handle list items
-    </desc>
+      <desc>Handle list items</desc>
    </doc>
     <xsl:template match="tei:item">
         <xsl:param name="nop"/>
         <xsl:variable name="listStyle">
             <xsl:choose>
-                <xsl:when test="../@type='unordered' or ../@type='simple' or not(../@type)">
+                <xsl:when test="tei:isUnorderedList(..)">
                     <xsl:call-template name="getStyleName">
                         <xsl:with-param name="in">
                             <xsl:text>List Continue</xsl:text>
@@ -144,7 +140,7 @@ of this software, even if advised of the possibility of such damage.
                         </xsl:with-param>
                     </xsl:call-template>
                 </xsl:when>
-                <xsl:when test="../@type='ordered'">
+                <xsl:when test="tei:isOrderedList(..)">
                     <xsl:call-template name="getStyleName">
                         <xsl:with-param name="in">
                             <xsl:text>List Number</xsl:text>
@@ -164,7 +160,7 @@ of this software, even if advised of the possibility of such damage.
                     <w:pStyle w:val="{$listStyle}"/>
                 </xsl:if>
                 <xsl:choose>
-                    <xsl:when test="../@type='unordered' or not(../@type)">
+                    <xsl:when test="tei:isUnorderedList(..)">
                         <w:numPr>
                             <w:ilvl>
                                 <xsl:attribute name="w:val">
@@ -190,7 +186,7 @@ of this software, even if advised of the possibility of such damage.
 			    </w:numId>
 			</w:numPr>
                     </xsl:when>
-                    <xsl:when test="../@type='ordered'">
+                    <xsl:when test="tei:isOrderedList(..)">
                         <w:numPr>
                             <w:ilvl>
                                 <xsl:attribute name="w:val">

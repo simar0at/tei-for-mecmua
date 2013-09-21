@@ -9,6 +9,7 @@
     exclude-result-prefixes="tei fotex m xs"
     version="2.0">
   <xsl:import href="../common2/tei.xsl"/>
+  <xsl:import href="../common2/verbatim.xsl"/>
   <xsl:import href="tei-param.xsl"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
       <desc>
@@ -48,20 +49,16 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: tei.xsl 9669 2011-11-07 19:17:54Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" type="string">
-      <desc>
-    Stylesheet constant for the input document.
-  </desc>
+      <desc>Stylesheet constant for the input document.</desc>
    </doc>
   <xsl:variable name="top" select="/"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" type="string">
-      <desc>
-    Stylesheet constant for table specifications
-  </desc>
+      <desc>Stylesheet constant for table specifications</desc>
    </doc>
   <xsl:variable name="tableSpecs">
       <xsl:choose>

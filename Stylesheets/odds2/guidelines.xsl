@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xlink rng tei teix xhtml a html xs xsl" version="2.0">
+
+  <xsl:param name="directory">.</xsl:param>
   <xsl:param name="outputDir"><xsl:value-of select="$directory"/>/OPS</xsl:param>
   <xsl:key name="EXAMPLES" match="teix:*[ancestor::teix:egXML]" use="concat(ancestor::tei:div[last()]/@xml:id,local-name())"/>
   <xsl:key name="HEADS" match="tei:head" use="concat(@xml:lang,@corresp)"/>
   <xsl:key name="BACKLINKS" match="teix:egXML[@corresp]" use="substring(@corresp,2)"/>
+  <xsl:key name="BACKLINKS" match="teix:egXML[@source]" use="substring(@source,2)"/>
   <xsl:key name="BACKLINKS" match="tei:ptr[@type='cit']" use="substring(@target,2)"/>
   <heads xmlns="http://www.tei-c.org/ns/1.0">
-    <head xml:lang="fr" corresp="AB">À propos des Principes directeurs</head>
+    <head xml:lang="fr" corresp="AB">À propos des Recommandations</head>
     <head xml:lang="fr" corresp="AI">Mécanismes analytiques simples</head>
     <head xml:lang="fr" corresp="BIB">Bibliographie</head>
     <head xml:lang="fr" corresp="CC">Corpus linguistiques</head>
@@ -28,8 +31,8 @@
     <head xml:lang="fr" corresp="PH">Représentation de sources primaires</head>
     <head xml:lang="fr" corresp="PREF">Préface et remerciements</head>
     <head xml:lang="fr" corresp="PREFS">Notes préliminaires </head>
-    <head xml:lang="fr" corresp="REF-CLASSES-ATTS">Classes attributives</head>
-    <head xml:lang="fr" corresp="REF-CLASSES-MODEL">Classes structurales</head>
+    <head xml:lang="fr" corresp="REF-CLASSES-ATTS">Classes d'attributs</head>
+    <head xml:lang="fr" corresp="REF-CLASSES-MODEL">Classes de structures</head>
     <head xml:lang="fr" corresp="REF-ELEMENTS">Éléments</head>
     <head xml:lang="fr" corresp="REF-MACROS">Types de données et autres macros </head>
     <head xml:lang="fr" corresp="SA">Liens, segmentation et alignement</head>
@@ -37,12 +40,11 @@
     <head xml:lang="fr" corresp="ST">Infrastructure de la TEI</head>
     <head xml:lang="fr" corresp="TC">Apparat critique</head>
     <head xml:lang="fr" corresp="TD">Éléments de déclaration d’un modèle</head>
-    <head xml:lang="fr" corresp="TitlePageVerso">Versions des Principes directeurs</head>
+    <head xml:lang="fr" corresp="TitlePageVerso">Versions des Recommandations</head>
     <head xml:lang="fr" corresp="TS">Transcriptions de la parole</head>
     <head xml:lang="fr" corresp="USE">Utiliser la TEI</head>
     <head xml:lang="fr" corresp="VE">Poésie</head>
-    <head xml:lang="fr" corresp="WD">Représentation des caractères et
-    des glyphes non standard</head>
+    <head xml:lang="fr" corresp="WD">Représentation des caractères et des glyphes non standard</head>
     <head xml:lang="zh-TW" corresp="AI">簡易分析機制</head>
     <head xml:lang="zh-TW" corresp="CE">確定程度與不確定程度</head>
     <head xml:lang="zh-TW" corresp="CO">所有TEI文件所通用的元素</head>
@@ -93,8 +95,7 @@
     <head xml:lang="it" corresp="GD">Grafici, reti e alberi</head>
     <head xml:lang="it" corresp="TS">Trascrizione del parlato</head>
     <head xml:lang="it" corresp="TD">Documentazione dei moduli TEI</head>
-    <head xml:lang="it" corresp="ST">Dichiarazione di classi, tipi di dati e macro
-</head>
+    <head xml:lang="it" corresp="ST">Dichiarazione di classi, tipi di dati e macro</head>
     <head xml:lang="it" corresp="TC">Apparato critico</head>
     <head xml:lang="it" corresp="DS">Struttura standard del testo</head>
     <head xml:lang="it" corresp="PH">Trascrizione di fonti primarie</head>
@@ -278,23 +279,19 @@
     <head xml:lang="kr" corresp="REF-ELEMENTS">요소</head>
     <head xml:lang="kr" corresp="REF-MACROS">자료유형과 다른 마크로</head>
   </heads>
+
   <xsl:template name="processTEIHook">
     <xsl:for-each select="key('ELEMENTDOCS',1)">
       <xsl:variable name="me" select="@ident"/>
-      <xsl:variable name="documentationLanguage">
-        <xsl:call-template name="generateDoc"/>
-      </xsl:variable>
       <xsl:variable name="langs">
-        <xsl:value-of select="concat(normalize-space($documentationLanguage),' ')"/>
+        <xsl:value-of select="concat(normalize-space(tei:generateDocumentationLang(.)),' ')"/>
       </xsl:variable>
       <xsl:result-document doctype-public="{$doctypePublic}" doctype-system="{$doctypeSystem}" encoding="{$outputEncoding}" href="{$outputDir}/examples-{$me}.html" method="{$outputMethod}">
         <html>
           <xsl:comment>THIS IS A GENERATED FILE. DO NOT EDIT (10) </xsl:comment>
           <head>
             <title>
-              <xsl:call-template name="i18n">
-                <xsl:with-param name="word">Example</xsl:with-param>
-              </xsl:call-template>
+              <xsl:sequence select="tei:i18n('Example')"/>
               <xsl:text>: &lt;</xsl:text>
               <xsl:value-of select="$me"/>
               <xsl:text>&gt; </xsl:text>
@@ -307,9 +304,7 @@
 			   stylesheets" name="generator"/>
 	    <xsl:call-template name="metaHTML">
 	      <xsl:with-param name="title">
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">Example</xsl:with-param>
-                </xsl:call-template>
+                <xsl:sequence select="tei:i18n('Example')"/>
                 <xsl:text>: </xsl:text>
                 <xsl:value-of select="$me"/>
                 <xsl:text> </xsl:text>
@@ -324,9 +319,7 @@
           <body id="TOP">
             <xsl:call-template name="guidelinesTop">
               <xsl:with-param name="name">
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">Example</xsl:with-param>
-                </xsl:call-template>
+                <xsl:sequence select="tei:i18n('Example')"/>
                 <xsl:text>: &lt;</xsl:text>
                 <xsl:value-of select="$me"/>
                 <xsl:text>&gt; </xsl:text>
@@ -338,9 +331,7 @@
             <div class="main-content">
               <xsl:call-template name="startDivHook"/>
               <h3>
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">Example</xsl:with-param>
-                </xsl:call-template>
+                <xsl:sequence select="tei:i18n('Example')"/>
                 <xsl:text>: &lt;</xsl:text>
                 <xsl:value-of select="$me"/>
                 <xsl:text>&gt; </xsl:text>
@@ -438,19 +429,29 @@
   </xsl:template>
   <xsl:template name="metaHTML">
     <xsl:param name="title"/>
-    <meta name="Language" content="{$documentationLanguage}"/>
-    <meta name="DC.Title" content="{$title}"/>
-    <meta name="DC.Language" content="(SCHEME=iso639) {$documentationLanguage}"/>
-    <meta name="DC.Creator" content="TEI, Oxford University Computing Services, 13 Banbury Road, Oxford OX2 6NN, United Kingdom"/>
-    <meta name="DC.Creator.Address" content="tei@oucs.ox.ac.uk"/>
-      <xsl:choose>
-	<xsl:when test="$outputTarget='html5' or $outputTarget='epub3'">
-	  <meta charset="{$outputEncoding}"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <meta http-equiv="Content-Type" content="text/html;
-						   charset={$outputEncoding}"/>
-	</xsl:otherwise>
+    <meta>
+      <xsl:attribute name="{if ($outputTarget='html5') then 'property' else 'name'}">Language</xsl:attribute>
+      <xsl:attribute name="content" select="$documentationLanguage"/>
+    </meta>
+    <meta>
+      <xsl:attribute name="{if ($outputTarget='html5') then 'property' else 'name'}">DC.Title</xsl:attribute>
+      <xsl:attribute name="content" select="$title"/>
+    </meta>
+    <meta>
+      <xsl:attribute name="{if ($outputTarget='html5') then 'property' else 'name'}">DC.Language</xsl:attribute>
+      <xsl:attribute name="content">SCHEME=iso639 <xsl:value-of select="$documentationLanguage"/></xsl:attribute>
+    </meta>
+    <meta>
+	<xsl:attribute name="{if ($outputTarget='html5') then 'property' else 'name'}">DC.Creator.Address</xsl:attribute>
+	<xsl:attribute name="content">tei@oucs.ox.ac.uk</xsl:attribute>
+    </meta>
+    <xsl:choose>
+      <xsl:when test="$outputTarget='html5' or $outputTarget='epub3'">
+	<meta charset="{$outputEncoding}"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<meta http-equiv="Content-Type" content="text/html; charset={$outputEncoding}"/>
+      </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
   <xsl:template name="startDivHook">
@@ -488,15 +489,7 @@
           </li>
           <li class="subtoc">
             <a class="navigation" href="index.html">
-              <xsl:call-template name="i18n">
-                <xsl:with-param name="word">homeWord</xsl:with-param>
-              </xsl:call-template>
-            </a>
-            <xsl:text> | </xsl:text>
-            <a class="navigation" href="index-toc.html">
-              <xsl:call-template name="i18n">
-                <xsl:with-param name="word">tocWords</xsl:with-param>
-              </xsl:call-template>
+              <xsl:sequence select="tei:i18n('homeWord')"/>
             </a>
           </li>
           <li class="subtoc">
@@ -542,196 +535,6 @@
         </ul>
       </div>
     </xsl:if>
-  </xsl:template>
-  <xsl:template name="mainPage">
-    <xsl:param name="currentID"/>
-    <xsl:call-template name="guidelinesTop"/>
-    <div id="onecol" class="main-content">
-      <xsl:call-template name="mainFrame">
-        <xsl:with-param name="currentID" select="$currentID"/>
-        <xsl:with-param name="minimal">true</xsl:with-param>
-      </xsl:call-template>
-      <xsl:if test="$currentID=''">
-        <div style="float:left; margin:4%;">
-          <h3>
-            <xsl:call-template name="i18n">
-              <xsl:with-param name="word">Versions of the Guidelines</xsl:with-param>
-            </xsl:call-template>
-          </h3>
-          <ul>
-            <li>
-              <a href="index-toc.html">
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">tocWords</xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <xsl:if test="$outputTarget='html'">
-              <li>
-                <a href="../../en/Guidelines.pdf">PDF</a>
-              </li>
-            </xsl:if>
-            <li>
-              <a href="http://www.tei-c.org/Council/tcw06.xml">
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">Getting the most recent version</xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="http://tei.svn.sourceforge.net/viewvc/tei/">
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">Sourceforge Subversion Repository</xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="http://sourceforge.net/tracker/?group_id=106328&amp;func=browse">
-                <xsl:call-template name="i18n">
-                  <xsl:with-param name="word">BugsFeatures</xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div style="float:left; margin:4%;">
-          <h3>
-            <xsl:call-template name="i18n">
-              <xsl:with-param name="word">Some Popular Sections</xsl:with-param>
-            </xsl:call-template>
-          </h3>
-          <ul>
-            <li>
-              <a href="AB.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>AB</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="SG.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>SG</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="ST.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>ST</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="HD.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>HD</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="CO.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>CO</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="USE.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>USE</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="REF-CLASSES-MODEL.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>REF-CLASSES-MODEL</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="REF-CLASSES-ATTS.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>REF-CLASSES-ATTS</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-            <li>
-              <a href="REF-ELEMENTS.html">
-                <xsl:call-template name="showHead">
-                  <xsl:with-param name="ID">
-                    <xsl:text>REF-ELEMENTS</xsl:text>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <xsl:variable name="name">TEI Guidelines TOC </xsl:variable>
-        <xsl:variable name="outName">
-          <xsl:call-template name="outputChunkName">
-            <xsl:with-param name="ident">
-              <xsl:text>index-toc</xsl:text>
-            </xsl:with-param>
-          </xsl:call-template>
-        </xsl:variable>
-        <xsl:if test="$verbose='true'">
-          <xsl:message>Opening file <xsl:value-of select="$outName"/></xsl:message>
-        </xsl:if>
-        <xsl:result-document 
-	    doctype-public="{$doctypePublic}"
-	    omit-xml-declaration="yes"
-	    doctype-system="{$doctypeSystem}" 
-	    encoding="{$outputEncoding}" 
-	    href="{$outName}" 
-	    method="{$outputMethod}">
-          <html>
-            <xsl:comment>THIS IS A GENERATED FILE. DO NOT EDIT (8) </xsl:comment>
-            <head>
-              <title>
-                <xsl:value-of select="$name"/>
-              </title>
-              <xsl:call-template name="includeCSS"/>
-              <meta content="Text Encoding Initiative Consortium XSLT
-			     stylesheets" name="generator"/>
-		<xsl:call-template name="metaHTML">
-		  <xsl:with-param name="title" select="$name"/>
-		</xsl:call-template>
-              <xsl:call-template name="includeJavascript"/>
-              <xsl:call-template name="javascriptHook"/>
-            </head>
-            <body id="TOP">
-              <xsl:call-template name="bodyHook"/>
-              <xsl:call-template name="guidelinesTop"/>
-              <div id="onecol" class="main-content">
-                <xsl:call-template name="mainTOC"/>
-              </div>
-              <xsl:call-template name="stdfooter"/>
-            </body>
-          </html>
-        </xsl:result-document>
-        <xsl:if test="$verbose='true'">
-          <xsl:message>Closing file <xsl:value-of select="$outName"/></xsl:message>
-        </xsl:if>
-      </xsl:if>
-    </div>
   </xsl:template>
   <xsl:template name="showHead">
     <xsl:param name="ID"/>
@@ -781,14 +584,14 @@
     <xsl:call-template name="makeHTMLHeading">
       <xsl:with-param name="class">title</xsl:with-param>
       <xsl:with-param name="text">
-        <xsl:call-template name="generateTitle"/>
+        <xsl:sequence select="tei:generateTitle(.)"/>
       </xsl:with-param>
       <xsl:with-param name="level">1</xsl:with-param>
     </xsl:call-template>
     <xsl:call-template name="makeHTMLHeading">
       <xsl:with-param name="class">subtitle</xsl:with-param>
       <xsl:with-param name="text">
-        <xsl:call-template name="generateSubTitle"/>
+        <xsl:sequence select="tei:generateSubTitle(.)"/>
       </xsl:with-param>
       <xsl:with-param name="level">2</xsl:with-param>
     </xsl:call-template>
@@ -798,17 +601,6 @@
     <xsl:call-template name="pageHeader"/>
   </xsl:template>
   <xsl:template match="tei:titlePage">
-    <!--
-	<div class="titlePage">
-	<h1>
-	<xsl:apply-templates
-	select="tei:docTitle/tei:titlePart/tei:title"/>
-	</h1>
-	<h2>
-	<xsl:value-of select="tei:docAuthor"/>
-	</h2>
-	</div>
-    -->
   </xsl:template>
   <xsl:template name="continuedToc">
     <xsl:if test="tei:div">
@@ -875,72 +667,12 @@
       </li>
     </xsl:if>
   </xsl:template>
-  <!--
-  <xsl:template name="mainTOC">
-    <xsl:param name="force"/>
 
-    <div class="toc_back">
-      <h3>
-      	  <xsl:call-template name="i18n">
-	    <xsl:with-param name="word">Back Matter</xsl:with-param>
-	  </xsl:call-template>
-      </h3>
-      <xsl:for-each
-	  select="ancestor-or-self::tei:TEI/tei:text/tei:back">
-	<xsl:if test="tei:div">
-	  <ul class="toc{$force} toc_back">
-	    <xsl:apply-templates mode="maketoc"
-				 select="tei:div">
-	      <xsl:with-param name="forcedepth" select="$force"/>
-              </xsl:apply-templates>
-	  </ul>
-	</xsl:if>
-      </xsl:for-each>
-    </div>
-
-    <div class="toc_front">
-      <h3>
-      	  <xsl:call-template name="i18n">
-	    <xsl:with-param name="word">Front Matter</xsl:with-param>
-	  </xsl:call-template>
-      </h3>
-      <xsl:for-each
-	  select="ancestor-or-self::tei:TEI/tei:text/tei:front">
-	<xsl:if	    test="tei:div">
-	  <ul class="toc{$force} toc_front">
-	    <xsl:apply-templates mode="maketoc" select="tei:div">
-	      <xsl:with-param name="forcedepth" select="$force"/>
-	    </xsl:apply-templates>
-            </ul>
-	</xsl:if>
-      </xsl:for-each>
-    </div>
-
-    <div class="toc_body">
-      <h3>
-      	  <xsl:call-template name="i18n">
-	    <xsl:with-param name="word">Text body</xsl:with-param>
-	  </xsl:call-template>
-      </h3>
-      <xsl:for-each
-        select="ancestor-or-self::tei:TEI/tei:text/tei:body">
-        <xsl:if          test="tei:div">
-          <ul class="toc{$force}  toc_body">
-            <xsl:apply-templates mode="maketoc"
-              select="tei:div">
-              <xsl:with-param name="forcedepth" select="$force"/>
-            </xsl:apply-templates>
-          </ul>
-        </xsl:if>
-      </xsl:for-each>
-    </div>
-
-  </xsl:template>
-
--->
+<!--
   <xsl:template match="tei:divGen[@type='toc']">
     <xsl:call-template name="mainPage"/>
   </xsl:template>
+-->
   <xsl:template name="javascriptHook">
     <script type="text/javascript" src="jquery-1.2.6.min.js">
       <xsl:comment>JQuery</xsl:comment>
@@ -1000,26 +732,6 @@
     </xsl:if>
   </xsl:template>
   <xsl:template match="/div"> </xsl:template>
-  <xsl:template name="myi18n">
-    <xsl:param name="word"/>
-    <xsl:choose>
-      <xsl:when test="$word='previousWord'">
-        <span class="icon">
-          <xsl:text>« </xsl:text>
-        </span>
-      </xsl:when>
-      <xsl:when test="$word='upWord'">
-        <span class="icon">
-          <xsl:text>↑ </xsl:text>
-        </span>
-      </xsl:when>
-      <xsl:when test="$word='nextWord'">
-        <span class="icon">
-          <xsl:text>» </xsl:text>
-        </span>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
 
   <!-- only use listBibl if its in right language-->
   <xsl:template match="tei:listBibl[@xml:lang and not($documentationLanguage=@xml:lang)]"/>
@@ -1042,24 +754,36 @@
   </xsl:template>
 
   <xsl:template name="egXMLEndHook">
-    <xsl:if test="@corresp and id(substring(@corresp,2))">
-      <div style="float: right;">
-        <a>
-          <xsl:attribute name="href">
-            <xsl:apply-templates mode="generateLink" select="id(substring(@corresp,2))"/>
-          </xsl:attribute>
-          <xsl:text>bibliography</xsl:text>
-          <!--	  <span class="citLink">&#x270d;</span>-->
-        </a>
-	<xsl:text>&#160;</xsl:text>
-      </div>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="@corresp and id(substring(@corresp,2))">
+	<div style="float: right;">
+	  <a>
+	    <xsl:attribute name="href">
+	      <xsl:apply-templates mode="generateLink" select="id(substring(@corresp,2))"/>
+	    </xsl:attribute>
+	    <xsl:text>bibliography</xsl:text>
+	    <!--	  <span class="citLink">&#x270d;</span>-->
+	  </a>
+	  <xsl:text>&#160;</xsl:text>
+	</div>
+      </xsl:when>
+      <xsl:when test="@source and id(substring(@source,2))">
+	<div style="float: right;">
+	  <a>
+	    <xsl:attribute name="href">
+	      <xsl:apply-templates mode="generateLink" select="id(substring(@source,2))"/>
+	    </xsl:attribute>
+	    <xsl:text>bibliography</xsl:text>
+	    <!--	  <span class="citLink">&#x270d;</span>-->
+	  </a>
+	  <xsl:text>&#160;</xsl:text>
+	</div>
+      </xsl:when>
+    </xsl:choose>
     <xsl:for-each select="ancestor::tei:elementSpec">
       <div style="float: right;">
         <a href="examples-{@ident}.html">
-          <xsl:call-template name="i18n">
-            <xsl:with-param name="word">Show all</xsl:with-param>
-          </xsl:call-template>
+          <xsl:sequence select="tei:i18n('Show all')"/>
         </a>
 	<xsl:text>&#160;</xsl:text>
       </div>
@@ -1077,51 +801,53 @@
       </div>
     </xsl:if>
   </xsl:template>
+
+
   <xsl:template name="stdfooter">
     <xsl:param name="style" select="'plain'"/>
     <xsl:param name="file">index</xsl:param>
-    <xsl:variable name="date">
-      <xsl:call-template name="generateDate"/>
-    </xsl:variable>
-    <xsl:variable name="author">
-      <xsl:call-template name="generateAuthor"/>
-    </xsl:variable>
+    <xsl:variable name="date" select="tei:generateDate(.)"/>
+    <xsl:variable name="author" select="tei:generateAuthor(.)"/>
     <div class="stdfooter">
-      <xsl:if test="$outputTarget='html'">
-        <p>
-	  [<a href="../../en/html/{$file}.html">English</a>]
-	  [<a href="../../de/html/{$file}.html">Deutsch</a>]
-	  [<a href="../../es/html/{$file}.html">Español</a>]
-	  [<a href="../../it/html/{$file}.html">Italiano</a>]
-	  [<a href="../../fr/html/{$file}.html">Français</a>]
-	  [<a href="../../ja/html/{$file}.html">日本語</a>]
-	  [<a href="../../kr/html/{$file}.html">한국어</a>]
-	  [<a href="../../zh-TW/html/{$file}.html">中文</a>]
-	</p>
-      </xsl:if>
+      <xsl:if test="$outputTarget='html' or $outputTarget='html5'">
+    <p>
+    [<a href="../../en/html/{$file}.html">English</a>]
+    [<a href="../../de/html/{$file}.html">Deutsch</a>]
+    [<a href="../../es/html/{$file}.html">Español</a>]
+    [<a href="../../it/html/{$file}.html">Italiano</a>]
+    [<a href="../../fr/html/{$file}.html">Français</a>]
+    [<a href="../../ja/html/{$file}.html">日本語</a>]
+    [<a href="../../ko/html/{$file}.html">한국어</a>]
+    [<a href="../../zh-TW/html/{$file}.html">中文</a>]
+    </p>
       <hr/>
+      </xsl:if>
       <xsl:if test="$linkPanel='true'">
         <div class="footer">
-          <xsl:if test="not($parentURL='')">
-            <a class="{$style}" href="{$parentURL}">
+          <xsl:if test="not($parentURL='')"><a class="{$style}"
+              href="{$parentURL}">
               <xsl:value-of select="$parentWords"/>
+            </a>  </xsl:if>
+          <xsl:if test="$searchURL"> | <a class="{$style}" href="{$searchURL}"
+              target="_top">
+              <xsl:call-template name="searchWords"/>
             </a>
           </xsl:if>
-          <xsl:if test="$searchURL"> | <a class="{$style}" href="{$searchURL}" target="_top"><xsl:call-template name="searchWords"/></a>
-          </xsl:if>
-          <xsl:if test="$feedbackURL"> | <a class="{$style}" href="{$feedbackURL}"><xsl:call-template name="feedbackWords"/></a>
+          <xsl:if test="$feedbackURL"> | <a class="{$style}" href="{$feedbackURL}">
+              <xsl:call-template name="feedbackWords"/>
+            </a>
           </xsl:if>
         </div>
         <hr/>
       </xsl:if>
       <xsl:for-each
-	  select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:availability">
+	  select="ancestor-or-self::TEI/teiHeader/fileDesc/publicationStmt/availability">
 	<div class="availability">
 	  <xsl:apply-templates/>
 	  <xsl:choose>
-	    <xsl:when test="count(tei:licence)&gt;1">
+	    <xsl:when test="count(licence)&gt;1">
 	      <ol>
-		<xsl:for-each select="tei:licence">
+		<xsl:for-each select="licence">
 		  <li>
 		    <xsl:choose>
 		      <xsl:when test="@target">
@@ -1137,7 +863,7 @@
 	    </xsl:when>
 	    <xsl:otherwise>
 	      <div class="licence">
-		<xsl:for-each select="tei:licence">
+		<xsl:for-each select="licence">
 		  <a href="{@target}">
 		    <xsl:apply-templates/>
 		  </a>
@@ -1147,32 +873,35 @@
 	  </xsl:choose>
 	</div>
       </xsl:for-each>
-
       <address>
 	<br/>
-        <xsl:text>Version </xsl:text>
+        <xsl:text>TEI Guidelines </xsl:text> 
+        <a href="AB.html#ABTEI4">Version
         <xsl:value-of 
-	    select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition"/>
-        <xsl:text>This page generated on </xsl:text> 
+	    select="ancestor-or-self::tei:TEI/tei:teiHeader/tei:fileDesc/tei:editionStmt/tei:edition"/></a>
+        <xsl:text> This page generated on </xsl:text> 
 	<xsl:call-template name="whatsTheDate"/>
-      </address>
+
+    </address>
     </div>
     <xsl:if test="not($googleAnalytics='')">
-      <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-        <!-- load google analytics -->
-      </script>
+      <script src="http://www.google-analytics.com/urchin.js"
+	      type="text/javascript"><!-- load goohle analytics --></script>
       <script type="text/javascript">
-        <xsl:text>_uacct = "</xsl:text>
-        <xsl:value-of select="$googleAnalytics"/>
-        <xsl:text>";
+	<xsl:text>_uacct = "</xsl:text>
+	<xsl:value-of select="$googleAnalytics"/>
+	<xsl:text>";
 	urchinTracker();
 	</xsl:text>
       </script>
-    </xsl:if>
+      </xsl:if>
   </xsl:template>
+
+  <xsl:template match="tei:licence"/>
+
   <xsl:template name="guidelinesTop">
     <xsl:param name="name"/>
-    <xsl:if test="$outputTarget='html'">
+    <xsl:if test="$outputTarget='html' or $outputTarget='html5'">
       <xsl:if test="not($googleAnalytics='')">
         <script type="text/javascript" src="udm-dom.js">
           <xsl:comment>&#160;</xsl:comment>
@@ -1200,7 +929,7 @@
     </xsl:if>
     <div class="mainhead">
       <h1>P5: 
-    <xsl:call-template name="i18n"><xsl:with-param name="word">GuidelinesTEI</xsl:with-param></xsl:call-template>
+    <xsl:sequence select="tei:i18n('GuidelinesTEI')"/>
     </h1>
     </div>
   </xsl:template>
@@ -1208,11 +937,7 @@
     <xsl:variable name="this" select="@ident"/>
     <xsl:if test="count(key('ATTREFS-CLASS',$this))&gt;0">
       <div>
-        <xsl:call-template name="i18n">
-          <xsl:with-param name="word">
-            <xsl:text>Class</xsl:text>
-          </xsl:with-param>
-        </xsl:call-template>
+        <xsl:sequence select="tei:i18n('Class')"/>
         <xsl:text>: </xsl:text>
         <ul class="attrefs-class">
           <xsl:for-each select="key('ATTREFS-CLASS',$this)">
@@ -1239,11 +964,7 @@
     </xsl:if>
     <xsl:if test="count(key('ATTREFS-ELEMENT',$this))&gt;0">
       <div>
-        <xsl:call-template name="i18n">
-          <xsl:with-param name="word">
-            <xsl:text>Element</xsl:text>
-          </xsl:with-param>
-        </xsl:call-template>
+        <xsl:sequence select="tei:i18n('Element')"/>
         <xsl:text>: </xsl:text>
         <ul class="attrefs-element">
           <xsl:for-each select="key('ATTREFS-ELEMENT',$this)">
@@ -1271,4 +992,34 @@
       </div>
     </xsl:if>
   </xsl:template>
+
+
+
+  <!-- Addition by Martin Holmes 2012-07-15 for ticket http://purl.org/tei/fr/3511134    -->
+  <xsl:template name="attDefHook">
+    <xsl:param name="attName"/>
+    <xsl:variable name="linkId" select="concat('tei_att.', translate($attName, ':', '-'))"/>
+    <xsl:choose>
+      <xsl:when test="string-length($attName) gt 0">
+        <span class="bookmarklink">
+          <a class="bookmarklink" id="{$linkId}" href="#{$linkId}">
+            <xsl:attribute name="title">
+              <xsl:text>link to this attribute </xsl:text>
+            </xsl:attribute>
+            <span class="invisible">
+              <xsl:text> </xsl:text>
+              <xsl:value-of select="$attName"/>
+            </span>
+            <span class="pilcrow">
+              <xsl:text>¶</xsl:text>
+            </span>
+          </a>
+        </span>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:comment>No linking pilcrow inserted: attname not provided.</xsl:comment>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

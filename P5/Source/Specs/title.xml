@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="title">
   <equiv/>
   <gloss versionDate="2007-06-12" xml:lang="fr">titre</gloss>
@@ -57,17 +60,11 @@ $Id$
         <valItem ident="a">
           <gloss>analytic</gloss>
           <gloss versionDate="2007-12-20" xml:lang="ko">분석적</gloss>
-          <gloss versionDate="2007-06-12" xml:lang="fr">titre
-                                                  analytique (article, poème ou autre item
-                                                  publié en tant que partie d'un item plus
-                                                  large)</gloss>
+          <gloss versionDate="2007-06-12" xml:lang="fr">analytique</gloss>
           <gloss versionDate="2007-11-06" xml:lang="it">analitico</gloss>
-          <gloss versionDate="2007-05-04" xml:lang="es">título
-                                                  analítico (artículo, poema u otro
-                                                  elemento publicado como parte de otro
-                                                  mayor.)</gloss>
-          <desc>analytic title (article, poem, or other item
-                                                  published as part of a larger item) </desc>
+          <gloss versionDate="2007-05-04" xml:lang="es">analítico</gloss>
+          <desc>the title applies to an analytic item, such as an
+	  article, poem, or other work published as part of a larger item. </desc>
           <desc versionDate="2007-12-20" xml:lang="ko">분석적 제목(보다
                                                   큰 항목의 일부로 출판된 논문, 시, 또는 기타 항목)</desc>
           <desc versionDate="2007-05-02" xml:lang="zh-TW">分析層題名
@@ -90,20 +87,12 @@ $Id$
         <valItem ident="m">
           <gloss>monographic</gloss>
           <gloss versionDate="2007-12-20" xml:lang="ko">단행본</gloss>
-          <gloss versionDate="2007-06-12" xml:lang="fr">titre de
-                                                  monographie (livre, recueil ou autre
-                                                  item publié séparément, y compris des
-                                                  volumes isolés d'ouvrages en plusieurs
-                                                  volumes)</gloss>
+          <gloss versionDate="2007-06-12" xml:lang="fr">monographique</gloss>
           <gloss versionDate="2007-11-06" xml:lang="it">monografico</gloss>
-          <gloss versionDate="2007-05-04" xml:lang="es">título
-                                                  monográfico (libro, colección u otro
-                                                  trabajo publicado como distinto,
-                                                  incluyendo un solo volumen o varios).</gloss>
-          <desc>monographic title (book, collection, or
-                                                  other item published as a distinct item,
-                                                  including single volumes of multi-volume
-                                                  works) </desc>
+          <gloss versionDate="2007-05-04" xml:lang="es">monográfico</gloss>
+          <desc>the title applies to a monograph such as a book or
+          other item considered to be a distinct publication, including single
+          volumes of multi-volume works </desc>
           <desc versionDate="2007-12-20" xml:lang="ko">단행본 제목(여러
                                                   권 중 한 권으로 출판된 경우를 포함하여, 독립된 항목으로 출판된 책,
                                                   모음집, 또는 기타 항목)</desc>
@@ -131,31 +120,29 @@ $Id$
         <valItem ident="j">
           <gloss>journal</gloss>
           <gloss versionDate="2007-12-20" xml:lang="ko">학술지</gloss>
-          <gloss versionDate="2007-06-12" xml:lang="fr">titre de
-                                                  revue</gloss>
           <gloss versionDate="2007-11-06" xml:lang="it">rivista</gloss>
           <gloss versionDate="2007-05-04" xml:lang="es">título
                                                   de revista.</gloss>
-          <desc>journal title </desc>
+          <desc>the title applies to any serial or periodical
+	  publication such as a journal, magazine, or newspaper </desc>
           <desc versionDate="2007-12-20" xml:lang="ko">학술지 제목</desc>
           <desc versionDate="2007-05-02" xml:lang="zh-TW">期刊層題名</desc>
           <desc versionDate="2008-04-06" xml:lang="es">título de
                                                   diario, periódico o revista </desc>
           <desc versionDate="2008-04-05" xml:lang="ja"> 雑誌のタイトル． </desc>
           <desc versionDate="2008-03-30" xml:lang="fr">titre de
-                                                  périodique</desc>
+                                                  revue</desc>
           <desc versionDate="2007-01-21" xml:lang="it">titolo di
                                                   rivista</desc>
         </valItem>
         <valItem ident="s">
           <gloss>series</gloss>
           <gloss versionDate="2007-12-20" xml:lang="ko">연간물</gloss>
-          <gloss versionDate="2007-06-12" xml:lang="fr">titre de
-                                                  collection</gloss>
+          <gloss versionDate="2007-06-12" xml:lang="fr">série</gloss>
           <gloss versionDate="2007-11-06" xml:lang="it">serie</gloss>
-          <gloss versionDate="2007-05-04" xml:lang="es">título
-                                                  de series</gloss>
-          <desc>series title </desc>
+          <gloss versionDate="2007-05-04" xml:lang="es">series</gloss>
+          <desc>the title applies to a series of otherwise distinct
+	  publications such as a collection </desc>
           <desc versionDate="2007-12-20" xml:lang="ko">연간물 제목</desc>
           <desc versionDate="2007-05-02" xml:lang="zh-TW">叢書層題名</desc>
           <desc versionDate="2008-04-06" xml:lang="es">título de
@@ -169,18 +156,7 @@ $Id$
         <valItem ident="u">
           <gloss>unpublished</gloss>
           <gloss versionDate="2007-12-20" xml:lang="ko">미간행</gloss>
-          <gloss versionDate="2007-06-12" xml:lang="fr">titre de
-                                                  document non publié (incluant des thèses
-                                                  et des mémoires s'il ne s'agit pas de
-                                                  publications éditées par un éditeur
-                                                  commercial)</gloss>
-          <gloss versionDate="2007-11-06" xml:lang="it">non
-                                                  pubblicato</gloss>
-          <gloss versionDate="2007-05-04" xml:lang="es">títulos
-                                                  de materiales inéditos (incluyendo tesis
-                                                  y tesinas, a menos que esten publicadas
-                                                  por una editorial comercial).</gloss>
-          <desc>title of unpublished material (including
+          <desc>the title applies to any unpublished material (including
                                                   theses and dissertations unless
                                                   published by a commercial press)</desc>
           <desc versionDate="2007-12-20" xml:lang="ko">미간행물(출판사에서 출판되지 않은 석박사 논문을 포함하여)의 제목</desc>
@@ -192,7 +168,7 @@ $Id$
           <desc versionDate="2008-04-05" xml:lang="ja">
                                                   非刊行物のタイトル(未刊の学位論文など)． </desc>
           <desc versionDate="2008-03-30" xml:lang="fr">titre de
-                                                  matériau non publié (thèses et
+                                                  matéria non publié (thèses et
                                                   dissertations comprises, à l'exception
                                                   de leurs éditions commerciales)</desc>
           <desc versionDate="2007-01-21" xml:lang="it">titolo di

@@ -1475,6 +1475,10 @@
     <text xml:lang="ko" lang3="kor">쪽</text>
   </entry>
   <entry>
+    <key>gathering</key>
+    <text xml:lang="en" lang3="eng">Gathering</text>
+  </entry>
+  <entry>
     <key>asfoundin</key>
     <text xml:lang="en" lang3="eng">As found in</text>
     <text xml:lang="es" lang3="spa">Tal como se encuentra en</text>
@@ -2090,5 +2094,14 @@
     <text xml:lang="zh-TW">俱乐部会员</text>
     <text xml:lang="ja" lang3="jpn">クラブのメンバー</text>
     <text xml:lang="ko" lang3="kor">클럽 회원</text>
+  </entry>
+
+  <entry>
+    <key>deprecated</key>
+    <text xml:lang="en" lang3="eng">Deprecated</text>
+  </entry>
+  <entry>
+    <key>validuntil</key>
+    <text xml:lang="en" lang3="eng">will be removed on </text>
   </entry>
 </i18n>

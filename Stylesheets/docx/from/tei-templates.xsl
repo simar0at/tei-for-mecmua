@@ -66,17 +66,15 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: parameters.xsl 9999 2012-01-02 18:43:24Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-    	simple teiHeader. For a more sophisticated header, think about overriding
-        this template
-    </desc>
+      <desc>simple teiHeader. For a more sophisticated header, think about overriding
+        this template</desc>
    </doc>
     <xsl:template name="create-tei-header">
         <teiHeader>
@@ -122,10 +120,8 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-     generates a section heading. If you need something specific, feel free
-        to overwrite this template
-    </desc>
+      <desc>generates a section heading. If you need something specific, feel free
+        to overwrite this template</desc>
    </doc>
     <xsl:template name="generate-section-heading">
         <xsl:param name="Style"/>

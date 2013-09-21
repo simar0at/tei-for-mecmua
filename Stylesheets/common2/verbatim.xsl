@@ -36,26 +36,12 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: verbatim.xsl 10365 2012-05-16 12:33:56Z rahtz $</p>
-      <p>Copyright: 2011, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:strip-space elements="teix:* rng:* xsl:* xhtml:* atom:* m:*"/>
   <xsl:param name="useNSPrefixes">true</xsl:param>
-  <xsl:param name="startComment">&lt;span class="comment"&gt;</xsl:param>
-  <xsl:param name="endComment">&lt;/span&gt;</xsl:param>
-  <xsl:param name="startElement">&lt;span class="element"&gt;</xsl:param>
-  <xsl:param name="endElement">&lt;/span&gt;</xsl:param>
-  <xsl:param name="startElementName">&lt;span class="elementname"&gt;</xsl:param>
-  <xsl:param name="endElementName">&lt;/span&gt;</xsl:param>
-  <xsl:param name="highlightStartElementName">&lt;span class="highlightelementname"&gt;</xsl:param>
-  <xsl:param name="highlightEndElementName">&lt;/span&gt;</xsl:param>
-  <xsl:param name="startAttribute">&lt;span class="attribute"&gt;</xsl:param>
-  <xsl:param name="endAttribute">&lt;/span&gt;</xsl:param>
-  <xsl:param name="startAttributeValue">&lt;span class="attributevalue"&gt;</xsl:param>
-  <xsl:param name="endAttributeValue">&lt;/span&gt;</xsl:param>
-  <xsl:param name="startNamespace">&lt;span class="namespace"&gt;</xsl:param>
-  <xsl:param name="endNamespace">&lt;/span&gt;</xsl:param>
   <xsl:param name="spaceCharacter">&#160;</xsl:param>
   <xsl:param name="showNamespaceDecls">true</xsl:param>
   <xsl:param name="forceWrap">false</xsl:param>
@@ -125,26 +111,32 @@ of this software, even if advised of the possibility of such damage.
         <xsl:call-template name="verbatim-lineBreak">
           <xsl:with-param name="id">21</xsl:with-param>
         </xsl:call-template>
-        <xsl:value-of disable-output-escaping="yes" select="$startComment"/>
-        <xsl:text>&lt;!--</xsl:text>
-        <xsl:choose>
-          <xsl:when test="$forceWrap='true'">
-            <xsl:call-template name="verbatim-reformatText">
-              <xsl:with-param name="sofar">0</xsl:with-param>
-              <xsl:with-param name="indent">
-                <xsl:text> </xsl:text>
-              </xsl:with-param>
-              <xsl:with-param name="text">
-                <xsl:value-of select="normalize-space(.)"/>
-              </xsl:with-param>
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="."/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:text>--&gt;</xsl:text>
-        <xsl:value-of disable-output-escaping="yes" select="$endComment"/>
+        <xsl:call-template name="Comment">
+	  <xsl:with-param name="content">
+	    <xsl:text>&lt;!--</xsl:text>
+	    <xsl:choose>
+	      <xsl:when test="$forceWrap='true'">
+		<xsl:call-template name="verbatim-reformatText">
+		  <xsl:with-param name="sofar">0</xsl:with-param>
+		  <xsl:with-param name="indent">
+		    <xsl:text> </xsl:text>
+		  </xsl:with-param>
+		  <xsl:with-param name="text">
+		    <xsl:value-of select="normalize-space(.)"/>
+		  </xsl:with-param>
+		</xsl:call-template>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:call-template name="verbatim-Text">
+		  <xsl:with-param name="words">
+		    <xsl:value-of select="."/>
+		  </xsl:with-param>
+		</xsl:call-template>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	    <xsl:text>--&gt;</xsl:text>
+	  </xsl:with-param>
+	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -156,6 +148,14 @@ of this software, even if advised of the possibility of such damage.
   </doc>
   <xsl:template match="text()" mode="verbatim">
     <xsl:choose>
+      <xsl:when
+	  test="ancestor::*[@xml:space][1]/@xml:space='preserve'">
+        <xsl:call-template name="verbatim-Text">
+          <xsl:with-param name="words">
+	    <xsl:value-of select="."/>
+	  </xsl:with-param>
+	</xsl:call-template>
+      </xsl:when>
       <xsl:when test="$forceWrap='true'">
         <xsl:variable name="indent">
           <xsl:for-each select="parent::*">
@@ -386,9 +386,13 @@ of this software, even if advised of the possibility of such damage.
     <xsl:choose>
       <xsl:when test="parent::xhtml:Wrapper"/>
       <!--      <xsl:when test="child::node()[last()]/self::text()[not(.='')] and child::node()[1]/self::text()[not(.='')]"/>-->
+      <xsl:when
+	  test="ancestor::*[@xml:space][1]/@xml:space='preserve'"/>
       <xsl:when test="not(parent::*)  or parent::teix:egXML">
         <xsl:choose>
-          <xsl:when test="preceding-sibling::node()[1][self::text()]      and following-sibling::node()[1][self::text()]"/>
+          <xsl:when test="preceding-sibling::node()[1][self::text()]
+			  and
+			  following-sibling::node()[1][self::text()]"/>
           <xsl:when test="preceding-sibling::*">
             <xsl:call-template name="verbatim-lineBreak">
               <xsl:with-param name="id">-1</xsl:with-param>
@@ -420,38 +424,44 @@ of this software, even if advised of the possibility of such damage.
         <xsl:call-template name="verbatim-makeIndent"/>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:value-of disable-output-escaping="yes" select="$startElement"/>
-    <xsl:text>&lt;</xsl:text>
-    <xsl:call-template name="verbatim-makeElementName">
-      <xsl:with-param name="start">true</xsl:with-param>
-      <xsl:with-param name="highlight">
-        <xsl:value-of select="$highlight"/>
-      </xsl:with-param>
-    </xsl:call-template>
-    <xsl:apply-templates select="@*" mode="verbatim"/>
-    <xsl:if test="local-name(.)='TEI' or local-name(.)='teiCorpus'">
-      <xsl:text> xmlns="http://www.tei-c.org/ns/1.0"</xsl:text>
-    </xsl:if>  
-    <xsl:if test="$showNamespaceDecls='true' or parent::teix:egXML[@rend='full']">
-      <xsl:choose>
-        <xsl:when test="not(parent::*)">
-          <xsl:call-template name="nsList"/>
-        </xsl:when>
-        <xsl:when test="parent::teix:egXML and not(preceding-sibling::*)">
-          <xsl:call-template name="nsList"/>
-        </xsl:when>
-      </xsl:choose>
-    </xsl:if>
+    <xsl:variable name="eContents">
+      <xsl:text>&lt;</xsl:text>
+      <xsl:call-template name="verbatim-makeElementName">
+	<xsl:with-param name="start">true</xsl:with-param>
+	<xsl:with-param name="highlight">
+	  <xsl:value-of select="$highlight"/>
+	</xsl:with-param>
+      </xsl:call-template>
+      <xsl:apply-templates select="@*" mode="verbatim"/>
+      <xsl:if test="(local-name(.)='TEI' and not (local-name(parent::*)='teiCorpus')) or local-name(.)='teiCorpus'">
+	<xsl:text> xmlns="http://www.tei-c.org/ns/1.0"</xsl:text>
+      </xsl:if>  
+      <xsl:if test="$showNamespaceDecls='true' or parent::teix:egXML[@rend='full']">
+	<xsl:choose>
+	  <xsl:when test="not(parent::*)">
+	    <xsl:call-template name="nsList"/>
+	  </xsl:when>
+	  <xsl:when test="parent::teix:egXML and not(preceding-sibling::*)">
+	    <xsl:call-template name="nsList"/>
+	  </xsl:when>
+	</xsl:choose>
+      </xsl:if>
+    </xsl:variable>
     <xsl:choose>
       <xsl:when test="child::node()">
-        <xsl:text>&gt;</xsl:text>
-        <xsl:value-of disable-output-escaping="yes" select="$endElement"/>
+	<xsl:call-template name="Element">
+	  <xsl:with-param name="content">
+	    <xsl:copy-of select="$eContents"/>
+	    <xsl:text>&gt;</xsl:text>
+	  </xsl:with-param>
+	</xsl:call-template>
         <xsl:apply-templates mode="verbatim">
           <xsl:with-param name="highlight">
             <xsl:value-of select="$highlight"/>
           </xsl:with-param>
         </xsl:apply-templates>
         <xsl:choose>
+	  <xsl:when test="ancestor::*[@xml:space][1]/@xml:space='preserve'"/>
           <xsl:when test="child::node()[last()]/self::text() and child::node()[1]/self::text()"/>
           <xsl:when test="not(parent::*)  or parent::teix:egXML">
             <xsl:call-template name="verbatim-lineBreak">
@@ -477,20 +487,26 @@ of this software, even if advised of the possibility of such damage.
             <xsl:call-template name="verbatim-makeIndent"/>
           </xsl:when>
         </xsl:choose>
-        <xsl:value-of disable-output-escaping="yes" select="$startElement"/>
-        <xsl:text>&lt;/</xsl:text>
-        <xsl:call-template name="verbatim-makeElementName">
-          <xsl:with-param name="start">false</xsl:with-param>
-          <xsl:with-param name="highlight">
-            <xsl:value-of select="$highlight"/>
-          </xsl:with-param>
-        </xsl:call-template>
-        <xsl:text>&gt;</xsl:text>
-        <xsl:value-of disable-output-escaping="yes" select="$endElement"/>
+	<xsl:call-template name="Element">
+	  <xsl:with-param name="content">
+	    <xsl:text>&lt;/</xsl:text>
+	    <xsl:call-template name="verbatim-makeElementName">
+	      <xsl:with-param name="start">false</xsl:with-param>
+	      <xsl:with-param name="highlight">
+		<xsl:value-of select="$highlight"/>
+	      </xsl:with-param>
+	    </xsl:call-template>
+	    <xsl:text>&gt;</xsl:text>
+	  </xsl:with-param>
+	</xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:text>/&gt;</xsl:text>
-        <xsl:value-of disable-output-escaping="yes" select="$endElement"/>
+	<xsl:call-template name="Element">
+	  <xsl:with-param name="content">
+	    <xsl:copy-of select="$eContents"/>
+	    <xsl:text>/&gt;</xsl:text>
+	  </xsl:with-param>
+	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -499,18 +515,16 @@ of this software, even if advised of the possibility of such damage.
     <xsl:param name="special"/>
     <xsl:choose>
       <xsl:when test="$special='true'">
-        <xsl:value-of disable-output-escaping="yes" select="$highlightStartElementName"/>
-        <xsl:value-of select="$name"/>
-        <xsl:value-of disable-output-escaping="yes" select="$highlightEndElementName"/>
+	<xsl:call-template name="HighlightElementName">
+	  <xsl:with-param name="content">
+	    <xsl:value-of select="$name"/>
+	  </xsl:with-param>
+	</xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$name"/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
-  <xsl:template name="verbatim-createAttribute">
-    <xsl:param name="name"/>
-    <xsl:value-of select="$name"/>
   </xsl:template>
   <xsl:template name="verbatim-makeElementName">
     <xsl:param name="start"/>
@@ -570,21 +584,26 @@ of this software, even if advised of the possibility of such damage.
         </xsl:if>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of disable-output-escaping="yes" select="$startElementName"/>
-        <xsl:call-template name="verbatim-createElement">
-          <xsl:with-param name="name" select="local-name(.)"/>
-          <xsl:with-param name="special">
-            <xsl:value-of select="$highlightMe"/>
-          </xsl:with-param>
-        </xsl:call-template>
-        <xsl:value-of disable-output-escaping="yes" select="$endElementName"/>
+	<xsl:call-template name="ElementName">
+	  <xsl:with-param name="content">
+	    <xsl:call-template name="verbatim-createElement">
+	      <xsl:with-param name="name" select="local-name(.)"/>
+	      <xsl:with-param name="special">
+		<xsl:value-of select="$highlightMe"/>
+	      </xsl:with-param>
+	    </xsl:call-template>
+	  </xsl:with-param>
+	</xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
   <xsl:template name="verbatim-makeIndent">
-    <xsl:variable name="depth" select="count(ancestor::*[not(namespace-uri()='http://www.tei-c.org/ns/1.0')])-1"/>
-    <xsl:sequence select="for $i in 1 to $depth return $spaceCharacter"/>
+    <xsl:if
+	test="not(ancestor::*[@xml:space][1]/@xml:space='preserve')">
+      <xsl:variable name="depth" select="count(ancestor::*[not(namespace-uri()='http://www.tei-c.org/ns/1.0')])-1"/>
+      <xsl:sequence select="for $i in 1 to $depth return $spaceCharacter"/>
+    </xsl:if>
   </xsl:template>
   <xsl:template match="@*" mode="verbatim">
     <xsl:variable name="L">
@@ -599,13 +618,15 @@ of this software, even if advised of the possibility of such damage.
       <xsl:call-template name="verbatim-makeIndent"/>
     </xsl:if>
     <xsl:value-of select="$spaceCharacter"/>
-    <xsl:call-template name="verbatim-createAttribute">
-      <xsl:with-param name="name" select="name()"/>
+    <xsl:call-template name="Attribute">
+      <xsl:with-param name="content" select="name()"/>
     </xsl:call-template>
     <xsl:text>="</xsl:text>
-    <xsl:value-of disable-output-escaping="yes" select="$startAttributeValue"/>
-    <xsl:apply-templates select="." mode="attributetext"/>
-    <xsl:value-of disable-output-escaping="yes" select="$endAttributeValue"/>
+    <xsl:call-template name="AttributeValue">
+      <xsl:with-param name="content">
+	<xsl:apply-templates select="." mode="attributetext"/>
+      </xsl:with-param>
+    </xsl:call-template>
     <xsl:text>"</xsl:text>
   </xsl:template>
   <xsl:template match="@*" mode="attributetext">
@@ -688,4 +709,66 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>
     </xsl:for-each>
   </xsl:function>
+
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML element in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Element">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML element name in a verbatim context</desc>
+  </doc>
+  <xsl:template name="ElementName">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML element name highlighted in a verbatim context</desc>
+  </doc>
+ <xsl:template name="HighlightElementName">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML attribute value in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="AttributeValue">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML attribute in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Attribute">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML namespace in a verbatim context</desc>
+  </doc>
+  <xsl:template name="Namespace">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>show an XML comment in a verbatim context</desc>
+  </doc>
+  <xsl:template name="Comment">
+    <xsl:param name="content"/>
+      <xsl:copy-of select="$content"/>
+  </xsl:template>
+
+
 </xsl:stylesheet>

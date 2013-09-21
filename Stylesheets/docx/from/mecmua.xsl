@@ -16,6 +16,8 @@
         </xd:desc>
     </xd:doc>
     
+    <xsl:output method="xml" indent="yes"/>
+    
     <xsl:variable name="folioDescStyle">folio</xsl:variable>
     
     <xsl:variable name="nameStyle" as="xs:string">Name</xsl:variable>

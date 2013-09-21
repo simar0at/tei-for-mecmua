@@ -50,8 +50,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: textstructure.xsl 10762 2012-08-15 09:41:31Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -482,21 +482,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:call-template name="teiEndHook"/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>Process elements front, body or back in splitting mode</desc>
-   </doc>
-  <xsl:template match="tei:front|tei:body|tei:back" mode="split">
-      <xsl:for-each select="*">
-         <xsl:choose>
-            <xsl:when test="starts-with(local-name(.),'div')">
-               <xsl:apply-templates mode="split" select="."/>
-            </xsl:when>
-            <xsl:otherwise>
-               <xsl:apply-templates select="."/>
-            </xsl:otherwise>
-         </xsl:choose>
-      </xsl:for-each>
-  </xsl:template>
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element body in inner mode</desc>
    </doc>
   <xsl:template match="tei:body" mode="inner">
@@ -524,9 +509,12 @@ of this software, even if advised of the possibility of such damage.
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <blockquote class="closer">
-	      <p>
-		<xsl:apply-templates/>
-	      </p>
+	      <xsl:call-template name="splitHTMLBlocks">
+		<xsl:with-param name="element">p</xsl:with-param>
+		<xsl:with-param name="content">
+		  <xsl:apply-templates/>
+		</xsl:with-param>
+	      </xsl:call-template>
 	    </blockquote>
 	  </xsl:otherwise>
 	</xsl:choose>
@@ -535,9 +523,9 @@ of this software, even if advised of the possibility of such damage.
       <desc>Process element dateline</desc>
    </doc>
   <xsl:template match="tei:dateline">
-      <span class="dateline">
+      <div class="dateline">
          <xsl:apply-templates/>
-      </span>
+      </div>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element divGen[@type='actions']</desc>
@@ -653,7 +641,8 @@ of this software, even if advised of the possibility of such damage.
       <!-- depending on depth and splitting level, 
 	 we may do one of two things: -->
     <xsl:choose>
-      <xsl:when test="tei:keepDivOnPage(.,$depth) or number($depth) &gt; number($splitLevel)">
+      <xsl:when test="tei:keepDivOnPage(.) or 
+		      number($depth)  &gt; number($splitLevel)">
 	<xsl:call-template name="doDivBody">
 	  <xsl:with-param name="Depth" select="$depth"/>
 	</xsl:call-template>
@@ -672,7 +661,8 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:with-param name="depth" select="$depth"/>
 	</xsl:call-template>
       </xsl:when>
-      <xsl:when test="number($depth) &lt;= number($splitLevel) and ancestor::tei:body">
+      <xsl:when test="number($depth) &lt;= number($splitLevel) and
+		      ancestor::tei:body">
 	<xsl:call-template name="makeDivPage">
 	  <xsl:with-param name="depth" select="$depth"/>
 	</xsl:call-template>
@@ -746,25 +736,9 @@ of this software, even if advised of the possibility of such damage.
    </doc>
 
   <xsl:template match="tei:opener">
-    <xsl:choose>
-      <xsl:when test="tei:signed|tei:salute">
-	<div class="opener">
-	  <xsl:apply-templates/>
-	</div>
-      </xsl:when>
-      <xsl:when test="tei:p">
-	<blockquote class="opener">
-	  <xsl:apply-templates/>
-	</blockquote>
-      </xsl:when>
-      <xsl:otherwise>
-	<blockquote class="opener">
-	  <p>
-	    <xsl:apply-templates/>
-	  </p>
-	</blockquote>
-      </xsl:otherwise>
-    </xsl:choose>
+    <div class="opener">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -874,26 +848,30 @@ of this software, even if advised of the possibility of such damage.
       </desc>
    </doc>
   <xsl:template name="crumbPath">
-      <xsl:param name="crumbRoot">/</xsl:param>
-      <div class="breadcrumb">
-         <xsl:call-template name="preBreadCrumbPath"/>
-         <ul class="breadcrumb">
-            <li class="breadcrumb-first">
-               <a class="breadcrumb" href="{$homeURL}">
-                  <xsl:value-of select="$homeLabel"/>
-               </a>
-            </li>
-            <xsl:call-template name="walkTree">
-               <xsl:with-param name="path">
-                  <xsl:value-of select="substring-after($REQUEST,$crumbRoot)"/>
-               </xsl:with-param>
-               <xsl:with-param name="whole">
-                  <xsl:value-of select="$crumbRoot"/>
-               </xsl:with-param>
-               <xsl:with-param name="class">breadcrumb</xsl:with-param>
-            </xsl:call-template>
-         </ul>
-      </div>
+    <xsl:param name="crumbRoot">/</xsl:param>
+    <xsl:param name="currentID"/>
+    <div class="breadcrumb">
+      <xsl:call-template name="preBreadCrumbPath"/>
+      <ul class="breadcrumb">
+	<li class="breadcrumb-first">
+	  <a class="breadcrumb" href="{$homeURL}">
+	    <xsl:value-of select="$homeLabel"/>
+	  </a>
+	</li>
+	<xsl:call-template name="walkTree">
+	  <xsl:with-param name="path">
+	    <xsl:value-of select="substring-after($REQUEST,$crumbRoot)"/>
+	  </xsl:with-param>
+	  <xsl:with-param name="currentID">
+	    <xsl:value-of select="$currentID"/>
+	  </xsl:with-param>	 
+	  <xsl:with-param name="whole">
+	    <xsl:value-of select="$crumbRoot"/>
+	  </xsl:with-param>
+	  <xsl:with-param name="class">breadcrumb</xsl:with-param>
+	</xsl:call-template>
+      </ul>
+    </div>
   </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
@@ -956,11 +934,7 @@ of this software, even if advised of the possibility of such damage.
 		  </xsl:call-template>
 		</xsl:for-each>
 		<xsl:if test="@xml:id">
-		  <xsl:call-template name="makeAnchor">
-		    <xsl:with-param name="name">
-		      <xsl:value-of select="@xml:id"/>
-		    </xsl:with-param>
-		   </xsl:call-template>
+		  <xsl:call-template name="makeAnchor"/>
 		</xsl:if>
 		<xsl:call-template name="header">
 		  <xsl:with-param name="display">full</xsl:with-param>
@@ -985,34 +959,21 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:otherwise>
 	  <xsl:if test="not($Depth = '')">
 	    <xsl:variable name="Heading">
-	      <xsl:element name="{if (number($Depth)+$divOffset &gt;6) then 'div'
-						       else concat('h',number($Depth) +
-						       $divOffset)}">
+	      <xsl:variable name="ename" select="if (number($Depth)+$divOffset &gt;6) then 'div'
+						       else
+						       concat('h',number($Depth)+$divOffset)">
+	      </xsl:variable>
+	      <xsl:call-template name="splitHTMLBlocks">
+		<xsl:with-param name="element" select="$ename"/>
+		<xsl:with-param name="content">
+		  <xsl:apply-templates select="tei:head"/>
+		  <xsl:call-template name="sectionHeadHook"/>
+		  <xsl:copy-of select="$headertext"/>	 
+		</xsl:with-param>
+		<xsl:with-param name="copyid">false</xsl:with-param>
+	      </xsl:call-template>
+	      </xsl:variable>
 	      <xsl:choose>
-		<xsl:when test="@rend">
-		  <xsl:call-template name="makeRendition"/>
-		</xsl:when>
-		<xsl:otherwise>
-		  <xsl:for-each select="tei:head[1]">
-		    <xsl:call-template name="makeRendition">
-		      <xsl:with-param name="default">
-			<xsl:choose>
-			  <xsl:when test="number($Depth)&gt;5">
-			    <xsl:text>div</xsl:text>
-			    <xsl:value-of select="$Depth"/>
-			  </xsl:when>
-			  <xsl:otherwise>false</xsl:otherwise>
-			</xsl:choose>
-		      </xsl:with-param>
-		    </xsl:call-template>
-		  </xsl:for-each>
-		</xsl:otherwise>
-	      </xsl:choose>
-	      <xsl:call-template name="sectionHeadHook"/>
-	      <xsl:copy-of select="$headertext"/>	 
-	      </xsl:element>     
-	    </xsl:variable>
-	    <xsl:choose>
 	      <xsl:when test="$outputTarget='html5' and number($Depth)  &lt; 1">
 		<header>
 		  <xsl:copy-of select="$Heading"/>
@@ -1117,12 +1078,6 @@ of this software, even if advised of the possibility of such damage.
      </xsl:choose>
    </xsl:template>
 
-  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>plain text version of title for div [html] </desc>
-   </doc>
-  <xsl:template name="generateDivtitle">
-      <xsl:apply-templates select="tei:head" mode="plain"/>
-  </xsl:template>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>link to level above[html] </desc>
@@ -1606,16 +1561,16 @@ of this software, even if advised of the possibility of such damage.
     <xsl:template name="groupTOC">
       <xsl:variable name="gDepth"
 		    select="count(ancestor::tei:group)"/>
+      <xsl:comment>a TOC for a group of texts (<xsl:value-of select="name()"/>)</xsl:comment>
       <ul class="toc toc_group{$gDepth}">	    	   
 	<li>
-	  <xsl:if test="not($autoHead='true') and not(tei:head or tei:body/tei:head or @n)">
+	  <xsl:if test="not($autoHead='true') and not(tei:head or tei:text/tei:body/tei:head or @n)">
 	    <xsl:attribute
 		name="class">headless</xsl:attribute>
 	  </xsl:if>
 	  <ul>
 	    <xsl:for-each select="tei:text">
-	      <li>
-		
+	      <li>		
 		<xsl:call-template name="header">
 		  <xsl:with-param name="toc">
 		    <xsl:apply-templates mode="generateLink" select="."/>
@@ -1684,6 +1639,18 @@ of this software, even if advised of the possibility of such damage.
          </ul>
       </xsl:if>
   </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[html] sections in mode for table of contents</desc>
+  </doc>
+  <xsl:template name="continuedToc">
+    <xsl:if test="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6">
+      <ul class="toc">
+        <xsl:apply-templates mode="maketoc" select="tei:div|tei:div1|tei:div2|tei:div3|tei:div4|tei:div5|tei:div6"/>
+      </ul>
+    </xsl:if>
+  </xsl:template>
+
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>
          <p>[html] </p>
@@ -1824,17 +1791,19 @@ of this software, even if advised of the possibility of such damage.
       <!-- header -->
     <div id="hdr">
          <xsl:call-template name="hdr"/>
-      </div>
+    </div>
+    <xsl:if test="not($REQUEST='')">
       <div id="accessibility">
-         <span class="tocontent">
-            <a href="{$REQUEST}?style=text">Text only</a>
-      | <a class="skiplinks" href="#rh-col" title="Go to main page content">Skip links</a>
+	<span class="tocontent">
+	  <a href="{$REQUEST}?style=text">Text only</a>
+	  | <a class="skiplinks" href="#rh-col" title="Go to main page content">Skip links</a>
          </span>
       </div>
-      <div id="hdr2">
-         <xsl:call-template name="hdr2"/>
-      </div>
-      <xsl:if test="not($contentStructure='all' or @rend='all')">
+    </xsl:if>
+    <div id="hdr2">
+      <xsl:call-template name="hdr2"/>
+    </div>
+    <xsl:if test="not($contentStructure='all' or @rend='all')">
          <div id="hdr3">
 	   <xsl:call-template name="hdr3"/>
          </div>
@@ -2239,10 +2208,20 @@ of this software, even if advised of the possibility of such damage.
                   <xsl:text>from </xsl:text>
                   <xsl:value-of select="$masterFile"/>
                </xsl:if>
-               <xsl:text> using an XSLT version </xsl:text>
-               <xsl:value-of select="system-property('xsl:version')"/> stylesheet
-	  based on <xsl:value-of select="$teixslHome"/>
-	  on <xsl:call-template name="whatsTheDate"/>
+               <xsl:text> using XSLT stylesheets </xsl:text>
+	       based on <xsl:value-of select="$teixslHome"/>
+	       on <xsl:call-template name="whatsTheDate"/>.
+	       <xsl:choose>
+		 <xsl:when test="$useFixedDate='true'">
+		   <xsl:value-of
+		       select="system-property('xsl:product-name')"/>.
+		 </xsl:when>
+		 <xsl:otherwise>
+		   <xsl:value-of
+		       select="(system-property('xsl:product-name'),system-property('xsl:product-version'))"
+		   separator=" "/>.
+		 </xsl:otherwise>
+	       </xsl:choose>
             </xsl:comment>
          </address>
       </div>
@@ -2584,6 +2563,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:param name="path"/>
       <xsl:param name="class"/>
       <xsl:param name="whole"/>
+      <xsl:param name="currentID"/>
       <xsl:choose>
          <xsl:when test="contains($path,'/')">
             <xsl:variable name="current">
@@ -2595,22 +2575,19 @@ of this software, even if advised of the possibility of such damage.
             <xsl:call-template name="aCrumb">
                <xsl:with-param name="crumbBody">
                   <xsl:choose>
-                     <xsl:when test="$rest='index.xsp' and $requestedID=''">
-                        <xsl:value-of select="$current"/>
-                     </xsl:when>
-                     <xsl:when test="$rest='index.xml' and $requestedID=''">
-                        <xsl:value-of select="$current"/>
-                     </xsl:when>
-                     <xsl:otherwise>
-                        <a class="{$class}">
-			  <xsl:attribute name="href">
-			    <xsl:value-of select="$whole"/>
-			    <xsl:value-of select="$current"/>
-			    <xsl:text>/</xsl:text>
-			  </xsl:attribute>
+		    <xsl:when test="$rest='index.xml' and   $requestedID='' and $currentID=''">
+		      <xsl:value-of select="$current"/>
+		    </xsl:when>
+		    <xsl:otherwise>
+		      <a class="{$class}">
+			<xsl:attribute name="href">
+			  <xsl:value-of select="$whole"/>
 			  <xsl:value-of select="$current"/>
-                        </a>
-                     </xsl:otherwise>
+			  <xsl:text>/</xsl:text>
+			</xsl:attribute>
+			<xsl:value-of select="$current"/>
+		      </a>
+		    </xsl:otherwise>
                   </xsl:choose>
                </xsl:with-param>
             </xsl:call-template>
@@ -2618,28 +2595,40 @@ of this software, even if advised of the possibility of such damage.
                <xsl:with-param name="class">
                   <xsl:value-of select="$class"/>
                </xsl:with-param>
+	       <xsl:with-param name="currentID">
+		 <xsl:value-of select="$currentID"/>
+	       </xsl:with-param>
                <xsl:with-param name="path" select="$rest"/>
                <xsl:with-param name="whole">
-	                 <xsl:value-of select="$whole"/>
-	                 <xsl:value-of select="$current"/>
-	                 <xsl:text>/</xsl:text>
-	              </xsl:with-param>
+		 <xsl:value-of select="$whole"/>
+		 <xsl:value-of select="$current"/>
+		 <xsl:text>/</xsl:text>
+	       </xsl:with-param>
             </xsl:call-template>
          </xsl:when>
          <xsl:otherwise>
-            <xsl:if test="not($path='index.xsp' or $path='index.xml')">
-               <xsl:call-template name="aCrumb">
-                  <xsl:with-param name="crumbBody">
-                     <a class="{$class}">
-		       <xsl:attribute name="href">
-			 <xsl:value-of select="$whole"/>
-			 <xsl:value-of select="$path"/>
-		       </xsl:attribute>
+	   <xsl:choose>
+	     <xsl:when test="not($currentID='')">
+	       <xsl:call-template name="aCrumb">
+		 <xsl:with-param name="crumbBody">
+		   <xsl:value-of select="$currentID"/>
+		 </xsl:with-param>
+	       </xsl:call-template>
+	     </xsl:when>      
+	     <xsl:when test="not($path='index.xml')">
+	       <xsl:call-template name="aCrumb">
+		 <xsl:with-param name="crumbBody">
+		   <a class="{$class}">
+		     <xsl:attribute name="href">
+		       <xsl:value-of select="$whole"/>
 		       <xsl:value-of select="$path"/>
-                     </a>
-                  </xsl:with-param>
-               </xsl:call-template>
-            </xsl:if>
+		     </xsl:attribute>
+		     <xsl:value-of select="$path"/>
+		   </a>
+		 </xsl:with-param>
+	       </xsl:call-template>
+	     </xsl:when>
+	   </xsl:choose>
          </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
@@ -2656,10 +2645,20 @@ of this software, even if advised of the possibility of such damage.
          <xsl:comment>THIS IS A GENERATED FILE. DO NOT EDIT (2)</xsl:comment>
          <head>
             <xsl:variable name="pagetitle">
-               <xsl:call-template name="generateDivtitle"/>
-            </xsl:variable>
+	      <xsl:choose>
+		<xsl:when test="tei:head">
+		  <xsl:apply-templates select="tei:head" mode="plain"/>
+		</xsl:when>
+		<xsl:when test="self::tei:text">
+		  <xsl:value-of
+		      select="tei:generateTitle(ancestor::tei:TEI)"/>
+		  <xsl:value-of select="concat('[',position(),']')"/>
+		</xsl:when>
+		<xsl:otherwise>&#160;</xsl:otherwise>
+	      </xsl:choose>
+	    </xsl:variable>
             <title>
-               <xsl:value-of select="$pagetitle"/>
+               <xsl:sequence select="$pagetitle"/>
             </title>
             <xsl:call-template name="headHook"/>
             <xsl:call-template name="metaHTML">
@@ -2703,7 +2702,7 @@ of this software, even if advised of the possibility of such damage.
 		 </xsl:element>
                </xsl:if>
                <xsl:call-template name="stdfooter"/>
-	              <xsl:call-template name="bodyEndHook"/>
+	       <xsl:call-template name="bodyEndHook"/>
             </div>
          </body>
       </html>
@@ -2758,21 +2757,22 @@ of this software, even if advised of the possibility of such damage.
    </doc>
   <xsl:template match="tei:floatingText">
       <div class="floatingText">
-	        <xsl:for-each select="tei:front">
-	           <div class="floatingText_front">
-	              <xsl:apply-templates/>
-	           </div>
-	        </xsl:for-each>
-	        <xsl:for-each select="tei:body">
-	           <div class="floatingText_body">
-	              <xsl:apply-templates/>
-	           </div>
-	        </xsl:for-each>
-	        <xsl:for-each select="tei:back">
-	           <div class="floatingText_back">
-	              <xsl:apply-templates/>
-	           </div>
-	        </xsl:for-each>
+	<xsl:for-each select="tei:front">
+	  <div class="floatingText_front">
+	    <xsl:apply-templates/>
+	  </div>
+	</xsl:for-each>
+	<xsl:for-each select="tei:body">
+	  <div class="floatingText_body">
+	    <xsl:apply-templates/>
+	  </div>
+	</xsl:for-each>
+	<xsl:for-each select="tei:back">
+	  <div class="floatingText_back">
+	    <xsl:apply-templates/>
+	  </div>
+	</xsl:for-each>
+	<xsl:call-template name="printNotes"/>
       </div>
   </xsl:template>
 

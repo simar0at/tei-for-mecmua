@@ -8,7 +8,7 @@
 		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 		xmlns:ncx="http://www.daisy.org/z3986/2005/ncx/"
                 xmlns:m="http://www.w3.org/1998/Math/MathML"
-		version="2.0" exclude-result-prefixes="iso tei teix dc html ncx m"
+		version="2.0" exclude-result-prefixes="#all"
 		xpath-default-namespace="http://www.tei-c.org/ns/1.0"
 >
   <xsl:import href="../html5/tei.xsl"/>
@@ -16,6 +16,7 @@
   <xsl:import href="../epub/epub-preflight.xsl"/>
   <xsl:output method="xml" encoding="utf-8" doctype-system="" indent="no"/>
   <xsl:key match="tei:graphic[not(ancestor::teix:egXML)]" use="1" name="G"/>
+  <xsl:key match="tei:media[not(ancestor::teix:egXML)]" use="1" name="G"/>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
     <desc>
       <p>
@@ -56,8 +57,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: tei-to-epub3.xsl 10899 2012-10-03 15:20:16Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
   <xsl:param name="opfPackageVersion">3.0</xsl:param>
@@ -247,7 +248,9 @@ height: </xsl:text>
         <xsl:if test="$verbose='true'">
           <xsl:message>write file META-INF/container.xml</xsl:message>
         </xsl:if>
-        <xsl:result-document method="xml" href="{concat($directory,'/META-INF/container.xml')}">
+        <xsl:result-document doctype-public=""
+			     doctype-system="" 
+			     method="xml" href="{concat($directory,'/META-INF/container.xml')}">
           <container xmlns="urn:oasis:names:tc:opendocument:xmlns:container" version="1.0">
             <rootfiles>
               <rootfile full-path="OPS/package.opf" media-type="application/oebps-package+xml"/>
@@ -258,7 +261,7 @@ height: </xsl:text>
           <xsl:message>write file OPS/package.opf</xsl:message>
         </xsl:if>
 	<xsl:variable name="A">
-	  <xsl:call-template name="generateAuthor"/>
+	  <xsl:sequence select="tei:generateAuthor(.)"/>
 	</xsl:variable>
 	<xsl:variable name="printA">
 	  <xsl:analyze-string select="$A" regex="([^,]+), ([^,]+), (.+)">
@@ -545,7 +548,7 @@ height: </xsl:text>
 		</xsl:when>
                 <xsl:otherwise>
                   <xsl:for-each select="$TOC/html:TOC/html:ul/html:li">
-                    <xsl:if test="html:a">
+		    <xsl:if test="html:a and not (starts-with(html:a[1]/@href,'#'))">
                       <reference type="text" href="{html:a[1]/@href}">
                         <xsl:attribute name="title">
                           <xsl:value-of select="normalize-space(html:a[1])"/>
@@ -583,7 +586,6 @@ height: </xsl:text>
               <xsl:call-template name="metaHTML">
                 <xsl:with-param name="title">Title page</xsl:with-param>
               </xsl:call-template>
-              <meta name="calibre:cover" content="true"/>
               <title>Title page</title>
               <style type="text/css" title="override_css">
 		@page {padding: 0pt; margin:0pt}
@@ -594,7 +596,7 @@ height: </xsl:text>
               <xsl:choose>
                 <xsl:when test="$coverImageInside=''">
                   <div class="EpubCoverPage">
-                    <xsl:call-template name="generateTitle"/>
+                    <xsl:sequence select="tei:generateTitle(.)"/>
                   </div>
                 </xsl:when>
                 <xsl:otherwise>
@@ -689,7 +691,7 @@ height: </xsl:text>
             </head>
             <docTitle>
               <text>
-                <xsl:call-template name="generateSimpleTitle"/>
+                <xsl:sequence select="tei:generateSimpleTitle(.)"/>
               </text>
             </docTitle>
             <navMap>
@@ -768,7 +770,7 @@ height: </xsl:text>
           <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
             <head>
               <title>
-                <xsl:call-template name="generateSimpleTitle"/>
+                <xsl:sequence select="tei:generateSimpleTitle(.)"/>
               </title>
                 <xsl:call-template name="linkCSS">
 		  <xsl:with-param
@@ -838,7 +840,7 @@ height: </xsl:text>
 	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	      xmlns:opf="http://www.idpf.org/2007/opf">
       <dc:title id="title">
-	<xsl:call-template name="generateSimpleTitle"/>
+	<xsl:sequence select="tei:generateSimpleTitle(.)"/>
       </dc:title>
       <xsl:choose>
 	<xsl:when test="$filePerPage='true'">
@@ -862,7 +864,7 @@ height: </xsl:text>
       </meta>
       <meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
       <dc:language>
-	<xsl:call-template name="generateLanguage"/>
+      <xsl:call-template name="generateLanguage"/>
       </dc:language>
       <xsl:call-template name="generateSubject"/>
       <dc:identifier id="pub-id">
@@ -870,12 +872,12 @@ height: </xsl:text>
       </dc:identifier>
       <meta refines="#pub-id" property="identifier-type" scheme="onix:codelist5">15</meta>
       <dc:description>
-	<xsl:call-template name="generateSimpleTitle"/>
+	<xsl:sequence select="tei:generateSimpleTitle(.)"/>
 	<xsl:text> / </xsl:text>
 	<xsl:value-of select="$author"/>
       </dc:description>
       <dc:publisher>
-	<xsl:call-template name="generatePublisher"/>
+	<xsl:sequence select="tei:generatePublisher(.,$publisher)"/>
       </dc:publisher>
       <xsl:for-each select="tei:teiHeader/tei:profileDesc/tei:creation/tei:date[@notAfter]">
 	<dc:date id="creation">
@@ -888,19 +890,17 @@ height: </xsl:text>
 	</dc:date>
       </xsl:for-each>
       <dc:date id="epub-publication">
-	<xsl:call-template name="generateDate"/>
+	<xsl:sequence select="tei:generateDate(.)"/>
       </dc:date>
       <dc:rights>
 	<xsl:call-template name="generateLicence"/>
       </dc:rights>
       <xsl:if test="not($coverImageOutside='')">
 	<meta name="cover" content="cover-image"/>
-      </xsl:if>
-        <xsl:variable name="now" select="tei:whatsTheDate()"/>
-	
-	<meta property="dcterms:modified">
-	  <xsl:value-of select="$now"/>
-	</meta>
+      </xsl:if>	
+      <meta property="dcterms:modified">
+	<xsl:sequence select="tei:whatsTheDate()"/>
+      </meta>
     </metadata>
   </xsl:template>
 

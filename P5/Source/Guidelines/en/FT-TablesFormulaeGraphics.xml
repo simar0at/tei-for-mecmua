@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="FT" n="22"><head>Tables, Formulæ, Graphics and Notated Music</head>
 <p>Many documents, both historical and contemporary, include not only
 text, but also graphics, artwork, and other images.  Although some
@@ -222,8 +226,13 @@ has been explicitly recorded:
        <cell> <num>1,003,464</num> </cell></row>
 </table></egXML>
  </p>
-<p>The <att>role</att> attribute provides a slightly less verbose
-means of conveying the same information:
+
+<p>The use of semantically marked elements within a
+<gi>cell</gi> enables the encoder to convey something about the
+nature and significance of the information, rather than merely
+suggesting how to display it in rows and columns.</p>
+
+<p>Alternatively, the <att>role</att> attribute might be used  to convey such information:
 <egXML xmlns="http://www.tei-c.org/ns/Examples"><table>
   <head>US State populations, 1990</head>
   <row><cell role="statename">Wyoming </cell>
@@ -237,11 +246,6 @@ means of conveying the same information:
 </table></egXML>
 </p>
 
-
-<p>The use of semantically marked elements within a
-<gi>cell</gi> enables the encoder to convey something about the
-nature and significance of the information, rather than merely
-suggesting how to display it in rows and columns.</p>
   
   <p>The content of table elements is not limited to <gi>head</gi> and <gi>row</gi>.
   Milestone elements such as <gi>cb</gi> and <gi>lb</gi> allow breaks to be signalled
@@ -278,7 +282,7 @@ suggesting how to display it in rows and columns.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/table.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/table.xml"/>
 
 
 
@@ -291,7 +295,7 @@ suggesting how to display it in rows and columns.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/row.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/row.xml"/>
 
 
 
@@ -304,7 +308,7 @@ suggesting how to display it in rows and columns.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/cell.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/cell.xml"/>
 
 
 
@@ -587,7 +591,7 @@ which is readily calculated.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/formula.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/formula.xml"/>
 
 
 
@@ -745,7 +749,7 @@ which is readily calculated.</p>
     </egXML>
 <specGrp xml:id="DFTNTM">    
     
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/notatedMusic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/notatedMusic.xml"/>
 
 </specGrp>
 
@@ -926,7 +930,7 @@ examples are provided in chapter <ptr target="#SA"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/figure.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/figure.xml"/>
 
 
 
@@ -939,7 +943,7 @@ examples are provided in chapter <ptr target="#SA"/>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/figDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/figDesc.xml"/>
 
 
 
@@ -1010,7 +1014,7 @@ at the end of the <gi>encodingDesc</gi> element described in section
 <ptr target="#HD5"/>.</note></p>
 <p>Methods of aligning images and text are discussed in <ptr target="#PHFAX"/>.</p>
 <p>The chromatic values of  an image may be rendered in many different ways. In monochrome images every displayed point is either black or
-white. In <term>gray-scale</term> images, each point is rendered in
+white. In <term>grayscale</term> images, each point is rendered in
 some shade of gray, the number of shades varying from system to system.
 In true polychrome images, points are rendered in different hues,
 again with varying limitations affecting the number of distinct shades
@@ -1092,7 +1096,7 @@ drawback to TIFF is that it actually is a wrapper for several formats,
 and some TIFF-supporting software does not support all variants.  TIFF
 files may use LZW, CCITT Group 4, or PackBits compression methods, or
 may use no compression at all.  Also, TIFF files may be monochrome,
-greyscale, or polychromatic.  All such options should be specified in prose at
+grayscale, or polychromatic.  All such options should be specified in prose at
 the end of the <gi>encodingDesc</gi> section of the TEI header for any
 document including TIFF images.  TIFF is owned by Aldus Corporation.
 Documentation on TIFF is available from them at Craigcook Castle,
@@ -1157,7 +1161,7 @@ Headstone Drive, Harrow, Middlesex HA1 4TY, UK.
     synchronized multimedia presentation. It provides multimedia
     authors with easily-defined basic timing relationships, fine-tuned
     synchronization, spatial layout, direct inclusion of non-text and
-    non-image media objects, hyperlink support for time-based media,
+    non-image media objects, hyperlink support for time-based media, and
     adaptiveness to varying user and system characteristics.  SMIL 1.0
 		(<ptr target="http://www.w3.org/TR/REC-smil/"/>) became a
     W3C Recommendation on June 15, 1998, and was further developed

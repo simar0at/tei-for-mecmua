@@ -54,8 +54,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: odd2lite.xsl 10712 2012-08-05 21:56:57Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <xsl:param name="summaryDoc">false</xsl:param>
@@ -79,18 +79,6 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="divName">ab</xsl:param>
   <xsl:param name="segName">seg</xsl:param>
   <xsl:param name="outputNS">http://www.tei-c.org/ns/1.0</xsl:param>
-  <xsl:param name="startAttribute"/>
-  <xsl:param name="endAttribute"/>
-  <xsl:param name="startAttributeValue"/>
-  <xsl:param name="endAttributeValue"/>
-  <xsl:param name="startComment"/>
-  <xsl:param name="endComment"/>
-  <xsl:param name="startElement"/>
-  <xsl:param name="endElement"/>
-  <xsl:param name="startElementName"/>
-  <xsl:param name="endElementName"/>
-  <xsl:param name="startNamespace"/>
-  <xsl:param name="endNamespace"/>
   <xsl:param name="spaceCharacter">&#160;</xsl:param>
   <xsl:param name="oddmode">tei</xsl:param>
   <xsl:param name="displayMode">rnc</xsl:param>
@@ -286,6 +274,7 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   <xsl:template match="tei:remarks/tei:p">
       <xsl:apply-templates/>
+      <xsl:if test="preceding-sibling::tei:p"><lb/></xsl:if>
   </xsl:template>
   <xsl:template match="tei:exemplum/tei:p">
       <xsl:apply-templates/>
@@ -436,11 +425,22 @@ of this software, even if advised of the possibility of such damage.
 
   <xsl:template match="tei:schemaSpec">
       <xsl:if test="$verbose='true'">
-         <xsl:message>Processing schemaSpec <xsl:value-of select="@ident"/>, summaryDoc=<xsl:value-of select="$summaryDoc"/>
+         <xsl:message>Processing schemaSpec <xsl:value-of
+	 select="@ident"/>, summaryDoc=<xsl:value-of
+	 select="$summaryDoc"/>
          </xsl:message>
       </xsl:if>
       <xsl:choose>
          <xsl:when test="$summaryDoc='true'">
+	   <div>
+	     <head>Schema <xsl:value-of select="@ident"/>: Added components</head>
+	     <xsl:for-each select="tei:classSpec[@rend ='add']  
+				   | tei:macroSpec[@rend ='add']  
+				   | tei:elementSpec[@rend ='add']">
+	       <xsl:sort select="@ident"/>
+	       <xsl:apply-templates mode="weave" select="."/>
+	     </xsl:for-each>
+	   </div>
 	   <div>
 	     <head>Schema <xsl:value-of select="@ident"/>: changed components</head>
 	     <xsl:for-each select="tei:classSpec[@mode or @rend='change']  
@@ -575,5 +575,6 @@ of this software, even if advised of the possibility of such damage.
       <xsl:apply-templates/>
     </p>
   </xsl:template>
+
 
 </xsl:stylesheet>

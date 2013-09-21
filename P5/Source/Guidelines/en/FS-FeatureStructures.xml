@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="FS" n="16"><head>Feature Structures</head>
 <!-- this para is repeated at the start of ISO std -->
 <p>A <term>feature structure</term> is a general purpose data
@@ -260,14 +264,16 @@ representation in XML further in section <ptr target="#FSFL"/> below.
 <p>However, the most general method of attempting to ensure that only legal
 combinations of feature names and values are used is to provide a
 <term>feature-system declaration</term> discussed in <ptr target="#FD"/>.</p>
-<p>Whether at the level of feature-system declarations, feature- and feature-value
-libraries, or individual features, it is possible to align both feature names and their
-values with standardized external data category repositories such as ISOcat. <note
-place="bottom">See section <ptr
-target="#DIMVLV"/> for more discussion of the need and rationale for ISOcat
-references.</note> The both the feature "part of speech" and its value "#commonNoun" are
-aligned with the respective definitions provided by <ref target="#ISO-12620">ISO
-DCR (Data Category Registry)</ref>, as implemented by ISOcat. 
+<p>Whether at the level of feature-system declarations, feature- and
+feature-value libraries, or individual features, it is possible to
+align both feature names and their values with standardized external
+data category repositories such as ISOcat. <note place="bottom">See
+section <ptr target="#DIMVLV"/> for more discussion of the need and
+rationale for ISOcat references.</note> In the following example, both
+the feature <val>part_of_speech</val> and its value
+<val>#commonNoun</val> are aligned with the respective definitions
+provided by <ref target="#ISO-12620">ISO DCR (Data Category
+Registry)</ref>, as implemented by ISOcat.
 <egXML xmlns="http://www.tei-c.org/ns/Examples" valid="feasible">
 <fs xmlns:dcr="http://www.isocat.org/ns/dcr">
 <!--...-->
@@ -1141,7 +1147,7 @@ each within the header attached to the document as follows:
 <egXML xmlns="http://www.tei-c.org/ns/Examples" valid="feasible">
    <TEI>
    <teiHeader>
-      <fileDesc> <!-- doc1 --> </fileDesc>
+      <fileDesc> <!-- example --> </fileDesc>
       <encodingDesc>
            <!-- ... -->
            <fsdDecl>
@@ -1177,7 +1183,7 @@ corresponding declarations, we will need to provide a means of
 pointing to them from this second document.  The easiest<note place="bottom">Ways of pointing to components of a TEI document without
 using an XML identifier are discussed in <ptr target="#SAUR"/></note>
 way of accomplishing this is to add an XML identifier to each
-<gi>fsDecl</gi> element in <ident type="file">doc1.xml</ident>:
+<gi>fsDecl</gi> element in <ident type="file">example.xml</ident>:
 <egXML xmlns="http://www.tei-c.org/ns/Examples" valid="feasible">
            <!-- ... -->
            <fsdDecl>
@@ -1203,8 +1209,8 @@ pointers to the <gi>fsDecl</gi> elements in the first:
       <encodingDesc>
            <!-- ... -->
            <fsdDecl>
-           <fsdLink type="gpsg" target="doc1.xml#GPSG"/>
-           <fsdLink type="lexx" target="doc1.xml#GPSG"/>
+           <fsdLink type="gpsg" target="example.xml#GPSG"/>
+           <fsdLink type="lexx" target="example.xml#GPSG"/>
 	   </fsdDecl>
            <!-- ... -->
       </encodingDesc>
@@ -1219,10 +1225,10 @@ pointers to the <gi>fsDecl</gi> elements in the first:
    </TEI></egXML>
 Note that in <ident type="file">doc2.xml</ident> there is no requirement for the local
 name for a given type of feature structures to be the same as that
-used by <ident type="file">doc1.xml</ident>. We assume in this encoding that the type
+used by <ident type="file">example.xml</ident>. We assume in this encoding that the type
 called <name>lexx</name> in <ident type="file">doc2.xml</ident> is declared as
 having identical constraints and other properties to those declared
-for the type called <name>lex</name> in <ident type="file">doc1.xml</ident>.</p>
+for the type called <name>lex</name> in <ident type="file">example.xml</ident>.</p>
 
 <p>A <gi>fsdDecl</gi> may be given, as above, within the
 encoding description of the <gi>teiHeader</gi> element of a TEI
@@ -1319,7 +1325,7 @@ e.g. <tag>fsDecl type="Sub" baseTypes="Super1 Super2"</tag>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fsdDecl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fsdDecl.xml"/>
 
 
 
@@ -1334,7 +1340,7 @@ e.g. <tag>fsDecl type="Sub" baseTypes="Super1 Super2"</tag>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fsDecl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fsDecl.xml"/>
 
 
 
@@ -1349,7 +1355,7 @@ e.g. <tag>fsDecl type="Sub" baseTypes="Super1 Super2"</tag>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fsDescr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fsDescr.xml"/>
 
 
 
@@ -1364,7 +1370,7 @@ e.g. <tag>fsDecl type="Sub" baseTypes="Super1 Super2"</tag>.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fsdLink.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fsdLink.xml"/>
 
 
 
@@ -1604,7 +1610,7 @@ single feature values, including  feature structures, alternations
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fDecl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fDecl.xml"/>
 
 
 
@@ -1619,7 +1625,7 @@ single feature values, including  feature structures, alternations
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fDescr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fDescr.xml"/>
 
 
 
@@ -1634,7 +1640,7 @@ single feature values, including  feature structures, alternations
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vRange.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vRange.xml"/>
 
 
 
@@ -1649,7 +1655,7 @@ single feature values, including  feature structures, alternations
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vDefault.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vDefault.xml"/>
 
 
 
@@ -1664,7 +1670,7 @@ single feature values, including  feature structures, alternations
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/if.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/if.xml"/>
 
 
 
@@ -1679,7 +1685,7 @@ single feature values, including  feature structures, alternations
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/then.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/then.xml"/>
 
 
 
@@ -1777,7 +1783,7 @@ readability.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fsConstraints.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fsConstraints.xml"/>
 
 
 
@@ -1792,7 +1798,7 @@ readability.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/cond.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/cond.xml"/>
 
 
 
@@ -1807,7 +1813,7 @@ readability.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/bicond.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/bicond.xml"/>
 
 
 
@@ -1822,7 +1828,7 @@ readability.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/iff.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/iff.xml"/>
 
 
 
@@ -1966,7 +1972,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fs.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fs.xml"/>
 
 
 
@@ -1982,7 +1988,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/f.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/f.xml"/>
 
 
 
@@ -1998,7 +2004,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/binary.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/binary.xml"/>
 
 
 
@@ -2014,7 +2020,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/symbol.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/symbol.xml"/>
 
 
 
@@ -2030,7 +2036,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/numeric.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/numeric.xml"/>
 
 
 
@@ -2046,7 +2052,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/string.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/string.xml"/>
 
 
 
@@ -2062,7 +2068,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vLabel.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vLabel.xml"/>
 
 
 
@@ -2078,7 +2084,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vColl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vColl.xml"/>
 
 
 
@@ -2094,7 +2100,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/default.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/default.xml"/>
 
 
 
@@ -2110,7 +2116,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vAlt.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vAlt.xml"/>
 
 
 
@@ -2126,7 +2132,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vNot.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vNot.xml"/>
 
 
 
@@ -2142,7 +2148,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/vMerge.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/vMerge.xml"/>
 
 
 
@@ -2158,7 +2164,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fLib.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fLib.xml"/>
 
 
 
@@ -2174,7 +2180,7 @@ The selection and combination of modules to form a TEI schema is described in
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fvLib.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fvLib.xml"/>
 
 
 

@@ -48,8 +48,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: header.xsl 10640 2012-07-03 17:55:03Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -89,7 +89,7 @@ of this software, even if advised of the possibility of such damage.
 	     <xsl:variable name="pointer">
 	       <xsl:value-of select="."/>
 	     </xsl:variable>
-	     <xsl:for-each select="key('RENDITION',$pointer)[1]">
+	     <xsl:for-each select="key('EXTRENDITION',$pointer)[1]">
 	       <xsl:for-each select="document($pointer)">
 		 <xsl:text>&#10;.</xsl:text>
 		 <xsl:value-of select="@xml:id"/>

@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="HD" n="5">
 <head>The TEI Header</head>
 <p>This chapter addresses the problems of describing an encoded work so
@@ -162,7 +166,7 @@ to a corpus or a single text.  A corpus may thus take the form:
 	<!-- teiCorpus! -sb, 2001-11-02                                  -->
 </p><specGrp xml:id="D221B">
 <!--&model.teiHeaderPart;-->
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/teiHeader.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/teiHeader.xml"/>
 <specGrpRef target="#D222"/>
 <specGrpRef target="#D223"/>
 <specGrpRef target="#D225"/>
@@ -292,7 +296,7 @@ Of these  elements, only the <gi>titleStmt</gi>,
 <gi>publicationStmt</gi>, and <gi>sourceDesc</gi> are required; the
 others  may be omitted unless considered useful.
 </p>
-<specGrp xml:id="D222" n="The file description"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/fileDesc.xml"/>
+<specGrp xml:id="D222" n="The file description"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/fileDesc.xml"/>
 <specGrpRef target="#D2221"/>
 <specGrpRef target="#D2222"/>
 <specGrpRef target="#D2223"/>
@@ -411,7 +415,7 @@ personal names.</note>
   <respStmt><name>Jan Hajic</name>
             <resp>conversion to TEI-conformant markup</resp></respStmt>
 </titleStmt></egXML>
-</p><specGrp xml:id="D2221" n="The title statement"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/titleStmt.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sponsor.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/funder.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/principal.xml"/>
+</p><specGrp xml:id="D2221" n="The title statement"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/titleStmt.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sponsor.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/funder.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/principal.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="HD22"><head>The Edition Statement</head>
@@ -497,7 +501,7 @@ see section <ptr target="#COBI"/>.</p>
 </respStmt>
 </editionStmt></egXML>
 </p>
-<specGrp xml:id="D2222" n="The edition statement"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/editionStmt.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/edition.xml"/>
+<specGrp xml:id="D2222" n="The edition statement"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/editionStmt.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/edition.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="HD23"><head>Type and Extent of File</head>
@@ -544,25 +548,32 @@ words or sentences, citations, paragraphs)</item>
 blocks, disks, tapes)</item></list>
 </p>
 <p>The use of standard abbreviations for units of quantity is
-recommended where applicable, here as elsewhere (see <ptr target="http://physics.nist.gov/cuu/Units/binary.html"/>).</p>
+recommended where applicable, here as elsewhere (see <ptr
+target="http://physics.nist.gov/cuu/Units/binary.html"/>). </p>
 <p>Examples:
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><extent>between 1 16-bit MB and 2 16-bit MB</extent>
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><extent>between 1 and
+2 Mb</extent>
 <extent>4.2 MiB</extent>
 <extent>4532 bytes</extent>
 <extent>3200 sentences</extent>
-<extent>5 90 mm High Density Diskettes</extent></egXML>
-<!--
-** These examples and the list above have *got* to be fixed, and TEI
-** should advise use of standard symbols ala NIST
-** (http://physics.nist.gov/cuu/Units/binary.html)
-** Syd, 2001-12-23** to me, 4.2 MiB looks exceedingly silly.  I think we could very well do with 4.2 MB CW 2007-08-10 added reference to SI units and changed some (LB 23 aug 07 ) -->
-	<!-- removed file attrib since it was confusing dtdGen LB, 20 may 01 -->
+<extent>Five 90 mm High Density Diskettes</extent></egXML>
 </p>
-<specGrp xml:id="D2223" n="The extent statement"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/extent.xml"/>
+<p>The <gi>measure</gi> element and its attributes may be used to supply
+machine-tractable or normalised versions of the size or sizes given,
+as in the following example:
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><extent>
+<measure unit="MiB" quantity="4.2">About four megabytes</measure>
+<measure unit="pages" quantity="245">245 pages of source
+material</measure>
+</extent></egXML>
+Note that when more than one <gi>measure</gi> is supplied in a single
+<gi>extent</gi>, the implication is that all the measurements apply to
+the whole resource.</p>
+<specGrp xml:id="D2223" n="The extent statement"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/extent.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="HD24"><head>Publication, Distribution,
-Licencing, etc.</head>
+Licensing, etc.</head>
 <p>The <gi>publicationStmt</gi> element is the fourth component of the
 <gi>fileDesc</gi> element and is mandatory.
 <specList><specDesc key="publicationStmt"/></specList>
@@ -632,7 +643,7 @@ in a schema.
     </licence></availability></publicationStmt></egXML>
   
 </p>
-<specGrp xml:id="D2224" n="The publication statement"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/publicationStmt.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/distributor.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/authority.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/idno.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/availability.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/licence.xml"/>
+<specGrp xml:id="D2224" n="The publication statement"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/publicationStmt.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/distributor.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/authority.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/idno.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/availability.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/licence.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="HD26"><head>The Series Statement</head>
@@ -671,7 +682,7 @@ example.
     <biblScope unit="vol">1.2</biblScope>
     <idno type="ISSN">0 345 6789</idno>
 </seriesStmt></egXML>
-<specGrp xml:id="D2225" n="The series statement"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/seriesStmt.xml"/>
+<specGrp xml:id="D2225" n="The series statement"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/seriesStmt.xml"/>
 </specGrp></p></div>
 <div type="div3" xml:id="HD27"><head>The Notes Statement</head>
 <p>The <gi>notesStmt</gi> element is the sixth component of the
@@ -765,7 +776,7 @@ available. For example, the notes above might be encoded as follows:
           <resp>OCR scanning</resp>
 	</respStmt>
       </titleStmt></egXML>
-<specGrp xml:id="D2226" n="The notes statement"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/notesStmt.xml"/>
+<specGrp xml:id="D2226" n="The notes statement"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/notesStmt.xml"/>
 </specGrp>
 </p>
 </div>
@@ -877,8 +888,8 @@ following elements to hold such information:
 </specList>
 </p><specGrp xml:id="D223" n="The source description">
 <!--&model.sourceDescPart;-->
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sourceDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/biblFull.xml"/><specGrpRef target="#D2231"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sourceDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/biblFull.xml"/><specGrpRef target="#D2231"/>
 </specGrp></div>
 <div type="div3" xml:id="HD31"><head>Computer Files Derived from Other Computer Files
  </head>
@@ -945,7 +956,7 @@ in the appropriate section below. Other modules have the ability to
 extend this class; examples are noted in section <ptr target="#HDENCOTH"/>
 </p>
 <specGrp xml:id="D225">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/encodingDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/encodingDesc.xml"/>
 <specGrpRef target="#D2251"/>
 <specGrpRef target="#D2252"/>
 <specGrpRef target="#D2253"/>
@@ -972,7 +983,7 @@ rather than another.
         Claremont Shakespeare Clinic, June 1990.</p>
    </projectDesc>
 </encodingDesc></egXML></p><specGrp xml:id="D2251" n="The project description">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/projectDesc.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/projectDesc.xml"/></specGrp>
 </div><div type="div3" xml:id="HD52"><head>The Sampling Declaration</head>
 <p>The <gi>samplingDecl</gi> element may be used to describe, in
 prose, the rationale and methods used in selecting texts, or parts of
@@ -1009,7 +1020,7 @@ the text) to which the sampling declaration applies may be used to
 supply a cross-reference to it, as further described in section <ptr target="#CCAS"/>.	
 </p>
 <specGrp xml:id="D2252" n="The sampling       declaration">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/samplingDecl.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/samplingDecl.xml"/></specGrp>
 </div><div type="div3" xml:id="HD53">
 <head>The Editorial Practices Declaration</head>
 <p>The <gi>editorialDecl</gi> element is used to
@@ -1061,7 +1072,8 @@ marks distinguished?  How?  Are quotation marks retained as content in
 the text or replaced by markup?  Are there any special conventions
 regarding for example the use of single or double quotation marks when
 nested?  Is the file consistent in its practice or has this not been
-checked?</p></item><label><gi>hyphenation</gi></label>
+checked? See section <ptr target="#COHQQ"/> for discussion of ways in which
+quotation marks may be encoded.</p></item><label><gi>hyphenation</gi></label>
 <item>
 <specList>
 <specDesc key="hyphenation" atts="eol"/>
@@ -1072,7 +1084,9 @@ Does the encoding distinguish <soCalled>soft</soCalled> and
 What principle has been adopted with respect to end-of-line hyphenation
 where source lineation has not been retained?  Have soft hyphens been
 silently removed, and if so what is the effect on lineation and
-pagination?</p></item><label><gi>segmentation</gi></label>
+pagination? See section <ptr target="#COPU-2"/> for discussion of ways in which
+hyphenation  may be encoded.
+</p></item><label><gi>segmentation</gi></label>
 <item>
 <specList>
 <specDesc key="segmentation"/>
@@ -1142,7 +1156,7 @@ the text in the first instance. Some simple examples follow:
 </editorialDecl></egXML>
 </p><specGrp xml:id="D2253" n="The editorial practices declaration">
 <!--&model.editorialDeclPart;-->
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/editorialDecl.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/correction.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/normalization.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/quotation.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/hyphenation.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/segmentation.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/stdVals.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/interpretation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/editorialDecl.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/correction.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/normalization.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/quotation.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/hyphenation.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/segmentation.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/stdVals.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/interpretation.xml"/>
 </specGrp>
 <p>An editorial practices declaration which applies to more than one text
 or division of a text need not be repeated in the header of each such
@@ -1167,7 +1181,8 @@ specified elsewhere in the header.</item>
 of an element.</item></list></p>
 <p>This information is conveyed by the following elements:
 <specList>
-<specDesc key="rendition" atts="scheme"/>
+<specDesc key="rendition"/>
+  <specDesc key="att.styleDef" atts="scheme schemeVersion"/>
 <specDesc key="namespace"/>
 <specDesc key="tagUsage"/>
 </specList></p>
@@ -1224,7 +1239,7 @@ elements are to use a different set, identified as <val>style2</val>:
    <tagUsage gi="hi" render="#style2"> ... </tagUsage>
    </namespace>
 </tagsDecl><!-- elsewhere in the document -->
-<p>This paragraph,mostly rendered in style1, contains a few words
+<p>This paragraph, mostly rendered in style1, contains a few words
 <hi>rendered in style2</hi></p>
 <p rendition="#style2">This paragraph is all rendered in style2</p>
 <p>This is back to style1</p>
@@ -1233,7 +1248,7 @@ elements are to use a different set, identified as <val>style2</val>:
 <p>As noted above, the content of a <gi>rendition</gi> element may
 describe the appearance of the source material using prose, a
 project-defined formal language, or any standard languages such as the
-Cascading Stylesheet Language (<ptr target="#CSS1"/>) or the XML
+Cascading Stylesheet Language (<ptr target="#CSS21"/>) or the XML
 vocabulary for specifying formatting semantics which forms a part of
 the W3C's Extensible Stylesheet Language (<ptr target="#XSL11"/>). A
 <gi>styleDefDecl</gi> element (<ptr target="#HD57-1a"/>) may be
@@ -1249,14 +1264,14 @@ the information on a titlepage are presented in <ptr target="#DSTITL"/>; here we
 some of the visual information as well, using the <gi>rendition</gi>
 element and its corresponding attributes.</p>
 <p>First we define a rendition element for each aspect of the source
-page rendition that we wish to retain. Details of CSS are given in <ptr target="#CSS1"/>; we use it here simply to  provide a vocabulary with
+page rendition that we wish to retain. Details of CSS are given in <ptr target="#CSS21"/>; we use it here simply to  provide a vocabulary with
 which to describe such aspects
 as font size and style, letter and line spacing, colour, etc. Note
 that the purpose of this encoding is to describe the original, rather
 than specify how it should be reproduced, although the two are
 obviously closely linked.
   <egXML xml:lang="und"
-	 xmlns="http://www.tei-c.org/ns/Examples"><styleDefDecl scheme="css"/>
+	 xmlns="http://www.tei-c.org/ns/Examples"><styleDefDecl scheme="css" schemeVersion="2.1"/>
 <!-- ... -->
 <tagsDecl>
   <rendition xml:id="center" >text-align: center;</rendition>
@@ -1302,8 +1317,7 @@ pseudo-element defines styling to be applied  to the first letter in the targete
 element, while the <code>before</code> and
 <code>after</code> pseudo-elements can be used often in conjunction with the
 "content" property to add additional characters which need to be added
-before or after the
-element content to
+before or after the element content to
 make it more closely resemble the appearance of the source.</p>
 <p>For example, assuming that a text has been encoded using the <gi>q</gi>
 element to enclose passages in quotation marks, but the quotation
@@ -1367,12 +1381,12 @@ recommended practice is to provide <gi>namespace</gi> and
 namespace used in the associated text. If, in addition, counts are
 specified by the <att>occurs</att> attributes, these must correspond
 with the number of such elements present in the document.<specGrp xml:id="DHD57" n="Tag usage and rendition declarations">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/tagsDecl.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/tagUsage.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/namespace.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude"
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/tagsDecl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/tagUsage.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/namespace.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude"
 	 href="../../Specs/rendition.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude"
+<include xmlns="http://www.w3.org/2001/XInclude"
 	 href="../../Specs/styleDefDecl.xml"/>
 
 </specGrp></p></div>
@@ -1396,10 +1410,10 @@ following values:
 <label>css</label><item>Cascading Stylesheet Language</item>
 <label>xslfo</label><item>Extensible Stylesheet Language Formatting Objects</item>
 <label>other</label><item>A user-defined formal description
-language</item> </list>. The content of this element, if any, may
-supply additional information, such as the specific version of CSS
-used.
-</p>
+language</item> </list>. The <att>schemeVersion</att> attribute may be 
+  used to supply the precise version of the style definition language
+  used, and the content of this element, if any, may
+supply additional information.</p>
 <p>When the <att>style</att> attribute is used, its value must always
 be expressed using whichever default style definition language is in
 force. If more than one occurrence of the <gi>styleDefDecl</gi> is
@@ -1549,15 +1563,15 @@ correspondingly greater burden of verification and accuracy on the
 encoder.</p>
  <specGrp xml:id="D2254" n="The reference scheme declaration">
   
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/refsDecl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/refsDecl.xml"/>
   
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/cRefPattern.xml"/>
-   <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.patternReplacement.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/cRefPattern.xml"/>
+   <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.patternReplacement.xml"/>
    
-   <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/prefixDef.xml"/>   
-   <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listPrefixDef.xml"/> 
+   <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/prefixDef.xml"/>   
+   <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listPrefixDef.xml"/> 
   
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/refState.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/refState.xml"/>
 </specGrp>
 <p>A reference system declaration which applies to more than one text or
 division of a text need not be repeated in the header of each such text.
@@ -1660,7 +1674,7 @@ more than one language, as in the following example:
 
 
 </p>
-<specGrp xml:id="D2255" n="The classification declaration"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/classDecl.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/taxonomy.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/category.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/catDesc.xml"/>
+<specGrp xml:id="D2255" n="The classification declaration"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/classDecl.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/taxonomy.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/category.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/catDesc.xml"/>
 </specGrp>
 </div>
   
@@ -1676,7 +1690,7 @@ more than one language, as in the following example:
     longitude according to the 1984 World Geodetic System (WGS84).
     <specList><specDesc key="geoDecl" atts="datum"/></specList>
     </p>
-    <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/geoDecl.xml"/>
+    <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/geoDecl.xml"/>
   </div>
   <div type="div3" xml:id="HDSCHSPEC">
     
@@ -1754,7 +1768,7 @@ elements.     <egXML xmlns="http://www.tei-c.org/ns/Examples">
 	</application>
       </appInfo>
     </egXML>
-   </p><specGrp xml:id="DHDAPP"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/appInfo.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/application.xml"/><!--&model.applicationLike;-->
+   </p><specGrp xml:id="DHDAPP"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/appInfo.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/application.xml"/><!--&model.applicationLike;-->
 </specGrp></div><div xml:id="HDENCOTH"><head>Module-Specific Declarations</head>
 <p>The elements discussed so far are available to any
 schema. When the schema in use includes some of the more specialized
@@ -1804,7 +1818,7 @@ default members of this class are the following :
   <specDesc key="calendarDesc"/>
 </specList>
 These elements are further described in the remainder of this section.</p>
-<p>When the the <ident type="module">corpus</ident>
+<p>When the <ident type="module">corpus</ident>
 module described in chapter <ptr target="#CC"/> is included in a
 schema, three further elements become available  within the
 <gi>profileDesc</gi> element:
@@ -1834,7 +1848,7 @@ when one or other of the <ident type="module">transcr</ident> or <ident type="mo
 schema. See further the discussion at <ptr target="#PHDH"/>.  </p>
 <specGrp xml:id="D224" n="The profile description">
 <!--&model.profileDescPart;-->
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/profileDesc.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/handNote.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/profileDesc.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/handNote.xml"/>
   <specGrpRef target="#D224C"/>
   <specGrpRef target="#D2241"/>
   <specGrpRef target="#D2243"/>
@@ -1856,7 +1870,7 @@ location for this information:
    <rs type="city">Taos, New Mexico</rs>
 </creation></egXML></p>
 <specGrp xml:id="D224C" n="Creation">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/creation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/creation.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="HD41"><head>Language Usage</head>
@@ -1888,7 +1902,7 @@ document. </p>
    <language ident="en-GB" usage="20">British English</language>
 </langUsage></egXML>
 </p>
-<specGrp xml:id="D2241" n="Language usage"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/langUsage.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/language.xml"/>
+<specGrp xml:id="D2241" n="Language usage"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/langUsage.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/language.xml"/>
 </specGrp></div>
 <div type="div3" xml:id="HD43"><head>The Text Classification</head>
 <p>The 
@@ -2020,8 +2034,8 @@ Here the same text has been classified as of categories <val>b.a4</val> and
 <val>b.d2</val> within the Brown classification scheme (presumed to be
 available from <ident type="file">http://www.example.com/browncorpus</ident>), and as of category
 <q>A45</q> within the SUC classification scheme documented at the URL given.</p>
-<p>In general, it is a matter of style whether to use a single <gi>catRef</gi> with mulitple 
-identifers in the value of <att>target</att> or multiple <gi>catRef</gi> elements, each with 
+<p>In general, it is a matter of style whether to use a single <gi>catRef</gi> with multiple 
+identifiers in the value of <att>target</att> or multiple <gi>catRef</gi> elements, each with 
 a single identifier in the value of <att>target</att>. However, note that maintenance of a TEI 
 document with a large number of values within a single <att>target</att> can be cumbersome.</p>
 <p>The distinction between the <gi>catRef</gi> and <gi>classCode</gi>
@@ -2031,7 +2045,7 @@ latter case, however, the values use any
 externally-defined scheme, and therefore may be taken from
  a more open-ended descriptive
 classification system.</p>
-<specGrp xml:id="D2243" n="Text Classification"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/textClass.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/keywords.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/classCode.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/catRef.xml"/>
+<specGrp xml:id="D2243" n="Text Classification"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/textClass.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/keywords.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/classCode.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/catRef.xml"/>
 </specGrp></div>
 <div type="div3" xml:id="HD44"><head>Calendar Description</head>
   <p>The <gi>calendarDesc</gi> element is used within the
@@ -2065,7 +2079,7 @@ expressed using that calendar system:
 <p>Captain's log <date calendar="#Stardate">stardate 23.9 rounded off
     to the nearest decimal point</date>...</p></egXML>
 </p>
-  <specGrp xml:id="D2242" n="Calendar Description"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/calendarDesc.xml"/><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/calendar.xml"/>
+  <specGrp xml:id="D2242" n="Calendar Description"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/calendarDesc.xml"/><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/calendar.xml"/>
   </specGrp>
 </div>
   </div>
@@ -2155,8 +2169,8 @@ using the
 
 
 <specGrp xml:id="D226" n="The Revision Description">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/revisionDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/change.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/revisionDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/change.xml"/>
 </specGrp>
 </div><div type="div2" xml:id="HD7"><head>Minimal and Recommended Headers
  </head>
@@ -2421,22 +2435,20 @@ Guidelines may lead to divergences between practice in using the TEI
 file description and the comparatively strict recommendations of
 AACR2 and other national cataloguing codes. Such divergences as the following may preclude automatic
 generation of catalogue records from TEI headers: <list>
+<item>The TEI Guidelines do not require that text be transcribed from the <soCalled>chief source of information</soCalled> using normalized capitalization and punctuation <!--as in a national cataloguing code-->.</item>
 <item>The TEI title statement may not categorize constituent titles in
 the same way as prescribed by a national cataloguing code.</item>
 <item>The TEI title statement contains authors, editors, and other
 responsible parties in separate elements, with names which may not
 have been normalized; it does not necessarily contain a single
-statement of responsibility from the chief source of
-information.</item> 
-<!--item>The components of the TEI file
-description do not prescribe that data be transcribed according to
-AACR2 rules.</item--><!-- removed as already stated above--> 
-<item>There is no place in a TEI header to
+statement of responsibility <!--from the chief source of
+information-->.</item> 
+<item>There is no specific place in a TEI header to
   specify the <term>main entry</term> or <term>added entries</term> 
   (<gloss>name or title headings under which a catalogue record is 
     filed</gloss>) for the catalogue record.</item>
 <item>The TEI header does not require use of a particular vocabulary
-for subject headings or mandate the use of subject headings.</item>
+for subject headings nor require the use of subject headings.</item>
 </list></p>
 </div>
 

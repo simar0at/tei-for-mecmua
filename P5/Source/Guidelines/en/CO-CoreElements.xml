@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="CO" n="6">
 <head>Elements Available in All TEI Documents</head>
 <p>This chapter describes elements which may appear in any kind of text
@@ -167,7 +171,7 @@ thou?</q><q>I'm the Mischievous Mosquito.</q>
  </p>
 
 <specGrp xml:id="DCOPA" n="Paragraph">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/p.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/p.xml"/>
 </specGrp>
 
 </div>
@@ -326,7 +330,7 @@ investigate a diachronic English corpus for occurrences of "tea-pot"
 and "teapot", to find evidence for the point at which this compound
 becomes lexicalized. Any case where the word is hyphenated across a
 linebreak, like this: <eg xml:space="preserve"><![CDATA[tea-
-pot]]></eg> is entirely ambigous: there is simply no way of deciding
+pot]]></eg> is entirely ambiguous: there is simply no way of deciding
 which of the two spellings was intended.
 </p>
 
@@ -365,7 +369,7 @@ boundaries are not explicitly marked (for example using the
 will rely on character class information to determine where they are
 to be found: some punctuation characters are considered to be
 word-breaking, while others are not. In XML, the newline character in
-text data is a kind of white space, and is therefore word
+text data is a kind of whitespace, and is therefore word
 breaking.  However, it is generally unsafe to assume that whitespace
 adjacent to markup tags will always be preserved, and it is decidedly
 unsafe to assume that markup tags themselves are equivalent to
@@ -374,7 +378,7 @@ whitespace. </p>
 <p> The <gi>lb</gi>, <gi>pb</gi>, and <gi>cb</gi> elements are notable
 exceptions to this general rule, since their function is precisely to
 represent (or replace) line, page, or column breaks, which, as noted
-above, are generally considered to be equivalent to white space. These
+above, are generally considered to be equivalent to whitespace. These
 elements provide a more reliable way of preserving the lineation,
 pagination, etc of a source document, since the encoder should not
 assume that (untagged) line breaks etc. in an XML source file will
@@ -382,7 +386,7 @@ necessarily be preserved. </p>
 
 <p>To control the intended tokenization, the encoder may use the
 <att>break</att> attribute on such elements to indicate whether or not
-the element is to be regarded as equivalent to white space. This
+the element is to be regarded as equivalent to whitespace. This
 attribute can take the values <val>yes</val> or <val>no</val> to
 indicate whether or not the element corresponds with a token
 boundary. The value <val>maybe</val> is also available, for cases
@@ -580,7 +584,7 @@ therefore, it is recommended practice to supply a default value for
 as further discussed in section <ptr target="#STGAla"/></p>
 
 <specGrp xml:id="DCOHQ" n="Highlighted phrases">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/foreign.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/foreign.xml"/>
 <specGrpRef target="#DCOHQ1"/><specGrpRef target="#DCOHQ3"/><specGrpRef target="#DCOHQQ"/><specGrpRef target="#DCOHQU"/></specGrp>
  </div>
 <div type="div4" xml:id="COHQHE"><head>Emphatic Words and Phrases</head>
@@ -675,8 +679,8 @@ a means of indicating that the narrator is distancing himself from
 this usage.
  </p>
 <specGrp xml:id="DCOHQ1">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/emph.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/hi.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/emph.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/hi.xml"/>
 </specGrp>
 </div>
 <div type="div4" xml:id="COHQHD"><head>Other Linguistically Distinct Material</head>
@@ -731,7 +735,7 @@ element <gi>note</gi> described in section <ptr target="#CONO"/>, or the
 <gi>span</gi> element described in section <ptr target="#AISP"/>.
  </p>
 <specGrp xml:id="DCOHQ3">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/distinct.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/distinct.xml"/>
 </specGrp>
 </div></div>
  <div type="div3" xml:id="COHQQ"><head>Quotation</head>
@@ -845,7 +849,7 @@ attribute values supplied.
  and nature may be described using some appropriate set of conventions
  in the <att>rend</att> attribute. These conventions may be entirely
  idiosyncratic, and hence not necessarily useful for interchange, as
- in the following example :
+ in the following example:
 
  <egXML xmlns="http://www.tei-c.org/ns/Examples"
  source="#DSHD-eg-30"><said rend="pre(‘) post(’)">Who-e debel
@@ -1033,13 +1037,13 @@ overshadows the historical content</quote>.</egXML>
  </p>
  <specGrp xml:id="DCOHQQ" n="Quotation">
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/said.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/quote.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/q.xml"/>
-   <include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.source.xml"/>   
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/cit.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/mentioned.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/soCalled.xml"/> </specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/said.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/quote.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/q.xml"/>
+   <include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.source.xml"/>   
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/cit.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/mentioned.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/soCalled.xml"/> </specGrp>
 </div>
 <div type="div3" xml:id="COHQU"><head>Terms, Glosses, Equivalents, and Descriptions</head>
 <p>This section describes a set of textual elements which are
@@ -1102,8 +1106,6 @@ standard. The attributes <att>key</att> and <att>ref</att> discussed
 in section <ptr target="#CONARS"/> below are available on the
 <gi>term</gi> element for this purpose.
 </p>
-<!-- example needed here -->
-
 <p>Another group of elements is used to supply different kinds of names
 for objects described by the TEI. Examples of this are documentation
 of elements, attributes, classes (and also attribute values where
@@ -1114,119 +1116,13 @@ appropriate), and description of glyphs.
 <specDesc key="equiv" atts="uri filter name"/>
 </specList>
 Along with the <gi>gloss</gi> element mentioned above, these elements
-constitute the <ident type="class">model.glossLike</ident> class.</p>
+constitute the <ident type="class">model.glossLike</ident> class. They
+are described in more detail in <ptr target="#TDcrystalsCEdc"/>.</p>
 
-<p>The <gi>gloss</gi> element may be used to
-provide  a brief explanation for the name of the object if this is not
-self-explanatory. For example, the specification for the element 
-<gi>ab</gi> used to mark arbitrary blocks of text begins as follows:
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><elementSpec module="linking" ident="ab">
-  <gloss>anonymous block</gloss>
-<!--... -->
-</elementSpec></egXML>
-A <gi>gloss</gi> 
-may also be supplied for an attribute name or an
-attribute value in similar circumstances:
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><valList type="open">
-<valItem ident="susp">
-<gloss>suspension</gloss>
-<desc>the abbreviation provides the first letter(s) 
-of the word or phrase, omitting the remainder.</desc>
-</valItem>
-<valItem ident="contr">
-<gloss>contraction</gloss>
-<desc>the abbreviation omits some letter(s) in the middle.</desc>
-</valItem>
-<!--...-->
-</valList></egXML>
-Note that this is quite distinct from the use of the <gi>desc</gi>
-element, which contains a full description of the intended semantics
-for the object.
-</p>
-
-<p>The <gi>equiv</gi> element is used to document equivalencies
-between the concept represented by this object and the same concept as
-described in other schemes or ontologies. The <att>uri</att> attribute
-is used to supply a pointer to some location where such external
-concepts are defined. For example, to indicate that the TEI
-<gi>death</gi> element corresponds to the concept defined by the CIDOC
-CRM category E69, the declaration for the former might begin as
-follows:
-<egXML xmlns="http://www.tei-c.org/ns/Examples">
-<elementSpec module="namesdates" ident="death">
-<equiv name="E69" uri="http://cidoc.ics.forth.gr/"/>
-<desc><!--... --></desc>
-</elementSpec>
-</egXML>
-</p>
-<p>The <gi>equiv</gi> element may also be used to map newly-defined
-elements onto existing constructs in the TEI, using the
-<att>filter</att> and <att>name</att> attributes to point to an
-implementation of the mapping. This is useful when a TEI customization
-(see <ptr target="#MD"/>) defines <soCalled>shortcuts</soCalled> for
-convenience of data entry or markup readability.  For example, suppose
-that in some TEI customization an element <gi scheme="imaginary">bo</gi> has been
-defined which is 
-conceptually equivalent to the standard markup construct <tag>hi
-rend='bold'</tag>. The following declarations would additionally
-indicate that instances of the
-<gi scheme="imaginary">bo</gi> element can be converted to canonical TEI by obtaining a
-filter from the URI specified, and running the procedure
-with the name  <ident>bold</ident>. The <att>mimeType</att> attribute
-specifies the language (in this case XSL) in which the filter is
-written:
-<egXML xmlns="http://www.tei-c.org/ns/Examples">
-<elementSpec ident="bo" ns="http://www.example.com/ns/notTEI">
-   <equiv filter="http://www.example.com/equiv-filter.xsl" mimeType="text/xsl" name="bold"/>
-   <gloss>bold</gloss>
-   <desc>contains a sequence of characters rendered in a bold face.</desc>
-   <!-- ... -->
-</elementSpec>
-</egXML></p>
-
-<p>The <gi>altIdent</gi> element is used to provide an alternative name
-for an object, for example using a different
-natural language. Thus, the following might be used to indicate
-that the <gi>abbr</gi> element should be identified using the German
-word <foreign>Abkürzung</foreign>:
-<egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="de"><elementSpec ident="abbr" mode="change">
-    <altIdent xml:lang="de">Abkürzung</altIdent>
-<!--...--></elementSpec></egXML>
-In the same way, the following specification for the
-<gi>graphic</gi> element indicates that the attribute
-<att>url</att> may also be referred to using the alternate
-identifier <ident>href</ident>:
-<egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="und"><elementSpec ident="graphic" mode="change">
-    <attList>
-      <attDef mode="change" ident="url">
-	<altIdent>href</altIdent>
-      </attDef>
-<!-- .... -->
-    </attList>
-</elementSpec>
-</egXML>
-</p><p>By default, the <gi>altIdent</gi> of a component is
-identical to the value of its <att>ident</att> attribute. </p>
-
-<p>The contents of the <gi>desc</gi> element provide a brief
-characterization of the intended function of the object
-being documented in a form that permits its quotation out of
-context, as in the following example:
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><elementSpec module="core" ident="foreign">
-<!--... -->
-<desc>identifies a word or phrase as belonging to some language other
-than that of the surrounding text. </desc>
-<!--... -->
-</elementSpec></egXML>
-By convention, a <gi>desc</gi> element begins with a verb such as
-<mentioned>contains</mentioned>, 
-<mentioned>indicates</mentioned>, 
-<mentioned>specifies</mentioned>, etc. and contains a single
-clause. </p>
 <specGrp xml:id="DCOHQU">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/desc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gloss.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/term.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/desc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gloss.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/term.xml"/></specGrp>
 </div>
 <div type="div3" xml:id="COHQHEG"><head>Some Further Examples</head>
 <p>As a simple example of the elements discussed here, consider the
@@ -1321,7 +1217,7 @@ methods described in chapter <ptr target="#SA"/>. The examples given
 here illustrate only simple cases of editorial intervention; in
 particular, they permit economical encoding of a simple set of
 alternative readings of a short span of text. To encode multiple views
-of large or heterogenous spans of text, the mechanisms described in
+of large or heterogeneous spans of text, the mechanisms described in
 chapter <ptr target="#SA"/> should be used. To encode multiple
 witnesses of a particular text, a similar mechanism designed
 specifically for critical editions is described in chapter <ptr target="#TC"/>.</p>
@@ -1429,7 +1325,7 @@ the emendation, this might be done as follows:
 <!-- within the header for this document ... -->
 <respStmt>
 <resp>editor</resp>
-<name xml:id="msm">C.M. Sperberg McQueen</name>
+<name xml:id="msm">C.M. Sperberg-McQueen</name>
 </respStmt>
 </egXML>Here the <att>resp</att> attribute
 has been used to indicate responsibility for the correction. Its value (<val>#msm</val>) is an example of the <term>pointer</term> values discussed
@@ -1440,7 +1336,7 @@ has been used to indicate responsibility for the correction. Its value (<val>#ms
   included), or one of the bibliographic elements described in <ptr target="#COBI"/>, if the correction has been taken from some other
   source. The <att>resp</att> attribute is
   available for all elements which are members of the <ident type="class">att.responsibility</ident> class. The same
-  class makes available a  <att>cert</att> attribute,which may be used
+  class makes available a  <att>cert</att> attribute, which may be used
   to indicate the degree of editorial
 confidence in a particular correction, as in the following example:
 <egXML xmlns="http://www.tei-c.org/ns/Examples" source="#COEDCOR-eg-64">An <choice><corr cert="high">Autumn</corr><sic>Antony</sic></choice> it was,
@@ -1462,9 +1358,9 @@ interventions of this kind are all provided by the module described in
 chapter <ptr target="#PH"/>. 
 </p>
 <specGrp xml:id="DCOEDC" n="Editorial tags for correction">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sic.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/corr.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/choice.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/corr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/choice.xml"/>
 </specGrp>
 </div><div type="div3" xml:id="COEDREG"><head>Regularization and
 Normalization</head> <p>When the source text makes extensive use of
@@ -1516,8 +1412,8 @@ there <choice><orig>canot</orig><reg>cannot</reg></choice> be a greater
 responsible for the regularization. 
 </p>
 <specGrp xml:id="DCOEDR" n="Editorial tags for regularization">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/reg.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/orig.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/reg.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/orig.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="COEDADD"><head>Additions, Deletions, and Omissions</head>
@@ -1634,10 +1530,10 @@ the transcriber or editor, this may be indicated by use of the
 </p>
 <specGrp xml:id="DCOEDA" n="Other editorial tags">
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gap.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/add.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/del.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/unclear.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gap.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/add.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/del.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/unclear.xml"/></specGrp>
 </div></div>
 <div type="div2" xml:id="CONA"><head>Names, Numbers, Dates, Abbreviations, and Addresses</head>
 
@@ -1810,8 +1706,8 @@ used.
  </p>
 
 <specGrp xml:id="DCONA" n="Proper Names">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/name.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/rs.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/name.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/rs.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="CONAAD"><head>Addresses</head>
@@ -1890,6 +1786,13 @@ and is therefore unconstrained:
    <street>via Marsala 24</street>
 </address></egXML>
  </p>
+  
+  <p>A telephone number (normally outside of the <gi>address</gi> element) might be tagged with an
+    <gi>addrLine</gi> and <gi>ref</gi>, with the number itself appearing in the <code>tel:</code> namespace:
+  <egXML xmlns="http://www.tei-c.org/ns/Examples">
+    <addrLine><ref target="tel:+1-201-555-0123">(201) 555 0123</ref></addrLine>
+  </egXML></p>
+  
 <p>For further discussion of ways of regularizing the names of places,
 see section <ptr target="#CONA"/>. A full postal address may also include
 the name of the addressee, tagged as above using the general purpose
@@ -1905,12 +1808,12 @@ example might then be encoded as follows:
    <postCode>OX2 6RB</postCode>
    <country>United Kingdom</country>
 </address></egXML>
-</p><specGrp xml:id="DCOAD" n="Addresses and their components"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/email.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/address.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/addrLine.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/street.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/postCode.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/postBox.xml"/>
+</p><specGrp xml:id="DCOAD" n="Addresses and their components"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/email.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/address.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/addrLine.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/street.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/postCode.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/postBox.xml"/>
 </specGrp>
 
 </div>
@@ -2037,10 +1940,10 @@ avoid the need to repeat all the normalizing attributes:
 <!-- better example needed -->
 </p>
 <specGrp xml:id="DCONU" n="Numbers and measures">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/num.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/measure.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/num.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/measure.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/measureGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/measureGrp.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="CONADA"><head>Dates and Times</head>
@@ -2097,7 +2000,7 @@ and of the University the Eighty-Sixth.</date></egXML>
 </p>
 <p>The <att>when</att> attribute always supplies a normalized
 representation of the date given as content of the <gi>date</gi>
-element. The format used should be a valid W3C schema datatype.<note place="bottom">The datatypes are taken from the W3C Recommendation <title>XML Schema Part 2: Datatypes Second Edition</title>. 
+element. The format used should be a valid W3C schema datatype.<note place="bottom">The datatypes are taken from the W3C Recommendation <title ref="#XSD2">XML Schema Part 2: Datatypes Second Edition</title>. 
 The permitted datatypes are:
 <list type="simple">
 <item><ref target="http://www.w3.org/TR/xmlschema-2/#date">date</ref></item>
@@ -2149,8 +2052,8 @@ it should specify the equivalent date in the Gregorian calendar. </p>
 <!-- example needed -->
 
 <specGrp xml:id="DCODA" n="Dates and times">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/date.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/time.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/date.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/time.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="CONAAB"><head>Abbreviations and Their Expansions</head>
@@ -2204,8 +2107,8 @@ additional elements made available for the purpose by the <ident type="module">t
 
 <specGrp xml:id="DCOAB" n="Abbreviations">
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/abbr.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/expan.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/abbr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/expan.xml"/></specGrp>
 </div></div>
 <div type="div2" xml:id="COXR"><head>Simple Links and Cross-References</head>
 
@@ -2248,7 +2151,7 @@ be encoded, but it is simply required to mark the phrase as a
 cross-reference, the <gi>ref</gi> element may be used without a
 <att>target</att> attribute.</p>
 <p>For an introduction to the use of links in general, see <ptr
-target="#SA"/>. The complete XPointer specification is managed bythe W3C<note place="foot"><ptr target="http://www.w3.org/TR/xptr-framework/"/>, <ptr target="http://www.w3.org/TR/xptr-element/"/>, <ptr target="http://www.w3.org/TR/xptr-xmlns/"/>, and <ptr target="http://www.w3.org/TR/xptr-xpointer/#xpointer(id('chum'))"/></note>; for a discussion of
+target="#SA"/>. The complete XPointer specification is managed by the W3C<note place="foot"><ptr target="http://www.w3.org/TR/xptr-framework/"/>, <ptr target="http://www.w3.org/TR/xptr-element/"/>, <ptr target="http://www.w3.org/TR/xptr-xmlns/"/>, and <ptr target="http://www.w3.org/TR/xptr-xpointer/#xpointer(id('chum'))"/></note>; for a discussion of
 TEI schemes for XPointer, see <ptr target="#SATS"/>.</p>
 <p>
 <specList><specDesc key="ptr" /><specDesc key="ref"/></specList>
@@ -2367,11 +2270,11 @@ points to an external resource available on the network, the <att>mimeType</att>
  may be used to specify the mime type of that resource; this may be important 
  for to enable appropriate processing. For example:
     <egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="en">
-      <p>The current version of the TEI Guidelines source code is available in the TEI Sourceforge Repository; <ref target="http://tei.svn.sourceforge.net/viewvc/tei/trunk/P5/Source/guidelines-en.xml" mimeType="application/tei+xml">guidelines-en.xml</ref> is the root document used to create the English version of the Guidelines.</p>
+      <p>The current version of the TEI Guidelines source code is available in the TEI Sourceforge Repository; <ref target="http://sourceforge.net/p/tei/code/HEAD/tree/trunk/P5/Source/guidelines-en.xml" mimeType="application/tei+xml">guidelines-en.xml</ref> is the root document used to create the English version of the Guidelines.</p>
     </egXML>
   </p><specGrp xml:id="DCOXR" >
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/ptr.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/ref.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/ptr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/ref.xml"/>
 </specGrp>
 
 </div>
@@ -2553,12 +2456,12 @@ glossary list contains two items, each of which is itself a simple list:
 way.
  </p>
 <specGrp xml:id="DCOLI" n="Lists and List Items">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/list.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/item.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/label.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/head.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/headLabel.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/headItem.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/list.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/item.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/label.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/head.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/headLabel.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/headItem.xml"/>
 </specGrp>
 </div>
 <div type="div2" xml:id="CONO"><head>Notes, Annotation, and Indexing</head>
@@ -2606,7 +2509,8 @@ applied not to a point but to a span of text,  not itself represented
 as a TEI element, the
 <att>target</att> attribute may use an appropriate pointer
 expression, for example using the <ident>range()</ident> function
-to specify the span of attachment. For further discussion of pointing
+to specify the span of attachment.</p>
+<p>For further discussion of pointing
 to points and spans in the text, see section <ptr target="#COXR"/>.</p>
 <p>In the following example, the <att>type</att> attribute is used to
 categorise the note as a gloss:
@@ -2800,9 +2704,9 @@ an  <gi>term</gi> elements contained by an
   <term>Lemmatization, Arabic</term>
 </index>and are beginning to build parsers.</p></egXML>
  </p>
-<p>The effect of this will be to generate an index entry for the term
-<q>Lemmatization</q>,
-referencing the location of the original <gi>index</gi> element. </p>
+<p>The effect of this is to document an index entry for the term
+<q>Lemmatization, Arabic</q>,
+which when processed could reference the location of the original <gi>index</gi> element. </p>
 <p>If the subject of Arabic lemmatization is treated at length
 in a text, then the index entry generated may need to reference a
 sequence of locations (e.g. page numbers). In such a case it will be necessary to identify the end of the relevant
@@ -2837,7 +2741,7 @@ generation of an index in a desired form or sequence.</p>
 <p>Sometimes, for example when
 index terms are taken from a different language or consist of
 mathematical formulae or other expressions, even a
-normalized form of an index term may be insufficent for an application to
+normalized form of an index term may be insufficient for an application to
 order it exactly as desired. The <att>sortKey</att> attribute may be
 used to address this problem, as in the following example:
 <egXML xmlns="http://www.tei-c.org/ns/Examples"><p>The @ operator 
@@ -2903,7 +2807,7 @@ To generate such an entry, the body of the text might include, at page
     <term>how cause of mel.</term>
     </index>
 </index>
-</egXML>. Similary,  page 601 of the body text would include
+</egXML>. Similarly,  page 601 of the body text would include
 an <gi>index</gi> element like the following:
     <egXML xmlns="http://www.tei-c.org/ns/Examples"><index>
     <term>Women</term>
@@ -2976,13 +2880,13 @@ containing some text such as <q>see Text Encoding Initiative</q>. Such
 internal cross-references must be added as part of the post-editing
 phase for an auto-generated index.</p>
 <specGrp xml:id="DCONO" n="Annotation">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/note.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/index.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/note.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/index.xml"/>
 </specGrp>	
 </div>
 </div>
 </div>
-<div type="div2" xml:id="COGR"><head>Graphics and other non-textual components</head>
+<div type="div2" xml:id="COGR"><head>Graphics and Other Non-textual Components</head>
 <p>Graphics, such as illustrations or diagrams, appear in many
 different kinds of text, and often with different purposes. Audio or video
 clips may also appear. In some
@@ -3050,7 +2954,7 @@ found in the source text may be recovered from the URL
 through my first, second, third, and
 fourth volumes.   -- In the fifth volume
 I have been very good,   -- the precise
-line I have described in it being this :     
+line I have described in it being this:     
 <graphic url="zigzag2.png" mimeType="image/png"/>      
 By which it appears, that except at the
 curve, marked A. where I took a trip
@@ -3078,9 +2982,9 @@ component within a single work, for example, maps as opposed to
 illustrations. It also provides the ability to associate an image with
 additional information such as a heading or a description.</p>
 <specGrp xml:id="DCOGR" n="Graphic containers">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/media.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/graphic.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/binaryObject.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/media.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/graphic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/binaryObject.xml"/></specGrp>
 
 
 
@@ -3475,7 +3379,7 @@ using structural elements such as <gi>sp</gi>, perhaps in order to
 avoid a clash of hierarchies.</p>
 <!-- example to be supplied by DS -->
 <p>As noted in <ptr target="#COPU-2"/> above, milestone elements such
-as <gi>lb</gi> or <gi>pb</gi> represent white space and are therefore
+as <gi>lb</gi> or <gi>pb</gi> represent whitespace and are therefore
 by default assumed to occur between orthographic tokens in the text, where
 these are not otherwise indicated.  By default it is reasonable to assume that
 words are not broken across page or line boundaries, and that
@@ -3497,11 +3401,11 @@ or may not choose to record the fact, either explicitly using an
 appropriate Unicode character, or descriptively for example by means
 of the <att>rend</att> attribute; see further <ptr target="#COPU-2"/>.</p>
 <specGrp xml:id="DCORSM" n="Milestone tags">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/milestone.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gb.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pb.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lb.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/cb.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/milestone.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gb.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pb.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lb.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/cb.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="CORS6"><head>Declaring Reference Systems</head>
@@ -3687,7 +3591,7 @@ TEI header. Both are based on the International Standard for Bibliographic
 Description (ISBD), which forms the basis of several national standards for bibliographic
 citations. The order of child elements in both
 <gi>biblFull</gi> and <gi>fileDesc</gi>  corresponds to the order
-of bibliographic desription <soCalled>areas</soCalled> in ISBD with two
+of bibliographic description <soCalled>areas</soCalled> in ISBD with two
 minor exceptions. First, the <gi>extent</gi> element, corresponding to the <term>physical
 description area</term> in ISBD, appears just after the <term>publication,
 production, distribution, etc. area</term> in ISBD, not before it as in
@@ -3708,7 +3612,7 @@ the ISBD statement of responsibility.
 
 
 
-<div type="div3" xml:id="COBITY"><head>Elements of Bibliographic References</head>
+<div type="div3" xml:id="COBITY"><head>Methods of Encoding Bibliographic References and Lists of References</head>
 <p>
 The members of the <ident type="class">model.biblLike</ident> class
 all share a number of possible component sub-elements.  For the
@@ -3810,7 +3714,7 @@ require that a <gi>listBibl</gi> contain only one kind of bibliographic
 element, though the following example combines both fully structured
 <gi>biblStruct</gi> and informal <gi>bibl</gi> elements:
 
-<egXML xmlns="http://www.tei-c.org/ns/Examples"><listBibl>
+<egXML xmlns="http://www.tei-c.org/ns/Examples" xml:space='preserve'><listBibl>
    <head>Bibliography</head>
    <biblStruct xml:id="NELSON80">
       <analytic>
@@ -3846,17 +3750,26 @@ element, though the following example combines both fully structured
           <title level="m">Literary Machines</title>.</note>
    </biblStruct>   
 
-<bibl xml:id="NELSON88">Ted Nelson:  <title>Literary Machines</title>
-       (privately published, 1987)</bibl>   
-<bibl xml:id="BAXTER88">    
-      <author>Baxter, Glen</author>
-      <title>Glen Baxter His Life: the years of struggle</title>
-       London: Thames and Hudson, 1988.
-   </bibl>
+  <bibl xml:id="NELSON88"><author><persName><forename>Ted</forename>
+<surname>Nelson</surname></persName></author>: 
+<title level="u">Literary Machines</title> (privately published, 
+<date when="1987">1987</date>).</bibl>
+  
+  <bibl xml:id="BAXTER88"><author><persName><surname>Baxter</surname>, 
+<forename>Glen</forename></persName></author>:
+<title level="m">Glen Baxter His Life: the years of struggle</title> 
+<pubPlace>London</pubPlace>: <publisher>Thames and Hudson</publisher>, 
+<date when="1988">1988</date>.</bibl>
 </listBibl></egXML>
+  
+  This example also demonstrates the way that bibliographical markup of 
+  authors, titles, dates etc. can be handled differently in 
+  <gi>biblStruct</gi>s and <gi>bibl</gi>s. In the two <gi>bibl</gi> 
+  items, the key information is marked up, but it is presented in an 
+  order which makes it suitable for direct rendering, with the punctuation
+  included.</p>
 
-
-The <gi>listBibl</gi> element is most appropriate 
+<p>The <gi>listBibl</gi> element is most appropriate 
 for  a more formal bibliography. The same <gi>bibl</gi> or
 <gi>biblStruct</gi> elements may however be embedded within an
 ordinary list, thus allowing them to be mixed with running prose or
@@ -4113,7 +4026,7 @@ Processing</title>
 <ref type="url">http://xml.coverpages.org/coombs.html</ref>
 </biblStruct>
 </egXML>
-<p>Punctuation should not appear between the elements within a
+<p>Punctuation must not appear between the elements within a
 structured bibliographic entry encoded with <gi>biblStruct</gi> or <gi>biblFull</gi>,
 unless it is contained within the elements it delimits.  When (as in
 most of the examples in this chapter) entries are encoded without any
@@ -4153,19 +4066,19 @@ to include punctuation.
 This example shows the components sequenced and punctuated
 according to the Chicago style<?tei winita (Reference needed)?>, with all the relevant data items marked up appropriately. This
 markup approach can provide easy rendering, if only one styleguide is
-targetted, or an original source document uses a specific styleguide,
+targeted, or an original source document uses a specific styleguide,
 while still allowing for automated recovery of key data items such as
 names of authors, titles etc. </p>
 
-<specGrp xml:id="DCOBILV" n="Levels of bibliographic information"><include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/analytic.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/monogr.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/series.xml"/>
+<specGrp xml:id="DCOBILV" n="Levels of bibliographic information"><include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/analytic.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/monogr.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/series.xml"/>
 
 </specGrp>
 </div>
-<div type="div4" xml:id="COBICOR"><head>Authors, Titles, and Editors</head>
-<p>Bibliographic references typically begin with a statement of the
-title being cited followed by the names of those intellectually
+<div type="div4" xml:id="COBICOR"><head>Titles, Authors, and Editors</head>
+<p>Bibliographic references typically include the
+title of the work being cited and the names of those intellectually
 responsible for it.  For articles in journals or collections, such
 statements should appear both for the analytic and for the monographic
 level.  The following elements are provided for tagging such elements:
@@ -4407,15 +4320,68 @@ this information, as in the following example:
 </p>
 
 <specGrp xml:id="DCOBICOR" n="Author, title, etc.">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/author.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/editor.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/respStmt.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/resp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/title.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/meeting.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/author.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/editor.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/respStmt.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/resp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/title.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/meeting.xml"/>
 </specGrp>
 </div>
-<div type="div4" xml:id="COBICOI"><head>Imprint, Pagination, and Other Details</head>
+<div type="div4" xml:id="COBICOD"><head>Document Identifiers</head>
+<p>Many bibliographic references include identifiers for a work to help with precise identification of an appropriate document. For example, a book in the <title>Short Title Catalogue</title> could be referenced with its STC number:
+<egXML xmlns="http://www.tei-c.org/ns/Examples">
+<biblStruct>
+  <monogr>
+    <author>
+      <forename>John</forename>
+      <surname>Downame</surname>
+    </author>
+    <title type="short">Foure treatises tending to disswade all Christians from foure no lesse hainous then common sinnes</title>
+    <idno type="stc2ndEd">7141</idno>
+    <imprint>
+      <pubPlace>At London</pubPlace>
+      <publisher>Imprinted by Felix Kyngston, for William Welby, and are to be sold at his shop in Pauls Church-yard at the signe of the Greyhound</publisher>
+      <date when="1609">1609</date>
+    </imprint>
+  </monogr>
+</biblStruct>
+</egXML>
+</p>
+<p>However, some bibliographic references actually <emph>require</emph> identifiers of various types because they do not include a statement of the title and the names of those intellectually responsible for it. The following elements may be used for such purposes:
+<specList>
+  <specDesc key="orgName"/>
+  <specDesc key="idno"/>
+  <specDesc key="classCode"/>
+  <specDesc key="date"/>
+</specList>
+</p>
+<p>For example, a citation to a patent typically includes a country or organization code (a two-character code identifying a patent authority) and a serial number for the patent (whose structure varies by patent authority). The citation might also contain a <term>kind code</term> (which characterizes a particular publication for the patent and which corresponds to a specific stage in the patent procedure) and the date when the patent was filed with or published by the issuing authority. For bibliographic references to patents, the above elements may be used as follows:
+<list type="simple">
+<item><gi>orgName</gi>, within <gi>authority</gi>, may be used to contain the code of the patent authority. The <att>type</att> attribute may be used to specify the type of patent authority (such as a national patent office or a supra-national patent organization).</item>
+<item><gi>idno</gi> may be used to contain the serial number assigned by the corresponding patent authority.</item>
+<item><gi>classCode</gi> may be used to contain the kind code of the patent document.</item>
+<item><gi>date</gi> may be used to contain the date of the patent document. The <att>type</att> attribute may be used to specify whether this corresponds to the filing date of a patent application or the publication date of a patent publication.</item>
+</list>
+</p>
+<p>The following reference illustrates an encoding for a patent publication which might be cited in print as "United States patent US 6,885,550 B1, issued April 26, 2005":
+<egXML xmlns="http://www.tei-c.org/ns/Examples">
+<biblStruct type="patent" status="publication">
+  <monogr>
+    <authority>
+      <orgName type="national">US</orgName>
+    </authority>
+    <idno type="docNumber">6885550</idno>
+    <imprint>
+      <classCode scheme="http://www.uspto.gov/">B1</classCode>
+      <date type="publicationDate" when="2005-04-26">April 26, 2005</date>
+    </imprint>
+  </monogr>
+</biblStruct>
+</egXML>
+</p>
+</div>
+<div type="div4" xml:id="COBICOI"><head>Imprint, Size of a Document, and Reprint Information</head>
 <p>By <mentioned>imprint</mentioned> is meant all the information
 relating to the publication of a work: the person or organization by
 whose authority and in whose name a bibliographic entity such as a
@@ -4433,10 +4399,8 @@ provided to hold this information:
     <specDesc key="pubPlace"/>
     <specDesc key="publisher"/>
     <specDesc key="date"/>
-    <specDesc key="idno"/>
     <specDesc key="extent"/>
-    <specDesc key="biblScope"/>
-    <specDesc key="citedRange"/>
+    <specDesc key="idno"/>
   </specList> 
 Members of the model classes
 <ident type="class">model.imprintPart</ident>
@@ -4508,7 +4472,7 @@ element, rather than elsewhere in the <gi>biblStruct</gi> element. </p>
   are provided to cover the most common roles related to the production
   and distribution of a bibliographical item, but other roles such as 
   printer and bookseller may also need to be encoded, and <gi>respStmt</gi>
- is available inside <gi>imprint</gi>for this purpose.</p>
+ is available inside <gi>imprint</gi> for this purpose.</p>
  
 <p>When an item has been reprinted, especially reprinted without change
 from a specific earlier edition, the reprint may appear in a
@@ -4544,11 +4508,34 @@ statement here applies only to the second <gi>monogr</gi> element.
 </biblStruct></egXML>
 <!-- example from ANSI Z39.29, sec. A.3.12.1, p.41 -->
  </p>
-<p>An alternative way of handling the above situation would be to use the
+<p>This encoding can be extended to the case of patent documents, where the same patent application is published, with or without changes, at different stages of the patenting procedure. In this case, the kind code and, optionally, the publication date characterize different publications of the same patent application during the procedure. For example:
+<egXML xmlns="http://www.tei-c.org/ns/Examples">
+<biblStruct type="patent" status="publication">
+  <monogr>
+    <authority>
+      <orgName type="national">EP</orgName>
+    </authority>
+    <idno type="docNumber">1558513</idno>
+    <imprint>
+      <classCode scheme="http://www.epo.org/">A1</classCode>
+      <date type="publicationDate" when="2005-08-03"/>
+    </imprint>
+  </monogr>
+  <monogr>
+    <imprint>
+      <classCode scheme="http://www.epo.org/">B1</classCode>
+      <date type="publicationDate" when="2009-09-09"/>
+    </imprint>
+  </monogr>
+</biblStruct>
+</egXML>
+</p>
+<p>The above bibliographic reference discloses different publications of the patent EP1558513 during the patenting procedure. The first publication from 3 August 2005 has the kind code "A1" indicating that it is a published patent application comprising the European search report issued after carrying out the search at the European Patent Office, whereas the second publication from 9 September 2009 has the kind code "B1" indicating that it was published after the patent application has been granted.</p>
+<p>An alternative way of handling the above situations would be to use the
 <gi>relatedItem</gi> element described in section <ptr target="#COBIRI"/> below.</p>
 </div>
 <div type="div4" xml:id="COBICOB">
-<head>Scopes and ranges in bibliographic citations</head>
+<head>Scopes and Ranges in Bibliographic Citations</head>
 <p>Many bibliographic citations contain data limiting the citation to one 
 or more volumes, issues, or pages, or to a name or number of a subdivison 
 of the host work. These come in two varieties:
@@ -4664,11 +4651,11 @@ reference would be encoded using <gi>biblStruct</gi> as follows:
   </biblStruct></egXML>
 </p>
 <specGrp xml:id="DCOPUB" >
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/imprint.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/publisher.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/biblScope.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/citedRange.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/pubPlace.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/imprint.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/publisher.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/biblScope.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/citedRange.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/pubPlace.xml"/>
 </specGrp>
 </div>
 <div type="div4" xml:id="COBICOS"><head>Series Information</head>
@@ -4682,7 +4669,7 @@ as in the example in section <ptr target="#COBICOL"/>) may be tagged
 <gi>editor</gi> or <gi>respStmt</gi>. Any identifier associated with
 the series itself should be marked using the <gi>idno</gi> element.
  </p></div>
-<div type="div4" xml:id="COBIRI"><head>Related items</head>
+<div type="div4" xml:id="COBIRI"><head>Related Items</head>
 <p>In bibliographic parlance, a <term>related item</term> is any
 bibliographic item which, though related to that being defined, is
 distinct from it. The distinction between analytic and monographic
@@ -4808,16 +4795,16 @@ would be empty:
 </egXML>
 </p>
 <specGrp xml:id="DCOBI" n="Tags for Bibliographic References">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/bibl.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/biblStruct.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listBibl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/bibl.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/biblStruct.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listBibl.xml"/>
 <specGrpRef target="#DCOBILV"/>
 <specGrpRef target="#DCOBICOR"/>
 <specGrpRef target="#DCOPUB"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/relatedItem.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/relatedItem.xml"/>
 </specGrp>
 </div>
-<div type="div4" xml:id="COBICON"><head>Notes, Languages, and Other Additional Information</head>
+<div type="div4" xml:id="COBICON"><head>Notes and Statement of Language</head>
 <p>Explanatory notes about the publication of unusual items, the form of
 an item (e.g.  <mentioned>[Score]</mentioned> or <mentioned>[Microform]</mentioned>), or
 its provenance (e.g.  <mentioned>translation of ...</mentioned>) may be tagged
@@ -5221,8 +5208,8 @@ chapter <ptr target="#VE"/>.
 
 <specGrp xml:id="DCOVE" n="Verse">
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/l.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/lg.xml"/></specGrp>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/l.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/lg.xml"/></specGrp>
 </div>
 <div type="div3" xml:id="CODR"><head>Core Tags for Drama</head><p>Like other written texts, dramatic and other <term>performance
 texts</term> such as cinema or TV scripts are often hierarchically
@@ -5382,9 +5369,9 @@ were dialogue in a play.  The following example is taken  from a 19th century
  </p>
 
 <specGrp xml:id="DCODR" n="Drama">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/speaker.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/stage.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/speaker.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/stage.xml"/>
 </specGrp>
 </div></div>
  <div type="div2" xml:id="COOV"><head>Overview of the Core Module </head>

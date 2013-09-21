@@ -67,8 +67,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: maths.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
@@ -130,9 +130,7 @@ of this software, even if advised of the possibility of such damage.
 
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Depending on the math mode, omml is either converted to mathML or an identity transformation is started
-    </desc>
+      <desc>Depending on the math mode, omml is either converted to mathML or an identity transformation is started</desc>
    </doc>
     <xsl:template match="m:oMath">
         <xsl:choose>
@@ -161,9 +159,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Guides the identity transformation of imagedata in math
-    </desc>
+      <desc>Guides the identity transformation of imagedata in math</desc>
    </doc>
     <xsl:template match="v:imagedata" mode="iden">
             <xsl:variable name="rid" select="@r:id"/>
@@ -175,9 +171,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Guides the identity transformation of ole in maths
-    </desc>
+      <desc>Guides the identity transformation of ole in maths</desc>
    </doc>
     <xsl:template match="o:OLEObject" mode="iden">
         <o:OLEObject>

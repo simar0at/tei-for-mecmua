@@ -39,23 +39,21 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
       <p>Author: See AUTHORS</p>
-      <p>Id: $Id: epub-preflight.xsl 10769 2012-08-15 16:06:59Z rahtz $</p>
-      <p>Copyright: 2008, TEI Consortium</p>
+      <p>Id: $Id$</p>
+      <p>Copyright: 2013, TEI Consortium</p>
     </desc>
   </doc>
 
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[epub] Local mode to rewrite names of graphics inclusions;
-      default is identity transform
-      </desc>
+      default is identity transform</desc>
   </doc>
   <xsl:template match="@*|text()|comment()|processing-instruction()" mode="preflight">
     <xsl:copy-of select="."/>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
     <desc>[epub] Local mode to rewrite names of graphics inclusions;
-      default is identifty transform
-      </desc>
+      default is identifty transform</desc>
   </doc>
   <xsl:template match="*" mode="preflight">
     <xsl:copy>
@@ -63,7 +61,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="tei:graphic" mode="preflight">
+  <xsl:template match="tei:graphic|tei:media" mode="preflight">
     <xsl:copy>
       <xsl:choose>
         <xsl:when test="$fixgraphicsurl='true'">

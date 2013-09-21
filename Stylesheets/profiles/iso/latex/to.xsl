@@ -53,22 +53,20 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: to.xsl 10867 2012-09-23 22:13:14Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
   
 
    <xsl:param name="reencode">false</xsl:param>
-   <xsl:param name="numberBackHeadings">true</xsl:param>
-   <xsl:param name="numberFrontHeadings">true</xsl:param>
+   <xsl:param name="numberBackHeadings">A.1</xsl:param>
+   <xsl:param name="numberFrontHeadings">i</xsl:param>
    <xsl:param name="spaceCharacter">\hspace*{1em}</xsl:param>
    <xsl:param name="classParameters">11pt,twoside</xsl:param>
-   <xsl:param name="startNamespace"/>
    <xsl:param name="tocNumberSuffix">.\ </xsl:param>
    <xsl:param name="numberSpacer">\ </xsl:param>
-   <xsl:variable name="docClass">article</xsl:variable>
    <xsl:template name="latexPreambleHook">
 \usepackage{makeidx}
 \makeindex
@@ -422,7 +420,7 @@ STANDARD &amp;\bfseries <xsl:call-template name="getiso_documentNumber"/>-<xsl:c
 \tolerance=2000
 \vbadness=4000
 \widowpenalty=10000
-<xsl:if test="not($docClass='letter')">
+<xsl:if test="not($documentclass='letter')">
 \renewcommand\section{\@startsection {section}{1}{\z@}%
      {-1.75ex \@plus -0.5ex \@minus -.2ex}%
      {0.5ex \@plus .2ex}%

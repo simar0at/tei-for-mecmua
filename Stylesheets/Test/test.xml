@@ -106,6 +106,10 @@
             <cell>Example</cell>
           </row>
           <row>
+            <cell>hi</cell>
+	    <cell>This is <hi rend="special">hi rend="special"</hi> tag</cell>
+          </row>
+          <row>
             <cell>emph</cell>
             <cell>This is <emph>emph</emph> tag</cell>
           </row>
@@ -164,6 +168,12 @@
           <row>
             <cell>superscript</cell>
             <cell>This is <hi rend="superscript">superscript</hi> effect</cell>
+          </row>
+          <row>
+            <cell>bold italic red, done separately</cell>
+            <cell>
+              <hi rend="bold"><hi rend="italic"><hi rend="color(red)">rend test 1</hi></hi></hi>
+            </cell>
           </row>
           <row>
             <cell>bold italic smallcaps</cell>
@@ -515,7 +525,7 @@
       </div>
       <div xml:id="S1" type="stave">
         <head>Extended prose: MARLEY'S GHOST</head>
-        <pb n="1" facs="bar.jpg"/>
+        <pb rend="foo" n="1" facs="bar.jpg"/>
         <p>Marley was dead: to begin with.  There is no doubt whatever
 about that.  The register of his burial was signed by the
 clergyman, the clerk, the undertaker, and the chief mourner. 
@@ -961,6 +971,25 @@ frost.
 	meat and drink sufficient for the support of <choice><sic>1724</sic><corr>1728</corr></choice> of our subjects,
 	with free access to our royal person, and other marks of our
 	<choice><orig>favour</orig><reg>favor</reg></choice>.</p>
+      </div>
+
+      <div>
+	<head>Verbatim</head>
+	<p>an egXML in a list:
+	<list>
+	  <item>
+	    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+	      <div xml:id="test99" rend="whatever">
+		<head>Choice, sic, corr, reg, orig</head>
+		<p>v<ex>oro</ex> þav sam<ex>m</ex>ędd syskin in
+		hei<ex>lagr</ex>i <lb/> ol<ex>afr</ex> k<ex>onvng</ex>r
+		<ex>ok</ex> fyrnefnd
+		<choice><sic>gvn<ex>n</ex>hillde</sic><corr>gvn<ex>n</ex>hilldr</corr></choice>.</p>
+	      </div>
+	    </egXML>
+	  </item>
+	</list>
+	</p>
       </div>
     </body>
   </text>

@@ -29,7 +29,7 @@
                 
                 xmlns="http://www.tei-c.org/ns/1.0"
                 version="2.0"
-                exclude-result-prefixes="a cp dc dcterms dcmitype prop  html   iso m mml mo mv o pic r rel     tbx tei teidocx v xs ve w10 w wne wp">
+                exclude-result-prefixes="#all">
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -68,38 +68,41 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: marginals.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Handle footnotes
-    </desc>
+      <desc>Handle footnotes</desc>
    </doc>
     <xsl:template match="w:footnoteReference">
-        <note place="foot">
+        <note place="foot" xml:id="ftn{@w:id}" n="{@w:id}">
             <xsl:variable name="referenced-id" select="@w:id"/>
-            <xsl:for-each select="document(concat($wordDirectory,'/word/footnotes.xml'))//w:footnote[@w:id=$referenced-id]">
-                <xsl:apply-templates mode="paragraph"/>
+            <xsl:for-each
+		select="document(concat($wordDirectory,'/word/footnotes.xml'))//w:footnote[@w:id=$referenced-id]">
+	      <xsl:variable name="pass0">
+		<xsl:apply-templates mode="pass0"/>
+	      </xsl:variable>
+	      <xsl:apply-templates mode="paragraph" select="$pass0"/>
             </xsl:for-each>
         </note>
     </xsl:template>
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Handle endnotes
-    </desc>
+      <desc>Handle endnotes</desc>
    </doc>
     <xsl:template match="w:endnoteReference">
         <note place="end">
             <xsl:variable name="referenced-id" select="@w:id"/>
             <xsl:for-each select="document(concat($wordDirectory,'/word/endnotes.xml'))//w:endnote[@w:id=$referenced-id]">
-                <xsl:apply-templates mode="paragraph"/>
+	      <xsl:variable name="pass0">
+		<xsl:apply-templates mode="pass0"/>
+	      </xsl:variable>
+	      <xsl:apply-templates mode="paragraph" select="$pass0"/>
             </xsl:for-each>
         </note>
     </xsl:template>

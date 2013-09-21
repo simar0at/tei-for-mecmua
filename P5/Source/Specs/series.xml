@@ -6,6 +6,9 @@
     $Date$
     $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="series">
   <equiv/>
   <gloss>series information</gloss>
@@ -36,7 +39,7 @@
         <rng:text/>
         <rng:ref name="model.gLike"/>
         <rng:ref name="title"/>
-        <rng:ref name="ref"/>
+        <rng:ref name="model.ptrLike"/>
         <rng:ref name="editor"/>
         <rng:ref name="respStmt"/>
         <rng:ref name="biblScope"/>

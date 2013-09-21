@@ -37,7 +37,7 @@
       </li>
     </ul>
 <!--body matter -->
-    <span class="note" id="Note1"><span class="noteLabel">Note: </span>A free-standing note </span>
+    <div class="note" id="Note1"><span class="noteLabel">Note: </span>A free-standing note </div>
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span class="note" id="Note2"><span class="noteLabel">Note: </span>plain note in first paragraph</span> Lorem ipsum dolor sit amet</p>
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span id="Note3_return"><a class="notelink" title="Foot note in second paragraph" href="#Note3"><sup>1</sup></a></span></p>
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span class="notemargin" id="Note4">Marginal note in third paragraph</span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
@@ -47,7 +47,7 @@
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span class="note" id="Note6"><span class="noteLabel">Note: </span>Inline note in fifth paragraph</span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span id="Note7_return"><a class="notelink" title="End note in sixth paragraph" href="#Note7"><sup>1</sup></a></span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span class="notemarginLeft" id="Note8">Left margin note in seventh paragraph</span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
-    <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit Lorem amet ipsum dolor sit amet<span class="notemarginOuter" id="Note9">Outer margin note in eightth paragraph</span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
+    <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit Lorem amet ipsum dolor sit amet<span class="notemarginOuter" id="Note9">Outer margin note in eighth paragraph</span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
     <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet<span class="notemarginRight" id="Note10">Right margin note in nineth paragraph</span> ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
     <div class="table">
       <table>
@@ -79,18 +79,17 @@
         <tr>
           <td>5</td>
           <td>
-            <blockquote id="Note15" class="note">
-              <p>Display note (no other content in cell)</p>
-            </blockquote>
+            <div class="note" id="Note15"><span class="noteLabel">Note: </span>Display note (no other content in cell)</div>
           </td>
         </tr>
         <tr>
           <td>6</td>
-          <td>Some ordinary context and <blockquote id="Note16" class="note"><p>Display note</p></blockquote></td>
+          <td>Some ordinary context and <div class="note" id="Note16"><span class="noteLabel">Note: </span>Display note</div></td>
         </tr>
       </table>
     </div>
 <!--back matter -->
+<!--Notes in [TEI]-->
     <div class="notes">
       <div class="noteHeading">Notes</div>
       <div class="note" id="Note3">
@@ -113,9 +112,11 @@
     <div class="stdfooter">
       <div class="footer"><a class="plain" href="http://www.tei-c.org/">Parent Institution</a> | <a class="plain" href="http://www.tei-c.org/">TEI</a>| <a class="plain" href="http://www.google.com">Search</a> | <a class="plain" href="mailto:feedback">Feedback</a></div>
       <address>Date: 1970-01-01<br /><!--
-	  Generated  using an XSLT version 2.0 stylesheet
-	  based on http://www.tei-c.org/Stylesheets/
-	  on 1970-01-01--></address>
+	  Generated  using XSLT stylesheets 
+	       based on http://www.tei-c.org/Stylesheets/
+	       on 1970-01-01.
+	       SAXON.
+		 --></address>
     </div>
   </body>
 </html>

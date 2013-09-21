@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 Copyright TEI Consortium. 
 Dual-licensed under CC-by and BSD2 licences 
@@ -10,10 +10,10 @@ $Id$
      that attribute class. This centralizes the definition of the attribute and its suggested values. 
      SF ticket http://purl.org/tei/bugs/3537452. -->
 
-<classSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" type="atts" ident="att.milestoneUnit">
-  <desc>provides an attribute to indicate the type of section which is changing at a specific milestone.</desc>
- 
-  <attList>
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5odds.rnc" type="application/relax-ng-compact-syntax"?>
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5odds.isosch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<classSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" type="atts" ident="att.milestoneUnit"><desc>provides an attribute to indicate the type of section which is changing at a specific milestone.</desc><attList>
     <attDef ident="unit" usage="req">
       <equiv/>
       <desc>provides a conventional name for the kind of section changing at this milestone.</desc>
@@ -73,8 +73,9 @@ $Id$
           <desc versionDate="2007-05-02" xml:lang="zh-TW">所有稱為書、冊、或函等的單位。</desc>
           <desc versionDate="2008-04-06" xml:lang="es">cualquier unidad llamada libro, pliego, etc.</desc>
           <desc versionDate="2008-04-05" xml:lang="ja"> 冊子などの単位． </desc>
-          <desc versionDate="2008-03-30" xml:lang="fr"> unité quelconque désignée par les termes livre,
-            feuillet, etc.</desc>
+          <desc versionDate="2008-03-30" xml:lang="fr"> n'importe quel
+	  unité  désignée par les termes livre,
+            liber, etc.</desc>
           <desc versionDate="2007-01-21" xml:lang="it">qualsiasi unità indicata come libro, libretto,
             ecc.</desc>
         </valItem>
@@ -206,15 +207,12 @@ $Id$
       </remarks>
       <remarks xml:lang="fr">
         <p>L'attribut <att>type</att> sera utilisé pour caractériser l’unité de bornage sans autre
-          précaution d’emploi que celle de identification du type d'unité, par exemple s’il s’agit
+          précaution d’emploi que celle de l'identification du type d'unité, par exemple s’il s’agit
           d’un mot coupé ou pas.</p>
       </remarks>
     </attDef>
-  </attList>
-  
-  <listRef>
+  </attList><listRef>
     <ptr target="#CORS5" type="div3"/>
     <ptr target="#HD54M"/>
     <ptr target="#HD54"/>
-  </listRef>
-</classSpec>
+  </listRef></classSpec>

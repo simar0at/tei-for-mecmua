@@ -66,15 +66,13 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: fields.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Handle simple fields
-    </desc>
+      <desc>Handle simple fields</desc>
    </doc>
     <xsl:template match="w:fldSimple">
       <xsl:variable name="rstyle">
@@ -126,6 +124,8 @@ of this software, even if advised of the possibility of such damage.
 	  <tei:dynamicContent type="pagenumber"/>
 	</xsl:when>
 	<xsl:when test="contains(@w:instr,'SEQ')"/><!-- not sure -->
+	<xsl:when test="contains(@w:instr,'INCLUDETEXT')"/><!-- from docm to docx conversion? -->
+	<xsl:when test="contains(@w:instr,'TEMPLATE')"/><!-- from docm to docx conversion? -->	
 	<xsl:otherwise>
 	  <xsl:message terminate="yes">fldSimple: unrecognized type <xsl:value-of select="@w:instr"/></xsl:message>
 	</xsl:otherwise>

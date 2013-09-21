@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="MS">
 <head>Manuscript Description</head>
 <div type="div2" xml:id="msov">
@@ -46,8 +50,8 @@ characteristics, history, interpretation, etc. of the material, able
 to support practitioners of <term>quantitative codicology</term> as
 well as librarians.</p>
 <p>To cater for this diversity, here as elsewhere, these Guidelines
-propose a flexible approach, in which encoders must choose for
-themselves the degree of prescription appropriate to their needs, and
+propose a flexible strategy, in which encoders must choose for
+themselves the approach appropriate to their needs, and
 are provided with a choice of encoding mechanisms to support those
 differing degrees.</p>
 </div>
@@ -256,7 +260,7 @@ matters.</p>
 
 
 <specGrp xml:id="msdesc.def">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msDesc.xml"/>
 </specGrp>
 
 </div>
@@ -358,10 +362,15 @@ is being transcribed, for example within a rubric in the following case:
 </p>
 <p>It may also appear as part of the detailed description of a binding:
 <egXML xmlns="http://www.tei-c.org/ns/Examples">
-<binding><p>Modern calf recasing with original armorial stamp <stamp>Ex
-Bibliotheca J. Richard D.M.</stamp></p></binding>
+<binding><p>Modern calf recasing with original armorial stamp
+<stamp>with legend <mentioned xml:lang="LA">Ex
+Bibliotheca J. Richard D.M.</mentioned></stamp></p></binding>
 </egXML>
 </p>
+<p>If, as here, any text contained by a stamp is included in its
+description it should be clearly distinguished from that
+description. The element <gi>mentioned</gi> may be used for this
+purpose, as shown above.</p>
 </div>
 <div type="div3" xml:id="msdim">
 <head>Dimensions</head>
@@ -804,23 +813,23 @@ racchiudono l'inizio dell'epistolario di Paolino.</p>
 </egXML></p>
 
 <specGrp xml:id="xphrase.def">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/catchwords.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/dimensions.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/dim.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/height.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/depth.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/width.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/heraldry.xml"/><!-- should this be better to rename as armsDesc? -->
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/locus.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/locusGrp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/material.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/objectType.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/origDate.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/origPlace.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/secFol.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/signatures.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/stamp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/watermark.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/catchwords.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/dimensions.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/dim.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/height.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/depth.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/width.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/heraldry.xml"/><!-- should this be better to rename as armsDesc? -->
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/locus.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/locusGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/material.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/objectType.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/origDate.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/origPlace.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/secFol.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/signatures.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/stamp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/watermark.xml"/>
 </specGrp>
 </div></div>
 <div type="div2" xml:id="msid">
@@ -906,7 +915,7 @@ following encodings is therefore feasible:
 <p>In the former example, the preferred form of the identifier can be
 retrieved by prefixing the content of the <gi>idno</gi> element with
 that of the  <gi>collection</gi> element, while in the latter it is
-given explicitly. The advantage of the former is that it it simplifies
+given explicitly. The advantage of the former is that it simplifies
 accurate retrieval of all manuscripts from a given collection; the
 disadvantage is that encoded abbreviations of this kind may not be as
 immediately comprehensible. Care should be taken to avoid redundancy:
@@ -918,9 +927,8 @@ for example <egXML xml:lang="und" xmlns="http://www.tei-c.org/ns/Examples">
 <collection>Ellesmere</collection>
 <idno>El 26 C 9</idno>
 </egXML> might be considered helpful in some circumstances (if, for
-example, some of the items in the Ellsemere collection had shelfmarks
-which did not begin <q>El</q>). It may also be the case that the same
-manuscript is referred as </p>
+example, some of the items in the Ellesmere collection had shelfmarks
+which did not begin <q>El</q>). </p>
 <p>In some cases the shelfmark  may contain no information about the
 collection; in other cases, the item may be regarded as belonging to
 more than one collection. The <gi>collection</gi> element may be
@@ -1084,12 +1092,12 @@ three sub-elements <gi>settlement</gi>, <gi>repository</gi>, and
 minimum amount of information necessary to identify a manuscript.</p>
 
 <specGrp xml:id="msidentifier.def">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msIdentifier.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/institution.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/repository.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/collection.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/altIdentifier.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msName.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msIdentifier.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/institution.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/repository.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/collection.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/altIdentifier.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msName.xml"/>
 </specGrp>
 </div>
 <div type="div2" xml:id="msdo">
@@ -1284,7 +1292,7 @@ manuscript containing four fragments of a single work:
 <incipit defective="true">dan<ex>n</ex>a a 
 engl<ex>an</ex>di</incipit>
 <explicit defective="true">en meðan <expan>haraldr</expan> 
-hein hafði k<ex>onung</ex>r v<am><g ref="http://www.examples.com/abbrevs.xml#er"/></am>it 
+hein hafði k<ex>onung</ex>r v<am><g ref="http://www.example.com/abbrevs.xml#er"/></am>it 
 yf<ex>ir</ex> danmork</explicit>
 </msItem>
 <!-- msItems 1.2 to 1.4 -->
@@ -1512,7 +1520,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/colophon.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/colophon.xml"/>
 
 
 
@@ -1529,7 +1537,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/explicit.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/explicit.xml"/>
 
 
 
@@ -1545,7 +1553,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/filiation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/filiation.xml"/>
 
 
 
@@ -1562,7 +1570,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/finalRubric.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/finalRubric.xml"/>
 
 
 
@@ -1579,7 +1587,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/incipit.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/incipit.xml"/>
 
 
 
@@ -1596,7 +1604,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msContents.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msContents.xml"/>
 
 
 
@@ -1613,7 +1621,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msItem.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msItem.xml"/>
 
 
 
@@ -1630,7 +1638,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msItemStruct.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msItemStruct.xml"/>
 
 
 
@@ -1647,7 +1655,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/rubric.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/rubric.xml"/>
 
 
 
@@ -1663,7 +1671,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/summary.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/summary.xml"/>
 
 
 
@@ -1679,7 +1687,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/textLang.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/textLang.xml"/>
 
 
 
@@ -1698,7 +1706,7 @@ have a <gi>textLang</gi> element like the following:
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.msExcerpt.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.msExcerpt.xml"/>
 
 
 
@@ -1758,7 +1766,7 @@ distinguished, some of them cannot be mapped to a pre-existing
 specialized element.</item>
 </list></p>
 <p>In such situations, both specialized and generic
-(<ident>model.Plike</ident>) elements may be combined in a single
+(<ident>model.pLike</ident>) elements may be combined in a single
 <gi>physDesc</gi>. Note however that all generic elements given must
 precede the first specialized element in the description. Thus the
 following is valid:
@@ -2173,7 +2181,7 @@ following elements for the purpose of delimiting discussion of these
 aspects within a manuscript description, and for convenience locate
 them all within the physical description, despite the fact that the
 illustrative features of a manuscript will in many cases also be seen
-as constitutiing part of its intellectual content.</p>
+as constituting part of its intellectual content.</p>
 <p>The <gi>decoDesc</gi> element may contain simply one or more
 paragraphs summarizing the overall nature of the decorative features
 of the manuscript, as in the following example:
@@ -2285,7 +2293,7 @@ now rather difficult to read, most can be made out, e.g. fol. <locus>8rb</locus>
 <p>The manuscript contains the following marginalia:
 <list>
 <item>Fol. <locus>4v</locus>, left margin: <quote xml:lang="is">hialmadr <ex>ok</ex> <lb/>brynjadr</quote>, 
-in a fifteenth-cenury hand, imitating an addition made to the text by the scribe at this point.</item>
+in a fifteenth-century hand, imitating an addition made to the text by the scribe at this point.</item>
 <item>Fol. <locus>5r</locus>, lower margin: <quote xml:lang="is">þ<ex>e</ex>tta þiki 
 m<ex>er</ex> v<ex>er</ex>a gott blek en<ex>n</ex>da kan<ex>n</ex> ek icki 
 betr sia</quote>, in a fifteenth-century hand, probably the same as that on the previous page.</item>
@@ -2344,8 +2352,8 @@ of the Agnus Dei.</p></decoNote>
 <p>Rebacked during the 19th century.</p>
 </binding>
 </egXML></p>
-<p>As noted above, (<ptr target="#msphco"/>) the element <gi>condition</gi>
-,may also be used as an alternative to <gi>p</gi> for paragraphs
+<p>As noted above, (<ptr target="#msphco"/>) the element <gi>condition</gi> 
+may also be used as an alternative to <gi>p</gi> for paragraphs
 concerned exclusively with the condition of a binding, where this has
 not been supplied as part of the physical description.</p>
 
@@ -2410,7 +2418,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/physDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/physDesc.xml"/>
 
 
 
@@ -2422,7 +2430,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/objectDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/objectDesc.xml"/>
 
 
 
@@ -2434,7 +2442,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/supportDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/supportDesc.xml"/>
 
 
 
@@ -2446,7 +2454,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/support.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/support.xml"/>
 
 
 
@@ -2458,7 +2466,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/collation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/collation.xml"/>
 
 
 
@@ -2470,7 +2478,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/foliation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/foliation.xml"/>
 
 
 
@@ -2482,7 +2490,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/condition.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/condition.xml"/>
 
 
 
@@ -2494,7 +2502,7 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/layoutDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/layoutDesc.xml"/>
 
 
 
@@ -2506,27 +2514,27 @@ Saga mun vera komin fra Sr Vigfuse á Helgafelle.</quote></p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/layout.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/handDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/layout.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/handDesc.xml"/>
 
 <!-- &handNote;-->
 <!-- not declared here, but in the TEI header, since it is also used by
 transcr element <handNotes> ; maybe same shd be true of typeNote -->
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/typeDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/typeNote.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/scriptDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/scriptNote.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/typeDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/typeNote.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/scriptDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/scriptNote.xml"/>
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/musicNotation.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/decoDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/decoNote.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/additions.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/bindingDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/binding.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/sealDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/seal.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/accMat.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/musicNotation.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/decoDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/decoNote.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/additions.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/bindingDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/binding.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/sealDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/seal.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/accMat.xml"/>
 
 
 
@@ -2605,10 +2613,10 @@ flyleaf), either in 1696 or 97.</acquisition>
 </history>
 </egXML></p>
 <specGrp xml:id="history.def">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/history.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/origin.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/provenance.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/acquisition.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/history.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/origin.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/provenance.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/acquisition.xml"/>
 </specGrp>
 </div>
 <div type="div2" xml:id="msad">
@@ -2632,7 +2640,7 @@ the order in which elements are supplied should be as specified above.</p>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/additional.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/additional.xml"/>
 
 
 
@@ -2766,9 +2774,9 @@ Konserveringsværksted.</p></custEvent>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/adminInfo.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/recordHist.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/source.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/adminInfo.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/recordHist.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/source.xml"/>
 
 
 
@@ -2781,8 +2789,8 @@ Konserveringsværksted.</p></custEvent>
 
 
 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/custodialHist.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/custEvent.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/custodialHist.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/custEvent.xml"/>
 
 
 
@@ -2833,7 +2841,7 @@ the process by which a digital or photographic image was made. For
 information about the inclusion of digital facsimile images within a
 TEI document, refer also to <ptr target="#PHFAX"/>. </p>
 <specGrp xml:id="surrogates.def">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/surrogates.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/surrogates.xml"/>
 </specGrp>
 </div>
 </div>
@@ -2878,7 +2886,7 @@ element, -->as in the following example:
 </egXML>
 </p>
 <specGrp xml:id="mspart.def">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/msPart.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/msPart.xml"/>
 </specGrp>
 </div>
 <div type="div2" xml:id="MSref">

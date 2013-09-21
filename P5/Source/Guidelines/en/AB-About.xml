@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 Copyright TEI Consortium. 
 Dual-licensed under CC-by and BSD2 licences 
@@ -6,6 +6,10 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="AB" n="1">
 <head>About These Guidelines</head>
 
@@ -166,6 +170,13 @@ attribute.  References to classes are also presented as links, for
 example <ident type="class">model.divLike</ident> for a model class,
 and <ident type="class">att.global</ident> for an attribute class.
 </p>
+  
+  <p>Modal constructions such as <mentioned>should</mentioned> are not be 
+    used consistently throughout these Guidelines, implying either that a 
+    practice is recommended or actually required by the schema. As these 
+    Guidelines are revised, the authors are attempting to bring all usage 
+    of such constructions into conformance with 
+    <ref target="http://tools.ietf.org/html/bcp14">BCP 14</ref>.</p>
 
 <div xml:id="AB-namecon">
 <head>TEI Naming Conventions</head>
@@ -182,7 +193,7 @@ to co-exist with names from other XML namespace. This prefix is not
 visible to the end user, and is not used in TEI documentation. When
 generating multi-namespace schemas, however, the user needs to be
 aware of them. </note>.</p>
-<p>The following conventions apply to the choice of names :
+<p>The following conventions apply to the choice of names:
 <list>
 <item>Elements are given generic identifiers as far as possible
 consisting of one or more <term>tokens</term>, by which we mean whole
@@ -219,16 +230,16 @@ abbreviations are however commonly used within generic identifiers:
 <label>char</label>
 <item>character, typically a Unicode character</item>
 <label>doc</label>
-<item>document : this usually refers to the original source document
+<item>document: this usually refers to the original source document
 which is being encoded,</item>
 <label>decl</label>
-<item>declaration : has a specific sense in the TEI
+<item>declaration: has a specific sense in the TEI
 Header, as discussed in <ptr target="#HD12"/></item>
 <label>desc</label>
-<item>description : has a specific sense in the TEI header, as
+<item>description: has a specific sense in the TEI header, as
 discussed in <ptr target="#HD12"/> </item>
 <label>grp</label>
-<item>group. In TEI usage, a group is distinguised from a list in that
+<item>group. In TEI usage, a group is distinguished from a list in that
 the former associates several objects which act as a single entity,
 while the latter does not. For example, a <gi>linkGrp</gi> combines
 several <gi>link</gi> elements which have certain properties in
@@ -246,10 +257,10 @@ unrelated <gi>bibl</gi> elements.</item>
 <label>spec</label>
 <item>technical specification or definition</item>
 <label>stmt</label>
-<item>statement : used in a specific sense in the TEI header,
+<item>statement: used in a specific sense in the TEI header,
 as discussed in <ptr target="#HD12"/></item>
 <label>struct</label>
-<item>structured : that is, containing a specific set of
+<item>structured: that is, containing a specific set of
 named elements rather than <soCalled>mixed content</soCalled></item>
 <label>val</label>
 <item>value, for example of a variable or an attribute</item>
@@ -296,7 +307,7 @@ Classes</cell><cell>model.*</cell><cell>model.biblPart</cell></row>
 <ptr target="#ST"/>.  Here we simply note some conventions about their
 naming. </p>
 
-<p>The following rules apply to attribute class names : <list>
+<p>The following rules apply to attribute class names: <list>
 <item>Attribute class names take the form <code>att.xxx</code>, where
 <code>xxx</code> is typically an adjective, or a series of adjectives
 separated by dots, describing a property common to the attributes
@@ -342,14 +353,14 @@ scheme is driven by its original goal of serving the needs of research,
 and is therefore committed to providing a maximum of comprehensibility,
 flexibility, and extensibility.  More specific design goals of the TEI
 have been that the Guidelines should:
-<list type="simple">
+<list rend="simple">
 <item>provide a standard format for data interchange</item>
 <item>provide guidance for the encoding of texts in this format</item>
 <item>support the encoding of all kinds of features of all
 kinds of texts studied by researchers</item>
 <item>be application independent</item></list>
 This has led to a number of important design decisions, such as:
-<list type="simple">
+<list rend="simple">
 <item>the choice of XML and Unicode</item>
 <item>the provision of a large predefined tag set</item>
 <item>encodings for different views of text</item>
@@ -466,7 +477,7 @@ chapter <ptr target="#USE"/>. </p></div>
 
 <div type="div3" xml:id="ABAPP"><head>Intended Use</head>
 <p>We envisage three primary functions for these Guidelines:
-<list type="simple">
+<list rend="simple">
 <item>guidance for individual or local practice in text
 creation and data capture;</item>
 <item>support of data interchange;</item>
@@ -510,27 +521,27 @@ form. </p>
 permitting projects to share resources even when their local encoding
 schemes differ. If there are <formula>n</formula> different encoding
 formats, to provide mappings between each possible pair of formats
-requires <formula>n&#x00D7;(n-1)</formula> translations; with an
-interchange format, only <formula>2&#x00D7;n</formula> such mappings
+requires <formula>n×(n-1)</formula> translations; with an
+interchange format, only <formula>2×n</formula> such mappings
 are needed. However, for such translations to be carried out without
 loss of information, the interchange format chosen must be as
 expressive (in a formal sense) as any of the target formats; this is a
 further reason for the TEI's provision of both highly abstract or
 generic encodings and highly specific ones.</p>
 <p>To translate between any pair of encoding schemes implies:
-<list type="ordered">
+<list rend="ordered">
 <item>identifying the sets of textual features distinguished
 by the two schemes;</item>
 <item>determining where the two sets of features correspond;</item>
 <item>creating a suitable set of mappings.</item></list> </p>
 <p>For example, to translate from encoding scheme X into the TEI
 scheme:
-<list type="ordered">
+<list rend="ordered">
 <item>Make a list of all the textual features distinguished in
 X. </item>
 <item>Identify the corresponding feature in the TEI scheme.
 There are three possibilities for each feature:
-<list type="ordered">
+<list rend="ordered">
 <item>the feature exists in both X and the TEI scheme;</item>
 <item>X has a feature which is absent from the TEI scheme;</item>
 <item>X has a feature which corresponds with more than one
@@ -550,7 +561,7 @@ extended, information must be lost in translation.</p>
 given in some detail in chapter <ptr target="#CF"/>.
 The basic principles informing those rules may be summarized as
 follows:
-<list type="ordered">
+<list rend="ordered">
 <item>The TEI <term>abstract model</term> (that is, the set of
 categorical distinctions which it defines) must be respected. The
 correspondence between a tag X and the semantic function assigned to
@@ -570,7 +581,7 @@ the recommended manner.</item>
 
 <div type="div4" xml:id="ABAPP3"><head>Use for Local Processing</head>
 <p>Machine-readable text can be manipulated in many ways; some users:
-<list type="simple">
+<list rend="simple">
 <item>edit texts (e.g. word processors, syntax-directed
 editors) </item>
 <item>edit, display, and link texts in hypertext systems</item>

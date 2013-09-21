@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:tei="http://www.tei-c.org/ns/1.0"
+                xmlns:teix="http://www.tei-c.org/ns/Examples"
                 xmlns:iso="http://www.iso.org/ns/1.0"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -20,12 +21,15 @@
                 
                 xmlns:teidocx="http://www.tei-c.org/ns/teidocx/1.0"
                 version="2.0"
-                exclude-result-prefixes="ve o r m v wp w10 w wne mml tbx iso tei a xs pic fn">
+                exclude-result-prefixes="teix ve o r m v wp w10 w wne mml tbx iso tei a xs pic fn tei teidocx">
+    <!-- import conversion style -->
+    <xsl:import href="../../default/docx/to.xsl"/>
+    
 
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
       <desc>
-         <p> Specialized TEI stylesheet for transforming tei into Word docx files for Vesta </p>
+         <p> TEI stylesheet for making Word docx files from TEI XML (see tei-docx.xsl) for Vesta </p>
          <p>This software is dual-licensed:
 
 1. Distributed under a Creative Commons Attribution-ShareAlike 3.0
@@ -59,35 +63,14 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: default-functions.xsl 10881 2012-10-01 16:34:00Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id: to.xsl 9646 2011-11-05 23:39:08Z rahtz $</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
-    
-    
-    <xsl:function name="tei:render-bold" as="xs:boolean">
-        <xsl:param name="element"/>
-        <xsl:for-each select="$element">
-            <xsl:choose>
-		<xsl:when test="ancestor-or-self::tei:cell[@rend='wovenodd-col1']">true</xsl:when>
-		<xsl:when test="ancestor-or-self::tei:cell[@role='label']">true</xsl:when>
-		<xsl:when test="self::tei:cell and parent::tei:row[@role='label']">true</xsl:when>
-                <xsl:when test="@rend='bold'">true</xsl:when>
-                <xsl:when test="@rend='label'">true</xsl:when>
-                <xsl:when test="@rend='odd_label'">true</xsl:when>
-                <xsl:when test="contains(@rend,'bold')">true</xsl:when>
-                <xsl:when test="parent::tei:hi[@rend='bold']">true</xsl:when>
-                <xsl:when test="parent::tei:hi[starts-with(@rend,'specList-')]">true</xsl:when>
-                <xsl:when test="self::tei:docAuthor">true</xsl:when>
-                <xsl:when test="self::tei:hi[@rend='label']">true</xsl:when>
-                <xsl:when test="self::tei:label[following-sibling::tei:item]">true</xsl:when>
-                <xsl:when test="self::tei:term">true</xsl:when>
-                <xsl:when test="starts-with(@rend,'specList-')">true</xsl:when>
-                <xsl:when test="starts-with(parent::tei:hi/@rend,'specList-')">true</xsl:when>
-                <xsl:otherwise>false</xsl:otherwise>
-            </xsl:choose>
-        </xsl:for-each>
-    </xsl:function>
-    
 
+    <xsl:param name="shadowGraphics">true</xsl:param>
+    <xsl:param name="pageBreakStyle">visible</xsl:param>
+
+
+   
 </xsl:stylesheet>

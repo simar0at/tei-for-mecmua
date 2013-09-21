@@ -1,6 +1,7 @@
 PREFIX=
 LOCATION=/usr
 ETC=/etc
+TEIXSLDIR=http://www.tei-c.org/release/xml/tei/stylesheet
 
 FILES=ChangeLog \
 	g \
@@ -34,8 +35,8 @@ install: release-stamp
 	mkdir -p ${PREFIX}${LOCATION}/share/tei-roma
 	(cd release; tar cf - . ) | (cd ${PREFIX}${LOCATION}/share; tar xf - )
 	mkdir -p ${PREFIX}${LOCATION}/bin
-	sed "s/VVVERSION/`cat VERSION`/" roma2.sh > ${PREFIX}${LOCATION}/bin/roma
-	sed "s/VVVERSION/`cat VERSION`/" roma2.sh > ${PREFIX}${LOCATION}/bin/roma2
+	sed "s/VVVERSION/`cat VERSION`/" roma2.sh | perl -p -e "s+^TEIXSLDIR=.*+TEIXSLDIR=${TEIXSLDIR}+" > ${PREFIX}${LOCATION}/bin/roma
+	sed "s/VVVERSION/`cat VERSION`/" roma2.sh | perl -p -e "s+^TEIXSLDIR=.*+TEIXSLDIR=${TEIXSLDIR}+" > ${PREFIX}${LOCATION}/bin/roma2
 	chmod 755 ${PREFIX}${LOCATION}/bin/roma ${PREFIX}${LOCATION}/bin/roma2
 	mkdir -p ${PREFIX}${ETC}/tei-roma
 	cp ${PREFIX}/${LOCATION}/share/tei-roma/roma/config-dist.php ${PREFIX}${ETC}/tei-roma/config.php
@@ -69,7 +70,7 @@ release-stamp:
 	perl -p -i -e "s+.*define.*roma_version.*+define (\'roma_version\',\'$$V\');+" roma/config-dist.php; \
 	tar --exclude=.svn -c  -f - $(FILES) | (cd release/tei-roma; tar xf -); \
 	perl -p -i -e "s/{roma_version}/$$V/;s/{roma_date}/$$D/" release/tei-roma/roma/templates/main.tem
-	(cd roma; ../roma2.sh --nodtd --noxsd oddschema.odd .)
+	(cd roma; curl -s -F upload=@oddschema.odd  -o oddschema.rng http://oxgarage.oucs.ox.ac.uk:8080/ege-webservice/Conversions/ODD%3Atext%3Axml/ODDC%3Atext%3Axml/relaxng%3Aapplication%3Axml-relaxng/)
 	touch release-stamp
 
 clean:

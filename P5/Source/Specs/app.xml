@@ -6,32 +6,18 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
-<elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="textcrit" ident="app">
-  <equiv/>
-  <gloss>apparatus entry</gloss>
-  <gloss versionDate="2007-12-20" xml:lang="ko">참조 도구 표제 항목</gloss>
-  <gloss versionDate="2007-05-02" xml:lang="zh-TW">學術編輯註解項目</gloss>
-  <gloss versionDate="2008-04-05" xml:lang="ja"/>
-  <gloss versionDate="2007-06-12" xml:lang="fr">entrée d'apparat critique</gloss>
-  <gloss versionDate="2007-05-04" xml:lang="es">entrada de aparato crítico</gloss>
-  <gloss versionDate="2007-01-21" xml:lang="it">voce dell'apparato</gloss>
-  <desc>contains one entry in a critical apparatus, with an optional
-lemma and usually one or more reading or a note on the relevant passage.</desc>
-  <desc versionDate="2007-12-20" xml:lang="ko">수의적 레마와 적어도 하나의 독법을 포함하여 비평적 참조 도구에서 하나의 표제 항목을 포함한다.</desc>
-  <desc versionDate="2007-05-02" xml:lang="zh-TW">一項學術編輯註解，內含一個不必備主題以及至少一個對應本。</desc>
-  <desc versionDate="2008-04-05" xml:lang="ja">
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
+<elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="textcrit" ident="app"><equiv/><gloss>apparatus entry</gloss><gloss versionDate="2007-12-20" xml:lang="ko">참조 도구 표제 항목</gloss><gloss versionDate="2007-05-02" xml:lang="zh-TW">學術編輯註解項目</gloss><gloss versionDate="2008-04-05" xml:lang="ja"/><gloss versionDate="2007-06-12" xml:lang="fr">entrée d'apparat critique</gloss><gloss versionDate="2007-05-04" xml:lang="es">entrada de aparato crítico</gloss><gloss versionDate="2007-01-21" xml:lang="it">voce dell'apparato</gloss><desc>contains one entry in a critical apparatus, with an optional
+lemma and usually one or more reading or a note on the relevant passage.</desc><desc versionDate="2007-12-20" xml:lang="ko">수의적 레마와 적어도 하나의 독법을 포함하여 비평적 참조 도구에서 하나의 표제 항목을 포함한다.</desc><desc versionDate="2007-05-02" xml:lang="zh-TW">一項學術編輯註解，內含一個不必備主題以及至少一個對應本。</desc><desc versionDate="2008-04-05" xml:lang="ja">
   校勘資料中のいち対象で，内容として少なくとも1つの読みと，選択的に見
   出し(lemma)をとる．
-  </desc>
-  <desc versionDate="2007-06-12" xml:lang="fr">contient une entrée dans un apparat critique,
-			constituée d'un lemme facultatif et d'au moins une leçon.</desc>
-  <desc versionDate="2007-05-04" xml:lang="es">contiene una entrada en el aparato crítico, con un lema opcional y, al menos, una lectura.</desc>
-  <desc versionDate="2007-01-21" xml:lang="it">contiene una singola voce in un apparato critico, con un lemma facoltativo e almeno una lettura</desc>
-  <classes>
+  </desc><desc versionDate="2007-06-12" xml:lang="fr">contient une entrée dans un apparat critique,
+			constituée d'un lemme facultatif et d'au moins une leçon.</desc><desc versionDate="2007-05-04" xml:lang="es">contiene una entrada en el aparato crítico, con un lema opcional y, al menos, una lectura.</desc><desc versionDate="2007-01-21" xml:lang="it">contiene una singola voce in un apparato critico, con un lemma facoltativo e almeno una lettura</desc><classes>
     <memberOf key="att.global"/>
     <memberOf key="model.pPart.transcriptional"/>
-  </classes>
-  <content>
+  </classes><content>
     <rng:group xmlns:rng="http://relaxng.org/ns/structure/1.0">
       <rng:zeroOrMore>
         <rng:ref name="model.global"/>
@@ -78,17 +64,7 @@ lemma and usually one or more reading or a note on the relevant passage.</desc>
       </rng:zeroOrMore>
     </rng:group>
   </content>
-  <constraintSpec scheme="isoschematron" ident="only1lem">
-    <constraint xmlns:sch="http://purl.oclc.org/dsdl/schematron">
-      <sch:assert test="count( descendant::tei:lem[ generate-id(
-			current() ) = generate-id(
-			ancestor::tei:app[1] ) ]) &lt;       2">
-Only one &lt;lem&gt; element may appear within a single  apparatus
-entry, whether it appears outside a &lt;rdgGrp&gt;
-element or within it.</sch:assert>
-    </constraint>
-  </constraintSpec>
-  <attList>
+<attList>
     <attDef ident="type" usage="opt">
       <equiv/>
       <desc>classifies the variation contained in this element according to
@@ -108,8 +84,7 @@ some convenient typology.</desc>
     </attDef>
     <attDef ident="from" usage="opt">
       <equiv/>
-      <desc>identifies the beginning of the lemma in the base text, if
-necessary.</desc>
+      <desc>identifies the beginning of the lemma in the base text.</desc>
       <desc versionDate="2007-12-20" xml:lang="ko">필요하다면 기본 텍스트에서 레마의 시작을 식별한다.</desc>
       <desc versionDate="2007-05-02" xml:lang="zh-TW">必要情況下，指出基礎文件中該主題的開端。</desc>
       <desc versionDate="2008-04-05" xml:lang="ja">
@@ -123,8 +98,9 @@ necessary.</desc>
         <rng:ref xmlns:rng="http://relaxng.org/ns/structure/1.0" name="data.pointer"/>
       </datatype>
       <remarks>
-        <p>This attribute is only used when the double-end point
-method of apparatus markup is used.</p>
+        <p>This attribute should be used when either the 
+          double-end point method of apparatus markup, or the location-referenced 
+          method with a URL rather than canonical reference, are used.</p>
       </remarks>
       <remarks xml:lang="fr">
         <p>Cet attribut n'est utilisé que si l'on emploie la méthode de balisage de
@@ -140,8 +116,7 @@ method of apparatus markup is used.</p>
     </attDef>
     <attDef ident="to" usage="opt">
       <equiv/>
-      <desc>identifies the endpoint of the lemma in the base text, if
-necessary.</desc>
+      <desc>identifies the endpoint of the lemma in the base text.</desc>
       <desc versionDate="2007-12-20" xml:lang="ko">필요하다면 기본 텍스트에서 레마의 종료지점을 식별한다.</desc>
       <desc versionDate="2007-05-02" xml:lang="zh-TW">必要情況下，指出基礎文件中該主題的結尾。</desc>
       <desc versionDate="2008-04-05" xml:lang="ja">
@@ -156,9 +131,8 @@ necessary.</desc>
       </datatype>
       <remarks>
         <p>This attribute is only used when the double-end point
-method of apparatus markup is used, with the encoded apparatus held
-in a separate file rather than being embedded <term>in-line</term> in
-the base-text file.</p>
+                method of apparatus markup is used, when the encoded apparatus is not
+                embedded <term>in-line</term> in the base-text.</p>
       </remarks>
       <remarks xml:lang="fr">
         <p>Cet attribut n'est utilisé que si l'on emploie la méthode de balisage de
@@ -216,8 +190,7 @@ encoding method is used.<!-- [Suppress it and use <att>from</att> instead?  -MSM
     </p>
       </remarks>
     </attDef>
-  </attList>
-  <exemplum xml:lang="en">
+  </attList><exemplum xml:lang="en">
     <egXML xmlns="http://www.tei-c.org/ns/Examples">
       <app>
         <lem wit="#El #Hg">Experience</lem>
@@ -238,10 +211,28 @@ encoding method is used.<!-- [Suppress it and use <att>from</att> instead?  -MSM
           <rdg wit="#La">Ex<g ref="#per"/>iment</rdg>
         </rdgGrp>
         <rdgGrp type="subvariants">
-          <lem>Eriment<wit>[unattested]</wit>
-  </lem>
+          <lem resp="#ed2013">Eriment</lem>
           <rdg wit="#Ra2">Eryment</rdg>
         </rdgGrp>
+      </app>
+    </egXML>
+  </exemplum>
+  <exemplum xml:lang="en">
+    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+      <app loc="1"><rdg resp="#SEG">TIMΩΔA</rdg></app>
+    </egXML>
+  </exemplum>
+  <exemplum xml:lang="en">
+    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+      <app loc="1-6"><note>Too badly worn to yield a text</note></app>
+    </egXML>
+  </exemplum>
+  <exemplum xml:lang="en">
+    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+      <choice xml:id="choice3"><reg>σύμπαντα</reg><orig>ΣΙΝΠΑΤΑΝ</orig></choice>
+      <!-- ... -->
+      <app from="#choice3">
+        <note>Mommsen's fanciful normalization, reproduced here, has not been accepted by all recent editions</note>
       </app>
     </egXML>
   </exemplum>
@@ -257,8 +248,6 @@ reading groups, each associated with witness specifications.</p>
     <p rend="dataDesc">
     複数の読み，読みのまとまり，ひとつの選択的な対象語(lemma)をとる．
     </p>
-  </remarks>-->
-  <listRef>
+  </remarks>--><listRef>
     <ptr target="#TCAPEN"/>
-  </listRef>
-</elementSpec>
+  </listRef></elementSpec>

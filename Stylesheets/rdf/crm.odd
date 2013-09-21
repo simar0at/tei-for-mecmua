@@ -3,7 +3,7 @@
    <teiHeader>
       <fileDesc>
          <titleStmt>
-            <title>Mapping TEI to CIDOC CRM</title>
+            <title>Mapping TEI to CIDOC CRM and FRBRoo</title>
 	    <author>Sebastian Rahtz</author>
          </titleStmt>
          <publicationStmt>
@@ -17,11 +17,6 @@
    <text>
      <body>
        <specGrp xml:id="crm">
-<!--
-msDesc
-div[@type='inscription']
--->
-
 	 <elementSpec ident="TEI" mode="change">
 	   <equiv filter="crm.xsl" mimeType="text/xsl" name="TEI"/>
 	 </elementSpec>
@@ -36,7 +31,7 @@ div[@type='inscription']
 		  uri="http://erlangen-crm.org/current/E65_creation"/>
 	 </elementSpec>
 
-	 <elementSpec ident="teiHeader" mode="change">
+	 <elementSpec ident="text" mode="change">
 	   <equiv filter="crm.xsl" mimeType="text/xsl" name="E31" uri="http://erlangen-crm.org/current/E31_Document"/>
 	 </elementSpec>
 
@@ -57,6 +52,16 @@ div[@type='inscription']
 
 	 <elementSpec ident="ab" mode="change">
 	   <equiv filter="crm.xsl" mimeType="text/xsl" name="anonblock"/>
+	 </elementSpec>
+
+	 <elementSpec ident="publicationStmt" mode="change">
+	   <equiv filter="crm.xsl" mimeType="text/xsl" name="F30"
+		  uri="http://erlangen-crm.org/efrbroo/F30_Publication_Event"/>
+	 </elementSpec>
+
+	 <elementSpec ident="fileDesc" mode="change">
+	   <equiv filter="crm.xsl" mimeType="text/xsl" name="F24"
+		  uri="http://erlangen-crm.org/efrbroo/F24_Publication_Expression"/>
 	 </elementSpec>
        </specGrp>
 

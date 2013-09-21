@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="header" ident="publicationStmt">
   <equiv/>
   <gloss>publication statement</gloss>
@@ -48,15 +51,6 @@ $Id$
         <publisher>C. Muquardt </publisher>
         <pubPlace>Bruxelles &amp; Leipzig</pubPlace>
         <date when="1846"/>
-      </publicationStmt>
-    </egXML>
-  </exemplum>
-  <exemplum versionDate="2010-02-26" xml:lang="fr">
-    <egXML xmlns="http://www.tei-c.org/ns/Examples" source="#fr-ex-Fleurs">
-      <publicationStmt>
-        <publisher>C. Muquardt</publisher>
-        <pubPlace>Bruxelles</pubPlace>
-        <date when="1880"/>
       </publicationStmt>
     </egXML>
   </exemplum>
@@ -111,9 +105,15 @@ $Id$
     </egXML>
   </exemplum>
   <remarks>
-    <p>Although not enforced by the schemas, it is a requirement for TEI conformance that
-      information about publication place, address, identifier, availability, and date be given in
-      that order, following the name of the publisher, distributor, or authority concerned</p>
+    <p>Where a publication statement contains several members of
+    the mode.publicationStmtPart class rather than one or more
+    paragraphs, care should be taken to ensure that the repeated
+    elements are presented in a meaningful order. It is a conformance requirement
+    that elements supplying information about publication place,
+    address, identifier, availability, and date be given following the
+    name of the publisher, distributor, or authority concerned, and
+    preferably in that order. These constraints are not currently
+    modelled in the schema, but may be in a future release. </p>
   </remarks>
   <remarks xml:lang="fr">
     <p>Bien que non imposé par les schémas, un document conforme à la TEI doit donner des

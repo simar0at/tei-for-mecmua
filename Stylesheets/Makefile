@@ -4,7 +4,7 @@ TRANG=trang
 SAXON=saxon
 SAXON_ARGS=-ext:on
 
-DIRS=bibtex common2 docx dtd docbook epub epub3 fo2 html html5 json latex2 nlm odds2 odt profiles/default rdf relaxng rnc slides tbx tcp tite tools txt xhtml2 xsd xlsx pdf
+DIRS=bibtex common2 docx dtd docbook epub epub3 fo2 html html5 json latex latex2 nlm odd odds2 odt pdf profiles/default rdf relaxng rnc slides tbx tcp tite tools txt xhtml2 xsd xlsx pdf
 
 SCRIPTS=docbooktotei docxtotei odttotei transformtei tcptotei xlsxtotei \
 	teitodocx 	teitodtd 	teitoepub \
@@ -12,48 +12,41 @@ SCRIPTS=docbooktotei docxtotei odttotei transformtei tcptotei xlsxtotei \
 	teitohtml5 	teitojson 	teitolatex \
 	teitoodt 	teitordf 	teitorelaxng \
 	teitornc 	teitoslides 	teitotxt \
-	teitoxsd	teitopdf
+	teitoxsd	teitopdf	teitobibtex teitodocbook teitoodd
 PREFIX=/usr
 OXY=/usr/share/oxygen
 DOCTARGETS= \
 	latex2/tei.xsl \
 	xhtml2/tei.xsl \
 	fo2/tei.xsl \
+	tcp/tcp2tei.xsl \
 	odds2/odd2odd.xsl \
 	odds2/odd2relax.xsl \
 	odds2/odd2dtd.xsl \
 	slides/teihtml-slides.xsl \
 	slides/teilatex-slides.xsl \
+	profiles/default/csv/from.xsl		\
 	profiles/default/csv/to.xsl	\
-	profiles/default/docx/to.xsl \
+	profiles/default/docbook/from.xsl	\
 	profiles/default/docx/from.xsl \
+	profiles/default/docx/to.xsl \
 	profiles/default/dtd/to.xsl	\
 	profiles/default/epub/to.xsl	\
 	profiles/default/fo/to.xsl	\
 	profiles/default/html/to.xsl \
 	profiles/default/latex/to.xsl \
 	profiles/default/lite/to.xsl \
+	profiles/default/odt/from.xsl \
 	profiles/default/odt/to.xsl \
-	profiles/default/odt/from.xsl \
-	profiles/default/relaxng/to.xsl	\
-	profiles/default/docx/from.xsl \
-	profiles/default/csv/from.xsl		\
-	profiles/default/odt/from.xsl \
-	profiles/default/docbook/from.xsl	\
 	profiles/default/p4/from.xsl \
-	profiles/default/docx/from.xsl
+	profiles/default/relaxng/to.xsl	
 
 PROFILEDOCTARGETS=\
 	profiles/enrich/docx/from.xsl \
 	profiles/enrich/docx/to.xsl \
 	profiles/enrich/fo/to.xsl \
 	profiles/enrich/html/to.xsl \
-	profiles/enrich/latex/to.xsl \
-	profiles/iso/docx/to.xsl \
-	profiles/iso/docx/from.xsl \
-	profiles/iso/fo/to.xsl \
-	profiles/iso/html/to.xsl \
-	profiles/iso/latex/to.xsl 
+	profiles/enrich/latex/to.xsl 
 
 .PHONY: doc release common profiles
 
@@ -73,7 +66,7 @@ check:
 	@which ${SAXON} || exit 1
 
 v:
-	perl -p -i -e "s+AppVersion.*/AppVersion+AppVersion>`cat VERSION`</AppVersion+" docx/to/docxfiles/application.xsl
+	perl -p -i -e "s+AppVersion.*/AppVersion+AppVersion>`cat VERSION`</AppVersion+" docx/to/application.xsl
 
 p5:
 	@echo BUILD Build for P5, XSLT 2.0
@@ -93,21 +86,18 @@ profiles:
 	test -d release/profiles/xml/tei/stylesheet || mkdir -p release/profiles/xml/tei/stylesheet
 	tar cf - --exclude .svn profiles | (cd release/profiles/xml/tei/stylesheet; tar xf - )
 
-doc:
+doc: oxygendoc
 	test -d release/common/doc/tei-xsl-common || mkdir -p release/common/doc/tei-xsl-common
-	saxon -o:doc/customize.xml doc/param.xml doc/param.xsl 
-	saxon -o:doc/style.xml doc/param.xml  doc/paramform.xsl 
-	saxon -o:release/common/doc/tei-xsl-common/index.html doc/teixsl.xml profiles/default/html/to.xsl 
+	saxon -o:doc/index.xml doc/teixsl.xml doc/param.xsl 
+	saxon -o:doc/style.xml doc/teixsl.xml  doc/paramform.xsl 
+	saxon -o:release/common/doc/tei-xsl-common/index.html doc/index.xml profiles/tei/html5/to.xsl cssFile=tei.css 
 	saxon -o:release/common/doc/tei-xsl-common/style.html doc/style.xml  profiles/default/html/to.xsl 
-	saxon -o:release/common/doc/tei-xsl-common/customize.html doc/customize.xml  profiles/default/html/to.xsl cssFile=tei.css 
-	cp doc/teixsl.png doc/teixsl.xml doc/style.xml doc/customize.xml release/common/doc/tei-xsl-common
+	cp doc/*.png doc/teixsl.xml doc/style.xml release/common/doc/tei-xsl-common
 	cp VERSION tei.css ChangeLog LICENCE release/common/doc/tei-xsl-common
 
 oxygendoc:
 	@echo text for existence of file $(OXY)/stylesheetDocumentation.sh
-	@test -f $(OXY)/stylesheetDocumentation.sh || exit 0
-	@echo using oXygen stylesheet documentation generator
-	for i in ${DOCTARGETS}; do echo process doc for $$i; export ODIR=release/common/doc/tei-xsl-common2/`dirname $$i`; ${OXY}/stylesheetDocumentation.sh $$i -cfg:doc/oxydoc.cfg; (cd `dirname $$i`; tar cf - release) | tar xf -; rm -rf `dirname $$i`/release; done
+	-test -f $(OXY)/stylesheetDocumentation.sh && for i in ${DOCTARGETS}; do echo process doc for $$i; export ODIR=release/common/doc/tei-xsl-common/`dirname $$i`; ${OXY}/stylesheetDocumentation.sh $$i -cfg:doc/oxydoc.cfg; (cd `dirname $$i`; tar cf - release) | tar xf -; rm -rf `dirname $$i`/release; done
 
 teioo.jar:
 	(cd odt;  mkdir TEIP5; saxon -o:TEIP5/teitoodt.xsl -s:teitoodt.xsl expandxsl.xsl ; cp odttotei.xsl TEIP5.ott teilite.dtd TEIP5; jar cf ../teioo.jar TEIP5 TypeDetection.xcu ; rm -rf TEIP5)

@@ -10,6 +10,7 @@
                 xmlns:xhtml="http://www.w3.org/1999/xhtml"
                 exclude-result-prefixes="tei xlink xhtml m"
                 version="2.0">
+
   <xsl:import href="../xhtml2/tei.xsl"/>
 
   <xsl:strip-space elements="teix:* rng:* xsl:* xhtml:* atom:* m:*"/>
@@ -51,39 +52,19 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: teihtml-slides.xsl 9669 2011-11-07 19:17:54Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <xsl:output encoding="utf-8" method="xml" doctype-public="-//W3C//DTD XHTML 1.1//EN"/>
   <xsl:param name="outputEncoding">utf-8</xsl:param>
-  <xsl:param name="outputMethod">xml</xsl:param>
-  <xsl:param name="outputSuffix">.xhtml</xsl:param>
-  <xsl:param name="doctypePublic">-//W3C//DTD XHTML 1.1//EN</xsl:param>
-  <xsl:param name="doctypeSystem">http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd</xsl:param>
-  <xsl:param name="cssFile">http://www.tei-c.org/stylesheet/teislides.css</xsl:param>
-  <xsl:param name="logoFile">logo.png</xsl:param>
-  <xsl:param name="logoWidth">60</xsl:param>
-  <xsl:param name="logoHeight">60</xsl:param>
-  <xsl:param name="spaceCharacter">&#160;</xsl:param>
-  <xsl:template name="lineBreak">
-      <xsl:param name="id"/>
-      <xhtml:br/>
-  </xsl:template>
-   <!--
-<xsl:text>(</xsl:text>
-<xsl:value-of select="$id"/>
-<xsl:text>)</xsl:text>
--->
-  <xsl:param name="numberHeadings"/>
-  <xsl:param name="splitLevel">0</xsl:param>
-  <xsl:param name="STDOUT">false</xsl:param>
-  <xsl:param name="subTocDepth">-1</xsl:param>
-  <xsl:param name="topNavigationPanel"/>
-  <xsl:param name="bottomNavigationPanel">true</xsl:param>
-  <xsl:param name="linkPanel"/>
-  <xsl:template name="copyrightStatement"/>
-  <xsl:param name="makingSlides">true</xsl:param>
+  <xsl:output method="xml" omit-xml-declaration="yes" doctype-system="about:legacy-compat" />
+  <xsl:param name="outputTarget">html5</xsl:param>
+  <xsl:param name="logoFile"></xsl:param>
+  <xsl:param name="logoWidth"></xsl:param>
+  <xsl:param name="logoHeight"></xsl:param>
+  <xsl:param name="doctypeSystem">about:legacy-compat</xsl:param>
+  <xsl:param name="doctypePublic"/>
 
   <xsl:template match="tei:div" mode="number">
       <xsl:number level="any"/>
@@ -123,10 +104,10 @@ of this software, even if advised of the possibility of such damage.
          <xsl:value-of select="$masterFile"/>0</xsl:param>
 
       <xsl:variable name="outName">
-         <xsl:call-template name="outputChunkName">
-	           <xsl:with-param name="ident">
-	              <xsl:value-of select="$slidenum"/>
-	           </xsl:with-param>
+	<xsl:call-template name="outputChunkName">
+	  <xsl:with-param name="ident">
+	    <xsl:value-of select="$slidenum"/>
+	  </xsl:with-param>
          </xsl:call-template>
       </xsl:variable>
 
@@ -236,17 +217,17 @@ of this software, even if advised of the possibility of such damage.
                </ul>
             </div>
             <div class="slidebottom">
-	              <div class="slidebottom-image">
-	                 <img id="logo" src="{$logoFile}" width="{$logoWidth}" height="{$logoHeight}"
-                       alt="logo"/>
-	              </div>
-	              <div class="slidebottom-text">
-	                 <xsl:variable name="next">
-	                    <xsl:value-of select="$masterFile"/>
-	                    <xsl:text>1</xsl:text>
-	                 </xsl:variable>
-	                 <a accesskey="n" href="{concat($next,$outputSuffix)}">Start</a>
-	              </div>
+	      <div class="slidebottom-image">
+		<img id="logo" src="{$logoFile}" width="{$logoWidth}" height="{$logoHeight}"
+		     alt="logo"/>
+	      </div>
+	      <div class="slidebottom-text">
+		<xsl:variable name="next">
+		  <xsl:value-of select="$masterFile"/>
+		  <xsl:text>1</xsl:text>
+		</xsl:variable>
+		<a accesskey="n" href="{concat($next,$outputSuffix)}">Start</a>
+	      </div>
             </div>
          </body>
       </html>
@@ -451,37 +432,33 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
 
   <xsl:template name="slidebody">
-      <div class="slidetop">
-         <div class="slidetitle">
-            <xsl:call-template name="header">
-	              <xsl:with-param name="display">full</xsl:with-param>
-	           </xsl:call-template>
-         </div>
-         <xsl:if test="$splitLevel &gt;-1">
-            <div class="xref">
-               <xsl:call-template name="xrefpanel"/>
-            </div>
-         </xsl:if>
+    <div class="slidetop">
+      <div class="slidetitle">
+	<xsl:call-template name="header">
+	  <xsl:with-param name="display">full</xsl:with-param>
+	</xsl:call-template>
       </div>
-      <div class="slidemain">
-         <xsl:apply-templates/>
+      <div class="xref">
+	<xsl:call-template name="xrefpanel"/>
       </div>
-      <div class="slidebottom">
-         <xsl:call-template name="slideBottom"/>
-      </div>
+    </div>
+    <div class="slidemain">
+      <xsl:apply-templates/>
+    </div>
+    <div class="slidebottom">
+      <xsl:call-template name="slideBottom"/>
+    </div>
   </xsl:template>
 
 
   <xsl:template name="slideBottom">
-      <div class="slidebottom">
-         <div class="slidebottom-image">
-	           <img id="logo" src="{$logoFile}" width="{$logoWidth}" height="${logoHeight}"
-                 alt="logo"/>
-         </div>
-         <div class="slidebottom-text">
-	           <xsl:sequence select="tei:generateTitle(.)"/>
-         </div>
-      </div>
+    <div class="slidebottom-image">
+      <img id="logo" src="{$logoFile}" width="{$logoWidth}" height="${logoHeight}"
+	   alt="logo"/>
+    </div>
+    <div class="slidebottom-text">
+      <xsl:sequence select="tei:generateTitle(.)"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="tei:row">

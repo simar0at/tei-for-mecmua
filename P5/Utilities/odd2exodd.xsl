@@ -1,6 +1,7 @@
 <xsl:stylesheet
-  exclude-result-prefixes="xlink dbk rng tei teix xhtml a html xs xsl"
+  exclude-result-prefixes="#all"
   version="2.0"
+  xmlns:nvdl="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"
   xmlns="http://www.tei-c.org/ns/1.0"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:dbk="http://docbook.org/ns/docbook"
@@ -16,6 +17,8 @@
 <xsl:output method="xml" indent="yes"/>
 
 <xsl:key name="SPEC" match="tei:schemaSpec|tei:specGrp" use="1"/>
+
+<xsl:variable name="orig" select="/"/>
 
 <xsl:template match="*">
  <xsl:copy>
@@ -42,6 +45,7 @@
     <xsl:value-of select="."/>
     <xsl:text>-examples</xsl:text>
   </xsl:attribute>
+     
 </xsl:template>
 
 <xsl:template match="tei:schemaSpec/@ns"/>
@@ -50,7 +54,7 @@
 <xsl:template match="tei:schemaSpec">
   <xsl:copy>
     <xsl:apply-templates select="@*"/>
-    <xsl:attribute name="start">egXML</xsl:attribute>
+    <xsl:attribute name="start">egXML TEI</xsl:attribute>
     <xsl:attribute name="ns">
       <xsl:text>http://www.tei-c.org/ns/Examples</xsl:text>
     </xsl:attribute>
@@ -58,32 +62,69 @@
 	select="*|processing-instruction()|comment()|text()"/>  
     <xsl:choose>
       <xsl:when
-	  test="//tei:moduleRef[@key='tagdocs']"/>
-      <xsl:when
 	  test="//tei:elementRef[@key='egXML']"/>
       <xsl:when
 	  test="//tei:elementSpec[@ident='egXML']"/>
+      <xsl:when
+	  test="//tei:moduleRef[@key='tagdocs' and
+		contains(@exclude,'egXML')]">
+	<elementRef key="egXML"/>
+      </xsl:when>
+      <xsl:when
+	  test="//tei:moduleRef[@key='tagdocs' and @include
+		and not(contains(@include,'egXML'))]">
+	<elementRef key="egXML"/>
+      </xsl:when>
+      <xsl:when
+	  test="//tei:moduleRef[@key='tagdocs' and
+		not(@exclude or @include)]">
+      </xsl:when>
       <xsl:otherwise>
 	<elementRef key="egXML"/>
       </xsl:otherwise>
     </xsl:choose>
-    <elementSpec ident="egXML" mode="change" ns="http://www.tei-c.org/ns/Examples">
-      <content>
-	<oneOrMore xmlns="http://relaxng.org/ns/structure/1.0">
-	  <choice>
-	    <text/>
-	    <ref name="macro.anyElementDefined"/>
+    <xsl:if test="not(//tei:elementSpec[@ident='egXML'])">
+      <elementSpec ident="egXML" mode="change" ns="http://www.tei-c.org/ns/Examples">
+	<content>
+	  <oneOrMore xmlns="http://relaxng.org/ns/structure/1.0">
+	    <choice>
+	      <text/>
+	      <ref name="macro.anyElementDefined"/>
 	  </choice>
-	</oneOrMore>
+	  </oneOrMore>
       </content>
-    </elementSpec>
-    
+      </elementSpec>
     <macroSpec ident="macro.anyElementDefined" mode="add">
       <content>
 	<xsl:processing-instruction name="NameList"/>
       </content>
     </macroSpec>
-    
+    </xsl:if>    
+  </xsl:copy>
+
+  <xsl:result-document href="{@ident}.nvdl">
+    <xsl:message>writing <xsl:value-of select="@ident"/>.nvdl</xsl:message>
+    <xsl:apply-templates select="doc('../p5.nvdl')/*"/>
+  </xsl:result-document>
+
+</xsl:template>
+
+<xsl:template match="nvdl:validate">
+  <xsl:copy>
+    <xsl:attribute name="schema">
+    <xsl:choose>
+      <xsl:when test="@schema='p5odds-examples.rng'">
+	<xsl:value-of select="$orig//tei:schemaSpec[1]/@ident"/>
+	<xsl:text>-examples.rng</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:text>../</xsl:text>
+	<xsl:value-of select="@schema"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    </xsl:attribute>
+    <xsl:apply-templates select="@useMode"/>
+    <xsl:apply-templates select="*"/>
   </xsl:copy>
 </xsl:template>
 </xsl:stylesheet>

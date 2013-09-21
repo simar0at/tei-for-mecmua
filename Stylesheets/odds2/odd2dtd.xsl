@@ -51,8 +51,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: odd2dtd.xsl 10844 2012-09-20 22:03:38Z rahtz $</p>
-         <p>Copyright: 2011, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
   <xsl:output method="text"/>
@@ -64,10 +64,10 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template name="headingNumberSuffix">
       <xsl:text> </xsl:text>
   </xsl:template>
-  <xsl:param name="numberBackHeadings"> </xsl:param>
-  <xsl:param name="numberFrontHeadings"> </xsl:param>
-  <xsl:param name="numberHeadings"> </xsl:param>
-  <xsl:param name="numberHeadingsDepth"> </xsl:param>
+  <xsl:param name="numberBackHeadings"/>
+  <xsl:param name="numberFrontHeadings"/>
+  <xsl:param name="numberHeadings"/>
+  <xsl:param name="numberHeadingsDepth"/>
   <xsl:param name="oddmode">dtd</xsl:param>
   <xsl:param name="prenumberedHeadings">false</xsl:param>
   <xsl:param name="splitLevel">-1</xsl:param>
@@ -575,12 +575,12 @@ of this software, even if advised of the possibility of such damage.
             <xsl:for-each select="rng:value">
                <xsl:value-of select="."/>
                <xsl:if test="following-sibling::rng:value">
-                  <xsl:text>|&#10;</xsl:text>
+                  <xsl:text>|</xsl:text>
                </xsl:if>
             </xsl:for-each>) </xsl:when>
          <xsl:otherwise>
             <xsl:call-template name="content">
-               <xsl:with-param name="sep" select="' |&#xA; '"/>
+               <xsl:with-param name="sep" select="'|'"/>
             </xsl:call-template>
          </xsl:otherwise>
       </xsl:choose>
@@ -683,14 +683,14 @@ of this software, even if advised of the possibility of such damage.
                   <xsl:otherwise>
                      <xsl:value-of select="."/>
                      <xsl:choose>
-                        <xsl:when test="self::N[1]='|&#xA;'"/>
+                        <xsl:when test="self::N[1]='|'"/>
                         <xsl:when test="self::N[1]='('"/>
                         <xsl:when test="self::N[1]=')' and position() &lt; last()">
                            <xsl:value-of select="$sep"/>
                         </xsl:when>
                         <xsl:when test="following-sibling::N[1]='('"/>
                         <xsl:when test="following-sibling::N[1]=')'"/>
-                        <xsl:when test="following-sibling::N[1]='|&#xA;'"/>
+                        <xsl:when test="following-sibling::N[1]='|'"/>
                         <xsl:when test="position() &lt; last()">
                            <xsl:value-of select="$sep"/>
                         </xsl:when>
@@ -717,7 +717,7 @@ of this software, even if advised of the possibility of such damage.
           <xsl:when test="$contentbody=''"/>
           <xsl:when test="$contentbody='()'"/>
 	        <!-- some special cases of known evil -->
-          <xsl:when test="$contentbody='(#PCDATA |  #PCDATA)'">
+          <xsl:when test="$contentbody='(#PCDATA|#PCDATA)'">
             <xsl:text>(#PCDATA)</xsl:text>
           </xsl:when>
           <xsl:when test="contains($contentbody,'#PCDATA') and contains($contentbody,'%macro.anyXML;')">
@@ -805,14 +805,11 @@ of this software, even if advised of the possibility of such damage.
             <xsl:text> (#PCDATA)</xsl:text>
          </xsl:when>
          <xsl:otherwise>
-            <xsl:text> #PCDATA</xsl:text>
+            <xsl:text>#PCDATA</xsl:text>
          </xsl:otherwise>
       </xsl:choose>
   </xsl:template>
   <xsl:template match="tei:macroSpec[@type='dt']/tei:content/rng:text">
-      <xsl:text> CDATA</xsl:text>
-  </xsl:template>
-  <xsl:template match="tei:macroSpec[@type='dt']/tei:content/rng:data">
       <xsl:text> CDATA</xsl:text>
   </xsl:template>
   <xsl:template match="tei:macroSpec[@type='epe']/tei:content/rng:text">
@@ -830,7 +827,7 @@ of this software, even if advised of the possibility of such damage.
             <xsl:text>(</xsl:text>
             <xsl:for-each select="rng:value">
                <xsl:value-of select="."/>
-               <xsl:if test="following-sibling::rng:value">|&#10;</xsl:if>
+               <xsl:if test="following-sibling::rng:value">|</xsl:if>
             </xsl:for-each>
             <xsl:if test="rng:data/@type='boolean'">
                <xsl:text> | true | false</xsl:text>
@@ -988,7 +985,7 @@ of this software, even if advised of the possibility of such damage.
             <xsl:choose>
                <xsl:when test="preceding-sibling::processing-instruction()"/>
                <xsl:otherwise>
-                  <xsl:text>|&#10;</xsl:text>
+                  <xsl:text>|</xsl:text>
                </xsl:otherwise>
             </xsl:choose>
          </xsl:if>
@@ -1040,12 +1037,15 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:when test=".//rng:anyName">
 	    <xsl:text> ANY</xsl:text>
 	  </xsl:when>
+	  <xsl:when test="@mixed='true' and not(*)">
+	    <xsl:text> CDATA</xsl:text>
+	  </xsl:when>
 	  <xsl:when test="processing-instruction()[name()='NameList']">
 	    <xsl:text> ANY</xsl:text>
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:apply-templates
-		select="tei:*|rng:*|processing-instruction()"/>
+		select="*|processing-instruction()"/>
 	  </xsl:otherwise>
 	</xsl:choose>
       </xsl:for-each>
@@ -1126,6 +1126,9 @@ of this software, even if advised of the possibility of such damage.
 	    <xsl:text> (#PCDATA)</xsl:text>
 	  </xsl:when>
 	  <xsl:when test="tei:content/rng:ref/@name='data.name'">
+	    <xsl:text> (#PCDATA)</xsl:text>
+	  </xsl:when>
+	  <xsl:when test="tei:content/tei:macroRef/@key='data.name'">
 	    <xsl:text> (#PCDATA)</xsl:text>
 	  </xsl:when>
 	  <xsl:when test="tei:valList[@type='closed']">
@@ -1459,8 +1462,7 @@ of this software, even if advised of the possibility of such damage.
                <xsl:if test="position() &lt; last()">, </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-               <xsl:if test="position() &lt; last()"> |
- </xsl:if>
+               <xsl:if test="position() &lt; last()"> |</xsl:if>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:for-each>
@@ -1655,5 +1657,177 @@ of this software, even if advised of the possibility of such damage.
     <xsl:param name="text"/>
   </xsl:template>
 
+<!-- for foxglove -->
+  <xsl:template match="tei:sequence">
+    <xsl:variable name="innards">
+      <xsl:variable name="suffix"
+		    select="tei:generateIndicators(@minOccurs,@maxOccurs)"/>
+      <token>
+      <xsl:choose>
+	<xsl:when test="string-length($suffix)=0">
+          <xsl:text>(</xsl:text>
+	  <xsl:call-template name="innards">
+	    <xsl:with-param name="sep">,</xsl:with-param>
+	  </xsl:call-template>
+          <xsl:text>)</xsl:text>          
+	</xsl:when>
+	<xsl:otherwise>
+          <xsl:text>(</xsl:text>
+	  <xsl:call-template name="innards">
+	    <xsl:with-param name="sep">,</xsl:with-param>
+	  </xsl:call-template>
+          <xsl:text>)</xsl:text>
+	  <xsl:value-of select="$suffix"/>
+	</xsl:otherwise>
+      </xsl:choose>
+      </token>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="parent::tei:content and count($innards/*)&gt;1">
+	<xsl:text>(</xsl:text>
+	<xsl:value-of select="$innards/*" separator=","/>
+	<xsl:text>)</xsl:text>
+      </xsl:when>
+      <xsl:when test="parent::tei:content">
+	<xsl:value-of select="$innards/*" separator=","/>
+      </xsl:when>
+      <xsl:otherwise>
+	<token>
+	  <xsl:copy-of select="$innards"/>
+	</token>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="tei:alternate">
+    <token>
+      <xsl:variable name="suffix" select="tei:generateIndicators(@minOccurs,@maxOccurs)"/>
+      <xsl:choose>
+	<xsl:when test="string-length($suffix)=0">
+          <xsl:text>(</xsl:text>
+	  <xsl:call-template name="innards"/>
+	  <xsl:text>)</xsl:text>          
+	</xsl:when>
+	<xsl:otherwise>
+          <xsl:text>(</xsl:text>
+	  <xsl:call-template name="innards"/>
+          <xsl:text>)</xsl:text>
+	  <xsl:value-of select="$suffix"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </token>
+  </xsl:template>
+
+  <xsl:template match="tei:interleave">
+    <xsl:message>met an interleave</xsl:message>
+  </xsl:template>
+  
+  <xsl:template match="tei:elementRef|tei:classRef|tei:macroRef">
+    <xsl:variable name="exists">
+      <xsl:call-template name="checkClass">
+	<xsl:with-param name="id" select="@key"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="suffix"
+		  select="tei:generateIndicators(@minOccurs,@maxOccurs)"/>
+    <xsl:variable name="ename">
+      <xsl:choose>
+	<xsl:when test="self::tei:classRef and $exists=''">
+	  <xsl:text>_DUMMY_</xsl:text>
+	  <xsl:value-of select="@key"/>
+	</xsl:when>
+	<xsl:when test="self::tei:elementRef and $parameterize='true'">
+	  <xsl:value-of select="concat('%n.',@key,';')"/>
+	</xsl:when>
+	<xsl:when test="self::tei:elementRef">
+	  <xsl:value-of select="@key"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="concat('%',@key,';')"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="this" select="@key"/>
+
+    <token>
+      <xsl:choose>
+	<xsl:when test="ancestor::tei:macroSpec">
+	  <xsl:copy-of select="$ename"/>
+	</xsl:when>
+        <xsl:when test="@expand='sequenceOptionalRepeatable'">
+	  <xsl:for-each select="key('CLASSMEMBERS',$this)">
+	    <xsl:text>(</xsl:text>
+	    <xsl:value-of select="@ident"/>
+	    <xsl:text>)*</xsl:text>
+	    <xsl:if test="position() &lt; last()"><xsl:text>,</xsl:text></xsl:if>
+	  </xsl:for-each>
+        </xsl:when>
+        <xsl:when test="@expand='sequenceOptional'">
+	  <xsl:for-each select="key('CLASSMEMBERS',$this)">
+	    <xsl:text>(</xsl:text>
+	    <xsl:value-of select="@ident"/>
+	    <xsl:text>)?</xsl:text>
+	    <xsl:if test="position() &lt; last()"><xsl:text>,</xsl:text></xsl:if>
+	  </xsl:for-each>
+        </xsl:when>
+        <xsl:when test="@expand='sequence'">
+	  <xsl:for-each select="key('CLASSMEMBERS',$this)">
+	    <xsl:value-of select="@ident"/>
+	    <xsl:if test="position() &lt; last()"><xsl:text>,</xsl:text></xsl:if>
+	  </xsl:for-each>
+        </xsl:when>
+        <xsl:when test="@expand='sequenceRepeatable'">
+	  <xsl:for-each select="key('CLASSMEMBERS',$this)">
+	    <xsl:text>(</xsl:text>
+	    <xsl:value-of select="@ident"/>
+	    <xsl:text>)+</xsl:text>
+	    <xsl:if test="position() &lt; last()"><xsl:text>,</xsl:text></xsl:if>
+	  </xsl:for-each>
+        </xsl:when>
+	<xsl:when test="number(@maxOccurs)&gt;1">
+	  <xsl:variable name="max" select="@maxOccurs" as="xs:integer"/>
+	  <xsl:for-each select="1 to $max">
+	    <xsl:copy-of select="$ename"/>
+	    <xsl:if test="position() &lt; last()"><xsl:text>,</xsl:text></xsl:if>
+	  </xsl:for-each>
+	</xsl:when>
+	<xsl:when test="string-length($suffix)&gt;0">
+	  <xsl:text>(</xsl:text>
+	  <xsl:value-of select="$ename"/>
+	  <xsl:text>)</xsl:text>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of select="$ename"/>
+      </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="$suffix"/>
+    </token>
+  </xsl:template>
+  
+  <xsl:template name="innards">
+    <xsl:param name="sep">|</xsl:param>
+    <xsl:variable name="innards">
+      <xsl:if test="ancestor::tei:*/@mixed='true'">
+	<token>
+	  <xsl:text>#PCDATA</xsl:text>
+	</token>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </xsl:variable>
+    <xsl:value-of select="$innards/*" separator="{$sep}"/>
+  </xsl:template>
+
+  <xsl:function name="tei:generateIndicators">
+    <xsl:param name="min"/>
+    <xsl:param name="max"/>
+    <xsl:choose>
+      <xsl:when test="$min='0' and $max='1'">?</xsl:when>
+      <xsl:when test="$min='0' and not($max)">?</xsl:when>
+      <xsl:when test="$min='1' and $max='unbounded'">+</xsl:when>
+      <xsl:when test="not($min) and $max='unbounded'">+</xsl:when>
+      <xsl:when test="$min='0' and $max='unbounded'">*</xsl:when>
+      <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
 
 </xsl:stylesheet>

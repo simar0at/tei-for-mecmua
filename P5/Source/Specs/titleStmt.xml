@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="header" ident="titleStmt">
   <equiv/>
   <gloss>title statement</gloss>
@@ -57,24 +60,24 @@ $Id$
       <titleStmt>
         <title>Le sanctoral du lectionnaire de l'office dominicain (1254-1256)</title>
         <funder>2008—..., École nationale des chartes</funder>
-        <principal xml:id="fr_AEU-1">Anne-Élisabeth Urfels-Capot</principal>
+        <principal>Anne-Élisabeth Urfels-Capot</principal>
         <respStmt>
           <resp>responsable des publications</resp>
-          <name xml:id="fr_OC">Olivier Canteaut (École nationale des chartes)</name>
+          <name >Olivier Canteaut (École nationale des chartes)</name>
         </respStmt>
         <respStmt>
           <resp> 2009—..., Éditeur électronique : du TEI à l'écran</resp>
-          <name ref="vincent.jolivet@enc.sorbonne.fr" xml:id="fr_VJ">Vincent Jolivet (École nationale
+          <name ref="vincent.jolivet@enc.sorbonne.fr">Vincent Jolivet (École nationale
               des chartes)</name>
         </respStmt>
         <respStmt>
           <resp>2009, Éditeur scientifique</resp>
-          <name ref="pascale.bourgain@enc.sorbonne.fr" xml:id="fr_PB">Pascale Bourgain (École
+          <name ref="pascale.bourgain@enc.sorbonne.fr" >Pascale Bourgain (École
               nationale des chartes)</name>
         </respStmt>
         <respStmt>
           <resp>2008, Conversion du document bureautique vers TEI</resp>
-          <name ref="frederic.glorieux@enc.sorbonne.fr" xml:id="fr_FG">Frédéric Glorieux (École
+          <name ref="frederic.glorieux@enc.sorbonne.fr">Frédéric Glorieux (École
               nationale des chartes)</name>
         </respStmt>
       </titleStmt>

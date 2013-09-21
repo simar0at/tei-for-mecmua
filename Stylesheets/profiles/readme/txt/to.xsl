@@ -45,7 +45,7 @@ of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
          <p>Id: $Id: to.xsl 8923 2011-05-25 13:11:45Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -90,7 +90,7 @@ of this software, even if advised of the possibility of such damage.
  * </xsl:text><xsl:apply-templates/>
 </xsl:template>
 
-<xsl:template match="tei:list[@type='ordered']/tei:item">
+<xsl:template match="tei:list[tei:isGlossList(.)]/tei:item">
 <xsl:text>
   </xsl:text><xsl:number/><xsl:text>  </xsl:text><xsl:apply-templates/>
 </xsl:template>

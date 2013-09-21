@@ -71,8 +71,8 @@ theory of liability, whether in contract, strict liability, or tort
 of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
-         <p>Id: $Id: odttotei.xsl 10883 2012-10-01 16:41:42Z rahtz $</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Id: $Id$</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
 
@@ -1068,13 +1068,6 @@ of this software, even if advised of the possibility of such damage.
         <term>
           <xsl:value-of select="."/>
         </term>
-        <xsl:if test="key('secondary_children', generate-id())">
-          <index>
-	    <term>
-            <xsl:value-of select="key('secondary_children', generate-id())"/>
-	    </term>
-	  </index>
-        </xsl:if>
       </index>
     </xsl:for-each>
   </xsl:template>

@@ -52,23 +52,13 @@ XSL LaTeX stylesheet to make slides
   <xsl:import href="../latex2/tei.xsl"/>
   <xsl:strip-space elements="teix:* rng:* xsl:* xhtml:* atom:*"/>
   <xsl:output method="text" encoding="utf-8"/>
-  <xsl:variable name="docClass">beamer</xsl:variable>
-  <xsl:param name="startNamespace">\color{black}</xsl:param>
-  <xsl:param name="startElement">{\color{blue}</xsl:param>
-  <xsl:param name="startElementName">\textbf{\color{blue}</xsl:param>
-  <xsl:param name="startAttribute">{\color{blue}</xsl:param>
-  <xsl:param name="startAttributeValue">{\color{blue}</xsl:param>
-  <xsl:param name="startComment">\textit{</xsl:param>
-  <xsl:param name="endElement">}</xsl:param>
-  <xsl:param name="endElementName">}</xsl:param>
-  <xsl:param name="endComment">}</xsl:param>
-  <xsl:param name="endAttribute">}</xsl:param>
-  <xsl:param name="endAttributeValue">}</xsl:param>
-  <xsl:param name="endNamespace"/>
-  <xsl:param name="spaceCharacter">\hspace*{1em}</xsl:param>
+  <xsl:param name="documentclass">beamer</xsl:param>
   <xsl:param name="classParameters"/>
   <xsl:param name="beamerClass">PaloAlto</xsl:param>
   <xsl:param name="pause">true</xsl:param>
+  <xsl:param name="attsOnSameLine">2</xsl:param>
+  <xsl:param name="attLength">35</xsl:param>
+  <xsl:param name="spaceCharacter">\hspace*{4pt}</xsl:param>
 
   <xsl:template name="verbatim-lineBreak">
       <xsl:param name="id"/>
@@ -80,11 +70,14 @@ XSL LaTeX stylesheet to make slides
 \definecolor{shadecolor}{gray}{0.95}
 \usepackage{colortbl}
 \usepackage{longtable}
+\usepackage[normalem]{ulem}
 \usetheme{<xsl:value-of select="$beamerClass"/>}
 \usepackage{times}
 \usepackage{fancyvrb}
 \usepackage{fancyhdr}
 \def\Gin@extensions{.pdf,.png,.jpg,.mps,.tif}
+\xdefinecolor{blue1}{rgb}{0, 0, 0.7}
+\xdefinecolor{blue2}{rgb}{0, 0, 1}
 \setbeamercovered{transparent}
 \let\mainmatter\relax
 \let\frontmatter\relax
@@ -267,7 +260,7 @@ XSL LaTeX stylesheet to make slides
    </xsl:template>
 
    <xsl:template match="tei:hi[not(@rend)]">
-      <xsl:text>\alert{</xsl:text>
+      <xsl:text>\textcolor{red}{</xsl:text>
       <xsl:apply-templates/>
       <xsl:text>}</xsl:text>
    </xsl:template>
@@ -393,6 +386,51 @@ XSL LaTeX stylesheet to make slides
 	  <xsl:value-of select="tei:escapeChars(.,.)"/>
 	</xsl:non-matching-substring>
       </xsl:analyze-string>
+  </xsl:template>
+
+  <xsl:template name="Element">
+    <xsl:param name="content"/>
+    <xsl:text>{\color{blue1}</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML element name in a verbatim context</desc>
+  </doc>
+  <xsl:template name="ElementName">
+    <xsl:param name="content"/>
+    <xsl:text>\textbf{\color{blue1}</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML attribute value in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="AttributeValue">
+    <xsl:param name="content"/>
+    <xsl:text>{\color{blue2}</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>[latex] show an XML attribute in a verbatim context</desc>
+  </doc>
+
+  <xsl:template name="Attribute">
+    <xsl:param name="content"/>
+    <xsl:text>{\color{blue2}</xsl:text>
+      <xsl:copy-of select="$content"/>
+    <xsl:text>}</xsl:text>
+  </xsl:template>
+  
+  <xsl:template match="tei:affiliation">
+      <xsl:text>\mbox{}\\(\textit{</xsl:text>
+      <xsl:apply-templates/>
+      <xsl:text>})</xsl:text>
   </xsl:template>
 
 

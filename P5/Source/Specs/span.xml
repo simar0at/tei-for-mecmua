@@ -6,6 +6,9 @@ See the file COPYING.txt for details
 $Date$
 $Id$
 -->
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="analysis" ident="span">
   <desc>associates an interpretative annotation directly with a span of text.</desc>
   <desc versionDate="2007-12-20" xml:lang="ko">해석적 부호를 텍스트의 일정 부분과 직접적으로 연결시킨다.</desc>
@@ -114,7 +117,7 @@ The attributes @to and @from on <name/> may each contain only a single value</re
       <p xml:id="zh-tw_第三小節">("結局"持續)</p>
       <p xml:id="zh-tw_第四小節">("結局"結束於此)</p>
       <!-- ... -->
-      <span type="架構" from="第二小節" to="第四小節">結局</span>
+      <span type="架構" from="#第二小節" to="#第四小節">結局</span>
     </egXML>
   </exemplum>
   <listRef>

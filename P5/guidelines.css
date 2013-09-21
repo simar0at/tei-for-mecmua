@@ -1,19 +1,76 @@
 /*
   ** Copyright 2011 TEI Consortium
   $Id$
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the
-  Free Software Foundation, Inc.,
-  59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+Most TEI Consortium materials, including the TEI Guidelines, are copyrighted by 
+the Text Encoding Initiative Consortium, and are made available under the terms 
+and conditions of both:
+
+Creative Commons Attribution 3.0 Unported License 
+http://creativecommons.org/licenses/by/3.0/ 
+
+and a 
+
+BSD 2-Clause license
+http://www.opensource.org/licenses/BSD-2-Clause
+
+You may choose the license that is most appropriate for the use you intend to 
+make of the TEI material. Hence it is made available under both the CC+BY and 
+BSD-2 licences. The CC+BY licence is generally appropriate for usages which 
+treat TEI content as data or documentation. The BSD-2 licence is generally 
+appropriate for usage of TEI content in a software environment. For further 
+information or clarification, please contact the TEI Consortium(info@tei-c.org).
+
+This license permits a wide range of uses, as long as attribution is preserved, 
+including the following:
+
+* Users may make copies of TEI materials, whether the XML source or the derived 
+products (XHTML, PDF, DTD, RELAX NG, etc.) either digitally, with a 
+photocopier, by audio recording, or by any other means.
+* Users may distribute copies of the TEI materials, either for free or for a 
+fee.
+* Users may make changes to TEI materials and distribute the modified version 
+provided that they provide attribution of the TEI Consortium as the source.
+
+The following activities are all allowed and encouraged:
+* Downloading a copy of the HTML version of the TEI Guidelines or its source
+* Giving a copy of the HTML version of the TEI Guidelines to a friend.
+* Downloading or giving to others the source of the TEI materials.
+* Distributing copies of the TEI materials (source or derived) on media or 
+from websites.
+* Making derived software that uses the TEI materials as a source
+But make sure to provide reasonable attribution back to the TEI Consortium, for 
+example by citing this website.
+
+BSD 2-Clause
+If you choose to use the BSD 2-Clause license, these conditions require 
+including the following:
+
+===
+Copyright 2013 TEI Consortium. All rights reserved.
+          
+Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions are met:
+  *    Redistributions of source code must retain the above copyright notice, 
+       this list of conditions and the following disclaimer.
+  *    Redistributions in binary form must reproduce the above copyright notice, 
+       this list of conditions and the following disclaimer in the documentation 
+       and/or other materials provided with the distribution.
+        
+ This software is provided by the copyright holders and contributors
+ "as is" and any express or implied warranties, including, but not
+ limited to, the implied warranties of merchantability and fitness for
+ a particular purpose are disclaimed. In no event shall the copyright
+ holder or contributors be liable for any direct, indirect, incidental,
+ special, exemplary, or consequential damages (including, but not
+ limited to, procurement of substitute goods or services; loss of use,
+ data, or profits; or business interruption) however caused and on any
+ theory of liability, whether in contract, strict liability, or tort
+ (including negligence or otherwise) arising in any way out of the use
+ of this software, even if advised of the possibility of such
+ damage.
+===
+
+ **/
 /* main layout  for TEI Guidelines */
 body {
     color: #000000;
@@ -418,8 +475,62 @@ li.toc {
 span.headingNumber {
 }
 div.toc_back {
-    float: right;
+/* MDH 2013-06-03: commenting this out as part of 
+   reworking of Guidelines TOC page.  When all is 
+   good, delete.*/
+    /* float: right; */
 }
+/* MDH 2013-06-03: Additions as part of reworking 
+   of Guidelines TOC. */
+   
+/* Make sure the footer stays at the foot. */      
+div.stdfooter{
+    clear:both;
+}
+
+/* Centre the language links. */
+div.stdfooter p{
+    text-align: center;
+}
+
+p.lang_links{
+    text-align:center;
+    line-height: 200%;
+}
+
+div.col_left,
+div.col_centre,
+div.col_right{
+    float: left;
+    margin: 0;
+    padding: 1%;
+}
+
+div.col_left{
+    max-width: 30%;
+    min-width: 30%;
+    margin-left: 2%;
+}
+div.col_centre{
+    max-width: 45%;
+    min-width: 33%;
+}
+div.col_right{
+    max-width: 28%;
+    min-width: 20%;
+}
+
+div.toc_front h3, div.toc_body h3, div.toc_back h3, div.col_right>div h3{
+    margin-top: 0.5em;
+}
+
+a.ebookLink{
+    text-decoration: none;
+    cursor: pointer;
+}
+/* MDH 2013-06-03: End of additions as part of reworking 
+   of Guidelines TOC. */
+
 /* notes */
 div.noteHeading {
     margin-top: 9pt;
@@ -696,7 +807,8 @@ div.mainhead {
     background-color: #FFFFFF;
 }
 div.mainhead p {
-    text-align: right
+    text-align: right;
+    padding-right: 3.9em;
 }
 h1 {
     font-size: 13pt;
@@ -747,3 +859,40 @@ div.licence {
     font-size: 75%;
     border: 1px solid black
 }
+div.q {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+/* MDH 2013-06-18: This ensures the bibliography list numerical markers 
+   don't butt right up against the floated miniTOC. */
+ol.listBibl li {
+  position: relative;
+  left: 2em;
+}
+/* MDH 2013-08: The following two rulesets are used for the popup footnote
+   feature added through popupFootnotes.js. */
+div#footnotePopup{
+  box-shadow: 6px 6px 3px #808080;
+  display: none;
+  margin-right: 0;
+  max-height: 50%;
+  overflow: auto;
+  padding: 0.5em;
+  position: fixed;
+  right: 2%;
+  top: 25%;
+  width: 25%;
+  background-color: #F6F6F6;
+  border: 1px solid #2277BB;
+} 
+div.footnotePopupCloser{
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  float: right;
+  text-align: center;
+  vertical-align: middle;
+  width: 1em;
+  background-color: #C0C0C0;
+}
+

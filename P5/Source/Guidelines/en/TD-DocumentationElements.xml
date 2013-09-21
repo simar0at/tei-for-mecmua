@@ -6,8 +6,13 @@ See the file COPYING.txt for details.
 $Date$
 $Id$
 -->
+
+
+<?xml-model href="http://tei.oucs.ox.ac.uk/jenkins/job/TEIP5/lastSuccessfulBuild/artifact/release/xml/tei/odd/p5.nvdl" type="application/xml" schematypens="http://purl.oclc.org/dsdl/nvdl/ns/structure/1.0"?>
+
 <div xmlns="http://www.tei-c.org/ns/1.0" type="div1" xml:id="TD"
      n="27"
+     xmlns:rng="http://relaxng.org/ns/structure/1.0"
     xmlns:s="http://www.ascc.net/xml/schematron" 
     xmlns:sch="http://purl.oclc.org/dsdl/schematron"
 >
@@ -196,16 +201,13 @@ under discussion introduce each subsection of a module's
 documentation. The source for the present section, for example, begins
 as follows:
 <egXML xmlns="http://www.tei-c.org/ns/Examples"><div3><head>Element and attribute descriptions</head>
-<p>Within the body of a document using this module, the following
-elements may be used to reference parts of the specification elements
-discussed in section <ptr target="#TDcrystals"/>, in particular the
-brief prose descriptions these provide for elements and attributes.
+<p>Within the body of a document using this module the following
+elements… 
 <specList>
 <specDesc key="specList"/>
 <specDesc key="specDesc"/>
 </specList></p>
-<p>TEI practice requires that a <gi>specList</gi> listing the elements
-...
+<p>TEI practice requires that a <gi>specList</gi> listing the elements …
 </p><!-- ... --></div3>
 </egXML>
 </p>
@@ -233,16 +235,16 @@ as in the example above. Documentation for any attributes specified by
 the <att>atts</att> attribute will also be generated as an 
 associated attribute list.</p>
 <specGrp xml:id="TDSG1" n="Phrase-level elements for tag documentation">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/code.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/eg.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/egXML.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/gi.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/ident.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/tag.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/val.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/specList.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/specDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/code.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/eg.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/egXML.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/gi.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/ident.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/tag.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/val.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/specList.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/specDesc.xml"/>
 </specGrp>
 </div>
 </div>
@@ -370,14 +372,14 @@ which they are defined, and cannot be referenced externally (unlike
 modules). </p>
 
 <specGrp xml:id="TDSG2" n="Modules and Specification Groups">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/classRef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/elementRef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/macroRef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/moduleRef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/moduleSpec.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/schemaSpec.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/specGrp.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/specGrpRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/classRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/elementRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/macroRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/moduleRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/moduleSpec.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/schemaSpec.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/specGrp.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/specGrpRef.xml"/>
 <!--&stringVal;-->
 </specGrp>
 </div>
@@ -419,34 +421,135 @@ concerned in a catalogue of markup objects. These latter two actions
 always occur irrespective of whether or not the declaration is
 included in a <gi>specGrp</gi>. </p>
 <specGrp xml:id="TDSG3" n="Specification elements">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/elementSpec.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/classSpec.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/macroSpec.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/elementSpec.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/classSpec.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/macroSpec.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="TDcrystalsCE"><head>Common Elements</head>
 <p>This section discusses the child elements common to all of the specification
-elements. These child elements  are used to specify the naming, description,
+elements; some of these are defined in the core module (<ptr target="#COHQU"/>). 
+These child elements  are used to specify the naming, description,
 exemplification, and classification of the specification elements.</p>
+
 <div type="div4" xml:id="TDcrystalsCEdc"><head>Description of Components</head>
 <p><specList>
-<specDesc key="remarks"/>
+<specDesc key="gloss"/>
+<specDesc key="desc"/>
+<specDesc key="equiv" atts="uri filter name"/>
+<specDesc key="altIdent"/>
 <specDesc key="listRef"/>
+<specDesc key="remarks"/>
 </specList>
 </p>
+<p>The <gi>gloss</gi> element may be used to
+provide  a brief explanation for the name of the object if this is not
+self-explanatory. For example, the specification for the element 
+<gi>ab</gi> used to mark arbitrary blocks of text begins as follows:
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><elementSpec module="linking" ident="ab">
+  <gloss>anonymous block</gloss>
+<!--... -->
+</elementSpec></egXML>
+A <gi>gloss</gi> 
+may also be supplied for an attribute name or an
+attribute value in similar circumstances:
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><valList type="open">
+<valItem ident="susp">
+<gloss>suspension</gloss>
+<desc>the abbreviation provides the first letter(s) 
+of the word or phrase, omitting the remainder.</desc>
+</valItem>
+<valItem ident="contr">
+<gloss>contraction</gloss>
+<desc>the abbreviation omits some letter(s) in the middle.</desc>
+</valItem>
+<!--...-->
+</valList></egXML>
+Note that this is quite distinct from the use of the <gi>desc</gi>
+element, which contains a full description of the intended semantics
+for the object.
+</p>
+<p>The contents of the <gi>desc</gi> element provide a brief
+characterization of the intended function of the object
+being documented in a form that permits its quotation out of
+context, as in the following example:
+<egXML xmlns="http://www.tei-c.org/ns/Examples"><elementSpec module="core" ident="foreign">
+<!--... -->
+<desc>identifies a word or phrase as belonging to some language other
+than that of the surrounding text. </desc>
+<!--... -->
+</elementSpec></egXML>
+By convention, a <gi>desc</gi> element begins with a verb such as
+<mentioned>contains</mentioned>, 
+<mentioned>indicates</mentioned>, 
+<mentioned>specifies</mentioned>, etc. and contains a single
+clause. </p>
 
-<p>One or more <gi>desc</gi> elements defined by the core module may
-be used to provide a brief characterization of the intended function
-of the element, class, value etc. being documented, as in the
-following example:
-
-<egXML xml:lang="mul" xmlns="http://www.tei-c.org/ns/Examples"><elementSpec module="drama" ident="actor">
-  <desc>Name of an actor appearing within a cast list.</desc>
-  <desc xml:lang="ja"> 登場人物リスト中にある役者名を示す．</desc>
-  <desc xml:lang="it">nome di un attore che appare nella lista dei personaggi.</desc>
-<!-- ... --></elementSpec>
+<p>The <gi>equiv</gi> element is used to document equivalencies
+between the concept represented by this object and the same concept as
+described in other schemes or ontologies. The <att>uri</att> attribute
+is used to supply a pointer to some location where such external
+concepts are defined. For example, to indicate that the TEI
+<gi>death</gi> element corresponds to the concept defined by the CIDOC
+CRM category E69, the declaration for the former might begin as
+follows:
+<egXML xmlns="http://www.tei-c.org/ns/Examples">
+<elementSpec module="namesdates" ident="death">
+<equiv name="E69" uri="http://cidoc.ics.forth.gr/"/>
+<desc><!--... --></desc>
+</elementSpec>
 </egXML>
 </p>
+<p>The <gi>equiv</gi> element may also be used to map newly-defined
+elements onto existing constructs in the TEI, using the
+<att>filter</att> and <att>name</att> attributes to point to an
+implementation of the mapping. This is useful when a TEI customization
+(see <ptr target="#MD"/>) defines <soCalled>shortcuts</soCalled> for
+convenience of data entry or markup readability.  For example, suppose
+that in some TEI customization an element <gi scheme="imaginary">bo</gi> has been
+defined which is 
+conceptually equivalent to the standard markup construct <tag>hi
+rend='bold'</tag>. The following declarations would additionally
+indicate that instances of the
+<gi scheme="imaginary">bo</gi> element can be converted to canonical TEI by obtaining a
+filter from the URI specified, and running the procedure
+with the name  <ident>bold</ident>. The <att>mimeType</att> attribute
+specifies the language (in this case XSL) in which the filter is
+written:
+<egXML xmlns="http://www.tei-c.org/ns/Examples">
+<elementSpec ident="bo" ns="http://www.example.com/ns/notTEI">
+   <equiv filter="http://www.example.com/equiv-filter.xsl" mimeType="text/xsl" name="bold"/>
+   <gloss>bold</gloss>
+   <desc>contains a sequence of characters rendered in a bold face.</desc>
+   <!-- ... -->
+</elementSpec>
+</egXML></p>
+
+<p>The <gi>altIdent</gi> element is used to provide an alternative name
+for an object, for example using a different
+natural language. Thus, the following might be used to indicate
+that the <gi>abbr</gi> element should be identified using the German
+word <foreign>Abkürzung</foreign>:
+<egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="de"><elementSpec ident="abbr" mode="change">
+    <altIdent xml:lang="de">Abkürzung</altIdent>
+<!--...--></elementSpec></egXML>
+In the same way, the following specification for the
+<gi>graphic</gi> element indicates that the attribute
+<att>url</att> may also be referred to using the alternate
+identifier <ident>href</ident>:
+<egXML xmlns="http://www.tei-c.org/ns/Examples" xml:lang="und"><elementSpec ident="graphic" mode="change">
+    <attList>
+      <attDef mode="change" ident="url">
+	<altIdent>href</altIdent>
+      </attDef>
+<!-- .... -->
+    </attList>
+</elementSpec>
+</egXML>
+</p>
+
+<p>By default, the <gi>altIdent</gi> of a component is
+identical to the value of its <att>ident</att> attribute. </p>
 <p>The <gi>remarks</gi> element contains any additional
 commentary about how the item concerned may be used, details of
 implementation-related issues, suggestions for other ways of treating
@@ -466,6 +569,7 @@ languages.</p>
 <!--... -->
 </elementSpec></egXML>
 </p>
+
 <p> A specification element will usually conclude with a list of
 references, each tagged using the standard <gi>ptr</gi> element, and
 grouped together into a <gi>listRef</gi> element: in the case of the
@@ -475,6 +579,7 @@ grouped together into a <gi>listRef</gi> element: in the case of the
   </listRef>
 </egXML> where the value <val>COHQF</val> is the identifier of the
 section in the Guidelines where this element is fully documented. </p>
+
 </div>
 <div type="div4" xml:id="TDeg"><head>Exemplification of Components</head>
 <p><specList>
@@ -497,7 +602,7 @@ using a different name space for the content of the <gi>egXML</gi>
 element. For example:
 
 <eg xml:space="preserve"><![CDATA[<p>The <gi>term</gi> element may be used 
-to mark any technical term, thus :
+to mark any technical term, thus:
 <egXML xmlns="http://www.tei-c.org/ns/Examples">
   This <term>recursion</term> is 
   giving me a headache.</egXML></p>
@@ -539,14 +644,14 @@ represent the opening angle bracket, or by wrapping the whole example
 in a CDATA marked section:
 
 <eg xml:space="preserve"><![CDATA[<p>The <gi>term</gi> element may be used 
-to mark any technical term, thus :
+to mark any technical term, thus:
 <egXML xmlns="http://www.tei-c.org/ns/Examples">
   This &lt;term&gt;recursion&lt;/term&gt; is 
   giving me a headache.</egXML></p>
 ]]></eg>
 or, equivalently:
 <eg xml:space="preserve"><![CDATA[<p>The <gi>term</gi> element may be used 
-to mark any technical term, thus :
+to mark any technical term, thus:
 <egXML xmlns="http://www.tei-c.org/ns/Examples"><![CDATA[
   This <term>recursion</term> is 
   giving me a headache.]]]]><![CDATA[></egXML></p>
@@ -591,13 +696,13 @@ element contains the following <gi>classes</gi> element:
 </egXML></p>
 
 <specGrp xml:id="TDSG4" n="Common specification elements">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/remarks.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/listRef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/exemplum.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/classes.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/memberOf.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/equiv.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/altIdent.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/remarks.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/listRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/exemplum.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/classes.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/memberOf.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/equiv.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/altIdent.xml"/>
 </specGrp>
 </div>
 
@@ -766,7 +871,7 @@ attribute of an HTML <gi scheme="HTML">img</gi> can be created:
     <ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"
 	xmlns="http://purl.oclc.org/dsdl/schematron"
 	/>
-    <pattern id="Alt tags" xmlns="http://purl.oclc.org/dsdl/schematron">
+    <pattern id="altTags" xmlns="http://purl.oclc.org/dsdl/schematron">
       <rule context="tei:figure">
 	<report test="not(tei:figDesc or tei:head)"> You should
 	provide information in a figure from which
@@ -994,13 +1099,22 @@ scheme="imaginary">baz</att> attribute, but not both. The <att
 scheme="imaginary">bax</att> attribute is always available: <egXML xml:lang="und"
 xmlns="http://www.tei-c.org/ns/Examples"><attList>
 <attDef ident="bax">
+  <datatype>
+    <rng:text/>
+  </datatype>
   <!-- ... -->
 </attDef>
 <attList org="choice">
 <attDef ident="bar">
+  <datatype>
+    <rng:text/>
+  </datatype>
   <!-- ... -->
 </attDef>
 <attDef ident="baz">
+  <datatype>
+    <rng:text/>
+  </datatype>
   <!-- ... -->
 </attDef>
 </attList>  
@@ -1164,19 +1278,19 @@ schema. </p>
 
 
 <specGrp xml:id="TDSG5" n="Element specification elements">
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/content.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/constraint.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/constraintSpec.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/macro.anyXML.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/macro.schemaPattern.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/attList.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/attDef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/attRef.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/datatype.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/defaultVal.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/valDesc.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/valItem.xml"/>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/valList.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/content.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/constraint.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/constraintSpec.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/macro.anyXML.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/macro.schemaPattern.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/attList.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/attDef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/attRef.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/datatype.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/defaultVal.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/valDesc.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/valItem.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/valList.xml"/>
 </specGrp>
 </div>
 <div type="div3" xml:id="TDENT"><head>Pattern Documentation</head>
@@ -1201,19 +1315,20 @@ purpose.  The following elements are used to represent patterns:
 <p>The specification elements, and some of their children, are all
 members of the <ident type="class">att.identified</ident> class, from
 which they inherit the following attributes:
-
 <specList><specDesc key="att.identified" atts="ident predeclare module"/></specList>
-
 This attribute class is a subclass of the <ident
 type="class">att.combinable</ident> class from which it (and some
 other elements) inherits the following attribute:
-
 <specList><specDesc key="att.combinable" atts="mode"/></specList>
-
-</p>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.combinable.xml"/> 
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.identified.xml"/>
-
+This attribute class, in turn, is a subclass of the <ident
+type="class">att.deprecated</ident> class, from which it inherits the
+following attriubte:
+<specList><specDesc key="att.deprecated" atts="validUntil"/></specList>
+The <att>validUntil</att> attribute may be used to signal an intent to
+remove a construct from future versions of the schema being specified.</p>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.combinable.xml"/> 
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.identified.xml"/>
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.deprecated.xml"/>
 
 <p>The <gi>elementSpec</gi>, <gi>attDef</gi> and <gi>schemaSpec</gi>
 specification elements also have an attribute which determines which
@@ -1222,10 +1337,8 @@ the object being created will belong to. In the case of
 <gi>schemaSpec</gi>, this  namespace is inherited by all the elements
 created in the schema, unless they have their own <att>ns</att>.
 <specList><specDesc key="att.namespaceable"/></specList>
-
 </p>
-<include xmlns="http://www.w3.org/2003/XInclude" href="../../Specs/att.namespaceable.xml"/>
-
+<include xmlns="http://www.w3.org/2001/XInclude" href="../../Specs/att.namespaceable.xml"/>
 <p>These attributes are used by an ODD processor to determine how
 declarations are to be combined to form a schema or DTD, as further
 discussed in this section.</p>
@@ -1491,7 +1604,7 @@ used for any type of schema, and may be used for multiple schemas:
 
   </div>
 
-<div type="div2" xml:id="TDformal"><head>Module for Documention Elements</head>
+<div type="div2" xml:id="TDformal"><head>Module for Documentation Elements</head>
 
 <p>The module described in this chapter makes available the following
 components:

@@ -15,7 +15,7 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   
-<xsl:import href="/usr/share/xml/tei/stylesheet/latex2/tei.xsl"/>
+<xsl:import href="/usr/share/xml/tei/stylesheet/latex/latex.xsl"/>
 <xsl:output method="text"/>
  <xsl:strip-space elements="tei:additional tei:address tei:adminInfo
 			    tei:altGrp tei:altIdentifier tei:analytic
@@ -102,21 +102,17 @@
 <xsl:param name="tocNumberSuffix">.\ </xsl:param>
 <xsl:param name="numberSpacer">\ </xsl:param>
 <xsl:param name="specLinkDepth">1</xsl:param>
+<xsl:param name="exampleFont">DejaVu Sans Mono</xsl:param>
+<xsl:param name="typewriterFont">DejaVu Sans Mono</xsl:param>
+<xsl:param name="sansFont">DejaVu Sans Mono</xsl:param>
+<xsl:param name="romanFont">Linux Libertine O</xsl:param>
+
 
   <xsl:variable name="docClass">book</xsl:variable>
 <xsl:template name="latexPreambleHook">
 \usepackage{makeidx}
 \makeindex
 \defaultfontfeatures{Scale=MatchLowercase}
-%\setromanfont{DejaVu Serif}
-\setsansfont{DejaVu Sans}
-\setmonofont{DejaVu Sans Mono}
-%\setmonofont[Scale=0.9]{Lucida Sans Typewriter}
-%\setsansfont[Scale=0.85]{Lucida Sans}
-\setromanfont{Linux Libertine O}
-%\setromanfont{Minion Pro}
-%\setmonofont{CourierStd}
-%\setsansfont{Myriad Pro}
 \setlength{\headheight}{14pt}
 </xsl:template>
 

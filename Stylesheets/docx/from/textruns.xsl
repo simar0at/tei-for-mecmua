@@ -28,7 +28,7 @@
                 xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
                 xmlns="http://www.tei-c.org/ns/1.0"
                 version="2.0"
-                exclude-result-prefixes="a cp dc dcterms dcmitype prop    html iso m mml mo mv o pic r rel     tbx tei teidocx v xs ve w10 w wne wp">
+                exclude-result-prefixes="#all">
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet" type="stylesheet">
@@ -68,7 +68,7 @@ of this software, even if advised of the possibility of such damage.
 </p>
          <p>Author: See AUTHORS</p>
          <p>Id: $Id$</p>
-         <p>Copyright: 2008, TEI Consortium</p>
+         <p>Copyright: 2013, TEI Consortium</p>
       </desc>
    </doc>
     
@@ -101,12 +101,6 @@ of this software, even if advised of the possibility of such damage.
 	   <xsl:apply-templates/>
        </xsl:when>
 
-       <xsl:when test="$style='mentioned'">
-	 <mentioned>
-	   <xsl:apply-templates/>
-	 </mentioned>
-       </xsl:when>
-
        <xsl:when test="$style='Hyperlink' and ancestor::w:hyperlink">
 	 <xsl:call-template name="basicStyles"/>
        </xsl:when>
@@ -123,27 +117,29 @@ of this software, even if advised of the possibility of such damage.
 	       <xsl:value-of select="substring-before(substring-after(.,'&#x0022;'),'&#x0022;')"/>
 	     </xsl:for-each>
 	   </xsl:attribute>
-	   <xsl:call-template name="basicStyles"/>
+	   <xsl:call-template name="basicStyles">
+	     <xsl:with-param name="parented">true</xsl:with-param>
+	   </xsl:call-template>
 	 </ref>
        </xsl:when>
        
-       <xsl:when test="$style='ref'">
-	 <ref>
-	   <xsl:apply-templates/>
-	 </ref>
+       <xsl:when test="starts-with($style,'TEI ')">
+	 <xsl:element name="{substring($style,5)}">
+	   <xsl:call-template name="basicStyles">
+	     <xsl:with-param name="parented">true</xsl:with-param>
+	   </xsl:call-template>
+	 </xsl:element>
        </xsl:when>
        
-       <xsl:when test="$style='date'">
-	 <date>
-	   <xsl:apply-templates/>
-	 </date>
+       <xsl:when test="$style='ref' or $style='date' or
+		       $style='mentioned' or $style='orgName'">
+	 <xsl:element name="{$style}">
+	   <xsl:call-template name="basicStyles">
+	     <xsl:with-param name="parented">true</xsl:with-param>
+	   </xsl:call-template>
+	 </xsl:element>
        </xsl:when>
        
-       <xsl:when test="$style='orgName'">
-	 <orgName>
-	   <xsl:apply-templates/>
-	 </orgName>
-       </xsl:when>
        
        <xsl:when test="not($style='')">
          <xsl:call-template name="namedCharacterStyle">
@@ -174,14 +170,13 @@ of this software, even if advised of the possibility of such damage.
   </xsl:template>
   
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>If there is no special style defined, look at the Word
+      <desc>Look at the Word
       underlying basic formatting. We can ignore the run's font change if 
       a) it's not a special para AND the font is the ISO default, OR 
-      b) the font for the run is the same as its parent paragraph.
-      </desc>
+      b) the font for the run is the same as its parent paragraph.</desc>
    </doc>
     <xsl:template name="basicStyles">
-
+      <xsl:param name="parented">false</xsl:param>
       <xsl:variable name="styles">
 	<xsl:if test="w:rPr/w:rFonts//@w:ascii">
 	  <xsl:if test="(not(matches(parent::w:p/w:pPr/w:pStyle/@w:val,'Special')) and not(matches(w:rPr/w:rFonts/@w:ascii,'Calibri'))) or
@@ -289,10 +284,9 @@ of this software, even if advised of the possibility of such damage.
 	</xsl:if>
 		
       </xsl:variable>
-
 	<xsl:choose>
 	<xsl:when test="$effects/* or ($styles/* and $preserveEffects='true')">
-	  <hi>
+	  <xsl:element name="{if ($parented='true') then 'seg' else 'hi'}">
 	    <xsl:if test="$dir!='' and $preserveEffects='true'">
 	      <xsl:attribute name="dir"
 			     xmlns="http://www.w3.org/2005/11/its"
@@ -301,12 +295,7 @@ of this software, even if advised of the possibility of such damage.
 	    <xsl:choose>
 	      <xsl:when test="$effects/*">
 		<xsl:attribute name="rend">
-		  <xsl:for-each select="$effects/*">
-		    <xsl:value-of select="."/>
-		    <xsl:if test="following-sibling::*">
-		      <xsl:text> </xsl:text>
-		    </xsl:if>
-		  </xsl:for-each>
+		  <xsl:value-of select="$effects/*" separator=" "/>
 		</xsl:attribute>
 	      </xsl:when>
 	      <xsl:when test="$preserveEffects='true'">
@@ -316,7 +305,7 @@ of this software, even if advised of the possibility of such damage.
 	      </xsl:when>
 	    </xsl:choose>
 	    <xsl:if test="$styles/* and $preserveEffects='true'">
-	      <xsl:attribute name="html:style">
+	      <xsl:attribute name="style">
 		<xsl:for-each select="$styles/*">
 		  <xsl:value-of select="@n"/>
 		  <xsl:text>:</xsl:text>
@@ -326,7 +315,7 @@ of this software, even if advised of the possibility of such damage.
 	      </xsl:attribute>
 	    </xsl:if>
 	    <xsl:apply-templates/>
-	  </hi>
+	  </xsl:element>
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:apply-templates/>
@@ -335,8 +324,16 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Handle Text, Comments, Tabs, Symbols etc. 
+      <desc>Handle current page breaks inserted by Word</desc>
+   </doc>
+    <xsl:template match="w:lastRenderedPageBreak">
+      <xsl:if test="$preserveSoftPageBreaks='true'">
+	<pb type="soft"/>
+      </xsl:if>
+    </xsl:template>
+
+    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Handle Text, Comments, Tabs, Symbols etc. 
     </desc>
    </doc>
     <xsl:template match="w:t">
@@ -355,22 +352,19 @@ of this software, even if advised of the possibility of such damage.
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="parent::w:r/w:rPr/w:rFonts[starts-with(@w:ascii,'ISO')]">
-                <seg html:style="font-family:{parent::w:r/w:rPr/w:rFonts/@w:ascii};">
+                <seg style="font-family:{parent::w:r/w:rPr/w:rFonts/@w:ascii};">
                     <xsl:value-of select="$t"/>
                 </seg>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:copy-of select="$t"/>
             </xsl:otherwise>
-            
         </xsl:choose>
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Convert special characters (w:syms) into Unicode characters or
-	<gi>g</gi> elements. Symbol to Unicode mapping from http://unicode.org/Public/MAPPINGS/VENDORS/ADOBE/symbol.txt
-    </desc>
+      <desc>Convert special characters (w:syms) into Unicode characters or
+	<gi>g</gi> elements. Symbol to Unicode mapping from http://unicode.org/Public/MAPPINGS/VENDORS/ADOBE/symbol.txt</desc>
    </doc>
     <xsl:template match="w:sym">
       <xsl:choose>
@@ -567,29 +561,26 @@ of this software, even if advised of the possibility of such damage.
 <xsl:when test="@w:char='F0FD'">&#xF8FD;</xsl:when><!--	# RIGHT CURLY BRACKET MID	# bracerightmid (CUS) -->
 <xsl:when test="@w:char='F0FE'">&#xF8FE;</xsl:when><!--	# RIGHT CURLY BRACKET BOTTOM	# bracerightbt (CUS) -->
 	<xsl:otherwise> 	  
-	  <g html:style="font-family:{@w:font};" n="{@w:char}"/>
+	  <g style="font-family:{@w:font};" n="{@w:char}"/>
 	</xsl:otherwise>       
       </xsl:choose> 	
     </xsl:when>
     <xsl:when test="@w:font='Wingdings 2' and @w:char='F050'">&#x2713;</xsl:when><!-- tick mark-->
 	<xsl:otherwise> 	  
-	  <g html:style="font-family:{@w:font};" n="{@w:char}"/>
+	  <g style="font-family:{@w:font};" n="{@w:char}"/>
 	</xsl:otherwise>       
       </xsl:choose>
     </xsl:template>     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        handle tabs
-    </desc>
+      <desc>handle tabs</desc>
    </doc>
     <xsl:template match="w:r/w:tab">
       <xsl:text>	</xsl:text>
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        handle ptabs (absolute position tab character)
+      <desc>handle ptabs (absolute position tab character)
     </desc>
    </doc>
     <xsl:template match="w:r/w:ptab">
@@ -600,15 +591,16 @@ of this software, even if advised of the possibility of such damage.
     
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        capture line breaks
-    </desc>
+      <desc>capture line breaks</desc>
    </doc>
     <xsl:template match="w:br">
         <xsl:choose>
             <xsl:when test="@w:type='page'">
                 <pb/>
             </xsl:when>
+	<xsl:when test="@w:type='column'">
+	  <cb/>
+	</xsl:when>
             <xsl:otherwise>
                 <lb/>
             </xsl:otherwise>
@@ -616,8 +608,7 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
     
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
-      <desc>
-        Contains text that has been tracked as a revision. 
+      <desc>Contains text that has been tracked as a revision. 
     </desc>
    </doc>
 
@@ -668,12 +659,6 @@ of this software, even if advised of the possibility of such damage.
   <xsl:template match="w:noBreakHyphen">
     <xsl:text>&#x2011;</xsl:text>
   </xsl:template>
-
- <xsl:template match="tei:hi[@rend='foreign']" mode="pass2">
-  <foreign>
-   <xsl:apply-templates mode="pass2"/>
-  </foreign>
- </xsl:template>
 
 
 
