@@ -37,11 +37,17 @@
     <xsl:variable name="otherRegExpAka">aka:(.*)(Latin:(.*)English:(.*))</xsl:variable>
     <xsl:variable name="remarkRegExp">(.*)remark:(.*)</xsl:variable>
     
-    <!-- No break hyphens actually aren't characters but tags. Convert them to Unicode characters in pass0.
-         Doing this in pass1 is to late for this stylesheet. -->
+    <xd:doc>
+        <xd:desc>No break hyphens actually aren't characters but tags. Convert them to Unicode characters in pass0.
+         Doing this in pass1 is to late for this stylesheet.
+        </xd:desc>
+    </xd:doc>
     <xsl:template match="w:noBreakHyphen" mode="pass0"><w:t>&#x2011;</w:t></xsl:template>
 
-    <!-- Need to join all adjacent text runs with the same character style. -->
+    <xd:doc>
+        <xd:desc>Need to join all adjacent text runs with the same character style.
+        </xd:desc>
+    </xd:doc>
     <xsl:template match="w:p" mode="pass0">
         <w:p>
         <xsl:for-each-group select="*" group-adjacent="concat('x', ./w:rPr/w:rStyle/@w:val)">
@@ -69,16 +75,27 @@
         </w:p>
     </xsl:template>
     
-    <!-- Remove footnote/endnote references -->
-    
+    <xd:doc>
+        <xd:desc>Remove footnote references</xd:desc>
+    </xd:doc>
     <xsl:template match="w:footnoteReference"/>
+    <xd:doc>
+        <xd:desc>Remove endnote references</xd:desc>
+    </xd:doc>
     <xsl:template match="w:endnoteReference"/>
     
-    <!-- Acces to $pass0 is needed globally so duplicate this here. -->
+    <xd:doc>
+        <xd:desc>Access to $pass0 is needed globally so duplicate this here.</xd:desc>
+    </xd:doc>
     <xsl:variable name="pass0">
         <xsl:apply-templates select="/" mode="pass0"/>
     </xsl:variable>
-    
+
+    <xd:doc>
+        <xd:desc>Handle character styles that have a special meaning in the mecmua project and ignore some styles that we defined to be suppressed.
+            <xd:p>Note: uses a cusotmization in textruns.xsl.</xd:p>
+        </xd:desc>
+    </xd:doc>
     <xsl:template name="namedCharacterStyle">
         <xsl:param name="style"/>
         <xsl:choose>
@@ -108,6 +125,9 @@
         </xsl:choose>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>The template generateAppInfo is customized but also adds the whole section describing the named entities taged in the body.</xd:desc>
+    </xd:doc>
     <xsl:template name="generateAppInfo">
         <appInfo>
             <application ident="TEI_fromDOCX_for_Mecmua" version="2.15.0mecmua">
@@ -139,9 +159,69 @@
         <xsl:sequence select="$tagsDecl"/>
     </xsl:template>
     
-    <!-- Text which has the special syles may occur in multiple adjacent w:r tags. This is hardly visible in word
-    so try to join them here. --> 
+    <xd:doc>
+        <xd:desc>This uses a customization in functions.xsl to mark the sections in mecmua documents that is the folios.</xd:desc>
+    </xd:doc>
+    <xsl:function name="tei:custom-is-firstlevel-heading" as="xs:boolean">
+        <xsl:param name="p" as="node()"/>
+        <xsl:param name="s" as="xs:string*"/>    
+        <xsl:choose>
+            <xsl:when test="($s eq $folioDescStyle) and
+                matches(string-join($p//w:t, ''), '\d+[vr]:')">true</xsl:when>
+            <xsl:otherwise>false</xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
     
+    <xd:doc>
+        <xd:desc>Within the folios there are subsections that describe parts of the text that were added on top of the original writing.</xd:desc>
+    </xd:doc>
+    <xsl:function name="tei:custom-is-heading" as="xs:boolean">
+        <xsl:param name="p" as="node()"/>
+        <xsl:param name="s" as="xs:string*"/>
+        <xsl:value-of select="($s ne '') and ($s eq $folioDescStyle)"/>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>For the mecmua project the next level headers are in most cases descriptions of other writings around or on top of the original text.</xd:desc>
+    </xd:doc>
+    <xsl:function name="tei:get-nextlevel-header" as="xs:string">
+        <xsl:param name="current-header"/>
+        <xsl:choose>
+            <xsl:when test="$current-header eq $folioDescStyle">
+                <xsl:value-of select="$folioDescStyle"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="translate($current-header,'12345678','23456789')"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Superseeds the default as page breaks of the described documents are not identical to the docx page breaks but denoted by the
+        folio descriptions.</xd:desc>
+    </xd:doc>
+    <xsl:template name="generate-section-heading">
+        <xsl:param name="Style"/>
+        <xsl:variable name="heading" select="string-join(.//w:t/text(), '')"/>
+        <xsl:choose>
+            <xsl:when test="matches($heading, '\d+[vr]:')">
+                <pb n="{$heading}"/>
+                <p>
+                    <xsl:apply-templates/>
+                </p>
+            </xsl:when>
+            <xsl:otherwise>
+                <p>
+                    <xsl:apply-templates/>
+                </p>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Comments have to be preprocessed the same way the main document is preprocessd. E. g. to join text runs that Word generated
+        for some reason.</xd:desc>
+    </xd:doc>
     <xsl:variable name="comments">
         <xsl:apply-templates mode="pass0" select="document(concat($wordDirectory,'/word/comments.xml'))"/>
     </xsl:variable>
@@ -395,7 +475,7 @@
     <xsl:template name="semanticStyle">
         <xsl:param name="style"/>
         <xsl:variable name="name" select="string-join(w:t, '')"/>
-        <xsl:variable name="commentN" select="following-sibling::w:commentRangeEnd/@w:id" as="xs:string"/>
+        <xsl:variable name="commentN" select="(following-sibling::w:commentRangeEnd)[1]/@w:id" as="xs:string"/>
         <xsl:variable name="commentNText" select="$comments/w:comments/w:comment[@w:id=$commentN]" as="xs:string"/>
         <xsl:choose>
             <xsl:when test="$style=$nameStyle">
@@ -496,16 +576,12 @@
         </xsl:choose>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>Uses a customization in paragraphs.xsl to tap into the docx paragraph processing and simplify the meaning of some styles.</xd:desc>
+    </xd:doc>
     <xsl:template name="paragraph-wp">
         <xsl:param name="style"/>
         <xsl:choose>
-            <xsl:when test="$style=$folioDescStyle">
-                <pb>
-                    <xsl:attribute name="n">
-                        <xsl:value-of select="substring-before(string-join(.//w:t, ''),':')"/>
-                    </xsl:attribute>
-                </pb>
-            </xsl:when>
             <xsl:when test="$style='StandardWeb' or $style='Funotentext'">
                 <p>
                         <xsl:call-template name="process-checking-for-crossrefs"/>
@@ -589,5 +665,10 @@
         <xd:desc>Zap unused nym referneces</xd:desc>
     </xd:doc>
     <xsl:template match="tei:nym" mode="pass2"/>
+    
+    <xd:doc>
+        <xd:desc>Zap page breaks not marked with a reference to a particular folio</xd:desc>
+    </xd:doc>
+    <xsl:template match="tei:pb[not(@n)]" mode="pass2"/>
     
 </xsl:stylesheet>

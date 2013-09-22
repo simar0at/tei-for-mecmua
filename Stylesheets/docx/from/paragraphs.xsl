@@ -132,6 +132,12 @@ of this software, even if advised of the possibility of such damage.
       </xsl:choose>
     </xsl:template>
     
+	<doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+		<desc>
+			Superseed this template to do your own processing of pragraph styles and call the -base template if you want to
+			use the default processing.
+		</desc>
+	</doc>
 	<xsl:template name="paragraph-wp">
 		<xsl:param name="style"/>
 		<xsl:call-template name="paragraph-wp-base">
@@ -142,38 +148,42 @@ of this software, even if advised of the possibility of such damage.
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Named template for handling w:p; we 
        use the Word style (if provided) to make a TEI rend attribute,
-       and check for change records.</desc>
+       and check for change records.
+      <p>
+      	Note: This was changed to so custom code can tap into the processing and do special handling.
+      </p>
+      </desc>
    </doc>
    <xsl:template name="paragraph-wp-base">
-     <xsl:param name="style"/>
-     <xsl:element name="p">
-       <xsl:if test="$style and not($style='Default')">
-	 <xsl:attribute name="rend">
-	   <xsl:value-of select="$style"/>
-	 </xsl:attribute>
-       </xsl:if>
-       <xsl:if test="w:pPr/w:pStyle/w:rPr/w:rtl">
-	 <xsl:attribute name="dir"
-			xmlns="http://www.w3.org/2005/11/its">
-	   <xsl:text>rtl</xsl:text>
-	 </xsl:attribute>
-       </xsl:if>
-       <xsl:choose>
-	 <xsl:when test="w:pPr/w:rPr/w:ins and $processChangeInformation='true'">
-	   <add when="{w:pPr/w:rPr/w:ins/@w:date}" 
-		type="para">
-	     <xsl:call-template name="identifyChange">
-	       <xsl:with-param name="who"
-			       select="w:pPr/w:rPr/w:ins/@w:author"/>
-	     </xsl:call-template>
-	     <xsl:call-template name="process-checking-for-crossrefs"/>
-	   </add>
-	 </xsl:when>
-	 <xsl:otherwise>
-	   <xsl:call-template name="process-checking-for-crossrefs"/>
-	 </xsl:otherwise>
-       </xsl:choose>
-     </xsl:element>
+   	<xsl:param name="style"/>
+   	<xsl:element name="p">
+   		<xsl:if test="$style and not($style='Default')">
+   			<xsl:attribute name="rend">
+   				<xsl:value-of select="$style"/>
+   			</xsl:attribute>
+   		</xsl:if>
+   		<xsl:if test="w:pPr/w:pStyle/w:rPr/w:rtl">
+   			<xsl:attribute name="dir"
+   				xmlns="http://www.w3.org/2005/11/its">
+   				<xsl:text>rtl</xsl:text>
+   			</xsl:attribute>
+   		</xsl:if>
+   		<xsl:choose>
+   			<xsl:when test="w:pPr/w:rPr/w:ins and $processChangeInformation='true'">
+   				<add when="{w:pPr/w:rPr/w:ins/@w:date}"
+   					type="para">
+   					<xsl:call-template name="identifyChange">
+   						<xsl:with-param name="who"
+   							select="w:pPr/w:rPr/w:ins/@w:author"/>
+   					</xsl:call-template>
+   					<xsl:call-template name="process-checking-for-crossrefs"/>
+   				</add>
+   			</xsl:when>
+   			<xsl:otherwise>
+   				<xsl:call-template name="process-checking-for-crossrefs"/>
+   			</xsl:otherwise>
+   		</xsl:choose>
+   	</xsl:element>
    </xsl:template>
    
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">

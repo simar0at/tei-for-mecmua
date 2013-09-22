@@ -92,7 +92,11 @@ of this software, even if advised of the possibility of such damage.
     </xsl:template>
 
 
-   <xsl:template name="processTextrun">
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+     <desc>Note: this is changed so it calls a template named namedCharacterStyle if a style name is found but not recognized.
+     A template superseeding the default supplied below can react on character styles and process them.</desc>
+   </doc>
+  <xsl:template name="processTextrun">
      <xsl:variable name="style">
        <xsl:value-of select="w:rPr/w:rStyle/@w:val"/>
      </xsl:variable>
@@ -155,6 +159,10 @@ of this software, even if advised of the possibility of such damage.
         
    </xsl:template>
 
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Create a style superseeding this one if you want to do speceial processing of some character styles. Call the -base
+    style if you want to use default processing.</desc>
+  </doc>
   <xsl:template name="namedCharacterStyle">
     <xsl:param name="style"/>
     <xsl:call-template name="namedCharacterStyle-base">
@@ -162,10 +170,15 @@ of this software, even if advised of the possibility of such damage.
     </xsl:call-template>
   </xsl:template>
   
+  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+    <desc>Default behavior for representing character styles in TEI.</desc>
+  </doc>
   <xsl:template name="namedCharacterStyle-base">
     <xsl:param name="style"/>
     <hi rend="{replace($style,' ','_')}">
-      <xsl:apply-templates/>
+      <xsl:call-template name="basicStyles">
+        <xsl:with-param name="parented">true</xsl:with-param>
+      </xsl:call-template>
     </hi>
   </xsl:template>
   
