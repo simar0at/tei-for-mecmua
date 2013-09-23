@@ -46,6 +46,7 @@
 
     <xd:doc>
         <xd:desc>Need to join all adjacent text runs with the same character style.
+        <xd:p>Note: this is designed so it eats up emtpty text runs including such containing only xreference markers and page breaks.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template match="w:p" mode="pass0">
@@ -54,9 +55,11 @@
             <xsl:choose>
                 <xsl:when test="current-grouping-key() = 'x' or count(current-group() intersect //w:r) &lt; 2">
                     <xsl:for-each select="current-group()">
+                        <xsl:if test="empty(current-group() intersect //w:r) or not(empty(current-group()//w:t)) or (string-join(current-group()//w:t, '') ne '')">                            
                         <xsl:copy>
                             <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass0"/>
                         </xsl:copy>
+                        </xsl:if>
                     </xsl:for-each>
                 </xsl:when>
                 <xsl:otherwise>
@@ -65,10 +68,12 @@
                             <xsl:apply-templates select="*|@*|processing-instruction()|comment()|text()" mode="pass0"/>
                         </xsl:copy>
                     </xsl:for-each>
-                    <w:r>
-                        <xsl:apply-templates select="current-group()[1]/w:rPr" mode="pass0"/>
-                        <xsl:apply-templates select="current-group()//w:t|current-group()//w:noBreakHyphen" mode="pass0"/>
-                    </w:r>
+                    <xsl:if test="empty(current-group() intersect //w:r) or not(empty(current-group()//w:t)) or (string-join(current-group()//w:t, '') ne '')">                            
+                         <w:r>
+                            <xsl:apply-templates select="current-group()[1]/w:rPr" mode="pass0"/>
+                            <xsl:apply-templates select="current-group()//w:t|current-group()//w:noBreakHyphen" mode="pass0"/>
+                        </w:r>
+                    </xsl:if>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:for-each-group>
@@ -87,8 +92,11 @@
     <xd:doc>
         <xd:desc>Access to $pass0 is needed globally so duplicate this here.</xd:desc>
     </xd:doc>
-    <xsl:variable name="pass0">
+<!--    <xsl:variable name="pass0">
         <xsl:apply-templates select="/" mode="pass0"/>
+    </xsl:variable>-->
+    <xsl:variable name="pass0">
+        <xsl:copy-of select="/"/>
     </xsl:variable>
 
     <xd:doc>
@@ -205,7 +213,7 @@
         <xsl:variable name="heading" select="string-join(.//w:t/text(), '')"/>
         <xsl:choose>
             <xsl:when test="matches($heading, '\d+[vr]:')">
-                <pb n="{$heading}"/>
+                <pb n="{substring-before($heading, ':')}"/>
                 <p>
                     <xsl:apply-templates/>
                 </p>
@@ -216,6 +224,39 @@
                 </p>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Customized group by section as we don't need more sepcific div elements.
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="group-by-section">
+        <xsl:variable name="Style" select="w:pPr/w:pStyle/@w:val"/>
+        <xsl:variable name="NextHeader" select="tei:get-nextlevel-header($Style)"/>
+        <xsl:variable name="heading" select="string-join(.//w:t/text(), '')"/>
+        <div>
+            <xsl:if test="matches($heading, '\d+[vr]:')">
+                <xsl:attribute name="xml:id" select="generate-id(.)"/>
+                <xsl:attribute name="type">page</xsl:attribute>
+            </xsl:if>
+            <!-- generate the head -->
+            <xsl:call-template name="generate-section-heading">
+                <xsl:with-param name="Style" select="$Style"/>
+            </xsl:call-template>
+            
+            <!-- Process sub-sections -->
+            <xsl:for-each-group select="current-group() except ."
+                group-starting-with="w:p[w:pPr/w:pStyle/@w:val=$NextHeader]">
+                <xsl:choose>
+                    <xsl:when test="tei:is-heading(.)">
+                        <xsl:call-template name="group-by-section"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:apply-templates select="." mode="inSectionGroup"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each-group>
+        </div>
     </xsl:template>
     
     <xd:doc>
@@ -456,32 +497,56 @@
     
     <xsl:function name="mec:getRefIdPerson" as="xs:string?">
         <xsl:param name="name" as="xs:string"/>
-        <!-- idea search for best candidate not finished: replace 1 exists((tei:occupation, tei:death, tei:floruit)) -->
-        <xsl:sequence select="$tagsDecl//tei:person[tei:persName/text()|tei:persName/tei:addName = $name][1]/@xml:id"/>
+        <xsl:param name="commentN" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$commentN eq ''">
+                <xsl:sequence select="($tagsDecl//tei:person[(tei:persName/text()[1]|tei:persName/tei:addName) = $name])[1]/@xml:id"/>                
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- idea search for best candidate not finished: replace 1 exists((tei:occupation, tei:death, tei:floruit)) -->
+                <xsl:sequence select="($tagsDecl//tei:person[(tei:persName/text()[1]|tei:persName/tei:addName) = $name])[1]/@xml:id"/>                
+            </xsl:otherwise>
+        </xsl:choose>       
     </xsl:function>
     
     <xsl:function name="mec:getRefIdPlace" as="xs:string?">
         <xsl:param name="name" as="xs:string"/>
-        <!-- idea search for best candidate not finished: replace 1 with exists((tei:location)) -->
-        <xsl:sequence select="$tagsDecl//tei:place[tei:placeName/text() = $name][1]/@xml:id"/>
+        <xsl:param name="commentN" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$commentN eq ''">
+                <xsl:sequence select="($tagsDecl//tei:place[tei:placeName/text() = $name])[1]/@xml:id"/>                
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- idea search for best candidate not finished: replace 1 with exists((tei:location)) -->
+                <xsl:sequence select="($tagsDecl//tei:place[tei:placeName/text() = $name])[1]/@xml:id"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="mec:getRefIdOtherNames" as="xs:string?">
         <xsl:param name="name" as="xs:string"/>
-        <!-- idea search for best candidate not finished: replace 1 with exists((tei:sense[@xml:lang = 'la'], tei:sense[@xml:lang = 'en-UK'])) -->
-        <xsl:sequence select="$tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = $name][1]/@xml:id"/>
+        <xsl:param name="commentN" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$commentN eq ''">
+                <xsl:sequence select="($tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = $name])[1]/@xml:id"/>                
+            </xsl:when>
+            <xsl:otherwise>
+                <!-- idea search for best candidate not finished: replace 1 with exists((tei:sense[@xml:lang = 'la'], tei:sense[@xml:lang = 'en-UK'])) -->
+                <xsl:sequence select="($tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = $name])[1]/@xml:id"/>               
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:template name="semanticStyle">
         <xsl:param name="style"/>
         <xsl:variable name="name" select="string-join(w:t, '')"/>
-        <xsl:variable name="commentN" select="(following-sibling::w:commentRangeEnd)[1]/@w:id" as="xs:string"/>
-        <xsl:variable name="commentNText" select="$comments/w:comments/w:comment[@w:id=$commentN]" as="xs:string"/>
+        <xsl:variable name="commentN" select="(following-sibling::w:commentRangeEnd)[1]/@w:id" as="xs:string?"/>
+        <xsl:variable name="commentNText" select="if (commentN ne '') then $comments/w:comments/w:comment[@w:id=$commentN] else ''" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="$style=$nameStyle">
                 <xsl:element name="persName">
                     <xsl:attribute name="ref">
-                        <xsl:value-of select="mec:getRefIdPerson($name)"/>
+                        <xsl:value-of select="mec:getRefIdPerson($name, $commentN)"/>
                     </xsl:attribute>
                     <xsl:apply-templates/>
                 </xsl:element>
@@ -489,7 +554,7 @@
             <xsl:when test="$style=$placeStyle">
                 <xsl:element name="placeName">
                     <xsl:attribute name="ref">
-                        <xsl:value-of select="mec:getRefIdPlace($name)"/>
+                        <xsl:value-of select="mec:getRefIdPlace($name, $commentN)"/>
                     </xsl:attribute>
                     <xsl:apply-templates/>
                 </xsl:element>
@@ -497,7 +562,7 @@
             <xsl:when test="$style=$otherStyles" >
                 <xsl:element name="name">
                     <xsl:attribute name="ref">
-                       <xsl:value-of select="mec:getRefIdOtherNames($name)"/>
+                       <xsl:value-of select="mec:getRefIdOtherNames($name, $commentN)"/>
                     </xsl:attribute>              
                     <xsl:apply-templates/>
                 </xsl:element>
@@ -510,10 +575,11 @@
     <xsl:template name="semanticStyleInfoMissing">
         <xsl:param name="style"/>
         <xsl:variable name="name" select="string-join(w:t, '')"/>
+        <xsl:variable name="commentN" select="(following-sibling::w:commentRangeEnd)[1]/@w:id" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="$style=$nameStyle">
                 <xsl:choose>
-                    <xsl:when test="exists(mec:getRefIdPerson($name))">
+                    <xsl:when test="exists(mec:getRefIdPerson($name, $commentN))">
                         <xsl:call-template name="semanticStyle">
                             <xsl:with-param name="style" select="$style"/>
                         </xsl:call-template>
@@ -528,7 +594,7 @@
             </xsl:when>
             <xsl:when test="$style=$placeStyle">
                 <xsl:choose>
-                    <xsl:when test="exists(mec:getRefIdPlace($name))">
+                    <xsl:when test="exists(mec:getRefIdPlace($name, $commentN))">
                         <xsl:call-template name="semanticStyle">
                             <xsl:with-param name="style" select="$style"/>
                         </xsl:call-template>
@@ -543,7 +609,7 @@
             </xsl:when>
             <xsl:when test="$style=$otherStyles">
                 <xsl:choose>
-                    <xsl:when test="exists(mec:getRefIdOtherNames($name))">
+                    <xsl:when test="exists(mec:getRefIdOtherNames($name, $commentN))">
                         <xsl:call-template name="semanticStyle">
                             <xsl:with-param name="style" select="$style"/>
                         </xsl:call-template>
