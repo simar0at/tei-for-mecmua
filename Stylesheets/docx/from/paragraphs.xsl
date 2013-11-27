@@ -159,7 +159,7 @@ of this software, even if advised of the possibility of such damage.
    	<xsl:element name="p">
    		<xsl:if test="$style and not($style='Default')">
    			<xsl:attribute name="rend">
-   				<xsl:value-of select="$style"/>
+   				<xsl:value-of select="replace($style,' ','_')"/>
    			</xsl:attribute>
    		</xsl:if>
    		<xsl:if test="w:pPr/w:pStyle/w:rPr/w:rtl">

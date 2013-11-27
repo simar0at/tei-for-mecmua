@@ -18,18 +18,27 @@
     
     <xsl:output method="xml" indent="yes"/>
     
+    <xsl:param name="firstFolioOffset" as="xs:decimal" select="5"/>
+    
     <xsl:variable name="folioDescStyle">folio</xsl:variable>
+    <xsl:variable name="folioCommentaries">mecmua_Kommentare_zur_Handschrift</xsl:variable>
     
     <xsl:variable name="nameStyle" as="xs:string">Name</xsl:variable>
     <xsl:variable name="placeStyle" as="xs:string">Orte</xsl:variable>
     
     <xsl:variable name="plantStyle" as="xs:string">Pflanzen</xsl:variable>
+    <xsl:variable name="plantNameType" as="xs:string">plant</xsl:variable>
     <xsl:variable name="auxSubstStyle" as="xs:string">Zusatzstoffe</xsl:variable>
+    <xsl:variable name="auxSubstNameType" as="xs:string">auxSubst</xsl:variable>
     <xsl:variable name="astronomyStyle" as="xs:string">Astronomie</xsl:variable>
+    <xsl:variable name="astronomyNameType" as="xs:string">astrEnt</xsl:variable>
     <xsl:variable name="textGenreStyle" as="xs:string">Textgattungen</xsl:variable>
+    <xsl:variable name="textGenreNameType" as="xs:string">textGenre</xsl:variable>
     <xsl:variable name="illnessesStyle" as="xs:string">Krankheiten</xsl:variable>
+    <xsl:variable name="illnessesNameType" as="xs:string">illness</xsl:variable>
     
     <xsl:variable name="otherStyles" select="($plantStyle, $auxSubstStyle, $astronomyStyle, $textGenreStyle, $illnessesStyle)"/>
+    <xsl:variable name="otherNameTypes" select="($plantNameType, $auxSubstNameType, $astronomyNameType, $textGenreNameType, $illnessesNameType)"/>
     
     <xsl:variable name="codId" select="replace(string-join((//w:p//w:pStyle[@w:val=('folio', 'mecmuaKommentarezurHandschrift')])[1]/../..//w:t, ''), '[ .]', '')"></xsl:variable>
     <xsl:variable name="remarkRegExp">(.*)remark:(.*)</xsl:variable>
@@ -232,14 +241,16 @@
         <xsl:param name="Style"/>
         <xsl:variable name="heading" select="string-join(.//w:t/text(), '')"/>
         <xsl:choose>
-            <xsl:when test="matches($heading, '^\s*\d+[vr]')">
-                <xsl:variable name="folDesc" select="substring-before($heading, ':')"/>
+            <xsl:when test="matches($heading, '^\s*\d+[vr]:')">
+                <xsl:variable name="folDesc" select="replace($heading, '^ *(\d+[vr]).*', '$1')"/>
                 <xsl:variable name="rv" select="replace($folDesc, '\d+', '')"/>
                 <xsl:variable name="vplus1" select="if ($rv eq 'v') then 1 else 0" as="xs:decimal"/>
                 <xsl:variable name="folNum" select="xs:decimal(replace($folDesc, '[rv]', ''))" as="xs:decimal"/>
-                <pb n="{concat(format-number($folNum, '000'), $rv)}" facs="{concat($codId, '/', format-number((($folNum - 1) * 2) + 9 + $vplus1, '00000000'))}"/>
-                <p>
+                <pb n="{concat($codId, ' ', format-number($folNum, '000'), $rv)}" facs="{concat($codId, '/', format-number((($folNum - 1) * 2) + $firstFolioOffset + $vplus1, '00000000'))}"/>
+                <p rend="{$folioDescStyle}">
+                    <hi rend="{$folioCommentaries}">
                     <xsl:value-of select="concat($codId, ': ', $folDesc)"/>
+                    </hi>
                 </p>
             </xsl:when>
             <xsl:otherwise>
@@ -562,6 +573,7 @@
                                     select="if (exists($thisId)) then normalize-space(string-join($comments/w:comments/w:comment[@w:id = $thisId]//w:t, '')) else ' '"/>
                                 <xsl:variable name="wordInText" select="string-join(./w:t, '')"
                                     as="xs:string"/>
+                                <!-- TODO: replace with lookup -->
                                 <xsl:variable name="type" select="./w:rPr/w:rStyle/@w:val"
                                     as="xs:string?"/>
                                 <xsl:variable name="generated-id" select="generate-id()"/>
@@ -731,6 +743,23 @@
                     <xsl:attribute name="ref">
                        <xsl:value-of select="mec:getRefIdOtherNames($name, $commentN)"/>
                     </xsl:attribute>              
+                    <xsl:choose>
+                        <xsl:when test="$style=$plantStyle">
+                            <xsl:attribute name="type"><xsl:value-of select="$plantNameType"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="$style=$astronomyStyle">
+                            <xsl:attribute name="type"><xsl:value-of select="$astronomyNameType"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="$style=$auxSubstStyle">
+                            <xsl:attribute name="type"><xsl:value-of select="$auxSubstNameType"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="$style=$textGenreStyle">
+                            <xsl:attribute name="type"><xsl:value-of select="$textGenreNameType"/></xsl:attribute>
+                        </xsl:when>
+                        <xsl:when test="$style=$illnessesStyle">
+                            <xsl:attribute name="type"><xsl:value-of select="$illnessesNameType"/></xsl:attribute>
+                        </xsl:when>
+                    </xsl:choose>
                     <xsl:apply-templates/>
                 </xsl:element>
             </xsl:when> 
@@ -785,19 +814,19 @@
                         <xsl:element name="name">
                             <xsl:choose>
                                 <xsl:when test="$style=$plantStyle">
-                                    <xsl:attribute name="type">plant</xsl:attribute>
+                                    <xsl:attribute name="type"><xsl:value-of select="$plantNameType"/></xsl:attribute>
                                 </xsl:when>
                                 <xsl:when test="$style=$astronomyStyle">
-                                    <xsl:attribute name="type">astronomy</xsl:attribute>
+                                    <xsl:attribute name="type"><xsl:value-of select="$astronomyNameType"/></xsl:attribute>
                                 </xsl:when>
                                 <xsl:when test="$style=$auxSubstStyle">
-                                    <xsl:attribute name="type">aux_subst</xsl:attribute>
+                                    <xsl:attribute name="type"><xsl:value-of select="$auxSubstNameType"/></xsl:attribute>
                                 </xsl:when>
                                 <xsl:when test="$style=$textGenreStyle">
-                                    <xsl:attribute name="type">text_genre</xsl:attribute>
+                                    <xsl:attribute name="type"><xsl:value-of select="$textGenreNameType"/></xsl:attribute>
                                 </xsl:when>
                                 <xsl:when test="$style=$illnessesStyle">
-                                    <xsl:attribute name="type">illness</xsl:attribute>
+                                    <xsl:attribute name="type"><xsl:value-of select="$illnessesNameType"/></xsl:attribute>
                                 </xsl:when>
                             </xsl:choose>
                             <note>info missing</note>
