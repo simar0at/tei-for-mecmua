@@ -31,7 +31,7 @@
     
     <xsl:variable name="otherStyles" select="($plantStyle, $auxSubstStyle, $astronomyStyle, $textGenreStyle, $illnessesStyle)"/>
     
-    <xsl:variable name="codId" select="replace(string-join((//w:p[//w:pStyle/@w:val='folio'])[1]//w:t, ''), '[ .]', '')"></xsl:variable>
+    <xsl:variable name="codId" select="replace(string-join((//w:p//w:pStyle[@w:val=('folio', 'mecmuaKommentarezurHandschrift')])[1]/../..//w:t, ''), '[ .]', '')"></xsl:variable>
     <xsl:variable name="remarkRegExp">(.*)remark:(.*)</xsl:variable>
     <xsl:variable name="remarkMremains">1</xsl:variable>
     <xsl:variable name="remarkM">2</xsl:variable>
@@ -232,7 +232,7 @@
         <xsl:param name="Style"/>
         <xsl:variable name="heading" select="string-join(.//w:t/text(), '')"/>
         <xsl:choose>
-            <xsl:when test="matches($heading, '\d+[vr]:')">
+            <xsl:when test="matches($heading, '^\s*\d+[vr]')">
                 <xsl:variable name="folDesc" select="substring-before($heading, ':')"/>
                 <xsl:variable name="rv" select="replace($folDesc, '\d+', '')"/>
                 <xsl:variable name="vplus1" select="if ($rv eq 'v') then 1 else 0" as="xs:decimal"/>
