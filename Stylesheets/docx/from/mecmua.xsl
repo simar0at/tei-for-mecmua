@@ -120,12 +120,12 @@
     <xd:doc>
         <xd:desc>Access to $pass0 is needed globally so duplicate this here.</xd:desc>
     </xd:doc>
-<!--    <xsl:variable name="pass0">
-        <xsl:apply-templates select="/" mode="pass0"/>
-    </xsl:variable>-->
     <xsl:variable name="pass0">
-        <xsl:copy-of select="/"/>
+        <xsl:apply-templates select="/" mode="pass0"/>
     </xsl:variable>
+<!--    <xsl:variable name="pass0">
+        <xsl:sequence select="/"/>
+    </xsl:variable>-->
 
     <xd:doc>
         <xd:desc>Handle character styles that have a special meaning in the mecmua project and ignore some styles that we defined to be suppressed.
@@ -194,6 +194,9 @@
         </appInfo>
 <!--        <xsl:sequence select="$tagsDecl"/>-->
         <xsl:call-template name="_generateTagsDecl"/>
+        <xsl:result-document href="tagsDecl.xml">
+            <xsl:call-template name="_generateTagsDecl"/>
+        </xsl:result-document>
     </xsl:template>
     
     <xd:doc>
@@ -649,13 +652,26 @@
         <xsl:param name="commentN" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="$commentN eq ''">
-                <xsl:sequence select="($tagsDecl//tei:person[(tei:persName/text()[1]|tei:persName/tei:addName) = $name])[1]/@xml:id"/>                
+                <xsl:sequence select="($tagsDecl//tei:person[tei:persName/text() = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])[1]/@xml:id"/>                
             </xsl:when>
             <xsl:otherwise>
                 <!-- idea search for best candidate not finished: replace 1 exists((tei:occupation, tei:death, tei:floruit)) -->
-                <xsl:sequence select="($tagsDecl//tei:person[(tei:persName/text()[1]|tei:persName/tei:addName) = $name])[1]/@xml:id"/>                
+                <xsl:sequence select="($tagsDecl//tei:person[tei:persName/text() = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])[1]/@xml:id"/>                
             </xsl:otherwise>
         </xsl:choose>       
+    </xsl:function>
+    
+    <xsl:function name="mec:disambiguatePerson" as="element()">
+        <xsl:param name="comment" as="element()"/>
+        <xsl:param name="candidates" as="element()+"/>
+        <xsl:choose>
+            <xsl:when test="count($candidates) = 1">
+                <xsl:sequence select="$candidates"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="mec:disambiguatePerson($comment, subsequence($candidates, 2))"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="mec:getRefIdPlace" as="xs:string?">

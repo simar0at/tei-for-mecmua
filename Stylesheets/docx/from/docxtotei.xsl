@@ -190,10 +190,14 @@ of this software, even if advised of the possibility of such damage.
 	<xsl:message terminate="yes">The file <xsl:value-of
 	select="$styleDoc"/> cannot be read</xsl:message>
       </xsl:if>
+   	<!-- see mecmua.xsl -->
      <xsl:variable name="pass0">
        <xsl:apply-templates mode="pass0"/>
      </xsl:variable>
      
+     <xsl:result-document href="pass0.xml">
+     	<xsl:copy-of select="$pass0"/>
+     </xsl:result-document>
      <!-- Do the main transformation and store everything in the variable pass1 -->
      <xsl:variable name="pass1">
        <xsl:for-each select="$pass0">
@@ -209,6 +213,7 @@ of this software, even if advised of the possibility of such damage.
      <!-- Do the final parse and create valid TEI -->
 
      <xsl:apply-templates select="$pass1" mode="pass2"/>
+<!--   	<xsl:apply-templates mode="pass2"/>-->
      
      <xsl:call-template name="fromDocxFinalHook"/>
    </xsl:template>
