@@ -191,15 +191,15 @@ of this software, even if advised of the possibility of such damage.
 	select="$styleDoc"/> cannot be read</xsl:message>
       </xsl:if>
    	<!-- see mecmua.xsl -->
-     <xsl:variable name="pass0">
+<!--     <xsl:variable name="pass0">
        <xsl:apply-templates mode="pass0"/>
-     </xsl:variable>
+     </xsl:variable>-->
      
      <xsl:result-document href="pass0.xml">
      	<xsl:copy-of select="$pass0"/>
      </xsl:result-document>
      <!-- Do the main transformation and store everything in the variable pass1 -->
-     <xsl:variable name="pass1">
+     <xsl:variable name="pass1"> 
        <xsl:for-each select="$pass0">
 	 <xsl:apply-templates/>
        </xsl:for-each>
