@@ -4,6 +4,11 @@
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     xmlns:prop="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+    xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
+    xmlns:csp="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
+    xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:mec="http://mecmua.priv"
     xmlns="http://www.tei-c.org/ns/1.0"
     exclude-result-prefixes="xs xd tei prop w mec" version="2.0">
@@ -128,6 +133,162 @@
     </xsl:variable>-->
 
     <xd:doc>
+        <xd:desc>teiHeader using the metadata agreed upon in the project, fetched from the docx metadata</xd:desc>
+    </xd:doc>
+    <xsl:template name="create-tei-header">
+        <xsl:variable name="docPropsCustom" select="doc(concat($wordDirectory,'/docProps/custom.xml'))"/>
+        <xsl:variable name="editionDate" select="$docPropsCustom/csp:Properties/csp:property[@name = 'Edition-date']"/>
+        <xsl:variable name="lastModified" select="substring-before($docProps/cp:coreProperties/dcterms:modified,'T')"/>
+        <teiHeader>
+            <fileDesc>
+                <titleStmt>
+                    <title><xsl:value-of select="$docProps/cp:coreProperties/dc:title"/></title>
+                    <author><xsl:value-of select="$docProps/cp:coreProperties/dc:creator"/></author>
+                    <respStmt>
+                        <resp xml:lang="en">encoded by</resp>
+                        <resp xml:lang="de">bearbeitet von</resp>
+                        <xsl:for-each select="tokenize($docPropsCustom/csp:Properties/csp:property[@name = 'Encodedby'], ';')">
+                                <name><xsl:value-of select="normalize-space(.)"/></name>
+                        </xsl:for-each>
+                    </respStmt>
+                </titleStmt>
+                <editionStmt>
+                    <edition><note>Fully digitized Edition <xsl:value-of select="$editionDate"></xsl:value-of>. Preliminary version as of <xsl:value-of select="$lastModified"/>.
+This is a work in progress. If you find any new or alternative readings or have any suggestions or comments please get in contact with us. mecmua.orientalistik@univie.ac.at</note>
+                    </edition>
+                    <xsl:for-each select="tokenize($docPropsCustom/csp:Properties/csp:property[@name = 'Finanzierung'], ';')">                        
+                       <funder><xsl:value-of select="normalize-space(.)"/></funder>
+                    </xsl:for-each>                    
+                </editionStmt>
+                <extent>
+                    <measure type="images"><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'Bilder']"/> facsimile</measure>
+                </extent>
+                <publicationStmt>
+                    <publisher><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'Verleger']"/></publisher>
+                    <address><addrLine>Sonnenfelsgasse 19, 1010 Wien, Austria</addrLine></address>
+                    <pubPlace>Vienna</pubPlace>
+                    <date when="2014">2014</date>
+                    <availability status="restricted">
+                        <licence></licence>
+                    </availability>
+                    <idno type="cr-xq">mecmua:<xsl:value-of select="$codId"/></idno>
+                </publicationStmt>
+                <notesStmt>
+                    <note><xsl:value-of select="$docProps/cp:coreProperties/dc:description"/></note>
+                </notesStmt>
+                <sourceDesc>
+                    <bibl type="short"><xsl:value-of select="$docProps/cp:coreProperties/dc:title"/></bibl>
+                    <biblStruct>
+                        <monogr>
+                            <title><xsl:value-of select="$docProps/cp:coreProperties/dc:title"/></title>
+                            <author>
+                                <name><xsl:value-of select="$docProps/cp:coreProperties/dc:creator"/></name>
+                            </author>
+                            <imprint>
+                                <pubPlace>Ottoman Empire</pubPlace>
+                                <publisher>Unknown</publisher>
+                                <date>16th Century</date>
+                            </imprint>
+                            <extent>
+                                <num n="pages"><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'extent-pages']"/></num>
+                            </extent>
+                        </monogr>
+                    </biblStruct>
+                    <msDesc>
+                        <msIdentifier>
+                            <settlement><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'msDesc-settlement']"/></settlement>
+                            <institution><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'msDesc-institution']"/></institution>
+                            <repository><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'msDesc-institution']"/></repository>
+                            <idno type="signatory"><xsl:value-of select="$docPropsCustom/csp:Properties/csp:property[@name = 'msDesc-signatory']"/></idno>
+                        </msIdentifier>
+                    </msDesc>
+                </sourceDesc>
+            </fileDesc>
+            <encodingDesc>
+                <projectDesc>
+                    <p>Early Modern Ottoman Culture of Learning: Popular Learning between Poetic Ambitions and Pragmatic Concerns</p>
+                    <p>In our project we intend to explore some aspects of the Early Modern Ottoman culture of learning, in particular those areas of learning used and cultivated outside the official Ottoman institutions of learning, the medreses.</p>
+                    <p>Our main sources for this investigation will be the encyclopaedia Netaic ül-fünun of the 16th century scholar and poet Nevi and a number of mecmuas preserved in the Österreichische Nationalbibliothek and the Haus-, Hof- und Staatsarchiv in Vienna.</p>
+                    <p>Our project has two main aims, one basically related to cultural history, the other to pragmatic philological issues:</p>
+                    <p>As for cultural history we intend to explore the early modern culture of
+                        what can be called the “general” or “popular learning” of educated Ottomans
+                        with regard to its own historical context and cultural concepts. The Netaic
+                        and the mecmuas will be investigated with regard to their sources, and the
+                        backgrounds of their authors and compilers, and of their readers and users.
+                        The question of the “popularization” of learning will be raised in
+                        particular with regard to the way in which the authors of these works made
+                        use of their sources, how the learning was presented, and how the works were
+                        used. We will pay special attention to the role of poetry in the Ottoman
+                        culture of learning and the way it was applied in the Netaic and the
+                        mecmuas.</p>
+                    <p>The philological objectives of the project include the compilation of a
+                        full critical edition and translation of the Netaic and an edition and
+                        translation of selected parts of the mecmuas. The circumstances of the
+                        Netaic’s transmission is particularly interesting, and in the course of this
+                        project we will explore possible solutions to the problem of editing a text
+                        that is today available in a great number of manuscripts (around 60), some
+                        of which differ considerably from each other – a situation not unusual for
+                        popular Ottoman works.</p>
+                    <p>Also, we intend to create an open access database containing the verses,
+                        themes, motives, and authors and titles of the various books cited or
+                        mentioned in the Netaic and themecmuas. The editions, translations, and the
+                        database will provide a solid foundation for further scholarship on Ottoman
+                        cultural and literary history.</p>              
+                </projectDesc>
+                <editorialDecl>
+                    <ab>The electronic edition was prepared as OfficeOpenXML (as produced by Microsoft Word 2007) text documents and then converted using XSL 2.0 to documents conforming to the TEI P5 Guildlines.</ab>
+                    <ab>Misspellings are indicated by [!], illegible words by [...] and problematic readings by [?]. // indeicates beginnings of new lines.</ab>
+                    <normalization>
+                        <ab>The orthography of the original is maintained.</ab>
+                        <ab>Trancription systems: For Ottoman Turkish the standard transcription-system of the İslam Ansiklopedisi is used (except q instead  ḳ and ė instead i), for Arabic and Persian the transcription-system of the DMG (Deutsche Morgenländische Gesellschaft).</ab>
+                    </normalization>
+                    <interpretation>
+                        <ab>persons, places, plants, illnesses, astronomic/astrologic entities, texts and genres, substances</ab>
+                    </interpretation>            
+                </editorialDecl>
+                <xsl:call-template name="generateAppInfo"/>
+            </encodingDesc>
+            <profileDesc>
+                <langUsage>
+                    <xsl:for-each select="tokenize($docPropsCustom/csp:Properties/csp:property[@name = 'Sprache'], ',')">
+                        <xsl:variable name="langName" select="normalize-space(.)"/>
+                        <xsl:variable name="langSc">
+                            <xsl:choose>
+                                <xsl:when test="$langName='German'">deu</xsl:when>
+                                <xsl:when test="$langName='English'">eng</xsl:when>
+                                <xsl:when test="$langName='Ottoman'">ota</xsl:when>
+                                <xsl:when test="$langName='Arabic'">ara</xsl:when>
+                                <xsl:when test="$langName='Persian'">fas</xsl:when>
+                            </xsl:choose>
+                        </xsl:variable>
+                        <language ident="{$langSc}"><xsl:value-of select="$langName"/></language>
+                    </xsl:for-each>                   
+                </langUsage>
+                <textClass>
+                    <keywords>
+                        <list>
+                            <xsl:for-each select="tokenize($docProps/cp:coreProperties/cp:keywords, ';')">
+                                <item><xsl:value-of select="normalize-space(.)"/></item>
+                            </xsl:for-each>                       
+                        </list>
+                    </keywords>
+                </textClass>
+            </profileDesc>
+            <revisionDesc>
+                <change when="{substring-before(tei:whatsTheDate(),'T')}" who="{$docPropsCustom/csp:Properties/csp:property[@name = 'Encodedby']}"/>
+            </revisionDesc>
+        </teiHeader>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Empty notes would be zapped otherwise</xd:desc>
+    </xd:doc>
+    <xsl:template match="tei:note[not(*) and not(text()) and parent::tei:notesStmt]" mode="pass2">
+        <!-- at least an empty note is mandatory -->
+        <note/>
+    </xsl:template>
+    
+    <xd:doc>
         <xd:desc>Handle character styles that have a special meaning in the mecmua project and ignore some styles that we defined to be suppressed.
             <xd:p>Note: uses a cusotmization in textruns.xsl.</xd:p>
         </xd:desc>
@@ -167,7 +328,7 @@
     <xsl:template name="generateAppInfo">
         <appInfo>
             <application ident="TEI_fromDOCX_for_Mecmua" version="2.15.0mecmua">
-                <label>DOCX to TEI for mecmua</label>
+                <desc>DOCX to TEI for mecmua, TEI XSL Stylesheets adapted for the project by Omar Siam</desc>
             </application>
             <xsl:if test="doc-available(concat($wordDirectory,'/docProps/custom.xml'))">
                 <xsl:for-each select="document(concat($wordDirectory,'/docProps/custom.xml'))/prop:Properties">
@@ -194,9 +355,9 @@
         </appInfo>
 <!--        <xsl:sequence select="$tagsDecl"/>-->
         <xsl:call-template name="_generateTagsDecl"/>
-        <xsl:result-document href="tagsDecl.xml">
+<!--        <xsl:result-document href="tagsDecl.xml">
             <xsl:call-template name="_generateTagsDecl"/>
-        </xsl:result-document>
+        </xsl:result-document>-->
     </xsl:template>
     
     <xd:doc>
@@ -875,14 +1036,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>    
-   
-    <xsl:template name="getPubStatement">
-        <p>Not to be published before the end of the project.</p>
-    </xsl:template>
-    
-    <xsl:template name="getSourceDesc">
-        <p>Converted from the Word source document</p>
-    </xsl:template>
     
     <xd:doc>
         <xd:desc>Retain all used person references</xd:desc>
