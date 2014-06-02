@@ -11,7 +11,7 @@
     xmlns:dcterms="http://purl.org/dc/terms/"
     xmlns:mec="http://mecmua.priv"
     xmlns="http://www.tei-c.org/ns/1.0"
-    exclude-result-prefixes="xs xd tei prop w mec" version="2.0">
+    exclude-result-prefixes="#all" version="2.0">
     <xsl:import href="docxtotei.xsl"/>
     <xd:doc scope="stylesheet">
         <xd:desc>
