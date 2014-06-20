@@ -485,7 +485,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                 <xsl:matching-substring>
                     <persName xml:lang="ota-Latn-t">
                         <xsl:value-of select="$wordInText"/>
-                        <xsl:for-each select="tokenize(regex-group($nameMaka), ',')">
+                        <xsl:for-each select="tokenize(regex-group($nameMaka), '[,;]')">
                             <addName xml:lang="ota-Latn-t">                                                    
                                 <xsl:value-of
                                     select="normalize-space(.)"/>
@@ -561,7 +561,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                         </xsl:attribute>
                         <placeName xml:lang="ota-Latn-t">
                             <xsl:value-of select="$wordInText"/>
-                            <xsl:for-each select="tokenize(regex-group($placeMaka), ';')">
+                            <xsl:for-each select="tokenize(regex-group($placeMaka), '[,;]')">
                                 <addName xml:lang="ota-Latn-t">
                                     <xsl:value-of select="normalize-space(.)"/>
                                 </addName>
@@ -619,7 +619,7 @@ This is a work in progress. If you find any new or alternative readings or have 
             </orth>
             <xsl:analyze-string select="$annotationText" regex="{$otherRegExp}">
                 <xsl:matching-substring>
-                    <xsl:for-each select="tokenize(regex-group($otherMaka), ',')">
+                    <xsl:for-each select="tokenize(regex-group($otherMaka), '[,;]')">
                         <orth xml:lang="ota-Latn-t">                                                    
                             <xsl:value-of
                                 select="normalize-space(.)"/>
@@ -827,12 +827,12 @@ This is a work in progress. If you find any new or alternative readings or have 
     <xd:doc>
         <xd:desc>Remove texts containing n.a. when comparing</xd:desc>
     </xd:doc>
-    <xsl:template match="*[contains(text()[1], 'n.a.')]" mode="prepare-comment"/>
+<!--    <xsl:template match="*[contains(text()[1], 'n.a.')]" mode="prepare-comment"/>-->
 
     <xd:doc>
         <xd:desc>Remove attributes containing n.a. when comparing</xd:desc>
     </xd:doc>    
-    <xsl:template match="@*[contains(., 'n.a.')]" mode="prepare-comment"/>
+<!--    <xsl:template match="@*[contains(., 'n.a.')]" mode="prepare-comment"/>-->
     
     <xd:doc>
         <xd:desc>Create a copy for comparing</xd:desc>
@@ -855,32 +855,37 @@ This is a work in progress. If you find any new or alternative readings or have 
     <xsl:variable name="missing_info_marker" select="''"/>
     
     <xsl:function name="mec:getRefIdPerson" as="xs:string?">
-        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="name" as="xs:string+"/>
         <xsl:param name="commentN" as="xs:string"/>
         <xsl:param name="commentXML" as="document-node()?"/>
-        <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:person[tei:persName/text()[1] = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])"/>
-        <xsl:variable name="allMatchingNamesComment" select="$allPossibleMatchingNamesComment[not(contains(.//tei:note, 'not annotated'))]"/>
+        <xsl:variable name="allPossibleMatchingNamesComment"
+            select="($tagsDecl//tei:person[tei:persName/text()[1] = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])"/>
+        <xsl:variable name="allMatchingNamesComment"
+            select="$allPossibleMatchingNamesComment[not(contains(.//tei:note, 'not annotated'))]"/>
         <xsl:variable name="firstMatchingNamesId" select="$allMatchingNamesComment[1]/@xml:id"/>
-            <xsl:choose>
-                <xsl:when test="empty($allMatchingNamesComment)">
-                    <!-- Error: finds comment for the next unrelated name!! -->
-                    <!--       select="concat($commentN,'-',($tagsDecl//tei:person[tei:persName/text()[1] = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])[1]/@xml:id)"-->
-                    <xsl:value-of select="if (empty($allPossibleMatchingNamesComment[1]/@xml:id)) then $missing_info_marker else $allPossibleMatchingNamesComment[1]/@xml:id"/>
-                </xsl:when>
-                <xsl:when test="empty($commentXML)">
-                    <xsl:value-of select="$firstMatchingNamesId"/>
-                </xsl:when>
-                <xsl:when test="$commentN eq ''">
-                    <xsl:value-of select="$firstMatchingNamesId"/>
-                </xsl:when>
-                <xsl:otherwise>
-                            <xsl:variable name="preparedCommentXML">
-                                <xsl:apply-templates select="$commentXML" mode="prepare-comment"/>
-                            </xsl:variable>
-                            <xsl:value-of
-                                select="string-join(mec:disambiguate($preparedCommentXML, $allMatchingNamesComment)/@xml:id, 'error: ')"/>
-                </xsl:otherwise>
-            </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="empty($allMatchingNamesComment)">
+                <!-- Error: finds comment for the next unrelated name!! -->
+                <!--       select="concat($commentN,'-',($tagsDecl//tei:person[tei:persName/text()[1] = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])[1]/@xml:id)"-->
+                <xsl:value-of
+                    select="if (empty($allPossibleMatchingNamesComment[1]/@xml:id)) then $missing_info_marker else $allPossibleMatchingNamesComment[1]/@xml:id"
+                />
+            </xsl:when>
+            <xsl:when test="empty($commentXML)">
+                <xsl:value-of select="$firstMatchingNamesId"/>
+            </xsl:when>
+            <xsl:when test="$commentN eq ''">
+                <xsl:value-of select="$firstMatchingNamesId"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="preparedCommentXML">
+                    <xsl:apply-templates select="$commentXML" mode="prepare-comment"/>
+                </xsl:variable>
+                <xsl:value-of
+                    select="string-join(mec:disambiguate($preparedCommentXML, $allMatchingNamesComment)/@xml:id, 'error: ')"
+                />
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xd:doc>
@@ -899,7 +904,7 @@ This is a work in progress. If you find any new or alternative readings or have 
         </xsl:variable>
         <xsl:sequence select="mec:disambiguate($comment, $candidates, $similarityPoints)"/>
     </xsl:function>
-
+    
     <xd:doc>
         <xd:desc>Disambiguate by checking a comment against candidates. Comparison results are passed on.</xd:desc>
     </xd:doc>
@@ -924,7 +929,7 @@ This is a work in progress. If you find any new or alternative readings or have 
             </xsl:when>
             <xsl:otherwise>
                 <xsl:sequence
-                    select="mec:disambiguate($comment, subsequence($candidates, 2), subsequence($similarityPoints, 2))"
+                    select="mec:disambiguate($comment, remove($candidates, 2), remove($similarityPoints, 2))"
                 />
             </xsl:otherwise>
         </xsl:choose>
@@ -934,41 +939,70 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xd:desc>Compare two generated TEI structures reporting every match using a tag as a point.</xd:desc>
     </xd:doc>
     <xsl:function name="mec:similarityPoints" as="element()*">
-        <xsl:param name="xmla" as="node()"/>
-        <xsl:param name="xmlb" as="node()"/>
+        <xsl:param name="candidate" as="node()"/>
+        <xsl:param name="comment" as="node()"/>
+        <xsl:variable name="ownID" as="xs:string?" select="$comment//tei:person/@xml:id | $comment//tei:place/@xml:id | $comment//tei:nym/@xml:id"/>
+        <!-- See if we already have this name tagged but with another name in the running text -->
         <!-- Here all sorts of mix and match may occur within one type. -->
-        <xsl:for-each select="$xmla//tei:persName/text()[1] | $xmla//tei:placeName/text()[1] | $xmla//tei:orth/text()[1] | $xmla//tei:addName/text()[1]">
-            <xsl:if test=". = ($xmlb//tei:persName/text()[1] | $xmlb//tei:placeName/text()[1] | $xmlb//tei:orth/text()[1] | $xmlb//tei:addName/text()[1])">
+        <xsl:for-each select="$candidate//tei:persName/text()[1] | $candidate//tei:placeName/text()[1] | $candidate//tei:orth/text()[1] | $candidate//tei:addName/text()[1]">
+            <xsl:if test=". = ($comment//tei:orth/text()[1] | $comment//tei:addName/text()[1])">
                 <mec:s/>
             </xsl:if>
         </xsl:for-each>
+        <xsl:if test="($candidate[@xml:id ne $ownID]//tei:persName/text()[1] | $candidate[@xml:id ne $ownID]//tei:placeName/text()[1]) = ($comment//tei:persName/text()[1] | $comment//tei:placeName/text()[1])">
+            <mec:s/>
+        </xsl:if>                    
         <!-- Matching specific to persons. -->
-        <xsl:if test="$xmla//tei:occupation eq $xmlb//tei:occupation">
+        <xsl:if test="$comment//tei:occupation = ($candidate//tei:occupation, '')">
             <mec:s/>
         </xsl:if>
-        <xsl:if test="$xmla//tei:death eq $xmlb//tei:death">
+        <xsl:if test="$comment//tei:occupation = ($candidate//tei:occupation)">
             <mec:s/>
         </xsl:if>
-        <xsl:if test="$xmla//tei:floruit/@from-custom eq $xmlb//tei:floruit/@from-custom">
+        <xsl:if test="$comment//tei:death = ($candidate//tei:death, '')">
             <mec:s/>
         </xsl:if>
-        <xsl:if test="$xmla//tei:floruit/@to-custom eq $xmlb//tei:floruit/@to-custom">
+        <xsl:if test="$comment//tei:death = ($candidate//tei:death)">
+            <mec:s/>
+        </xsl:if>
+        <xsl:if test="$comment//tei:floruit/@from-custom = ($candidate//tei:floruit/@from-custom, '')">
+            <mec:s/>
+        </xsl:if>
+        <xsl:if test="$comment//tei:floruit/@from-custom = ($candidate//tei:floruit/@from-custom)">
+            <mec:s/>
+        </xsl:if>
+        <xsl:if test="$comment//tei:floruit/@to-custom = ($candidate//tei:floruit/@to-custom, '')">
+            <mec:s/>
+        </xsl:if>
+        <xsl:if test="$comment//tei:floruit/@to-custom = ($candidate//tei:floruit/@to-custom)">
             <mec:s/>
         </xsl:if>
         <!-- Matching specific to places. -->
-        <xsl:if test="$xmla//tei:country eq $xmlb//tei:country">
+        <xsl:if test="$comment//tei:country = ($candidate//tei:country, '')">
+            <mec:s/>
+        </xsl:if>
+        <xsl:if test="$comment//tei:country = ($candidate//tei:country)">
             <mec:s/>
         </xsl:if>
         <!-- Matching specific to other things. -->
-        <xsl:for-each select="$xmla//tei:sense/text()[1]">
-            <xsl:if test=". = ($xmlb//tei:sense/text()[1])">
+        <xsl:for-each select="$comment//tei:sense/text()[1]">
+            <xsl:if test=". = ($candidate//tei:sense/text()[1], '')">
                 <mec:s/>    
             </xsl:if>
-        </xsl:for-each>
+            <xsl:if test=". = ($candidate//tei:sense/text()[1])">
+                <mec:s/>    
+            </xsl:if>        </xsl:for-each>
+        <!-- Check of remarks/notes are part of the comment is contained in the candidate. -->
+        <xsl:if test="contains($candidate//tei:note, $comment//tei:note)">
+            <mec:s/>
+        </xsl:if>        
+        <xsl:if test="$comment//tei:note = ($candidate//tei:note, '')">
+            <mec:s/>
+        </xsl:if>
     </xsl:function>
     
     <xsl:function name="mec:getRefIdPlace" as="xs:string">
-        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="name" as="xs:string+"/>
         <xsl:param name="commentN" as="xs:string"/>
         <xsl:param name="commentXML" as="document-node()?"/>
         <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:place[tei:placeName/text()[1] = $name]|$tagsDecl//tei:place[tei:placeName/tei:addName = $name])"/>
@@ -997,7 +1031,7 @@ This is a work in progress. If you find any new or alternative readings or have 
     </xsl:function>
     
     <xsl:function name="mec:getRefIdOtherNames" as="xs:string">
-        <xsl:param name="name" as="xs:string"/>
+        <xsl:param name="name" as="xs:string+"/>
         <xsl:param name="commentN" as="xs:string"/>
         <xsl:param name="commentXML" as="document-node()?"/>
         <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = $name])"/>
@@ -1098,7 +1132,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of
-                                    select="mec:getRefIdPerson($name, $commentN, $commentXML)"/>
+                                    select="mec:getRefIdPerson(($name, $commentXML//tei:addName/text()[1]), $commentN, $commentXML)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -1117,7 +1151,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of
-                                    select="mec:getRefIdPlace($name, $commentN, $commentXML)"/>
+                                    select="mec:getRefIdPlace(($name, $commentXML//tei:addName/text()[1]), $commentN, $commentXML)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -1131,7 +1165,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                     </xsl:variable>
                     <xsl:variable name="ref"
                         select="if (empty($commentN)) then mec:getRefIdOtherNames($name, '', ())
-                                else mec:getRefIdOtherNames($name, $commentN, $commentXML)"/>
+                        else mec:getRefIdOtherNames(($name, $commentXML//tei:orth/text()[1]), $commentN, $commentXML)"/>
                     <xsl:if test="exists($ref)">
                         <xsl:attribute name="ref">
                             <xsl:value-of select="$ref"/>
