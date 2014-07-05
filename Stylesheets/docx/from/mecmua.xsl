@@ -64,11 +64,13 @@
     <xsl:variable name="placeMwToday">4</xsl:variable>
     <xsl:variable name="placeMtodayN">5</xsl:variable>
     
-    <xsl:variable name="otherRegExp">(aka:(.*))?Latin:(.*)English:(.*)</xsl:variable>
+    <xsl:variable name="otherRegExp">(aka:(.*))?Latin:(.*)English:(.*)|(aka:(.*))?English:(.*)</xsl:variable>
     <!-- 1: aka: ... -->
     <xsl:variable name="otherMaka">2</xsl:variable>
+    <xsl:variable name="otherMakaAlt">6</xsl:variable>
     <xsl:variable name="otherMlat">3</xsl:variable>
-    <xsl:variable name="otherMeng">4</xsl:variable>    
+    <xsl:variable name="otherMeng">4</xsl:variable>
+    <xsl:variable name="otherMengAlt">7</xsl:variable>     
 
     <xd:doc>
         <xd:desc>No break hyphens actually aren't characters but tags. Convert them to Unicode characters in pass0.
@@ -435,7 +437,7 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:variable name="heading" select="string-join(.//w:t/text(), '')"/>
         <div>
             <xsl:if test="matches($heading, '\d+[vr]:')">
-                <xsl:attribute name="xml:id" select="generate-id(.)"/>
+                <xsl:attribute name="xml:id" select="concat($codId, generate-id(.))"/>
                 <xsl:attribute name="type">page</xsl:attribute>
             </xsl:if>
             <!-- generate the head -->
@@ -531,11 +533,11 @@ This is a work in progress. If you find any new or alternative readings or have 
                     </persName>
                     <xsl:choose>
                         <xsl:when test="$annotationText = ' '">
-                            <note>This name is not annotated!</note>
+                            <note>This name is not annotated! No annotation found.</note>
                         </xsl:when>
                         <xsl:otherwise>
                             <note>
-                                <xsl:value-of select="$annotationText"/>
+                                <xsl:value-of select="concat('This name is not annotated correctly! Details: &quot;', $annotationText, '&quot;')"/>
                             </note>
                         </xsl:otherwise>
                     </xsl:choose>
@@ -587,11 +589,18 @@ This is a work in progress. If you find any new or alternative readings or have 
                         <placeName>
                             <xsl:value-of select="$wordInText"/>
                         </placeName>
-                        <note>
-                            <xsl:value-of
-                                select="concat('This name is not annotated correctly! ', $annotationText)"
-                            />
-                        </note>
+                        <xsl:choose>
+                            <xsl:when test="$annotationText = ' '">
+                                <note>This name is not annotated! No annotation found.</note>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <note>
+                                    <xsl:value-of
+                                        select="concat('This name is not annotated correctly! Details: &quot;', $annotationText, '&quot;')"
+                                    />
+                                </note>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </place>
                 </xsl:non-matching-substring>
             </xsl:analyze-string>
@@ -614,12 +623,17 @@ This is a work in progress. If you find any new or alternative readings or have 
             <xsl:attribute name="type">
                 <xsl:value-of select="$type"/>
             </xsl:attribute>
-            <orth xml:lang="ota-Latn-t">
+<!--            <orth xml:lang="ota-Latn-t">
                 <xsl:value-of select="$wordInText"/>
-            </orth>
+            </orth>-->
+<!--            <xsl:if test="lower-case($wordInText) ne $wordInText">-->
+                <orth xml:lang="ota-Latn-t">
+                    <xsl:value-of select="lower-case($wordInText)"/>    
+                </orth>
+<!--            </xsl:if>-->
             <xsl:analyze-string select="$annotationText" regex="{$otherRegExp}">
                 <xsl:matching-substring>
-                    <xsl:for-each select="tokenize(regex-group($otherMaka), '[,;]')">
+                    <xsl:for-each select="tokenize(if (regex-group($otherMaka) eq '') then regex-group($otherMakaAlt) else regex-group($otherMaka), '[,;]')">
                         <orth xml:lang="ota-Latn-t">                                                    
                             <xsl:value-of
                                 select="normalize-space(.)"/>
@@ -629,7 +643,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                         <xsl:value-of select="normalize-space(regex-group($otherMlat))"/>
                     </sense>
                     <sense xml:lang="en-UK">
-                        <xsl:value-of select="normalize-space(regex-group($otherMeng))"/>
+                        <xsl:value-of select="normalize-space(if (regex-group($otherMeng) eq '') then regex-group($otherMengAlt) else regex-group($otherMeng))"/>
                     </sense>
                     <xsl:if test="$remark ne ''">
                     <ab>
@@ -641,9 +655,18 @@ This is a work in progress. If you find any new or alternative readings or have 
                 </xsl:matching-substring>                                            
                 <xsl:non-matching-substring>
                     <ab>
-                        <note> This name is not annotated correctly!
-                            <xsl:value-of select="normalize-space(string-join(., ';'))"/>
-                        </note>
+                        <xsl:choose>
+                            <xsl:when test="$annotationText = ' '">
+                                <note>This name is not annotated! No annotation found.</note>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <note>
+                                    <xsl:value-of
+                                        select="concat('This name is not annotated correctly! Details: &quot;', $annotationText, '&quot;')"
+                                    />
+                                </note>
+                            </xsl:otherwise>
+                        </xsl:choose>
                     </ab>
                 </xsl:non-matching-substring>
             </xsl:analyze-string>
@@ -858,8 +881,13 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:param name="name" as="xs:string+"/>
         <xsl:param name="commentN" as="xs:string"/>
         <xsl:param name="commentXML" as="document-node()?"/>
+        <xsl:variable name="lcName" as="xs:string+">
+            <xsl:for-each select="$name">
+                <xsl:value-of select="lower-case(.)"/>
+            </xsl:for-each>
+        </xsl:variable>
         <xsl:variable name="allPossibleMatchingNamesComment"
-            select="($tagsDecl//tei:person[tei:persName/text()[1] = $name]|$tagsDecl//tei:person[tei:persName/tei:addName = $name])"/>
+            select="($tagsDecl//tei:person[tei:persName/text()[1] = ($lcName, $name)]|$tagsDecl//tei:person[tei:persName/tei:addName = ($lcName, $name)])"/>
         <xsl:variable name="allMatchingNamesComment"
             select="$allPossibleMatchingNamesComment[not(contains(.//tei:note, 'not annotated'))]"/>
         <xsl:variable name="firstMatchingNamesId" select="$allMatchingNamesComment[1]/@xml:id"/>
@@ -946,9 +974,9 @@ This is a work in progress. If you find any new or alternative readings or have 
         <!-- Here all sorts of mix and match may occur within one type. -->
         <xsl:for-each select="$candidate//tei:persName/text()[1] | $candidate//tei:placeName/text()[1] | $candidate//tei:orth/text()[1] | $candidate//tei:addName/text()[1]">
             <xsl:if test=". = ($comment//tei:orth/text()[1] | $comment//tei:addName/text()[1])">
-                <mec:s/>
-            </xsl:if>
-        </xsl:for-each>
+                    <mec:s/>
+                </xsl:if>
+            </xsl:for-each>
         <xsl:if test="($candidate[@xml:id ne $ownID]//tei:persName/text()[1] | $candidate[@xml:id ne $ownID]//tei:placeName/text()[1]) = ($comment//tei:persName/text()[1] | $comment//tei:placeName/text()[1])">
             <mec:s/>
         </xsl:if>                    
@@ -1005,7 +1033,12 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:param name="name" as="xs:string+"/>
         <xsl:param name="commentN" as="xs:string"/>
         <xsl:param name="commentXML" as="document-node()?"/>
-        <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:place[tei:placeName/text()[1] = $name]|$tagsDecl//tei:place[tei:placeName/tei:addName = $name])"/>
+        <xsl:variable name="lcName" as="xs:string+">
+            <xsl:for-each select="$name">
+                <xsl:value-of select="lower-case(.)"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:place[tei:placeName/text()[1] = ($lcName, $name)]|$tagsDecl//tei:place[tei:placeName/tei:addName = ($lcName, $name)])"/>
         <xsl:variable name="allMatchingNamesComment"
             select="$allPossibleMatchingNamesComment[not(contains(.//tei:note, 'not annotated'))]"/>
         <xsl:variable name="firstMatchingNamesId" select="$allMatchingNamesComment[1]/@xml:id"/>
@@ -1034,7 +1067,12 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:param name="name" as="xs:string+"/>
         <xsl:param name="commentN" as="xs:string"/>
         <xsl:param name="commentXML" as="document-node()?"/>
-        <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = $name])"/>
+        <xsl:variable name="lcName" as="xs:string+">
+            <xsl:for-each select="$name">
+                <xsl:value-of select="lower-case(.)"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = ($lcName, $name)])"/>
         <xsl:variable name="allMatchingNamesComment"
             select="$allPossibleMatchingNamesComment[not(contains(.//tei:note, 'not annotated'))]"/>
         <xsl:variable name="firstMatchingNamesId" select="$allMatchingNamesComment[1]/@xml:id"/>
@@ -1132,7 +1170,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of
-                                    select="mec:getRefIdPerson(($name, $commentXML//tei:addName/text()[1]), $commentN, $commentXML)"/>
+                                    select="mec:getRefIdPerson(($name, $commentXML//tei:addName/text()), $commentN, $commentXML)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -1151,7 +1189,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:value-of
-                                    select="mec:getRefIdPlace(($name, $commentXML//tei:addName/text()[1]), $commentN, $commentXML)"/>
+                                    select="mec:getRefIdPlace(($name, $commentXML//tei:addName/text()), $commentN, $commentXML)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:attribute>
@@ -1165,7 +1203,7 @@ This is a work in progress. If you find any new or alternative readings or have 
                     </xsl:variable>
                     <xsl:variable name="ref"
                         select="if (empty($commentN)) then mec:getRefIdOtherNames($name, '', ())
-                        else mec:getRefIdOtherNames(($name, $commentXML//tei:orth/text()[1]), $commentN, $commentXML)"/>
+                        else mec:getRefIdOtherNames(($name, $commentXML//tei:orth/text()), $commentN, $commentXML)"/>
                     <xsl:if test="exists($ref)">
                         <xsl:attribute name="ref">
                             <xsl:value-of select="$ref"/>
