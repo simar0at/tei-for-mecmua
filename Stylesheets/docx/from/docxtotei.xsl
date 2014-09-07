@@ -137,7 +137,9 @@ of this software, even if advised of the possibility of such damage.
 	  <xsl:preserve-space elements="w:t"/>
 	  <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no"/>
 
-	  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+	<xsl:param name="pass0-to-disk" as="xs:boolean" select="false()"/>
+	<xsl:param name="skip-pass2" as="xs:boolean" select="false()"/>
+ 	  <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>
          <p>The main template that starts the conversion from docx to TEI</p>
 	 <p><b>IMPORTING STYLESHEETS AND OVERRIDING MATCHED TEMPLATES:</b></p>
@@ -194,16 +196,24 @@ of this software, even if advised of the possibility of such damage.
 <!--     <xsl:variable name="pass0">
        <xsl:apply-templates mode="pass0"/>
      </xsl:variable>-->
-     
-<!--     <xsl:result-document href="pass0.xml">
-     	<xsl:copy-of select="$pass0"/>
-     </xsl:result-document>-->
-     <!-- Do the main transformation and store everything in the variable pass1 -->
-     <xsl:variable name="pass1"> 
-       <xsl:for-each select="$pass0">
-	 <xsl:apply-templates/>
-       </xsl:for-each>
-     </xsl:variable>		  
+   	<xsl:if test="$pass0-to-disk">
+   		<xsl:result-document href="pass0.xml">
+   			<xsl:copy-of select="$pass0"/>
+   		</xsl:result-document>
+   	</xsl:if>
+   	<!-- Do the main transformation and store everything in the variable pass1 -->
+   	<xsl:if test="$skip-pass2">
+   		<xsl:for-each select="$pass0">
+   			<xsl:apply-templates/>
+   		</xsl:for-each>   			
+   	</xsl:if>
+   	<xsl:variable name="pass1">
+   		<xsl:if test="not($skip-pass2)">
+   			<xsl:for-each select="$pass0">
+   				<xsl:apply-templates/>
+   			</xsl:for-each>
+   		</xsl:if>
+   	</xsl:variable>		  
 
      <!--
 	 <xsl:result-document href="/tmp/foo.xml">
@@ -211,8 +221,10 @@ of this software, even if advised of the possibility of such damage.
 	 </xsl:result-document>
      -->
      <!-- Do the final parse and create valid TEI -->
-
-     <xsl:apply-templates select="$pass1" mode="pass2"/>
+	 
+	 <xsl:if test="not($skip-pass2)">
+     	<xsl:apply-templates select="$pass1" mode="pass2"/>
+	 </xsl:if>
 <!--   	<xsl:apply-templates mode="pass2"/>-->
      
      <xsl:call-template name="fromDocxFinalHook"/>

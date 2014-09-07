@@ -86,7 +86,7 @@
     </xd:doc>
     <xsl:template match="w:p" mode="pass0">
         <w:p>
-        <xsl:for-each-group select="*" group-adjacent="concat('x', ./w:rPr/w:rStyle/@w:val)">
+        <xsl:for-each-group select="* except w:proofErr" group-adjacent="concat('x', ./w:rPr/w:rStyle/@w:val)">
             <xsl:choose>
                 <xsl:when test="current-grouping-key() = 'x' or count(current-group() intersect //w:r) &lt; 2">
                     <xsl:for-each select="current-group()">
@@ -124,15 +124,20 @@
     </xd:doc>
     <xsl:template match="w:endnoteReference"/>
     
+    <xsl:param name="pass0-from-disk" as="xs:boolean" select="false()"/>
     <xd:doc>
         <xd:desc>Access to $pass0 is needed globally so duplicate this here.</xd:desc>
     </xd:doc>
     <xsl:variable name="pass0">
-        <xsl:apply-templates select="/" mode="pass0"/>
+        <xsl:choose>
+            <xsl:when test="$pass0-from-disk">
+                <xsl:sequence select="/"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates select="/" mode="pass0"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:variable>
-<!--    <xsl:variable name="pass0">
-        <xsl:sequence select="/"/>
-    </xsl:variable>-->
 
     <xd:doc>
         <xd:desc>teiHeader using the metadata agreed upon in the project, fetched from the docx metadata</xd:desc>
@@ -304,7 +309,7 @@ This is a work in progress. If you find any new or alternative readings or have 
             <xsl:when test="$style='Funotenzeichen'"/><!-- suppress -->
             <xsl:when test="$style=($nameStyle, $placeStyle, $otherStyles)">
                 <xsl:choose>
-                    <xsl:when test="following-sibling::w:commentRangeEnd/@w:id">
+                    <xsl:when test="(preceding-sibling::w:commentRangeStart[1])/@w:id">
                         <xsl:call-template name="semanticStyle">
                             <xsl:with-param name="style" select="$style"/>
                         </xsl:call-template>        
@@ -628,7 +633,7 @@ This is a work in progress. If you find any new or alternative readings or have 
             </orth>-->
 <!--            <xsl:if test="lower-case($wordInText) ne $wordInText">-->
                 <orth xml:lang="ota-Latn-t">
-                    <xsl:value-of select="lower-case($wordInText)"/>    
+                    <xsl:value-of select="concat(lower-case(substring($wordInText, 1, 1)), substring($wordInText, 2))"/>    
                 </orth>
 <!--            </xsl:if>-->
             <xsl:analyze-string select="$annotationText" regex="{$otherRegExp}">
@@ -672,14 +677,46 @@ This is a work in progress. If you find any new or alternative readings or have 
             </xsl:analyze-string>
         </xsl:element>       
     </xsl:template>
+
+    <xd:do>
+        <xd:desc>Aux function to find the relative position of a particular node in within a sequence.</xd:desc>
+    </xd:do>
+    <xsl:function name="mec:relative-position" as="xs:integer">
+        <xsl:param name="aSequence" as="node()+"/>
+        <xsl:param name="aNodeWithinTheSequence" as="node()?"/>
+        <xsl:choose>
+            <xsl:when test="exists($aNodeWithinTheSequence)">
+                <xsl:variable name="aNodeId" select="generate-id($aNodeWithinTheSequence)"/>
+                <xsl:for-each select="$aSequence">
+                    <xsl:if test="generate-id(.) eq $aNodeId">
+                        <xsl:value-of select="position()"/> 
+                    </xsl:if>
+                </xsl:for-each>                
+            </xsl:when>
+            <xsl:otherwise>1</xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Given a context (most probably .) and the comments id this returns the words in the text that make up the named entity.</xd:desc>
+    </xd:doc>
+    <xsl:function name="mec:words-in-text-runs" as="xs:string">
+        <xsl:param name="context" as="node()"/>
+        <xsl:param name="commentId" as="xs:string?"/>
+        <xsl:variable name="possibleWordInTextRuns" select="($context | $context/following-sibling::w:r)"/>
+        <xsl:variable name="lastRunElement" select="$context/following-sibling::w:commentRangeEnd[@w:id = $commentId]/preceding-sibling::w:r[1]"/>
+        <xsl:variable name="lastRunPosition" select="mec:relative-position($possibleWordInTextRuns, $lastRunElement)"/>
+        <xsl:value-of select="if (exists($commentId)) then string-join($possibleWordInTextRuns[position() = (1 to $lastRunPosition)]/w:t, '')
+                                                      else string-join($context/w:t, '')"/>
+    </xsl:function>
     
     <xsl:template name="generatePersonNameXML">
         <xsl:variable name="thisId"
-            select="for $aNode in subsequence(./following-sibling::*, 1, 2) return $aNode[name($aNode) = 'w:commentRangeEnd']/@w:id"/>
+            select="preceding-sibling::w:commentRangeStart[1]/@w:id" as="xs:string?"/>
         <xsl:variable name="annotationText"
             select="if (exists($thisId)) then normalize-space(string-join($comments/w:comments/w:comment[@w:id = $thisId]//w:t, '')) else ' '"/>
-        <xsl:variable name="wordInText" select="string-join(./w:t, '')"
-            as="xs:string"/>
+        <xsl:variable name="wordInText" select="mec:words-in-text-runs(., $thisId)" as="xs:string"/>
+        <!-- TODO: replace with lookup -->
         <xsl:variable name="type" select="./w:rPr/w:rStyle/@w:val"
             as="xs:string?"/>
         <xsl:variable name="generated-id" select="generate-id()"/>
@@ -706,11 +743,11 @@ This is a work in progress. If you find any new or alternative readings or have 
     
     <xsl:template name="generatePlaceNameXML">
         <xsl:variable name="thisId"
-            select="for $aNode in subsequence(./following-sibling::*, 1, 2) return $aNode[name($aNode) = 'w:commentRangeEnd']/@w:id"/>
+            select="preceding-sibling::w:commentRangeStart[1]/@w:id" as="xs:string?"/>
         <xsl:variable name="annotationText"
             select="if (exists($thisId)) then normalize-space(string-join($comments/w:comments/w:comment[@w:id = $thisId]//w:t, '')) else ' '"/>
-        <xsl:variable name="wordInText" select="string-join(./w:t, '')"
-            as="xs:string"/>
+        <xsl:variable name="wordInText" select="mec:words-in-text-runs(., $thisId)" as="xs:string"/>
+        <!-- TODO: replace with lookup -->
         <xsl:variable name="type" select="./w:rPr/w:rStyle/@w:val"
             as="xs:string?"/>
         <xsl:variable name="generated-id" select="generate-id()"/>
@@ -737,12 +774,10 @@ This is a work in progress. If you find any new or alternative readings or have 
     
     <xsl:template name="generateOtherNameXML">
         <xsl:variable name="thisId"
-            select="for $aNode in subsequence(./following-sibling::*, 1, 2) return $aNode[name($aNode) = 'w:commentRangeEnd']/@w:id"/>
+            select="preceding-sibling::w:commentRangeStart[1]/@w:id" as="xs:string?"/>
         <xsl:variable name="annotationText"
             select="if (exists($thisId)) then normalize-space(string-join($comments/w:comments/w:comment[@w:id = $thisId]//w:t, '')) else ' '"/>
-        <xsl:variable name="wordInText" select="string-join(./w:t, '')"
-            as="xs:string"/>
-        <!-- TODO: replace with lookup -->
+        <xsl:variable name="wordInText" select="mec:words-in-text-runs(., $thisId)" as="xs:string"/>
         <xsl:variable name="type" select="mec:mapStyle(./w:rPr/w:rStyle/@w:val)"
             as="xs:string?"/>
         <xsl:variable name="generated-id" select="generate-id()"/>
@@ -883,7 +918,7 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:param name="commentXML" as="document-node()?"/>
         <xsl:variable name="lcName" as="xs:string+">
             <xsl:for-each select="$name">
-                <xsl:value-of select="lower-case(.)"/>
+                <xsl:value-of select="concat(lower-case(substring(., 1, 1)), substring(., 2))"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="allPossibleMatchingNamesComment"
@@ -1035,7 +1070,7 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:param name="commentXML" as="document-node()?"/>
         <xsl:variable name="lcName" as="xs:string+">
             <xsl:for-each select="$name">
-                <xsl:value-of select="lower-case(.)"/>
+                <xsl:value-of select="concat(lower-case(substring(., 1, 1)), substring(., 2))"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:place[tei:placeName/text()[1] = ($lcName, $name)]|$tagsDecl//tei:place[tei:placeName/tei:addName = ($lcName, $name)])"/>
@@ -1069,7 +1104,7 @@ This is a work in progress. If you find any new or alternative readings or have 
         <xsl:param name="commentXML" as="document-node()?"/>
         <xsl:variable name="lcName" as="xs:string+">
             <xsl:for-each select="$name">
-                <xsl:value-of select="lower-case(.)"/>
+                <xsl:value-of select="concat(lower-case(substring(., 1, 1)), substring(., 2))"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="allPossibleMatchingNamesComment" select="($tagsDecl//tei:nym[tei:orth[@xml:lang = 'ota-Latn-t']/text() = ($lcName, $name)])"/>
@@ -1155,7 +1190,7 @@ This is a work in progress. If you find any new or alternative readings or have 
     <xsl:template name="semanticStyle-inner">
         <xsl:param name="style"/>
         <xsl:variable name="name" select="string-join(w:t, '')"/>
-        <xsl:variable name="commentN" select="(following-sibling::w:commentRangeEnd)[1]/@w:id" as="xs:string?"/>
+        <xsl:variable name="commentN" select="(preceding-sibling::w:commentRangeStart)[1]/@w:id" as="xs:string?"/>
         <xsl:variable name="commentNText" select="if (commentN ne '') then $comments/w:comments/w:comment[@w:id=$commentN] else ''" as="xs:string?"/>
         <xsl:choose>
             <xsl:when test="$style=$nameStyle">
